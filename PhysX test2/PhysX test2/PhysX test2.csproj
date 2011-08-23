@@ -233,7 +233,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Data\Data.pack">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
