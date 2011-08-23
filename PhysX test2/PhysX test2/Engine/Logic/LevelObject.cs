@@ -7,6 +7,7 @@ namespace PhysX_test2.Engine.Logic
 {
     public class LevelObject : PivotObject
     {
+        public bool deleted = false;
         //for one
         public BehaviourModel.ObjectBehaviourModel behaviourmodel;
         //for group

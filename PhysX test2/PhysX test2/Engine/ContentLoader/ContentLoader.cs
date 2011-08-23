@@ -431,6 +431,61 @@ namespace PhysX_test2.Engine.ContentLoader
             }
         }
 
+        public static void UnloadPivotObject(
+            PivotObject theobject)
+        {
+            LevelObject gobject = theobject as LevelObject;
+            if (gobject == null)
+                return;
+            Pack p = null;
+           PackContent pc = PackList.Instance.FindObject(theobject.editorAspect.DescriptionName, ref p);
+
+            Content.LevelObjectDescription description = pc as Content.LevelObjectDescription;
+
+            if (description != null)
+            {
+                description.Enginereadedobject.RemoveAt(description.Enginereadedobject.Count - 1);
+
+                //unload ro
+                Content.RenderObjectDescription rod = PackList.Instance.FindObject(description.RODName, ref p) as Content.RenderObjectDescription;
+                RenderObject obj = rod.Enginereadedobject[rod.Enginereadedobject.Count - 1] as RenderObject;
+                rod.Enginereadedobject.RemoveAt(rod.Enginereadedobject.Count - 1);
+                if (rod.Enginereadedobject.Count == 0)
+                {
+                    IDisposable i = obj;
+                    i.Dispose();
+                }
+
+
+                //unload material
+                Content.MaterialDescription matd = PackList.Instance.FindObject(description.matname, ref p) as Content.MaterialDescription;
+
+                matd.Enginereadedobject.RemoveAt(matd.Enginereadedobject.Count - 1);
+
+                for (int i = 0; i < matd.lodMats.Length; i++)
+                {
+                    for (int j = 0; j < matd.lodMats[i].mats.Length; j++)
+                    {
+                        Content.Texture inage = PackList.Instance.FindObject(matd.lodMats[i].mats[j].DiffuseTextureName, ref p) as Content.Texture;
+                        Texture2D tex = inage.Enginereadedobject[inage.Enginereadedobject.Count - 1] as Texture2D;
+                        inage.Enginereadedobject.RemoveAt(inage.Enginereadedobject.Count - 1);
+                        if (inage.Enginereadedobject.Count == 0)
+                        {
+                            tex.Dispose();
+                        }
+                    }
+                }
+
+                if (description.IsRCCMEnabled)
+                {
+                    //unload raycast
+                    Content.CollisionMesh cm = PackList.Instance.FindObject(description.RCCMName, ref p) as Content.CollisionMesh;
+                    cm.Enginereadedobject.RemoveAt(cm.Enginereadedobject.Count - 1);
+                }
+            }
+            gobject.deleted = true;
+        }
+
 
     }
 }

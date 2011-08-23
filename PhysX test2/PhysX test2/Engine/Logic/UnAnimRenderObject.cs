@@ -17,29 +17,55 @@ namespace PhysX_test2.Engine.Logic
     {
         #region RENDER
 
-        public class SubSet 
+        public class SubSet :System.IDisposable
         {
             public EngineMesh mesh;
+            public bool Disposed = false;
             public SubSet(EngineMesh m)
             {
                 mesh = m;
             }
+            public void Dispose()
+            {
+                if (!Disposed)
+                {
+                    mesh.Dispose();
+                    mesh = null;
+                    Disposed = true;
+                    GC.SuppressFinalize(this);
+                }
+            }
+            ~SubSet()
+            {
+                Dispose();
+            }
         }
 
-        public class Model
+        public class Model : System.IDisposable
         {
-            public SubSet[] subsets
-            {
-                get;
-                private set;
-            }
-
+            public SubSet[] subsets;
+            public bool Disposed = false;
             public Model(SubSet[] array)
             {
                 subsets = new SubSet[array.Length];
                 array.CopyTo(subsets, 0);
             }
+            public void Dispose()
+            {
+                if (!Disposed)
+                {
+                    for (int i = 0; i < subsets.Length; i++)
+                        subsets[i].Dispose();
+                    subsets = null;
+                    Disposed = true;
+                    GC.SuppressFinalize(this);
+                }
+            }
 
+            ~Model()
+            {
+                Dispose();
+            }
         }
        
         public Model[] LODs
@@ -89,6 +115,18 @@ namespace PhysX_test2.Engine.Logic
                         s.mesh.Render();
                     }
                 }
+            }
+        }
+
+        public override void Dispose()
+        {
+            if (!Disposed)
+            {
+                for (int i = 0; i < LODs.Length; i++)
+                    LODs[i].Dispose();
+                LODs = null;
+                Disposed = true;
+                GC.SuppressFinalize(this);
             }
         }
 

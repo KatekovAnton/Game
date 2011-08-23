@@ -9,8 +9,10 @@ namespace PhysX_test2.Content
     public class PackList
     {
         public Pack[] packs;
+        public static PackList Instance;
         public PackList()
         {
+            Instance = this;
             string path = System.IO.Path.GetDirectoryName(
       System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(6)+"\\Data";
            
