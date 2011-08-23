@@ -26,12 +26,13 @@ namespace PhysX_test2.Engine
         public Actor groundplane;
         public ControllerManager manager;
         public RenderPipeline GraphicPipeleine;
-
+        public static GameEngine Instance;
+        
         public PhysX_test2.Engine.Logic.LevelObject LevelObjectBox;
         public PhysX_test2.Engine.Logic.LevelObject LevelObjectTestSide;
         public PhysX_test2.Engine.Logic.LevelObject LevelObjectCharacterBox;
         public PhysX_test2.Engine.Logic.LevelObject LevelObjectCursorSphere;
-
+        
         public PhysX_test2.Engine.Helpers.FpsCounter FPSCounter;
 
         public SpriteBatch spriteBatch;
@@ -43,11 +44,13 @@ namespace PhysX_test2.Engine
 
         public static GraphicsDeviceManager DeviceManager;
         public static GraphicsDevice Device;
+        public GameScene gameScene;
 
         public int visibleobjectscount = 0;
-        public PhysX_test2.Engine.Logic.SceneGraph.SceneGraph _sceneGraph;
+        
         public GameEngine(MyGame game, PackList p)
 		{
+            Instance = this;
             lightDir.Normalize();
             packs = p;
 			this.Game = game;
@@ -55,8 +58,6 @@ namespace PhysX_test2.Engine
             //разме рэкрана
 			DeviceManager.PreferredBackBufferWidth = (int)( GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.8 );
 			DeviceManager.PreferredBackBufferHeight = (int)( GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.8 );
-            
-        
 		}
  
         public void Initalize()
@@ -82,7 +83,6 @@ namespace PhysX_test2.Engine
             };
             this.Scene = Core.CreateScene(sceneDesc);
             manager = Scene.CreateControllerManager();
-            _sceneGraph = new Logic.SceneGraph.SceneGraph();
             loaddata();
             
             ebuchest e = new ebuchest();
@@ -99,52 +99,62 @@ namespace PhysX_test2.Engine
             }
             Scene.UserContactReport = new ContactReport(this.Game);
 
-            LevelObjectDescription testsiderdescription = new LevelObjectDescription();
-            testsiderdescription = packs.GetObject("TestSideWorldObject\0", testsiderdescription) as LevelObjectDescription;
 
+            gameScene = new GameScene();
+            GraphicPipeleine = new RenderPipeline(DeviceManager.GraphicsDevice, Camera);
+
+
+            ///box 
             LevelObjectDescription boxrdescription = new LevelObjectDescription();
             boxrdescription = packs.GetObject("WoodenCrate10WorldObject\0", boxrdescription) as LevelObjectDescription;
 
+            LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxrdescription, packs, Scene);
+            lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 30, 0));
+            GraphicPipeleine.ProceedObject(lo.renderaspect);
+            gameScene.AddObject(lo);
+            LevelObjectBox = lo;
+
+
+
+
+            ////our character
             LevelObjectDescription boxcharacterdescription = new LevelObjectDescription();
             boxcharacterdescription = packs.GetObject("MyNewCharacter\0", boxcharacterdescription) as LevelObjectDescription;
 
+            lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxcharacterdescription, packs, Scene);
+            lo.SetGlobalPose(Matrix.CreateRotationX(-MathHelper.PiOver2) * Matrix.CreateTranslation(0, 20, 0));
+            GraphicPipeleine.ProceedObject(lo.renderaspect);
+            gameScene.AddObject(lo);
+            LevelObjectCharacterBox = lo;
+
+
+
+
+            ////test side
+            LevelObjectDescription testsiderdescription = new LevelObjectDescription();
+            testsiderdescription = packs.GetObject("TestSideWorldObject\0", testsiderdescription) as LevelObjectDescription;
+
+            lo = ContentLoader.ContentLoader.LevelObjectFromDescription(testsiderdescription, packs, Scene);
+            lo.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(0, 15, 0));
+            GraphicPipeleine.ProceedObject(lo.renderaspect);
+            gameScene.AddObject(lo);
+            LevelObjectTestSide = lo;
+
+
+
+
+            /////sphere
             LevelObjectDescription spheredesc = new LevelObjectDescription();
             spheredesc = packs.GetObject("Cursor\0", spheredesc) as LevelObjectDescription;
 
-             LevelObjectBox = ContentLoader.ContentLoader.LevelObjectFromDescription(boxrdescription, packs, Scene);
-             LevelObjectBox.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 30, 0));
+            lo = ContentLoader.ContentLoader.LevelObjectFromDescription(spheredesc, packs, Scene);
+            lo.SetGlobalPose(Matrix.CreateTranslation(0, 30, 0));
+            GraphicPipeleine.ProceedObject(lo.renderaspect);
+            gameScene.AddObject(lo);
+            LevelObjectCursorSphere = lo;
 
-             LevelObjectCharacterBox = ContentLoader.ContentLoader.LevelObjectFromDescription(boxcharacterdescription, packs, Scene);
-             LevelObjectCharacterBox.SetGlobalPose(Matrix.CreateRotationX(-MathHelper.PiOver2) * Matrix.CreateTranslation(0, 20, 0));
+            
 
-             LevelObjectTestSide = ContentLoader.ContentLoader.LevelObjectFromDescription(testsiderdescription, packs, Scene);
-             LevelObjectTestSide.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(0, 15, 0));
-
-             LevelObjectCursorSphere = ContentLoader.ContentLoader.LevelObjectFromDescription(spheredesc, packs, Scene);
-             LevelObjectCursorSphere.SetGlobalPose(Matrix.CreateTranslation(0, 30, 0));
-
-             //Udating data for scenegraph
-             LevelObjectBox.Update();
-             LevelObjectCursorSphere.Update();
-             LevelObjectCharacterBox.Update();
-             LevelObjectTestSide.Update();
-
-             GraphicPipeleine = new RenderPipeline(DeviceManager.GraphicsDevice,Camera);
-             //решаем какой техникой рисовать объекты
-             GraphicPipeleine.ProceedObject(LevelObjectTestSide.HaveRenderAspect(), testsiderdescription.ROD);
-             GraphicPipeleine.ProceedObject(LevelObjectBox.HaveRenderAspect(), boxrdescription.ROD);
-             GraphicPipeleine.ProceedObject(LevelObjectCharacterBox.HaveRenderAspect(), boxcharacterdescription.ROD);
-             GraphicPipeleine.ProceedObject(LevelObjectCursorSphere.HaveRenderAspect(), spheredesc.ROD);
-
-
-
-
-
-             _sceneGraph.AddObject(LevelObjectTestSide);
-             _sceneGraph.AddObject(LevelObjectCharacterBox);
-             _sceneGraph.AddObject(LevelObjectBox);
-             _sceneGraph.AddObject(LevelObjectCursorSphere);
-             
 
             packs.Unload();
 
@@ -157,17 +167,13 @@ namespace PhysX_test2.Engine
 		{
             
             //Begin update world objects
-            LevelObjectBox.BeginDoFrame();
-            LevelObjectTestSide.BeginDoFrame();
-            LevelObjectCharacterBox.BeginDoFrame();
-            LevelObjectCursorSphere.BeginDoFrame();
+            foreach (PivotObject lo in gameScene.objects)
+                lo.BeginDoFrame();
             //Update world(calc ray trace, deleting bullets, applying forces and other)
             //------
 
-            LevelObjectCursorSphere.behaviourmodel.DoFrame(gameTime);
-            LevelObjectBox.behaviourmodel.DoFrame(gameTime);
-            LevelObjectTestSide.behaviourmodel.DoFrame(gameTime);
-            LevelObjectCharacterBox.behaviourmodel.DoFrame(gameTime);
+            foreach (PivotObject lo in gameScene.objects)
+                lo.DoFrame(gameTime);
             // Update Physics
             Scene.Simulate((float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f);
 
@@ -176,44 +182,35 @@ namespace PhysX_test2.Engine
 			Scene.FetchResults( SimulationStatus.RigidBodyFinished, true );
 
             //End updating world objects
-            LevelObjectCursorSphere.EndDoFrame();
-            LevelObjectBox.EndDoFrame();
-            LevelObjectTestSide.EndDoFrame();
-            LevelObjectCharacterBox.EndDoFrame();
+            foreach (PivotObject lo in gameScene.objects)
+                lo.EndDoFrame();
             
             
             
             //Udating data for scenegraph
-            LevelObjectBox.Update();
-            LevelObjectCursorSphere.Update();
-            LevelObjectCharacterBox.Update();
-            LevelObjectTestSide.Update();
+            gameScene.UpdateScene();
+           
             //Garbage collection(nulling deleted objects)
             //------
 
+
+            //очищаем конвейер
+            GraphicPipeleine.NewFrame(lightDir);
             //Updating camera
 			Camera.Update( gameTime );
 
 
-            //вот так вот примерно будет происходить рисование
-            //тут идёт обновление сценграфа = (фрустумкулинг=> получение списка видимых объектов) 
-            _sceneGraph.NewFrame();
-            _sceneGraph.calculateVisibleObjects(Camera.cameraFrustum);
-          
-
-            
-            Vector3 v1 = DeviceManager.GraphicsDevice.Viewport.Project(LevelObjectBox.transform.Translation, Camera.Projection, Camera.View, Matrix.Identity);
+            Vector3 v1 = DeviceManager.GraphicsDevice.Viewport.Project(gameScene.objects[0].transform.Translation, Camera.Projection, Camera.View, Matrix.Identity);
             BoxScreenPosition = new Vector3(Convert.ToSingle(Convert.ToInt32(v1.X)), Convert.ToSingle(Convert.ToInt32(v1.Y)), v1.Z);
             
 
             
-            //очищаем конвейер
-            GraphicPipeleine.NewFrame(lightDir);
-            _sceneGraph.calculateShadowVisibleObjects(GraphicPipeleine.frustumForShadow);
+           
+         
             //добавляем все нобходимые объекты на отрисовку
-            GraphicPipeleine.AddObjectToPipeline(_sceneGraph.visibleObjects);
-            GraphicPipeleine.AddObjectToShadow(_sceneGraph.shadowObjects);
-            visibleobjectscount = _sceneGraph.visibleObjects.Count;
+            GraphicPipeleine.AddObjectToPipeline(gameScene.VisibleObjects);
+            GraphicPipeleine.AddObjectToShadow(gameScene.ShadowObjects);
+            visibleobjectscount = gameScene.VisibleObjects.Count;
 
 
             FPSCounter.Update(gameTime);

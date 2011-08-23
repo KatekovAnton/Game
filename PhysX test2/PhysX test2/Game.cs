@@ -159,7 +159,6 @@ namespace PhysX_test2
             _engine.Update(gameTime);
             
             base.Update(gameTime);
-
         }
 
         
@@ -182,7 +181,7 @@ namespace PhysX_test2
 
             spriteBatch.DrawString(Font1, string.Format("FPS: {0} Frame time: {1}", _engine.FPSCounter.FramesPerSecond, _engine.FPSCounter.FrameTime), Vector2.Zero, Color.White);
             spriteBatch.DrawString(Font1, "Visible objects count: " + _engine.visibleobjectscount.ToString(), new Vector2(0,15), Color.White);
-            spriteBatch.DrawString(Font1, "Recalulcalated objects count: " +_engine._sceneGraph.recalulcalated().ToString(), new Vector2(0, 30), Color.White);
+            spriteBatch.DrawString(Font1, "Recalulcalated objects count: " +_engine.gameScene.sceneGraph.recalulcalated().ToString(), new Vector2(0, 30), Color.White);
             
             spriteBatch.End();
         }

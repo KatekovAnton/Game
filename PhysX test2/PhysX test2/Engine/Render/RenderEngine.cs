@@ -120,17 +120,17 @@ namespace PhysX_test2.Engine.Render
 
         }
 
-        public void ProceedObject(RenderObject AddedObject, RenderObjectDescription AddedObjectDescription)
+        public void ProceedObject(RenderObject AddedObject)
         {
             //тут решаем что за рыба и как её соотв рендерить.
 
             if (AddedObject.isanimaated)
             {
-                if (AddedObjectDescription.IsShadowCaster && EnableShadows)
+                if (AddedObject.isshadowcaster && EnableShadows)
                     AddedObject.ShadowTehnique = Shader.CreateAnimShadowMap;
 
 
-                if (AddedObjectDescription.IsShadowReceiver)
+                if (AddedObject.isshadowreceiver)
                     if (EnableShadows)
                         if (SmoothShadows)
                             AddedObject.PictureTehnique = Shader.AnimRenderSMSmooth;
@@ -141,11 +141,11 @@ namespace PhysX_test2.Engine.Render
             }
             else
             {
-                if (AddedObjectDescription.IsShadowCaster && EnableShadows)
+                if (AddedObject.isshadowcaster && EnableShadows)
                     AddedObject.ShadowTehnique = Shader.CreateStaticShadowMap;
 
 
-                if (AddedObjectDescription.IsShadowReceiver)
+                if (AddedObject.isshadowreceiver)
                     if (EnableShadows)
                         if (SmoothShadows)
                             AddedObject.PictureTehnique = Shader.NotAnimRenderSMSmooth;

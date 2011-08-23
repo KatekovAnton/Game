@@ -9,35 +9,45 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
 {
     public class SceneGraph
     {
-        MyContainer<PivotObject> objects;
+        GameScene scene;
         SGQdTree octree;
-        public MyContainer<PivotObject> visibleObjects;
-        public MyContainer<PivotObject> shadowObjects;
-        public SceneGraph()
+
+        public SceneGraph(GameScene _scene)
         {
             octree = new SGQdTree();
-            objects = new MyContainer<PivotObject>();
-            shadowObjects = new MyContainer<PivotObject>();
-            visibleObjects = new MyContainer<PivotObject>();
+            scene = _scene;
         }
         public void AddObject(PivotObject wo)
         {
-            objects.Add(wo);
+            // objects.Add(wo);
             octree.AddEntity(wo);
+        }
+        public void DeleteObject(PivotObject wo)
+        {
+            // objects.Add(wo);
+            octree.RemoveObject(wo);
         }
         public void NewFrame()
         {
-            octree.Update(objects);
+            octree.Update(scene.objects);
         }
-        public void calculateVisibleObjects(BoundingFrustum _viewFrustum)
+        public void calculateVisibleObjects(BoundingFrustum _viewFrustum, MyContainer<PivotObject> container)
         {
-            visibleObjects.Clear();
-            octree.Query(_viewFrustum, visibleObjects);
+            container.Clear();
+            octree.Query(_viewFrustum, container);
         }
-        public void calculateShadowVisibleObjects(BoundingFrustum _lightViewFrustum)
+        public void calculateShadowVisibleObjects(BoundingFrustum _lightViewFrustum, MyContainer<PivotObject> container)
         {
-            shadowObjects.Clear();
-            octree.Query(_lightViewFrustum, shadowObjects);
+            container.Clear();
+            octree.Query(_lightViewFrustum, container);
+        }
+        public void Clear()
+        {
+            foreach (PivotObject lo in scene.objects)
+            {
+                octree.RemoveObject(lo);
+            }
+            //objects.Clear();
         }
         public int recalulcalated()
         {

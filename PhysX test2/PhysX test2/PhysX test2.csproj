@@ -130,7 +130,9 @@
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
     <Compile Include="Engine\Logic\AnimRenderObject.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectPhysicControllerBehaviourModel.cs" />
+    <Compile Include="Engine\Logic\EditorAspect.cs" />
     <Compile Include="Engine\Logic\GameObject.cs" />
+    <Compile Include="Engine\Logic\GameScene.cs" />
     <Compile Include="Engine\Logic\LevelObject.cs" />
     <Compile Include="Engine\Logic\OperatingModel\ObjectLevelGeometryOperatingModel.cs" />
     <Compile Include="Engine\Logic\OperatingModel\ObjectOperatingModel.cs" />
