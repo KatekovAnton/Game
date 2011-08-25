@@ -100,6 +100,10 @@ namespace PhysX_test2.Engine.Logic
                 po.Update();
             }
             sceneGraph.NewFrame();
+            
+        }
+        public void calc()
+        {
             sceneGraph.calculateVisibleObjects(GameEngine.Instance.Camera.cameraFrustum, VisibleObjects);
             sceneGraph.calculateShadowVisibleObjects(GameEngine.Instance.GraphicPipeleine.frustumForShadow, ShadowObjects);
         }
