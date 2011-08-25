@@ -58,10 +58,10 @@ namespace PhysX_test2.Engine.Logic
 
         public void AddObject(PivotObject newObject)
         {
+            newObject.Update();
             objects.Add(newObject);
             sceneGraph.AddObject(newObject);
-            newObject.Update();
-          //  LevelEditor.ObjectAdded(newObject);
+            
         }
 
 
@@ -77,8 +77,6 @@ namespace PhysX_test2.Engine.Logic
             {
                 IdGenerator.ClearIdsCounter();
             }
-
-           // LevelEditor.ObjectsDeleted(deletingobjects);
         }
 
 
@@ -89,7 +87,6 @@ namespace PhysX_test2.Engine.Logic
                 objects.Add(t);
                 sceneGraph.AddObject(t);
             }
-           // LevelEditor.ObjectsAdded(newobjects);
         }
 
 
@@ -102,7 +99,7 @@ namespace PhysX_test2.Engine.Logic
             sceneGraph.NewFrame();
             
         }
-        public void calc()
+        public void CalculateVisibleObjects()
         {
             sceneGraph.calculateVisibleObjects(GameEngine.Instance.Camera.cameraFrustum, VisibleObjects);
             sceneGraph.calculateShadowVisibleObjects(GameEngine.Instance.GraphicPipeleine.frustumForShadow, ShadowObjects);

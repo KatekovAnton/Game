@@ -58,7 +58,6 @@ namespace PhysX_test2.Engine.Logic
         public override void DoFrame(Microsoft.Xna.Framework.GameTime gt)
         {
             behaviourmodel.DoFrame(gt);
-            base.DoFrame(gt);
         }
 
         public override void Update()

@@ -144,23 +144,26 @@ namespace PhysX_test2.Engine {
             foreach(PivotObject lo in gameScene.objects)
                 lo.EndDoFrame();
 
+
+
+            
+
             //Udating data for scenegraph
             gameScene.UpdateScene();
 
+
+            //Updating camera
+            Camera.Update(LevelObjectCharacterBox.transform.Translation + new Vector3(1, 5, 5), LevelObjectCharacterBox.transform.Translation);
             //Garbage collection(nulling deleted objects)
             //------
-
+           
             //очищаем конвейер
             GraphicPipeleine.NewFrame(lightDir);
-            //Updating camera
-            Vector3 playerPos = LevelObjectCharacterBox.transform.Translation;
-            Vector3 diff = new Vector3(1,10,5);
-            Camera.setCameraPosition(playerPos + diff, playerPos);
-            Camera.Update(gameTime);
 
+            gameScene.CalculateVisibleObjects();
             Vector3 v1 = DeviceManager.GraphicsDevice.Viewport.Project(gameScene.objects[0].transform.Translation, Camera.Projection, Camera.View, Matrix.Identity);
             BoxScreenPosition = new Vector3(Convert.ToSingle(Convert.ToInt32(v1.X)), Convert.ToSingle(Convert.ToInt32(v1.Y)), v1.Z);
-            gameScene.calc();
+            
             //добавляем все нобходимые объекты на отрисовку
             GraphicPipeleine.AddObjectToPipeline(gameScene.VisibleObjects);
             GraphicPipeleine.AddObjectToShadow(gameScene.ShadowObjects);

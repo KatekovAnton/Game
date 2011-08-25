@@ -29,10 +29,7 @@ namespace PhysX_test2.Engine.Logic
         public abstract void Update();
         public abstract void BeginDoFrame();
         public abstract void EndDoFrame();
-        public virtual void DoFrame(GameTime gt)
-        {
-              
-        }
+        public abstract void DoFrame(GameTime gt);
         /*from editor
          public abstract void SetActive(bool active);
          */
