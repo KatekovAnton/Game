@@ -35,6 +35,20 @@ namespace PhysX_test2.Engine {
         }
 
 
+        public void setCameraPosition(Vector3 cameraposition, Vector3 cameratarget)
+        {
+            float katet = -(cameratarget.Y - cameraposition.Y);
+            float gipotenuza = (cameraposition - cameratarget).Length();
+            _cameraPitch = -MathHelper.PiOver2 + Convert.ToSingle(Math.Acos(Convert.ToDouble(katet / gipotenuza)));
+            float determ = (cameratarget.Z - cameraposition.Z);
+            if (determ == 0)
+                determ = 0.001f;
+            _cameraYaw = Convert.ToSingle(Math.Atan(Convert.ToSingle((cameratarget.X - cameraposition.X) / determ)));
+            View = Matrix.CreateLookAt(cameraposition, cameratarget, new Vector3(0, 1, 0));
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, _engine.Game.GraphicsDevice.Viewport.AspectRatio, 1, 150);
+            cameraFrustum.Matrix = View * Projection;
+        }
+
         public void Update(GameTime elapsedTime) {
             var elapsed = (float) (elapsedTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
             const float speed = 14.0f;
