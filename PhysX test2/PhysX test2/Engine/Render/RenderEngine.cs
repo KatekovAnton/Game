@@ -6,6 +6,7 @@ using System.Text;
 using PhysX_test2;
 using PhysX_test2.Content;
 using PhysX_test2.Engine;
+using PhysX_test2.Engine.CameraControllers;
 using PhysX_test2.Engine.Logic;
 using PhysX_test2.Engine.ContentLoader;
 

@@ -3,11 +3,13 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PhysX_test2.Content;
+using PhysX_test2.Engine.CameraControllers;
 using PhysX_test2.Engine.Helpers;
 using PhysX_test2.Engine.Logic;
 using PhysX_test2.Engine.Render;
 using StillDesign.PhysX;
 using Material = PhysX_test2.Engine.Render.Materials.Material;
+using Microsoft.Xna.Framework.Input;
 
 
 namespace PhysX_test2.Engine {
@@ -25,6 +27,10 @@ namespace PhysX_test2.Engine {
         public LevelObject LevelObjectCursorSphere;
         public LevelObject LevelObjectTestSide;
 
+
+        public CameraControllerPerson _personController;
+
+
         public GameScene gameScene;
         public Actor groundplane;
         public Vector3 lightDir = new Vector3(-1, -1, -1);
@@ -34,6 +40,9 @@ namespace PhysX_test2.Engine {
 
         public int visibleobjectscount;
 
+
+        private float _lastXMousePos;
+        private int _mouseWheelOld;
 
         public GameEngine(MyGame game, PackList p) {
             Instance = this;
@@ -49,7 +58,7 @@ namespace PhysX_test2.Engine {
 
         public void Initalize() {
             FPSCounter = new FpsCounter();
-            Camera = new Camera(this, new Vector3(1, 30, 1), new Vector3(0, -180, 0));
+            Camera = new Camera(this);
             spriteBatch = new SpriteBatch(DeviceManager.GraphicsDevice);
 
             var coreDesc = new CoreDescription();
@@ -63,13 +72,13 @@ namespace PhysX_test2.Engine {
                                                   MaximumBounds = new Bounds3(-1000, -1000, -1000, 1000, 1000, 1000), UpAxis = 2, Gravity = new Vector3(0.0f, -9.81f * 1.3f, 0.0f), GroundPlaneEnabled = false};
             Scene = Core.CreateScene(sceneDesc);
             manager = Scene.CreateControllerManager();
-            loaddata();
+            Loaddata();
 
             var e = new ebuchest();
         }
 
 
-        private void loaddata() {
+        private void Loaddata() {
             groundplane = CreateGroundPlane();
 
             using (var stream = new FileStream(@"Content\Shaders\ObjectRender.fx", FileMode.Open)) {
@@ -121,6 +130,12 @@ namespace PhysX_test2.Engine {
             LevelObjectCursorSphere = lo;
 
             packs.Unload();
+            CreateCharController();
+        }
+
+
+        private void CreateCharController() {
+            _personController = new CameraControllerPerson(Camera, LevelObjectCharacterBox, new Vector3(-12, 6, 0));
         }
 
 
@@ -144,18 +159,55 @@ namespace PhysX_test2.Engine {
             foreach(PivotObject lo in gameScene.objects)
                 lo.EndDoFrame();
 
-
-
-            
-
             //Udating data for scenegraph
             gameScene.UpdateScene();
 
+            // обработка вращения
+            float cursorPosition = Mouse.GetState().X;
+            float delta = cursorPosition - _lastXMousePos;
+            MouseState mouseState = Mouse.GetState();
+            if (mouseState.RightButton == ButtonState.Pressed) {
+                Console.WriteLine(delta * 0.01f);
+                _personController.RotateCameraAroundChar(delta*Settings.rotateSpeed);
+            }
+            _lastXMousePos = cursorPosition;
 
-            //Updating camera
-            Camera.Update(LevelObjectCharacterBox.transform.Translation + new Vector3(1, 5, 5), LevelObjectCharacterBox.transform.Translation);
-            //Garbage collection(nulling deleted objects)
-            //------
+            // обработка зума
+            if(mouseState.ScrollWheelValue > _mouseWheelOld) {
+                _personController.ZoomCameraFromCha(1/Settings.zoomSpeed);
+            } else if (mouseState.ScrollWheelValue < _mouseWheelOld) {
+                _personController.ZoomCameraFromCha(Settings.zoomSpeed);
+            }
+            _mouseWheelOld = mouseState.ScrollWheelValue;
+
+
+            // обработка нажатий клавы
+            KeyboardState keyboardState = Keyboard.GetState();
+            Boolean needUpdate = false;
+            if (keyboardState.IsKeyDown(Keys.W)) {
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Forward, (float) _personController._xAngle));
+                needUpdate = true;
+            }
+                
+            if (keyboardState.IsKeyDown(Keys.S)) {
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Back, (float)_personController._xAngle));
+                needUpdate = true;
+            }
+             
+            if (keyboardState.IsKeyDown(Keys.A)){
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Left, (float)_personController._xAngle));
+                needUpdate = true;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.D)) {
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, (float)_personController._xAngle));
+                needUpdate = true;
+            }
+                
+            if(needUpdate) {
+                _personController.UpdateCamera();
+            }
+
            
             //очищаем конвейер
             GraphicPipeleine.NewFrame(lightDir);

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 
-namespace PhysX_test2.Engine {
+namespace PhysX_test2.Engine.CameraControllers {
     public class Camera {
 
         #region Variables
@@ -13,7 +13,6 @@ namespace PhysX_test2.Engine {
         public BoundingFrustum cameraFrustum = new BoundingFrustum(Matrix.Identity);
         #endregion
 
-        private Vector2 lastmousepos;
 
 
         public Camera(GameEngine engine, Vector3? cameraposition = null, Vector3? cameratarget = null) {
@@ -34,6 +33,15 @@ namespace PhysX_test2.Engine {
             cameraFrustum.Matrix = View * Projection;
         }
 
+
+        public Camera(GameEngine engine) {
+            Vector3? cameratarget = new Vector3(1, 1, 1);
+            Vector3? cameraposition = new Vector3(1, 1, 1);
+            _engine = engine;
+            View = Matrix.CreateLookAt(cameraposition.Value, cameratarget.Value, new Vector3(0, 1, 0));
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, _engine.Game.GraphicsDevice.Viewport.AspectRatio, 1, 150);
+            cameraFrustum.Matrix = View * Projection;
+        }
 
 
         public void Update(Vector3 cameraposition, Vector3 cameratarget)
@@ -56,29 +64,18 @@ namespace PhysX_test2.Engine {
             float distance = speed * elapsed;
             GameWindow window = _engine.Game.Window;
 
-            var cursorPosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
-            //Vector3 vv = Vector3.TransformNormal(Vector3.Forward, View);
+            
 
             // обработка мыши
-            Vector2 delta = cursorPosition - lastmousepos;
+            
             //Vector3 forward = Matrix.Invert(View).Forward;
             Vector3 position = Matrix.Invert(View).Translation;
             Matrix cameraRotation = Matrix.CreateFromYawPitchRoll(_cameraYaw, _cameraPitch, 0.0f);
             Vector3 newForward = Vector3.TransformNormal(Vector3.Forward, cameraRotation);
-            MouseState ss = Mouse.GetState();
-            if(ss.RightButton == ButtonState.Pressed) {
-                Vector2 deltaDampened = delta * 0.0015f;
-
-                _cameraYaw -= deltaDampened.X;
-                _cameraPitch -= deltaDampened.Y;
-
-                cameraRotation = Matrix.CreateFromYawPitchRoll(_cameraYaw, _cameraPitch, 0.0f);
-                newForward = Vector3.TransformNormal(Vector3.Forward, cameraRotation);
-            }
 
 
             // обработка клавиатуры
-            KeyboardState states = Keyboard.GetState();
+/*            KeyboardState states = Keyboard.GetState();
             Vector3 translateDirection = Vector3.Zero;
             if(states.IsKeyDown(Keys.W)) // Forwards
                 translateDirection += Vector3.TransformNormal(Vector3.Forward, cameraRotation);
@@ -97,10 +94,10 @@ namespace PhysX_test2.Engine {
             Vector3 newPosition = position;
             if(translateDirection.LengthSquared() > 0)
                 newPosition += Vector3.Normalize(translateDirection) * distance;
+ */
 
-            View = Matrix.CreateLookAt(newPosition, newPosition + newForward, Vector3.Up);
+            //View = Matrix.CreateLookAt(newPosition, newPosition + newForward, Vector3.Up);
 
-            lastmousepos = cursorPosition;
             cameraFrustum.Matrix = View * Projection;
         }
 

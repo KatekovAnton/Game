@@ -129,17 +129,6 @@ namespace PhysX_test2 {
            //     Exit();
 //
 
-           if (keyboardState.IsKeyDown(Keys.K))
-                _engine.LevelObjectCharacterBox.behaviourmodel.Move(new Vector3(5.0f, 0, 0));
-
-            if (keyboardState.IsKeyDown(Keys.H))
-                _engine.LevelObjectCharacterBox.behaviourmodel.Move(new Vector3(-5.0f, 0, 0));
-
-            if (keyboardState.IsKeyDown(Keys.J))
-                _engine.LevelObjectCharacterBox.behaviourmodel.Move(new Vector3(0, 0, 5.0f));
-
-            if (keyboardState.IsKeyDown(Keys.U))
-                _engine.LevelObjectCharacterBox.behaviourmodel.Move(new Vector3(0, 0, -5.0f));
 
 
             Ray ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), _engine.Camera.View, _engine.Camera.Projection);
