@@ -35,21 +35,21 @@ namespace PhysX_test2.Engine.CameraControllers {
 
 
         public void UpDownCamera(float angle) {
-
             if (angle == 0) {
                 return;
             }
 
-/*            _zAngle += angle;
-            
+            _zAngle += angle;
+
             Matrix resMatr;
-            Vector3 vect = new Vector3(0, 0, 1);
-            Matrix.CreateFromAxisAngle(ref vect, -angle, out resMatr);
+            Vector3 vectX =  Extensions.VectorForCharacterMoving(Extensions.Route.Left, _yAngle);
+            vectX.Normalize();
+            Matrix.CreateFromAxisAngle(ref vectX, angle, out resMatr);
+
             Vector3 res = Vector3.Transform(_offset, resMatr);
             _offset = res;
+
             UpdateCamera();
- */
- 
         }
 
 
