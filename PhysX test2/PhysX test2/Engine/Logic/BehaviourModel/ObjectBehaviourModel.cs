@@ -21,6 +21,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         public virtual void BeginDoFrame()
         {
             PreviousPosition = globalpose;
+            moved = false;
         }
         public bool moved
         {

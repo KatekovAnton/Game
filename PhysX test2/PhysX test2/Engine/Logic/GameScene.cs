@@ -58,9 +58,10 @@ namespace PhysX_test2.Engine.Logic
 
         public void AddObject(PivotObject newObject)
         {
-            newObject.Update();
+           newObject.Update();
             objects.Add(newObject);
             sceneGraph.AddObject(newObject);
+            
             
         }
 

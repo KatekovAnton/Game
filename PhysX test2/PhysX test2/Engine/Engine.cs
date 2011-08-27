@@ -144,6 +144,22 @@ namespace PhysX_test2.Engine {
             //Begin update world objects
             foreach(PivotObject lo in gameScene.objects)
                 lo.BeginDoFrame();
+
+
+
+            // обработка нажатий клавы
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.W))
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Forward, _personController._yAngle));
+            if (keyboardState.IsKeyDown(Keys.S))
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Back, _personController._yAngle));
+            if (keyboardState.IsKeyDown(Keys.A))
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Left, _personController._yAngle));
+            if (keyboardState.IsKeyDown(Keys.D))
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, _personController._yAngle));
+ 
+
+
             //Update world(calc ray trace, deleting bullets, applying forces and other)
             //------
 
@@ -187,26 +203,8 @@ namespace PhysX_test2.Engine {
             _mouseWheelOld = mouseState.ScrollWheelValue;
 
 
-            // обработка нажатий клавы
-            KeyboardState keyboardState = Keyboard.GetState();
-            Boolean needUpdate = false;
-            if (keyboardState.IsKeyDown(Keys.W)) {
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Forward, (float) _personController._yAngle));
-                needUpdate = true;
-            }    
-            if (keyboardState.IsKeyDown(Keys.S)) {
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Back, (float)_personController._yAngle));
-                needUpdate = true;
-            }
-            if (keyboardState.IsKeyDown(Keys.A)){
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Left, (float)_personController._yAngle));
-                needUpdate = true;
-            }
-            if (keyboardState.IsKeyDown(Keys.D)) {
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, (float)_personController._yAngle));
-                needUpdate = true;
-            }   
-            if(needUpdate) {
+           
+            if(LevelObjectCharacterBox.behaviourmodel.moved) {
                 _personController.UpdateCamera();
             }
 
