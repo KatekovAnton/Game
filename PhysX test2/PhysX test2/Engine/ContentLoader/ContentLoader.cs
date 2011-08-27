@@ -16,6 +16,7 @@ namespace PhysX_test2.Engine.ContentLoader
 {
     public abstract class ContentLoader
     {
+        private static StillDesign.PhysX.Material characterMaterial;
         private static Material loadMaterial(string name, PackList packs)
         {
             PhysX_test2.Content.MaterialDescription mat = new MaterialDescription();
@@ -142,6 +143,13 @@ namespace PhysX_test2.Engine.ContentLoader
            PackList packs,
             StillDesign.PhysX.Scene scene)
         {
+            if (characterMaterial == null)
+            {
+                StillDesign.PhysX.MaterialDescription md = new StillDesign.PhysX.MaterialDescription();
+                md.SetToDefault();
+                md.Restitution = 0.25f;
+                characterMaterial = scene.CreateMaterial(md);
+            }
             if (description.Enginereadedobject.Count == 0)
             {
 
@@ -334,8 +342,10 @@ namespace PhysX_test2.Engine.ContentLoader
                             Microsoft.Xna.Framework.Matrix MassCenterMatrix;
                             Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
                             ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix;
-
+                            ObjectActorDescription.Shapes[0].Material = characterMaterial;
                             ObjectActor = scene.CreateActor(ObjectActorDescription);
+                            
+
                             ObjectActor.RaiseBodyFlag(StillDesign.PhysX.BodyFlag.FrozenRotation);
                             foreach (var c in ObjectActor.Shapes)
                             {

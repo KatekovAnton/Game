@@ -70,7 +70,10 @@ namespace PhysX_test2.Engine {
             Core.SetParameter(PhysicsParameter.ContinuousCollisionDetectionEpsilon, 0.01f);
 
             var sceneDesc = new SceneDescription {SimulationType = SimulationType.Software, //Hardware,
-                                                  MaximumBounds = new Bounds3(-1000, -1000, -1000, 1000, 1000, 1000), UpAxis = 2, Gravity = new Vector3(0.0f, -9.81f * 1.3f, 0.0f), GroundPlaneEnabled = false};
+                                                  MaximumBounds = new Bounds3(-1000, -1000, -1000, 1000, 1000, 1000), 
+                                                  UpAxis = 2, 
+                                                  Gravity = new Vector3(0.0f, -9.81f * 1.5f, 0.0f), 
+                                                  GroundPlaneEnabled = false};
             Scene = Core.CreateScene(sceneDesc);
             manager = Scene.CreateControllerManager();
             Loaddata();
