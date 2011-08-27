@@ -94,16 +94,16 @@ namespace PhysX_test2
             Vector3 vector;
             switch(way) {
                 case Route.Forward:
-                    vector = new Vector3((float)(Settings.movingSpeed * Math.Sin(angle)), 0, (float)(Settings.movingSpeed * Math.Cos(angle)));
+                    vector = new Vector3((float)(Settings.movingSpeed * Math.Cos(angle)), 0, (float)(-Settings.movingSpeed * Math.Sin(angle)));
                     return vector;
                 case Route.Back:
-                    vector = new Vector3((float)(-Settings.movingSpeed * Math.Sin(angle)), 0, (float) (-Settings.movingSpeed * Math.Cos(angle)));
+                    vector = new Vector3((float)(-Settings.movingSpeed * Math.Cos(angle)), 0, (float) (Settings.movingSpeed * Math.Sin(angle)));
                     return vector;
                 case Route.Right:
-                    vector = new Vector3((float)(Settings.movingSpeed * Math.Sin(angle)), 0, (float)(-Settings.movingSpeed * Math.Cos(angle)));
+                    vector = new Vector3((float)(Settings.movingSpeed * Math.Sin(angle)), 0, (float)(Settings.movingSpeed * Math.Cos(angle)));
                     return vector;
                 case Route.Left:
-                    vector = new Vector3((float)(-Settings.movingSpeed * Math.Sin(angle)), 0, (float)(Settings.movingSpeed * Math.Cos(angle)));
+                    vector = new Vector3((float)(-Settings.movingSpeed * Math.Sin(angle)), 0, (float)(-Settings.movingSpeed * Math.Cos(angle)));
                     return vector;
             }
             return new Vector3();

@@ -41,7 +41,8 @@ namespace PhysX_test2.Engine {
         public int visibleobjectscount;
 
 
-        private float _lastXMousePos;
+        private float _lastMousePosX;
+        private float _lastMousePosY;
         private int _mouseWheelOld;
 
         public GameEngine(MyGame game, PackList p) {
@@ -130,12 +131,12 @@ namespace PhysX_test2.Engine {
             LevelObjectCursorSphere = lo;
 
             packs.Unload();
-            CreateCharController();
+            CreateCharCameraController();
         }
 
 
-        private void CreateCharController() {
-            _personController = new CameraControllerPerson(Camera, LevelObjectCharacterBox, new Vector3(-12, 6, 0));
+        private void CreateCharCameraController() {
+            _personController = new CameraControllerPerson(Camera, LevelObjectCharacterBox, new Vector3(-10, 6, 0));
         }
 
 
@@ -162,15 +163,20 @@ namespace PhysX_test2.Engine {
             //Udating data for scenegraph
             gameScene.UpdateScene();
 
+
             // обработка вращения
-            float cursorPosition = Mouse.GetState().X;
-            float delta = cursorPosition - _lastXMousePos;
+            float cursorPositionX = Mouse.GetState().X;
+            float deltaX = cursorPositionX - _lastMousePosX;
+            float cursorPositionY = Mouse.GetState().Y;
+            float deltaY = cursorPositionY - _lastMousePosY;
             MouseState mouseState = Mouse.GetState();
             if (mouseState.RightButton == ButtonState.Pressed) {
-                Console.WriteLine(delta * 0.01f);
-                _personController.RotateCameraAroundChar(delta*Settings.rotateSpeed);
+                _personController.RotateCameraAroundChar(deltaX * Settings.rotateSpeed);
+                _personController.UpDownCamera(deltaY * Settings.rotateSpeed);
             }
-            _lastXMousePos = cursorPosition;
+            _lastMousePosX = cursorPositionX;
+            _lastMousePosY = cursorPositionY;
+
 
             // обработка зума
             if(mouseState.ScrollWheelValue > _mouseWheelOld) {
@@ -185,25 +191,21 @@ namespace PhysX_test2.Engine {
             KeyboardState keyboardState = Keyboard.GetState();
             Boolean needUpdate = false;
             if (keyboardState.IsKeyDown(Keys.W)) {
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Forward, (float) _personController._xAngle));
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Forward, (float) _personController._yAngle));
                 needUpdate = true;
-            }
-                
+            }    
             if (keyboardState.IsKeyDown(Keys.S)) {
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Back, (float)_personController._xAngle));
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Back, (float)_personController._yAngle));
                 needUpdate = true;
             }
-             
             if (keyboardState.IsKeyDown(Keys.A)){
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Left, (float)_personController._xAngle));
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Left, (float)_personController._yAngle));
                 needUpdate = true;
             }
-
             if (keyboardState.IsKeyDown(Keys.D)) {
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, (float)_personController._xAngle));
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, (float)_personController._yAngle));
                 needUpdate = true;
-            }
-                
+            }   
             if(needUpdate) {
                 _personController.UpdateCamera();
             }

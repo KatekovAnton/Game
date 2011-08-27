@@ -7,7 +7,8 @@ namespace PhysX_test2.Engine.CameraControllers {
     public class CameraControllerPerson: CameraControllerSuperClass {
         public LevelObject _character;
         public Vector3 _offset;
-        public float _xAngle;
+        public float _yAngle;
+        public float _zAngle;
 
 
         public CameraControllerPerson(Camera cam, LevelObject character, Vector3 offset): 
@@ -21,18 +22,36 @@ namespace PhysX_test2.Engine.CameraControllers {
             if(angle == 0) {
                 return;
             }
-            _xAngle -= angle;
+            _yAngle += angle;
 
-            _currentTarget = _character.transform.Translation;
-            Matrix matrMove = Matrix.CreateTranslation(_currentTarget.X, 0, 0);
-            Matrix rotateX = Matrix.CreateRotationY(angle);
-            Matrix matrBack = Matrix.CreateTranslation(-_currentTarget.X, 0, 0);
-            Matrix result = matrMove * rotateX * matrBack;
-            Vector3 res = Vector3.Transform(_offset, result);
+            Matrix resMatr;
+            Vector3 vect = new Vector3(0, 1, 0);
+            Matrix.CreateFromAxisAngle(ref vect, angle, out resMatr);
+            Vector3 res = Vector3.Transform(_offset, resMatr);
             _offset = res;
-            _currendPosition = _currentTarget + _offset;
-            base.UpdateCamera();
+            UpdateCamera();
         }
+
+
+
+        public void UpDownCamera(float angle) {
+
+            if (angle == 0) {
+                return;
+            }
+
+/*            _zAngle += angle;
+            
+            Matrix resMatr;
+            Vector3 vect = new Vector3(0, 0, 1);
+            Matrix.CreateFromAxisAngle(ref vect, -angle, out resMatr);
+            Vector3 res = Vector3.Transform(_offset, resMatr);
+            _offset = res;
+            UpdateCamera();
+ */
+ 
+        }
+
 
 
         public void ZoomCameraFromCha (float value) {
@@ -42,8 +61,7 @@ namespace PhysX_test2.Engine.CameraControllers {
             _offset.X *= value;
             _offset.Y *= value;
             _offset.Z *= value;
-            _currendPosition = _currentTarget + _offset;
-            base.UpdateCamera();
+            UpdateCamera();
         }
 
 
