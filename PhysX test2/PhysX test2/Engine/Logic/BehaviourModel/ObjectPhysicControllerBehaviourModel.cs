@@ -43,8 +43,8 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             {
                 move.Y = 0;
                 move.Normalize();
-                move.X *= 1700 * elapsed;
-                move.Z *= 1700 * elapsed;
+                move.X *= 8;
+                move.Z *= 8;
 
                 actor.LinearVelocity = new Vector3(move.X, move.Y + actor.LinearVelocity.Y, move.Z);
             }
