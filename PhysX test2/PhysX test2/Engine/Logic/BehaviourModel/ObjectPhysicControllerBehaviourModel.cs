@@ -38,7 +38,6 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
 
         public override void DoFrame(GameTime gametime)
         {
-            float elapsed = (float)(gametime.ElapsedGameTime.TotalMilliseconds / 1000.0);
             if (move.LengthSquared() != 0)
             {
                 move.Y = 0;
