@@ -190,7 +190,7 @@ namespace PhysX_test2.Engine {
             float deltaY = cursorPositionY - _lastMousePosY;
             MouseState mouseState = Mouse.GetState();
             if (mouseState.RightButton == ButtonState.Pressed) {
-                _personController.RotateCameraAroundChar(deltaX * Settings.rotateSpeed);
+                _personController.RotateCameraAroundChar(-deltaX * Settings.rotateSpeed);
                 _personController.UpDownCamera(deltaY * Settings.rotateSpeed);
             }
             _lastMousePosX = cursorPositionX;
