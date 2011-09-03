@@ -33,5 +33,10 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             CurrentPosition = newposition;
         }
 
+
+        public override void Rotate(float angle)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

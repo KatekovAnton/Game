@@ -15,45 +15,55 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
     /// </summary>
     class ObjectPhysicControllerBehaviourModel:ObjectBehaviourModel
     {
-        private Actor actor;
-        private Vector3 lastposition;
-        private Vector3 move;
+        private readonly Actor _actor;
+        private Vector3 _lastposition;
+        private Vector3 _move;
+        private float _angle;
 
         public ObjectPhysicControllerBehaviourModel(Actor _actor)
         {
-            actor = _actor;
+            this._actor = _actor;
+            _angle = 0;
         }
 
         public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
         {
             this.globalpose = GlobalPoseMatrix;
-            actor.GlobalPose = GlobalPoseMatrix;
+            _actor.GlobalPose = GlobalPoseMatrix;
         }
 
         public override void Move(Vector3 displacement)
         {
-            move.X += displacement.X;
-            move.Z += displacement.Z;
+            _move.X += displacement.X;
+            _move.Z += displacement.Z;
         }
+
+
+        public override void Rotate( float angle) {
+            _angle += angle;
+            _actor.GlobalOrientation *= Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), angle);
+        }
+
+
 
         public override void DoFrame(GameTime gametime)
         {
-            float elapsed = (float)(gametime.ElapsedGameTime.TotalMilliseconds / 1000.0);
-            if (move.LengthSquared() != 0)
+            //float elapsed = (float)(gametime.ElapsedGameTime.TotalMilliseconds / 1000.0);
+            if (_move.LengthSquared() != 0)
             {
-                move.Y = 0;
-                move.Normalize();
-                move.X *= 8;
-                move.Z *= 8;
+                _move.Y = 0;
+                _move.Normalize();
+                _move.X *= 8;
+                _move.Z *= 8;
 
-                actor.LinearVelocity = new Vector3(move.X, move.Y + actor.LinearVelocity.Y, move.Z);
+                _actor.LinearVelocity = new Vector3(_move.X, _move.Y + _actor.LinearVelocity.Y, _move.Z);
             }
             else
-                actor.LinearVelocity = new Vector3(0, actor.LinearVelocity.Y, 0);
+                _actor.LinearVelocity = new Vector3(0, _actor.LinearVelocity.Y, 0);
 
-            lastposition = CurrentPosition.Translation;
-            CurrentPosition = actor.GlobalPose;
-            move.X = move.Y = move.Z =0;
+            _lastposition = CurrentPosition.Translation;
+            CurrentPosition = _actor.GlobalPose;
+            _move.X = _move.Y = _move.Z =0;
         }
     }
 }

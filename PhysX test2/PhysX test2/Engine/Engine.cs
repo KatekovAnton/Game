@@ -29,7 +29,7 @@ namespace PhysX_test2.Engine {
 
 
         public CameraControllerPerson _personController;
-
+        private float _oldRotation;
 
         public GameScene gameScene;
         public Actor groundplane;
@@ -143,6 +143,32 @@ namespace PhysX_test2.Engine {
         }
 
 
+        private float CreateAngleForCharacter() {
+            float buffer = 0;
+            float result = 0;
+            
+            float cursorX = LevelObjectCursorSphere.behaviourmodel.GetGlobalPose().Translation.X;
+            float cursorZ = LevelObjectCursorSphere.behaviourmodel.GetGlobalPose().Translation.Z;
+            float charX = LevelObjectCharacterBox.behaviourmodel.GetGlobalPose().Translation.X;
+            float charZ = LevelObjectCharacterBox.behaviourmodel.GetGlobalPose().Translation.Z;
+            float difX = charX - cursorX;
+            float difY = charZ - cursorZ;
+            if (difX != 0 && Math.Abs(difX) > Math.Abs(difY)) {
+                buffer = difY / difX;
+                result = _oldRotation - buffer;
+            }
+            else if (difY != 0 && Math.Abs(difX) < Math.Abs(difY))
+            {
+                buffer = difX / difY;
+                result = buffer - _oldRotation;
+            }
+
+            Console.WriteLine("result = " + result);
+            _oldRotation = buffer;
+            return result;
+        }
+
+
         public void Update(GameTime gameTime) {
             //Begin update world objects
             foreach(PivotObject lo in gameScene.objects)
@@ -161,6 +187,7 @@ namespace PhysX_test2.Engine {
             if (keyboardState.IsKeyDown(Keys.D))
                 LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, _personController._yAngle));
  
+            LevelObjectCharacterBox.behaviourmodel.Rotate(CreateAngleForCharacter());
 
 
             //Update world(calc ray trace, deleting bullets, applying forces and other)

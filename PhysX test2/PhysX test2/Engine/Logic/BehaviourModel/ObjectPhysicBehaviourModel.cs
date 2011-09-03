@@ -54,5 +54,10 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             moved = CurrentPosition != actor.GlobalPose;
             CurrentPosition = actor.GlobalPose;
         }
+
+        public override void Rotate(float angle)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
