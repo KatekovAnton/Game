@@ -12,7 +12,6 @@ namespace PhysX_test2.Content
     {
         protected VertexBuffer vertexBuffer;
         protected IndexBuffer indexBuffer;
-        //public VertexDeclaration vertexdeclaration;
 
 
         public EngineMesh(Vertex[] vertices, ushort[] indices)
@@ -45,14 +44,6 @@ namespace PhysX_test2.Content
             GameEngine.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
         }
 
-        public bool Disposed;
-        public void Dispose()
-        {
-            indexBuffer.Dispose();
-            vertexBuffer.Dispose();
-            Disposed = true;
-        }
-      
         public static EngineMesh FromContentMeshes(ContentMesh[] buffers)
         {
             //  vertexdeclaration = new VertexPositionNormalTexture();
@@ -91,6 +82,16 @@ namespace PhysX_test2.Content
             }
             return new EngineMesh(vertices, indices);
         }
+
+        public bool Disposed;
+
+        public void Dispose()
+        {
+            indexBuffer.Dispose();
+            vertexBuffer.Dispose();
+            Disposed = true;
+        }
+
         ~EngineMesh()
         {
             if (!Disposed)

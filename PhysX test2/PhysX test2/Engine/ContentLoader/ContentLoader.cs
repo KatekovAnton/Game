@@ -30,7 +30,7 @@ namespace PhysX_test2.Engine.ContentLoader
                     for (int j = 0; j < mat.lodMats[i].mats.Length; j++)
                     {
                         mats[j] = new TextureMaterial.SubsetMaterial();
-                        Content.Texture inage = new Content.Texture(GameEngine.Device);
+                        Content.Texture inage = new Content.Texture();
                         inage = packs.GetObject(mat.lodMats[i].mats[j].DiffuseTextureName, inage) as Content.Texture;
 
 
@@ -55,7 +55,7 @@ namespace PhysX_test2.Engine.ContentLoader
                 {
                     for (int j = 0; j < mat.lodMats[i].mats.Length; j++)
                     {
-                        Content.Texture inage = new Content.Texture(GameEngine.Device);
+                        Content.Texture inage = new Content.Texture();
                         inage = packs.GetObject(mat.lodMats[i].mats[j].DiffuseTextureName, inage) as Content.Texture;
                         inage.Enginereadedobject.Add(inage.Enginereadedobject[0]);
                     }

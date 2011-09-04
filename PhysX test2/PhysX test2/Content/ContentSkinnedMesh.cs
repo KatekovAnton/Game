@@ -8,14 +8,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PhysX_test2.Content
 {
-    class ContentSkinnedMesh : PackContent
+    public class ContentSkinnedMesh : PackContent
     {
         public SkinnedVertex[] vertices;
         public int[] indices;
         public Skeleton skeleton;
+
         public override void loadbody(byte[] buffer)
         {
-
             //  vertexdeclaration = new VertexPositionNormalTexture();
             BinaryReader br = new BinaryReader(new MemoryStream(buffer));
             vertices = new SkinnedVertex[br.ReadInt32()];
@@ -46,18 +46,12 @@ namespace PhysX_test2.Content
                 
 
 
-
                 vertices[bv] = new SkinnedVertex(
                     pos,
                     nor,
                     tcr,
                     bindx,
                     bwigs);
-
-                
-                
-
-                
             }
 
             for (int bv = 0; bv < indices.Length; bv++)

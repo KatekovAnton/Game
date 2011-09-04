@@ -15,16 +15,10 @@ namespace PhysX_test2.Content
             get;
             private set;
         }
-        private GraphicsDevice dev;
-        public Texture(GraphicsDevice device)
-        {
-            dev = device;
-        }
-
 
         public override void loadbody(byte[] array)
         {
-            texture = Texture2D.FromStream(dev, new System.IO.MemoryStream(array));
+            texture = Texture2D.FromStream(Engine.GameEngine.Device, new System.IO.MemoryStream(array));
         }
     }
 }

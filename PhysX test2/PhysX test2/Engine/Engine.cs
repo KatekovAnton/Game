@@ -82,7 +82,6 @@ namespace PhysX_test2.Engine {
             var e = new ebuchest();
         }
 
-        float rorotl = 0.1f;
         private void Loaddata() {
             groundplane = CreateGroundPlane();
 

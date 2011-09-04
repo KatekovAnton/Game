@@ -10,10 +10,12 @@ namespace PhysX_test2.Content
     {
         public Vertex[] vertices;
         public int[] indices;
+
         public ContentMesh()
         {
  
         }
+
         public override void loadbody(byte[] buffer)
         {
             //  vertexdeclaration = new VertexPositionNormalTexture();
