@@ -10,7 +10,8 @@ namespace PhysX_test2.Engine.CharacterControllers
     class CharacterControllerPerson:CharacterControllerSuperClass
     {
         private Logic.BehaviourModel.ObjectPhysicControllerBehaviourModel _charcterBehaviour;
-        private float _oldRotation;
+        private float _oldRotation = -MathHelper.PiOver2;
+        
 
         public CharacterControllerPerson(Logic.LevelObject charecter)
         {
@@ -30,34 +31,26 @@ namespace PhysX_test2.Engine.CharacterControllers
             float charZ = charPos.Z;
             double difX = charX - cursorX;
             double difZ = charZ - cursorZ;
-            if (Math.Abs(difX) > Math.Abs(difZ))
+            if(difX>0)
             {
-                if (difX != 0) {
-                    buffer = difZ / difX;
-                    result = _oldRotation - buffer;
-                }
-                else {
-                    result = -0.01f;
-                }
+                if (difX == 0)
+                    difX = 0.01;
+                buffer = Math.Atan(difZ / difX);
             }
-            else if ( Math.Abs(difX) < Math.Abs(difZ))
+            else
             {
-                if (difZ != 0) {
-                    buffer = difX / difZ;
-                    result = buffer - _oldRotation;
-                }
-                else {
-                    result = 0.01f;
-                }
+                if (difX == 0)
+                    difX = 0.01;
+                buffer = Math.Atan(difZ / difX)-Math.PI;
             }
+            result = _oldRotation - buffer;
 
-            //Console.WriteLine("result = " + result);
             _oldRotation = (float) buffer;
-            return (float) result*MathHelper.PiOver4;
+            return (float) result;
         }
         public override void Update(Vector3 _target)
         {
-            _charcterBehaviour.Rotate(CreateAngleForCharacter(_target));
+            _charcterBehaviour.Rotate(CreateAngleForCharacter(_target) );
         }
     }
 }
