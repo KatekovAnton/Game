@@ -43,7 +43,9 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
 
         public void Rotate( float angle) {
             _angle += angle;
-            _actor.GlobalOrientation *= Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), angle);
+            _actor.GlobalOrientation *= Matrix.CreateRotationY(angle);
+            //_actor.GlobalOrientation = newOrient;
+            //_actor.GlobalPose += Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), angle);
         }
 
 

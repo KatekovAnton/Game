@@ -17,33 +17,43 @@ namespace PhysX_test2.Engine.CharacterControllers
             _charcterBehaviour = charecter.behaviourmodel as Logic.BehaviourModel.ObjectPhysicControllerBehaviourModel;
         }
 
-        private float CreateAngleForCharacter(Microsoft.Xna.Framework.Vector3 _target)
+        private float CreateAngleForCharacter(Microsoft.Xna.Framework.Vector3 target)
         {
-            float buffer = 0;
-            float result = 0;
+            double buffer = 0;
+            double result = 0;
 
-            float cursorX = _target.X;
-            float cursorZ = _target.Z;
+            float cursorX = target.X;
+            float cursorZ = target.Z;
 
-            Vector3 charPos = _charcterBehaviour.globalpose.Translation;
+            Vector3 charPos = _charcterBehaviour.PreviousPosition.Translation;
             float charX = charPos.X;
             float charZ = charPos.Z;
-            float difX = charX - cursorX;
-            float difY = charZ - cursorZ;
-            if (difX != 0 && Math.Abs(difX) > Math.Abs(difY))
+            double difX = charX - cursorX;
+            double difZ = charZ - cursorZ;
+            if (Math.Abs(difX) > Math.Abs(difZ))
             {
-                buffer = difY / difX;
-                result = _oldRotation - buffer;
+                if (difX != 0) {
+                    buffer = difZ / difX;
+                    result = _oldRotation - buffer;
+                }
+                else {
+                    result = -0.01f;
+                }
             }
-            else if (difY != 0 && Math.Abs(difX) < Math.Abs(difY))
+            else if ( Math.Abs(difX) < Math.Abs(difZ))
             {
-                buffer = difX / difY;
-                result = buffer - _oldRotation;
+                if (difZ != 0) {
+                    buffer = difX / difZ;
+                    result = buffer - _oldRotation;
+                }
+                else {
+                    result = 0.01f;
+                }
             }
 
             //Console.WriteLine("result = " + result);
-            _oldRotation = buffer;
-            return result;
+            _oldRotation = (float) buffer;
+            return (float) result*MathHelper.PiOver4;
         }
         public override void Update(Vector3 _target)
         {
