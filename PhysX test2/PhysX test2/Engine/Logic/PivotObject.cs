@@ -16,6 +16,10 @@ namespace PhysX_test2.Engine.Logic
         //mixed
         public RaycastBoundObject raycastaspect;
         public Matrix transform = Matrix.Identity;
+        //
+        public bool useDeltaMatrix = false;
+        public Microsoft.Xna.Framework.Matrix deltaMatrix;
+        public Microsoft.Xna.Framework.Matrix renderMatrix;
       //  public bool neetforceupdate = false;
         public PivotObject()
         { }
@@ -30,6 +34,7 @@ namespace PhysX_test2.Engine.Logic
         public abstract void BeginDoFrame();
         public abstract void EndDoFrame();
         public abstract void DoFrame(GameTime gt);
+
         /*from editor
          public abstract void SetActive(bool active);
          */

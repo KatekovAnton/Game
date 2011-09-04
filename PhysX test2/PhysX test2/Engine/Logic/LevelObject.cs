@@ -12,6 +12,7 @@ namespace PhysX_test2.Engine.Logic
         public BehaviourModel.ObjectBehaviourModel behaviourmodel;
         //for group
         public RenderObject renderaspect;
+        
         //for group
         public Render.Materials.Material material;
         //for one
@@ -63,6 +64,7 @@ namespace PhysX_test2.Engine.Logic
         public override void Update()
         {
             transform = behaviourmodel.globalpose;
+            renderMatrix = useDeltaMatrix ? deltaMatrix*transform: transform;
             if (moved)
                 raycastaspect.boundingShape.Update(transform);
          

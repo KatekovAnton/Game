@@ -82,7 +82,7 @@ namespace PhysX_test2.Engine {
             var e = new ebuchest();
         }
 
-
+        float rorotl = 0.1f;
         private void Loaddata() {
             groundplane = CreateGroundPlane();
 
@@ -113,6 +113,10 @@ namespace PhysX_test2.Engine {
             GraphicPipeleine.ProceedObject(lo.renderaspect);
             gameScene.AddObject(lo);
             LevelObjectCharacterBox = lo;
+            lo.useDeltaMatrix = true;
+            lo.deltaMatrix = Matrix.CreateTranslation(new Vector3(0, 0, 0.19f));
+
+
 
             ////test side
             var testsiderdescription = new LevelObjectDescription();
@@ -151,6 +155,7 @@ namespace PhysX_test2.Engine {
 
         public void Update(GameTime gameTime)
         {
+           
             //Begin update world objects
             foreach (PivotObject lo in gameScene.objects)
                 lo.BeginDoFrame();
@@ -167,7 +172,7 @@ namespace PhysX_test2.Engine {
                 LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Left, _cameraController._yAngle));
             if (keyboardState.IsKeyDown(Keys.D))
                 LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, _cameraController._yAngle));
-
+            
             // LevelObjectCharacterBox.behaviourmodel.Rotate(CreateAngleForCharacter());
 
 

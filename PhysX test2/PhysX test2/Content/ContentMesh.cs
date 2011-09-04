@@ -26,7 +26,7 @@ namespace PhysX_test2.Content
                 vertices[bv] = new Vertex(
                     new Vector3(br.ReadSingle(), br.ReadSingle(), br.ReadSingle()),
                     new Vector3(br.ReadSingle(), br.ReadSingle(), br.ReadSingle()),
-                    new Vector2(br.ReadSingle(), 1.0f - br.ReadSingle()));
+                    new Vector2(br.ReadSingle(), br.ReadSingle()));
 
                 string sss;
                 int t = br.ReadInt32();

@@ -253,7 +253,7 @@ namespace PhysX_test2.Engine.Render
 
                 foreach (PivotObject wo in Objects)
                 {
-                    Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.transform);
+                    Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.renderMatrix);
                     wo.HaveRenderAspect().SelfRender(2, wo.HaveMaterial());
                 }
             }
@@ -263,7 +263,7 @@ namespace PhysX_test2.Engine.Render
                 Materials.Material.ObjectRenderEffect.CurrentTechnique = Materials.Material.ObjectRenderEffect.Techniques[Shader.CreateAnimShadowMap];
                 foreach (PivotObject wo in ObjectsA)
                 {
-                    Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.transform);
+                    Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.renderMatrix);
                     wo.HaveRenderAspect().SelfRender(2, wo.HaveMaterial());
                 }
             }
@@ -319,7 +319,7 @@ namespace PhysX_test2.Engine.Render
                 Materials.Material.ObjectRenderEffect.CurrentTechnique = Materials.Material.ObjectRenderEffect.Techniques[AnimTeh];
                 foreach (PivotObject wo in Objects)
                 {
-                    Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.transform);
+                    Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.renderMatrix);
                     wo.HaveRenderAspect().SelfRender(0, wo.HaveMaterial());
                 }
             }
@@ -331,7 +331,7 @@ namespace PhysX_test2.Engine.Render
                 Materials.Material.ObjectRenderEffect.CurrentTechnique = Materials.Material.ObjectRenderEffect.Techniques[NotAnimTeh];
                 foreach (PivotObject wo in Objects)
                 {
-                    Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.transform);
+                    Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.renderMatrix);
                     wo.HaveRenderAspect().SelfRender(0, wo.HaveMaterial());
                 }
             }
@@ -345,7 +345,7 @@ namespace PhysX_test2.Engine.Render
                     Materials.Material.ObjectRenderEffect.CurrentTechnique = Materials.Material.ObjectRenderEffect.Techniques[Shader.AnimRenderNoSM];
                     foreach (PivotObject wo in Objects)
                     {
-                        Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.transform);
+                        Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.renderMatrix);
                         wo.HaveRenderAspect().SelfRender(0, wo.HaveMaterial());
                     }
                 }
@@ -357,7 +357,7 @@ namespace PhysX_test2.Engine.Render
                     Materials.Material.ObjectRenderEffect.CurrentTechnique = Materials.Material.ObjectRenderEffect.Techniques[Shader.NotAnimRenderNoSM];
                     foreach (PivotObject wo in Objects)
                     {
-                        Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.transform);
+                        Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.renderMatrix);
                         wo.HaveRenderAspect().SelfRender(0, wo.HaveMaterial());
                     }
                 }
