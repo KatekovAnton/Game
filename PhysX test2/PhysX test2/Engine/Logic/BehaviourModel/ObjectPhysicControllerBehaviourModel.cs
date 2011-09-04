@@ -10,11 +10,13 @@ using StillDesign.PhysX;
 
 namespace PhysX_test2.Engine.Logic.BehaviourModel
 {
+    
     /// <summary>
     /// Челобарики
     /// </summary>
     class ObjectPhysicControllerBehaviourModel:ObjectBehaviourModel
     {
+        public const float characterSpeed = 7.0f;
         private readonly Actor _actor;
         private Vector3 _lastposition;
         private Vector3 _move;
@@ -53,8 +55,8 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             {
                 _move.Y = 0;
                 _move.Normalize();
-                _move.X *= 8;
-                _move.Z *= 8;
+                _move.X *= characterSpeed;
+                _move.Z *= characterSpeed;
 
                 _actor.LinearVelocity = new Vector3(_move.X, _move.Y + _actor.LinearVelocity.Y, _move.Z);
             }
