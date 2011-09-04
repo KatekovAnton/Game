@@ -121,10 +121,12 @@
     <Compile Include="Content\CollisionMesh.cs" />
     <Compile Include="ContactCallback.cs" />
     <Compile Include="Content\ContentMesh.cs" />
+    <Compile Include="Content\ContentSkinnedMesh.cs" />
     <Compile Include="Content\EngineCollisionMesh.cs" />
     <Compile Include="Content\MaterialDescription.cs" />
     <Compile Include="Content\RenderObjectDescription.cs" />
     <Compile Include="Content\LevelObjectDescription.cs" />
+    <Compile Include="Content\Skeleton.cs" />
     <Compile Include="Content\StringList.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerPerson.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerSuperClass.cs" />
@@ -152,12 +154,12 @@
     <Compile Include="Engine\Render\DebugRender\DebugRenderer.cs" />
     <Compile Include="Engine\Render\Materials\Material.cs" />
     <Compile Include="Engine\Render\Materials\TextureMaterial.cs" />
-    <Compile Include="Content\Mesh.cs" />
+    <Compile Include="Content\EngineMesh.cs" />
     <Compile Include="Content\MeshList.cs" />
     <Compile Include="Content\Packs\Pack.cs" />
     <Compile Include="Content\Packs\PackContent.cs" />
     <Compile Include="Content\Packs\PackList.cs" />
-    <Compile Include="Content\SkinnedMesh.cs" />
+    <Compile Include="Content\EngineSkinnedMesh.cs" />
     <Compile Include="Content\Texture.cs" />
     <Compile Include="Content\TextureList.cs" />
     <Compile Include="Content\Vertex.cs" />

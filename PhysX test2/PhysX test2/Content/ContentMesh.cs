@@ -33,9 +33,9 @@ namespace PhysX_test2.Content
                 for (int i = 0; i < t; i++)
                     sss = br.ReadPackString();
 
-                int d = br.ReadInt32();
+                t = br.ReadInt32();
 
-                br.BaseStream.Seek(d * 4, SeekOrigin.Current);
+                br.BaseStream.Seek(t * 4, SeekOrigin.Current);
             }
 
             for (int bv = 0; bv < indices.Length; bv++)

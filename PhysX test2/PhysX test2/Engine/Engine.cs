@@ -172,8 +172,7 @@ namespace PhysX_test2.Engine {
                 LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Left, _cameraController._yAngle));
             if (keyboardState.IsKeyDown(Keys.D))
                 LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, _cameraController._yAngle));
-            
-            // LevelObjectCharacterBox.behaviourmodel.Rotate(CreateAngleForCharacter());
+           
 
 
             //Update world(calc ray trace, deleting bullets, applying forces and other)
