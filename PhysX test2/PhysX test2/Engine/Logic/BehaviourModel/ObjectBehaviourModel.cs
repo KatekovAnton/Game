@@ -43,7 +43,5 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             globalpose = CurrentPosition;
             
         }
-
-        public abstract void Rotate(float angle);
     }
 }

@@ -128,6 +128,8 @@
     <Compile Include="Content\StringList.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerPerson.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerSuperClass.cs" />
+    <Compile Include="Engine\CharacterControllers\CharacterControllerPerson.cs" />
+    <Compile Include="Engine\CharacterControllers\CharacterControllerSuperClass.cs" />
     <Compile Include="Engine\ContentLoader\ContentLoader.cs" />
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
     <Compile Include="Engine\Logic\AnimRenderObject.cs" />

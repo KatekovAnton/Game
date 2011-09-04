@@ -28,8 +28,9 @@ namespace PhysX_test2.Engine {
         public LevelObject LevelObjectTestSide;
 
 
-        public CameraControllerPerson _personController;
-        private float _oldRotation;
+        public CameraControllers.CameraControllerPerson _cameraController;
+        public CharacterControllers.CharacterControllerSuperClass _charcterController;
+
 
         public GameScene gameScene;
         public Actor groundplane;
@@ -39,7 +40,7 @@ namespace PhysX_test2.Engine {
         public SpriteBatch spriteBatch;
 
         public int visibleobjectscount;
-
+        
 
         private float _lastMousePosX;
         private float _lastMousePosY;
@@ -135,43 +136,23 @@ namespace PhysX_test2.Engine {
 
             packs.Unload();
             CreateCharCameraController();
+
         }
 
 
         private void CreateCharCameraController() {
-            _personController = new CameraControllerPerson(Camera, LevelObjectCharacterBox, new Vector3(-10, 6, 0));
+            _cameraController = new CameraControllerPerson(Camera, LevelObjectCharacterBox, new Vector3(-10, 6, 0));
+            _charcterController = new CharacterControllers.CharacterControllerPerson(LevelObjectCharacterBox);
         }
 
 
-        private float CreateAngleForCharacter() {
-            float buffer = 0;
-            float result = 0;
-            
-            float cursorX = LevelObjectCursorSphere.behaviourmodel.GetGlobalPose().Translation.X;
-            float cursorZ = LevelObjectCursorSphere.behaviourmodel.GetGlobalPose().Translation.Z;
-            float charX = LevelObjectCharacterBox.behaviourmodel.GetGlobalPose().Translation.X;
-            float charZ = LevelObjectCharacterBox.behaviourmodel.GetGlobalPose().Translation.Z;
-            float difX = charX - cursorX;
-            float difY = charZ - cursorZ;
-            if (difX != 0 && Math.Abs(difX) > Math.Abs(difY)) {
-                buffer = difY / difX;
-                result = _oldRotation - buffer;
-            }
-            else if (difY != 0 && Math.Abs(difX) < Math.Abs(difY))
-            {
-                buffer = difX / difY;
-                result = buffer - _oldRotation;
-            }
-
-            Console.WriteLine("result = " + result);
-            _oldRotation = buffer;
-            return result;
-        }
 
 
-        public void Update(GameTime gameTime) {
+
+        public void Update(GameTime gameTime)
+        {
             //Begin update world objects
-            foreach(PivotObject lo in gameScene.objects)
+            foreach (PivotObject lo in gameScene.objects)
                 lo.BeginDoFrame();
 
 
@@ -179,73 +160,80 @@ namespace PhysX_test2.Engine {
             // обработка нажатий клавы
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.W))
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Forward, _personController._yAngle));
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Forward, _cameraController._yAngle));
             if (keyboardState.IsKeyDown(Keys.S))
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Back, _personController._yAngle));
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Back, _cameraController._yAngle));
             if (keyboardState.IsKeyDown(Keys.A))
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Left, _personController._yAngle));
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Left, _cameraController._yAngle));
             if (keyboardState.IsKeyDown(Keys.D))
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, _personController._yAngle));
- 
-            LevelObjectCharacterBox.behaviourmodel.Rotate(CreateAngleForCharacter());
+                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, _cameraController._yAngle));
+
+            // LevelObjectCharacterBox.behaviourmodel.Rotate(CreateAngleForCharacter());
 
 
             //Update world(calc ray trace, deleting bullets, applying forces and other)
             //------
 
-            foreach(PivotObject lo in gameScene.objects)
+            foreach (PivotObject lo in gameScene.objects)
                 lo.DoFrame(gameTime);
             // Update Physics
-            Scene.Simulate((float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f);
+            Scene.Simulate((float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f);
+
 
             //update world objects
             Scene.FlushStream();
             Scene.FetchResults(SimulationStatus.RigidBodyFinished, true);
 
+
+            //calculatin info from controllers
+            _charcterController.Update(LevelObjectCursorSphere.transform.Translation);
+
+
             //End updating world objects
-            foreach(PivotObject lo in gameScene.objects)
+            foreach (PivotObject lo in gameScene.objects)
                 lo.EndDoFrame();
 
             //Udating data for scenegraph
             gameScene.UpdateScene();
 
+            {
+                // обработка вращения камеры
+                float cursorPositionX = Mouse.GetState().X;
+                float deltaX = cursorPositionX - _lastMousePosX;
+                float cursorPositionY = Mouse.GetState().Y;
+                float deltaY = cursorPositionY - _lastMousePosY;
+                MouseState mouseState = Mouse.GetState();
+                if (mouseState.RightButton == ButtonState.Pressed)
+                {
+                    _cameraController.RotateCameraAroundChar(-deltaX * Settings.rotateSpeed);
+                    _cameraController.UpDownCamera(deltaY * Settings.rotateSpeed);
+                }
+                _lastMousePosX = cursorPositionX;
+                _lastMousePosY = cursorPositionY;
 
-            // обработка вращения
-            float cursorPositionX = Mouse.GetState().X;
-            float deltaX = cursorPositionX - _lastMousePosX;
-            float cursorPositionY = Mouse.GetState().Y;
-            float deltaY = cursorPositionY - _lastMousePosY;
-            MouseState mouseState = Mouse.GetState();
-            if (mouseState.RightButton == ButtonState.Pressed) {
-                _personController.RotateCameraAroundChar(-deltaX * Settings.rotateSpeed);
-                _personController.UpDownCamera(deltaY * Settings.rotateSpeed);
+
+                // обработка зума
+                if (mouseState.ScrollWheelValue > _mouseWheelOld)
+                    _cameraController.ZoomCameraFromCha(1 / Settings.zoomSpeed);
+                
+                else if (mouseState.ScrollWheelValue < _mouseWheelOld)
+                    _cameraController.ZoomCameraFromCha(Settings.zoomSpeed);
+                
+                _mouseWheelOld = mouseState.ScrollWheelValue;
+
+
+                if (LevelObjectCharacterBox.behaviourmodel.moved)
+                    _cameraController.UpdateCamera();
+                
             }
-            _lastMousePosX = cursorPositionX;
-            _lastMousePosY = cursorPositionY;
 
-
-            // обработка зума
-            if(mouseState.ScrollWheelValue > _mouseWheelOld) {
-                _personController.ZoomCameraFromCha(1/Settings.zoomSpeed);
-            } else if (mouseState.ScrollWheelValue < _mouseWheelOld) {
-                _personController.ZoomCameraFromCha(Settings.zoomSpeed);
-            }
-            _mouseWheelOld = mouseState.ScrollWheelValue;
-
-
-           
-            if(LevelObjectCharacterBox.behaviourmodel.moved) {
-                _personController.UpdateCamera();
-            }
-
-           
             //очищаем конвейер
             GraphicPipeleine.NewFrame(lightDir);
 
             gameScene.CalculateVisibleObjects();
             Vector3 v1 = DeviceManager.GraphicsDevice.Viewport.Project(gameScene.objects[0].transform.Translation, Camera.Projection, Camera.View, Matrix.Identity);
             BoxScreenPosition = new Vector3(Convert.ToSingle(Convert.ToInt32(v1.X)), Convert.ToSingle(Convert.ToInt32(v1.Y)), v1.Z);
-            
+
             //добавляем все нобходимые объекты на отрисовку
             GraphicPipeleine.AddObjectToPipeline(gameScene.VisibleObjects);
             GraphicPipeleine.AddObjectToShadow(gameScene.ShadowObjects);
