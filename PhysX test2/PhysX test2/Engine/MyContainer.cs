@@ -6,62 +6,6 @@ using System.Text;
 
 namespace PhysX_test2.Engine
 {
-    class fuckenelement
-    {
-        public int a;
-        public fuckenelement(int f)
-        {
-            a = f;
-        }
-        public override string ToString()
-        {
-            return a.ToString();
-        }
-    }
-    public class ebuchest
-    {
-        public ebuchest()
-        {
-            MyContainer<fuckenelement> cont = new MyContainer<fuckenelement>(10, 2);
-            fuckenelement f1 = new fuckenelement(159);
-            fuckenelement f2 = new fuckenelement(34);
-            fuckenelement f3 = new fuckenelement(13);
-            fuckenelement f4 = new fuckenelement(675);
-            fuckenelement f5 = new fuckenelement(64);
-            fuckenelement f6 = new fuckenelement(56785);
-            fuckenelement f7 = new fuckenelement(25);
-            fuckenelement f8 = new fuckenelement(305);
-            fuckenelement f9 = new fuckenelement(98);
-            fuckenelement[] mas1 = new fuckenelement[] { new fuckenelement(435), new fuckenelement(23) ,
-            new fuckenelement(54),new fuckenelement(90),new fuckenelement(65),new fuckenelement(2),
-            new fuckenelement(18),new fuckenelement(88),new fuckenelement(91),new fuckenelement(87),new fuckenelement(435), new fuckenelement(23) ,
-            new fuckenelement(54),new fuckenelement(90),new fuckenelement(65),new fuckenelement(2),
-            new fuckenelement(18),new fuckenelement(88),new fuckenelement(91),new fuckenelement(87),new fuckenelement(435), new fuckenelement(23) ,
-            new fuckenelement(54),new fuckenelement(90),new fuckenelement(65),new fuckenelement(2),
-            new fuckenelement(18),new fuckenelement(88),new fuckenelement(91),new fuckenelement(87)};
-            cont.Add(f1);
-            cont.Add(f2); 
-            cont.Add(f3);
-            cont.Add(f3);
-            cont.Add(f4);
-            cont.Add(f5);
-            cont.Add(f6);
-
-            cont.RemoveAt(4);
-            cont.RemoveAt(0);
-
-            cont.Add(f9);
-            cont.Add(f8);
-
-            
-            cont.RemoveAt(10);
-
-            cont.AddRange(mas1);
-
-            int t = 0;
-            int r = t;
-        }
-    }
     public class MyContainer<T> : IEnumerable<T>
        where T : class
     {

@@ -29,7 +29,7 @@ namespace PhysX_test2.Engine.CameraControllers {
                 determ = 0.001f;
             _cameraYaw = Convert.ToSingle(Math.Atan(Convert.ToSingle((cameratarget.Value.X - cameraposition.Value.X) / determ)));
             View = Matrix.CreateLookAt(cameraposition.Value, cameratarget.Value, new Vector3(0, 1, 0));
-            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, _engine.Game.GraphicsDevice.Viewport.AspectRatio, 1, 150);
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GameEngine.Device.Viewport.AspectRatio, 1, 150);
             cameraFrustum.Matrix = View * Projection;
         }
 
@@ -39,7 +39,7 @@ namespace PhysX_test2.Engine.CameraControllers {
             Vector3? cameraposition = new Vector3(1, 1, 1);
             _engine = engine;
             View = Matrix.CreateLookAt(cameraposition.Value, cameratarget.Value, new Vector3(0, 1, 0));
-            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, _engine.Game.GraphicsDevice.Viewport.AspectRatio, 1, 150);
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GameEngine.Device.Viewport.AspectRatio, 1, 150);
             cameraFrustum.Matrix = View * Projection;
         }
 
@@ -54,7 +54,7 @@ namespace PhysX_test2.Engine.CameraControllers {
                 determ = 0.001f;
             this._cameraYaw = Convert.ToSingle(Math.Atan(Convert.ToSingle((cameratarget.X - cameraposition.X) / determ)));
             this.View = Matrix.CreateLookAt(cameraposition, cameratarget, new Vector3(0, 1, 0));
-            this.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, _engine.Game.GraphicsDevice.Viewport.AspectRatio, 1, 150);
+            this.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GameEngine.Device.Viewport.AspectRatio, 1, 150);
             cameraFrustum.Matrix = View * Projection;
         }
 
@@ -62,7 +62,7 @@ namespace PhysX_test2.Engine.CameraControllers {
             var elapsed = (float) (elapsedTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
             const float speed = 14.0f;
             float distance = speed * elapsed;
-            GameWindow window = _engine.Game.Window;
+            GameWindow window = MyGame.Instance.Window;
 
             
 

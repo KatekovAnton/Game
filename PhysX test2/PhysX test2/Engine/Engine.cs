@@ -14,44 +14,67 @@ using Microsoft.Xna.Framework.Input;
 
 namespace PhysX_test2.Engine {
     public class GameEngine {
+
+        //static variables for enviroment
         public static GameEngine Instance;
         public static GraphicsDeviceManager DeviceManager;
         public static GraphicsDevice Device;
-        public Vector3 BoxScreenPosition;
-        public FpsCounter FPSCounter;
-        public SpriteFont Font1;
+
+
+        //engine camera and engine render
+        public Camera Camera;
         public RenderPipeline GraphicPipeleine;
 
+        
+        //fps
+        public FpsCounter FPSCounter;
+
+
+        //for text rendering
+        public SpriteFont Font1;
+        public SpriteBatch spriteBatch;
+
+
+        //content
+        private PackList packs;
+
+
+        //physx
+        public Core Core;
+        public Scene Scene;
+
+
+        //scene and its objects
+        public GameScene gameScene;
         public LevelObject LevelObjectBox;
         public LevelObject LevelObjectCharacterBox;
         public LevelObject LevelObjectCursorSphere;
         public LevelObject LevelObjectTestSide;
+        public Actor groundplane;
 
 
+        //controllers for camera and character (objects between user and game)
         public CameraControllers.CameraControllerPerson _cameraController;
         public CharacterControllers.CharacterControllerSuperClass _charcterController;
 
 
-        public GameScene gameScene;
-        public Actor groundplane;
-        public Vector3 lightDir = new Vector3(-1, -1, -1);
-        public ControllerManager manager;
-        public PackList packs;
-        public SpriteBatch spriteBatch;
+        //animation
+        public Engine.AnimationManager.AnimationManager animationManager;
 
+
+        //some additional variables
         public int visibleobjectscount;
-        
+        public Vector3 BoxScreenPosition;
+        public Vector3 lightDir = new Vector3(-1, -1, -1);
+       
 
-        private float _lastMousePosX;
-        private float _lastMousePosY;
-        private int _mouseWheelOld;
-
-        public GameEngine(MyGame game, PackList p) {
+        public GameEngine(MyGame game) {
+            packs = new PackList();
             Instance = this;
             lightDir.Normalize();
-            packs = p;
-            Game = game;
+
             DeviceManager = new GraphicsDeviceManager(game);
+
             //разме рэкрана
             DeviceManager.PreferredBackBufferWidth = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.8);
             DeviceManager.PreferredBackBufferHeight = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.8);
@@ -76,10 +99,8 @@ namespace PhysX_test2.Engine {
                                                   Gravity = new Vector3(0.0f, -9.81f * 1.5f, 0.0f), 
                                                   GroundPlaneEnabled = false};
             Scene = Core.CreateScene(sceneDesc);
-            manager = Scene.CreateControllerManager();
+            animationManager = AnimationManager.AnimationManager.Manager;
             Loaddata();
-
-            var e = new ebuchest();
         }
 
         private void Loaddata() {
@@ -88,7 +109,7 @@ namespace PhysX_test2.Engine {
             using (var stream = new FileStream(@"Content\Shaders\ObjectRender.fx", FileMode.Open)) {
                 Material.ObjectRenderEffect = Shader.FromStream(stream, Device);
             }
-            Scene.UserContactReport = new ContactReport(Game);
+            Scene.UserContactReport = new ContactReport(MyGame.Instance);
 
             gameScene = new GameScene();
             GraphicPipeleine = new RenderPipeline(DeviceManager.GraphicsDevice, Camera);
@@ -154,11 +175,9 @@ namespace PhysX_test2.Engine {
 
         public void Update(GameTime gameTime)
         {
-           
             //Begin update world objects
             foreach (PivotObject lo in gameScene.objects)
                 lo.BeginDoFrame();
-
 
 
             // обработка нажатий клавы
@@ -173,12 +192,10 @@ namespace PhysX_test2.Engine {
                 LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, _cameraController._yAngle));
            
 
-
-            //Update world(calc ray trace, deleting bullets, applying forces and other)
-            //------
-
             foreach (PivotObject lo in gameScene.objects)
                 lo.DoFrame(gameTime);
+
+
             // Update Physics
             Scene.Simulate((float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f);
 
@@ -196,38 +213,20 @@ namespace PhysX_test2.Engine {
             foreach (PivotObject lo in gameScene.objects)
                 lo.EndDoFrame();
 
+
+            //Update world(calc ray trace, deleting bullets, applying forces and other)
+            //------
+            animationManager.Update(gameTime);
+
             //Udating data for scenegraph
             gameScene.UpdateScene();
 
             {
-                // обработка вращения камеры
-                float cursorPositionX = Mouse.GetState().X;
-                float deltaX = cursorPositionX - _lastMousePosX;
-                float cursorPositionY = Mouse.GetState().Y;
-                float deltaY = cursorPositionY - _lastMousePosY;
-                MouseState mouseState = Mouse.GetState();
-                if (mouseState.RightButton == ButtonState.Pressed)
-                {
-                    _cameraController.RotateCameraAroundChar(-deltaX * Settings.rotateSpeed);
-                    _cameraController.UpDownCamera(deltaY * Settings.rotateSpeed);
-                }
-                _lastMousePosX = cursorPositionX;
-                _lastMousePosY = cursorPositionY;
-
-
-                // обработка зума
-                if (mouseState.ScrollWheelValue > _mouseWheelOld)
-                    _cameraController.ZoomCameraFromCha(1 / Settings.zoomSpeed);
-                
-                else if (mouseState.ScrollWheelValue < _mouseWheelOld)
-                    _cameraController.ZoomCameraFromCha(Settings.zoomSpeed);
-                
-                _mouseWheelOld = mouseState.ScrollWheelValue;
-
+                // обработка камеры
+                _cameraController.UpdateCamerafromUser();
 
                 if (LevelObjectCharacterBox.behaviourmodel.moved)
                     _cameraController.UpdateCamera();
-                
             }
 
             //очищаем конвейер
@@ -296,22 +295,5 @@ namespace PhysX_test2.Engine {
             //  BoxActor.Dispose();
             groundplane.Dispose();
         }
-
-        #region Properties
-        public Camera Camera;
-        public MyGame Game {
-            get;
-            private set;
-        }
-
-        public Core Core {
-            get;
-            private set;
-        }
-        public Scene Scene {
-            get;
-            private set;
-        }
-        #endregion
     }
 }
