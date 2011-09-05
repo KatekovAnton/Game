@@ -147,7 +147,7 @@ namespace PhysX_test2.Engine.ContentLoader
             {
                 StillDesign.PhysX.MaterialDescription md = new StillDesign.PhysX.MaterialDescription();
                 md.SetToDefault();
-                md.Restitution = 0.25f;
+                md.Restitution = 0.05f;
                 characterMaterial = scene.CreateMaterial(md);
             }
             if (description.Enginereadedobject.Count == 0)

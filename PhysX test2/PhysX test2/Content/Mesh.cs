@@ -160,33 +160,19 @@ namespace PhysX_test2.Content
             int indexoffset = 0;
             for (int i = 0; i < buffers.Length; i++)
             {
+                ContentMesh cm = buffers[i];
+                int currentvert = cm.vertices.Length;
+                int currentindx = cm.indices.Length;
 
-                int currentvert = buffers[i].vertices.Length;
-                int currentindx = buffers[i].indices.Length;
 
-
-                for (int bv = vertexoffset; bv < currentvert + vertexoffset; bv++)
+                for (int ci = 0; ci < currentvert; ci++)
                 {
-                    int currentvertex = bv - vertexoffset;
-                    vertices[bv] = buffers[i].vertices[currentvertex];
-
-
-                    //скин////////////////////////////////////////////////////////////////////////////////////
-                   /* string sss;
-                    int t = br.ReadInt32();
-                    for (int b = 0; b < t; b++)
-                        sss = br.ReadPackString();
-
-                    int d = br.ReadInt32();
-                    br.BaseStream.Seek(d * 4, SeekOrigin.Current);*/
-                    //скин////////////////////////////////////////////////////////////////////////////////////
+                    vertices[ci + vertexoffset] = new Vertex(cm.vertices[ci].position, cm.vertices[ci].normal, cm.vertices[ci].textureCoordinate);
+                    vertices[ci + vertexoffset].textureCoordinate.Y = 1.0f - vertices[ci + vertexoffset].textureCoordinate.Y;
                 }
 
-                for (int bv = indexoffset; bv < currentindx + indexoffset; bv++)
-                {
-                    int currentindex = bv - indexoffset;
-                    indices[bv] = Convert.ToUInt16(buffers[i].indices[currentindex]);
-                }
+                for (int ci = 0; ci < currentindx; ci++)
+                    indices[ci + indexoffset] = Convert.ToUInt16(cm.indices[ci] + vertexoffset);
 
                 vertexoffset += currentvert;
                 indexoffset += currentindx;
