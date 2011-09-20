@@ -19,8 +19,6 @@ namespace PhysX_test2.Content
         //принимает ли тени(затеняется или нет)
         public bool IsShadowReceiver = false;
 
-      //  public string matname;
-
         public bool NeedRotate;
 
 
@@ -109,13 +107,6 @@ namespace PhysX_test2.Content
             IsShadowCaster = br.ReadBoolean();
             IsShadowReceiver = br.ReadBoolean();
             NeedRotate = br.ReadBoolean();
-
-          
         }
-
- 
-    
-      
-     
     }
 }

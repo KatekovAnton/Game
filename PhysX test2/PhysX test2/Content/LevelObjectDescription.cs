@@ -79,7 +79,6 @@ namespace PhysX_test2.Content
             if (IsAnimated)
             {
                 CharacterName = br.ReadPackString();
-                DefaultAnimName = br.ReadPackString();
                 IsRCCMAnimated = br.ReadBoolean();
             }
 
