@@ -9,6 +9,11 @@ namespace PhysX_test2.Engine.AnimationManager
 {
     public interface IAnimationUser
     {
-        void Update(float gameTime);
+        void Update(float animTime);//animTime between 0.0 ....... animLength
+        void onAnimEnded();
+        float animLength
+        {
+            get;
+        }
     }
 }
