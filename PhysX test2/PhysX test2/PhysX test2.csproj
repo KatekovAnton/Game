@@ -129,7 +129,13 @@
     <Compile Include="Content\Skeleton.cs" />
     <Compile Include="Content\StringList.cs" />
     <Compile Include="Engine\AnimationManager\AnimationManager.cs" />
-    <Compile Include="Engine\AnimationManager\IAnimationUser.cs" />
+    <Compile Include="Engine\AnimationManager\AnimationUser.cs" />
+    <Compile Include="Engine\Animation\Animation.cs" />
+    <Compile Include="Engine\Animation\AnimationFull.cs" />
+    <Compile Include="Engine\Animation\AnimationGraph.cs" />
+    <Compile Include="Engine\Animation\AnimationGraphComponents.cs" />
+    <Compile Include="Engine\Animation\CharacterStaticInfo.cs" />
+    <Compile Include="Engine\Animation\Skeleton.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerPerson.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerSuperClass.cs" />
     <Compile Include="Engine\CharacterControllers\CharacterControllerPerson.cs" />
@@ -179,7 +185,7 @@
     <Compile Include="Engine\Render\Shader.cs" />
     <Compile Include="Engine\Logic\UnAnimRenderObject.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Engine\CameraControllers\Camera.cs" />
+    <Compile Include="Engine\Camera.cs" />
     <Compile Include="Engine\Engine.cs" />
     <Compile Include="Engine\Render\DebugRender\DebugRenderMesh.cs" />
     <Compile Include="Engine\Logic\PivotObject.cs" />

@@ -117,25 +117,7 @@ namespace PhysX_test2.Content
             }
         }
     }
-    public enum NodeType
-    {
-        element,
-        folder,
-        packname
-    }
-    public struct infopair
-    {
-        public int index;
-        public int number;
-    };
-    public struct Mypair
-    {
-        public int frst, scnd;
-        public override string ToString()
-        {
-            return "frst = " + frst.ToString() + "; scnd = " + scnd.ToString();
-        }
-    }
+
     public class HeaderInfo
     {
         public int offset;
@@ -184,49 +166,13 @@ namespace PhysX_test2.Content
             }
         }
     }
-   /* public class PackContentHeader
-    {
-        public DateTime LastManipulation;
-        public bool readed;
-        public byte[] ObjectReader;
-        public int number;
-        public int offset;
-        public int size;
-        public int headersize;
-        public int loadedformat;
-        public string name;
-        public MeshContentadditionalheader mh = null;
-        public PackContentHeader(System.IO.BinaryReader br, int _number)//16+имя
-        {
-            this.number = _number;
-            int length = br.ReadInt32();
-            name = new string(br.ReadChars(length + 1));
-            offset = br.ReadInt32();
-            loadedformat = br.ReadInt32();
-            headersize = br.ReadInt32();
-            
-            if (loadedformat == ElementType.MeshOptimazedForStore || loadedformat == ElementType.MeshOptimazedForLoading)
-            {
-                mh = new MeshContentadditionalheader();
-                mh.load(br, loadedformat);
-            }
-            else
-            {
-                size = br.ReadInt32();
-            }
-        }
-        public void Unload()
-        {
-            readed = false;
-            ObjectReader = null;
-           // readedobject = null;
-        }
-    }*/
+   
     public class PackContent
     {
         public List<object> Enginereadedobject;
         public PackContent ReadedContentObject; 
-        public DateTime LastManipulation;
+
+
         public bool objectReaded;
         public int number;
         public int offset;

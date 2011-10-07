@@ -26,26 +26,54 @@ namespace PhysX_test2.Engine.AnimationManager
 
         protected AnimationManager()
         {
-            animatedObjects = new MyContainer<IAnimationUser>(100, 3);
+            animatedObjects = new MyContainer<AnimationUser>(100, 3);
+            scheduledObjects = new MyContainer<ScheduledObject>(100, 3);
+
+            buffer = new MyContainer<AnimationUser>(100, 3);
         }
 
-        private MyContainer<IAnimationUser> animatedObjects;
+        private MyContainer<AnimationUser> animatedObjects;
+        private MyContainer<ScheduledObject> scheduledObjects;
+
+        private MyContainer<AnimationUser> buffer;
 
         public void Update(GameTime gameTime)
         {
-            float elapsed = (float)(gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
+            buffer.Clear();
             for (int i = 0; i < animatedObjects.Count; i++)
-                animatedObjects[i].Update(elapsed);
+            {
+                animatedObjects[i].Update(gameTime);
+                if (animatedObjects[i].animationFinished)
+                    buffer.Add(animatedObjects[i]);
+            }
+            for (int i = 0; i < scheduledObjects.Count; i++)
+                scheduledObjects[i].Update(gameTime);
+
+            if (!buffer.IsEmpty)
+            {
+                foreach (AnimationUser user in buffer)
+                    animatedObjects.Remove(user);
+            }
         }
 
-        public void AddAnimationUser(IAnimationUser newUser)
+        public void AddAnimationUser(AnimationUser newUser)
         {
             animatedObjects.Add(newUser);
         }
 
-        public void RemoveUser(IAnimationUser user)
+        public void RemoveUser(AnimationUser user)
         {
             animatedObjects.Remove(user);
+        }
+
+        public void AddScheduledUser(ScheduledObject newUser)
+        {
+            scheduledObjects.Add(newUser);
+        }
+
+        public void RemoveScheduledUser(ScheduledObject user)
+        {
+            scheduledObjects.Remove(user);
         }
     }
 

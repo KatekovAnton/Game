@@ -96,7 +96,7 @@ namespace PhysX_test2.Engine {
             var sceneDesc = new SceneDescription {SimulationType = SimulationType.Software, //Hardware,
                                                   MaximumBounds = new Bounds3(-1000, -1000, -1000, 1000, 1000, 1000), 
                                                   UpAxis = 2, 
-                                                  Gravity = new Vector3(0.0f, -9.81f * 1.5f, 0.0f), 
+                                                  Gravity = new Vector3(0.0f, -9.81f * 1.7f, 0.0f), 
                                                   GroundPlaneEnabled = false};
             Scene = Core.CreateScene(sceneDesc);
             animationManager = AnimationManager.AnimationManager.Manager;

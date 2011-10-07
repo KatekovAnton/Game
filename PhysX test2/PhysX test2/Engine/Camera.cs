@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 
-namespace PhysX_test2.Engine.CameraControllers {
+namespace PhysX_test2.Engine {
     public class Camera {
 
         #region Variables

@@ -8,11 +8,13 @@ using StillDesign.PhysX;
 using Ray = Microsoft.Xna.Framework.Ray;
 
 
-namespace PhysX_test2 {
+namespace PhysX_test2
+{
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class MyGame : Game {
+    public class MyGame : Game
+    {
 
         public static MyGame Instance;
 
@@ -31,14 +33,15 @@ namespace PhysX_test2 {
         private SpriteBatch _spriteBatch;
 
 
-        public MyGame() {
+        public MyGame()
+        {
             Instance = this;
             _log = new Log();
-            
+
             _engine = new GameEngine(this);
 
             _graphics = GameEngine.DeviceManager;
-            if(!GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef))
+            if (!GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef))
                 _graphics.GraphicsProfile = GraphicsProfile.Reach;
             else
                 _graphics.GraphicsProfile = GraphicsProfile.HiDef;
@@ -49,7 +52,8 @@ namespace PhysX_test2 {
         }
 
 
-        protected override void Initialize() {
+        protected override void Initialize()
+        {
             base.Initialize();
 
             _engine.Initalize();
@@ -63,7 +67,8 @@ namespace PhysX_test2 {
         }
 
 
-        private void LoadPhysics() {
+        private void LoadPhysics()
+        {
             _core.SetParameter(PhysicsParameter.ContinuousCollisionDetection, true);
             _core.SetParameter(PhysicsParameter.ContinuousCollisionDetectionEpsilon, 0.01f);
         }
@@ -73,7 +78,8 @@ namespace PhysX_test2 {
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent() {
+        protected override void LoadContent()
+        {
             GameEngine.Device = GraphicsDevice;
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -90,50 +96,24 @@ namespace PhysX_test2 {
         /// UnloadContent will be called once per game and is the place to unload
         /// all content.
         /// </summary>
-        protected override void UnloadContent() {
+        protected override void UnloadContent()
+        {
             _engine.UnLoad();
         }
 
 
-        private void HandleKeyboard(KeyboardState keyboardState) {
-
-          //  float yawAngie = _engine.Camera.CameraYaw();
-
-          /*  if(keyboardState.IsKeyDown(Keys.W)) {
-                Vector3 vect = Extensions.VectorForCharacterMoving(Extensions.Route.Forward, yawAngie);
-                _engine.LevelObjectCharacterBox.behaviourmodel.Move(vect);
-            }
-
-            if(keyboardState.IsKeyDown(Keys.S)) {
-                Vector3 vect = Extensions.VectorForCharacterMoving(Extensions.Route.Back, yawAngie);
-                _engine.LevelObjectCharacterBox.behaviourmodel.Move(vect);
-            }
-
-            if(keyboardState.IsKeyDown(Keys.D)) {
-                Vector3 vect = Extensions.VectorForCharacterMoving(Extensions.Route.Right, yawAngie);
-                _engine.LevelObjectCharacterBox.behaviourmodel.Move(vect);
-            }
-
-            if(keyboardState.IsKeyDown(Keys.A)) {
-                Vector3 vect = Extensions.VectorForCharacterMoving(Extensions.Route.Left, yawAngie);
-                _engine.LevelObjectCharacterBox.behaviourmodel.Move(vect);
-            }
-            */
-         //   if(keyboardState.IsKeyDown(Keys.Escape))
-           //     Exit();
-//
-
-
-
+        private void HandleKeyboard(KeyboardState keyboardState)
+        {
             Ray ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), _engine.Camera.View, _engine.Camera.Projection);
 
             Vector3? point = _engine.LevelObjectTestSide.raycastaspect.IntersectionClosest(ray, _engine.LevelObjectTestSide.transform);
-            if(point != null)
+            if (point != null)
                 _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.CreateTranslation(point.Value), null);
         }
 
 
-        protected override void Update(GameTime gameTime) {
+        protected override void Update(GameTime gameTime)
+        {
             HandleKeyboard(Keyboard.GetState());
             _engine.Update(gameTime);
 
@@ -141,7 +121,8 @@ namespace PhysX_test2 {
         }
 
 
-        protected override void Draw(GameTime gameTime) {
+        protected override void Draw(GameTime gameTime)
+        {
             base.Draw(gameTime);
             _engine.Draw();
 
@@ -149,10 +130,11 @@ namespace PhysX_test2 {
         }
 
 
-        public void drawstring() {
+        public void drawstring()
+        {
             _outputstring = _engine.Camera.View.Translation.ToString() + '\n' + _engine.Camera.View.Up.ToString();
             _spriteBatch.Begin();
-            if(_engine.BoxScreenPosition.Z < 1.0)
+            if (_engine.BoxScreenPosition.Z < 1.0)
                 _spriteBatch.DrawString(_font1, "Box position = " + _engine.LevelObjectBox.behaviourmodel.GetGlobalPose().Translation.ToString(), new Vector2(_engine.BoxScreenPosition.X, _engine.BoxScreenPosition.Y), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);
             _spriteBatch.DrawString(_font1, DateTime.Now.ToString(), new Vector2(10, 170), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);
 
@@ -165,23 +147,27 @@ namespace PhysX_test2 {
     }
 
 
-    public class UserOutput : UserOutputStream {
-        public override void Print(string message) {
-            if(LogProvider.NeedTracePhysXMessages)
+    public class UserOutput : UserOutputStream
+    {
+        public override void Print(string message)
+        {
+            if (LogProvider.NeedTracePhysXMessages)
                 LogProvider.TraceMessage("PhysX: " + message);
         }
 
 
-        public override AssertResponse ReportAssertionViolation(string message, string file, int lineNumber) {
-            if(LogProvider.NeedTracePhysXMessages)
+        public override AssertResponse ReportAssertionViolation(string message, string file, int lineNumber)
+        {
+            if (LogProvider.NeedTracePhysXMessages)
                 LogProvider.TraceMessage("PhysX: " + message);
 
             return AssertResponse.Continue;
         }
 
 
-        public override void ReportError(ErrorCode errorCode, string message, string file, int lineNumber) {
-            if(LogProvider.NeedTracePhysXMessages)
+        public override void ReportError(ErrorCode errorCode, string message, string file, int lineNumber)
+        {
+            if (LogProvider.NeedTracePhysXMessages)
                 LogProvider.TraceMessage("PhysX: " + message);
         }
     }

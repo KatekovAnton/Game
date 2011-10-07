@@ -23,7 +23,6 @@ namespace PhysX_test2.Content
                 packs[i] = new Pack(filenames[i]);
                 
         }
-
         
         public PackContent FindObject(string name, ref Pack pp)
         {
@@ -42,7 +41,7 @@ namespace PhysX_test2.Content
         {
             Pack containedpack = null;
             PackContent pch = FindObject(objectname, ref containedpack);
-            pch.LastManipulation = DateTime.Now;
+
             if (pch.objectReaded)
             {
                 PhysX_test2.Engine.LogProvider.TraceMessage("Content system: Object loaded:\t\t" + objectname.Substring(0,objectname.Length-1) + "\t\t type of " + ElementType.ReturnString(pch.loadedformat));
