@@ -57,7 +57,9 @@ namespace PhysX_test2.Engine.Animation
     {
         public AnimationGraph animGraph;
 
-        public CharacterPart()
-        { }
+        public CharacterPart(AnimationGraph _baseGraph)
+        {
+            animGraph = _baseGraph;
+        }
     }
 }

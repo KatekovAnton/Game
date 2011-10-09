@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using PhysX_test2.Content;
 using StillDesign.PhysX;
-namespace PhysX_test2.Engine.Logic
+namespace PhysX_test2.Engine.Render
 {
     public abstract class RenderObject:System.IDisposable
     {

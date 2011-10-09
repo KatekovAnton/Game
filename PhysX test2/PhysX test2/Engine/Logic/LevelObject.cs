@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using PhysX_test2.Engine.Render;
+
 namespace PhysX_test2.Engine.Logic
 {
     public class LevelObject : PivotObject

@@ -145,7 +145,7 @@
     <Compile Include="Engine\CharacterControllers\CharacterControllerSuperClass.cs" />
     <Compile Include="Engine\ContentLoader\ContentLoader.cs" />
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
-    <Compile Include="Engine\Logic\AnimRenderObject.cs" />
+    <Compile Include="Engine\Render\AnimRenderObject.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectPhysicControllerBehaviourModel.cs" />
     <Compile Include="Engine\Logic\EditorAspect.cs" />
     <Compile Include="Engine\Logic\GameObject.cs" />
@@ -184,9 +184,9 @@
     <Compile Include="Engine\Logic\Level.cs" />
     <Compile Include="Engine\Logic\LigthSource.cs" />
     <Compile Include="Engine\Render\RenderEngine.cs" />
-    <Compile Include="Engine\Logic\RenderObject.cs" />
+    <Compile Include="Engine\Render\RenderObject.cs" />
     <Compile Include="Engine\Render\Shader.cs" />
-    <Compile Include="Engine\Logic\UnAnimRenderObject.cs" />
+    <Compile Include="Engine\Render\UnAnimRenderObject.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Engine\Camera.cs" />
     <Compile Include="Engine\Engine.cs" />

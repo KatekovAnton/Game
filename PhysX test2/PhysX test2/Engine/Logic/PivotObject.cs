@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StillDesign.PhysX;
 
+using PhysX_test2.Engine.Render;
+
 namespace PhysX_test2.Engine.Logic
 {
     public abstract class PivotObject

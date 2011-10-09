@@ -10,7 +10,7 @@ using PhysX_test2.Engine.Render.Materials;
 
 using StillDesign.PhysX;
 
-namespace PhysX_test2.Engine.Logic
+namespace PhysX_test2.Engine.Render
 {
 
     public class UnAnimRenderObject : RenderObject
