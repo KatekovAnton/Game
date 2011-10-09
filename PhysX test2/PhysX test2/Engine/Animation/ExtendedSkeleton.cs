@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PhysX_test2.Engine.Animation
 {
-    public class CharacterStaticInfo //: PackContent//int SkeletonWithAddInfo = 31;
+    public class ExtendedSkeleton //: PackContent//int SkeletonWithAddInfo = 31;
     {
         #region packcontent methods
        
@@ -50,22 +50,18 @@ namespace PhysX_test2.Engine.Animation
         public int TopRootIndex;
         public int BottomRootIndex;
 
-        public Skeleton baseskelet
-        {
-            get;
-            private set;
-        }
+        public Skeleton baseskelet;
         #endregion
 
       //  public AnimationGraph BottomGraph;
      //   public AnimationGraph TopGraph;
 
-        public CharacterStaticInfo(Skeleton s)
+        public ExtendedSkeleton(Skeleton s)
         {
             baseskelet = s;
         }
 
-        public CharacterStaticInfo()
+        public ExtendedSkeleton()
         {
            
         }
