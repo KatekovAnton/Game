@@ -14,21 +14,22 @@ namespace PhysX_test2.Engine.Animation
         public CharacterStatic()
         { }
 
-        public Matrix[] GetFrameMatrix(AnimationNode an, int frameNamber)
+        public  Matrix[] GetFrameMatrix(AnimationNode[] ans, Skeleton skeleton,  int[] frameNamber, Matrix chahgeRoot)
         {
-            Matrix[]res = new Matrix[skeleton.baseskelet.bones.Count()];
-            DecomposedMatrix[] temp = new DecomposedMatrix[skeleton.baseskelet.bones.Count()];
+            Matrix[]res = new Matrix[skeleton.bones.Count()];
+            DecomposedMatrix[] temp = new DecomposedMatrix[skeleton.bones.Count()];
 
-            for (int i = 0; i < parts.Length; i++)
+            for (int i = 0; i < ans.Length; i++)
             {
                  for (int j = 0;j < parts[i].animGraph.boneIndexes.Length;j++)
                  {
-                     temp[parts[i].animGraph.boneIndexes[j]] = ((FullAnimation)an.animation).matrices[j][frameNamber];
+                     temp[parts[i].animGraph.boneIndexes[j]] = ((FullAnimation)ans[i].animation).matrices[frameNamber[i]][j];
                  }
                                              
             }
             res = DecomposedMatrix.ConvertToMartixArray(temp);
-            res = Animation.GetIndependentMatrices(skeleton.baseskelet, res);
+            res[skeleton.RootIndex] = res[skeleton.RootIndex] * chahgeRoot;
+            res = Animation.GetIndependentMatrices(skeleton, res);
 
             return res;
         }

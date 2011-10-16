@@ -118,7 +118,7 @@ namespace PhysX_test2.Engine.ContentLoader
                 characterResult = characterContent.Enginereadedobject[0] as CharacterStatic;
                 characterContent.Enginereadedobject.Add(characterResult);
             }
-            Character result = new Character(characterResult, new string[] { "stay1\0", "stay1\0" });
+            Character result = new Character(characterResult, new string[] { "walkForward\0", "stay1\0" });
             return result;
         }
 
