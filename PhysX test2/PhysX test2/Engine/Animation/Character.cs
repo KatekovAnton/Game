@@ -69,8 +69,18 @@ namespace PhysX_test2.Engine.Animation
         /// <param name="gameTime"></param>
         /// <returns></returns>
         public bool Update(GameTime gameTime)
-        {
+        {   
+            int[] frameNambers=new int[_currentNodes.Length];
+            for(int i=0; i<_currentNodes.Length;i++)
+            {
+                frameNambers[i]=(int)((_currentAnimTime[i]*30f)%(((FullAnimation)_currentNodes[i].animation).matrices.Length));            
+               // frameNambers[i] = 0;
+                _currentAnimTime[i] += 0.005f;
+            }
+            _currentFames = _baseCharacter.GetFrameMatrix(_currentNodes, _baseCharacter.skeleton.baseskelet, frameNambers, Matrix.Identity);
+            //AnimationNode an = _currentNodes[0];
             ///брать инфу из public AnimationNode[] _currentNodes;как то обрабатывать и строить _currentFames
+            
             return false;
         }
     }
