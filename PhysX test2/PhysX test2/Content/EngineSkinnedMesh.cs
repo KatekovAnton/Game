@@ -36,7 +36,7 @@ namespace PhysX_test2.Content
             get { return indexBuffer; }
         }
 
-        public Skeleton Skeleton
+        public CharacterContent Skeleton
         {
             get;
             set;

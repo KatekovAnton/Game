@@ -10,9 +10,10 @@ namespace PhysX_test2.Content
 {
     public class ContentSkinnedMesh : PackContent
     {
+
         public SkinnedVertex[] vertices;
         public int[] indices;
-        public Skeleton skeleton;
+        public static CharacterContent skeleton;
 
         public override void loadbody(byte[] buffer)
         {
@@ -35,15 +36,22 @@ namespace PhysX_test2.Content
                     throw new Exception("Too many bones in skin!!!");
                 var boneIndices = new int[] { 0, 0, 0 };
                 for (var j = 0; j < relationBoneCount; j++)
-                    boneIndices[j] = skeleton.IndexOf(skeleton.bones[skeleton.IndexOf(br.ReadPackString())].Name); // вот здесь может не работать!
-                
+                {
+                    string name = br.ReadPackString();
+                    boneIndices[j] = skeleton.IndexOf(name);
+                }
+                bindx.X = boneIndices[0];
+                bindx.Y = boneIndices[1];
+                bindx.Z = boneIndices[2];
 
 
                 relationBoneCount = br.ReadInt32();
-                var boneWeight = new float[] { 0.0f, 0.0f, 0.0f };
+                float[] boneWeight = new float[] { 0.0f, 0.0f, 0.0f };
                 for (var j = 0; j < relationBoneCount; j++)
                     boneWeight[j] = br.ReadSingle();
-                
+                bwigs.X = boneWeight[0];
+                bwigs.Y = boneWeight[1];
+                bwigs.Z = boneWeight[2];
 
 
                 vertices[bv] = new SkinnedVertex(

@@ -9,9 +9,8 @@ namespace PhysX_test2.Engine.Animation
     {
         #region packcontent methods
        
-      /*  public override int loadbody(BinaryReader br, System.Windows.Forms.ToolStripProgressBar toolStripProgressBar)
+        public void loadbody(System.IO.BinaryReader br)
         {
-            long a = br.BaseStream.Position;
             baseskelet = Skeleton.FromStream(br);
             HeadIndex = br.ReadInt32();
             WeaponIndex = br.ReadInt32();
@@ -25,18 +24,7 @@ namespace PhysX_test2.Engine.Animation
             topindexes = new int[br.ReadInt32()];
             for (int i = 0; i < topindexes.Length; i++)
                 topindexes[i] = br.ReadInt32();
-
-
-            bool bottomExist = br.ReadBoolean();
-            if (bottomExist)
-                BottomGraph = AnimationGraph.AnimationGraphFromStream(br);
-
-            bool topExist = br.ReadBoolean();
-            if (topExist)
-                TopGraph = AnimationGraph.AnimationGraphFromStream(br);
-
-            return Convert.ToInt32(br.BaseStream.Position - a);
-        }*/
+        }
         #endregion
 
         #region data

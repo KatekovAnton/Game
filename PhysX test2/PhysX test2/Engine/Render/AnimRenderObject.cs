@@ -74,11 +74,14 @@ namespace PhysX_test2.Engine.Render
 
         #endregion
 
-        public AnimRenderObject(Character _char)
+        public AnimRenderObject(Character _char, AnimRenderObject.Model[] models, bool shadowcaster, bool shadowreceiver)
             : base()
         {
             character = _char;
-            isanimaated = true;
+            LODs = models;
+            isanimated = true;
+            isshadowcaster = shadowcaster;
+            isshadowreceiver = shadowreceiver;
         }
 
         public override void SelfRender(int lod, Engine.Render.Materials.Material mat = null)

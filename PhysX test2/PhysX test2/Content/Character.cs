@@ -37,20 +37,26 @@ namespace PhysX_test2.Content
         }
     }
 
-    public class Skeleton
+    public class CharacterContent: PackContent
     {
         public Bone[] bones;
         public Bone Root;
         public BoneMap map;
 
-        protected Skeleton(Bone root, Bone[] bones)
-        {
-            Root = root;
-            this.bones = bones;
+        public int[] botomindexes;
+        public int[] topindexes;
 
-            map = new BoneMap(bones.Length);
-            for (int i = 0; i < bones.Length; i++)
-                map.Add(bones[i].Name, i);
+        public int HeadIndex;
+        public int WeaponIndex;
+        public int RootIndex;
+        public int TopRootIndex;
+        public int BottomRootIndex;
+
+        public byte[] data;
+
+        public CharacterContent()
+        {
+            
         }
 
         public int IndexOf(string name)
@@ -58,14 +64,10 @@ namespace PhysX_test2.Content
             return map[name];
         }
 
-        public int RootIndex
+        public override void loadbody(byte[] array)
         {
-            get { return map[Root.Name]; }
-        }
-
-        public static Skeleton FromStream(Stream stream)
-        {
-            var self = new BinaryReader(stream);
+            data = array;
+            var self = new BinaryReader(new MemoryStream(array));
             var bones = new Bone[self.ReadInt32()];
             var parentNames = new string[bones.Length];
             Bone root = null;
@@ -86,17 +88,35 @@ namespace PhysX_test2.Content
                 throw new Exception("Root bone can not be null");
             }
 
-            var skeleton = new Skeleton(root, bones);
+            Root = root;
+            this.bones = bones;
+
+            map = new BoneMap(bones.Length);
+            for (int i = 0; i < bones.Length; i++)
+                map.Add(bones[i].Name, i);
 
             for (int i = 0; i < bones.Length; i++)
             {
                 bones[i].BaseInverseMatrix = self.ReadMatrix();
                 if (bones[i] != root)
-                    bones[i].Parent = bones[skeleton.IndexOf(parentNames[i])];
-                
+                    bones[i].Parent = bones[IndexOf(parentNames[i])];
+
             }
 
-            return skeleton;
+
+
+            HeadIndex = self.ReadInt32();
+            WeaponIndex = self.ReadInt32();
+            RootIndex = self.ReadInt32();
+            TopRootIndex = self.ReadInt32();
+            BottomRootIndex = self.ReadInt32();
+            botomindexes = new int[self.ReadInt32()];
+            for (int i = 0; i < botomindexes.Length; i++)
+                botomindexes[i] = self.ReadInt32();
+
+            topindexes = new int[self.ReadInt32()];
+            for (int i = 0; i < topindexes.Length; i++)
+                topindexes[i] = self.ReadInt32();
         }
     }
 }

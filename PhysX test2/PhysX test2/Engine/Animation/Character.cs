@@ -20,7 +20,8 @@ namespace PhysX_test2.Engine.Animation
             _baseCharacter = characterBase;
             _currentNodes = new AnimationNode[characterBase.parts.Length];
             _currentFames = new Matrix[_baseCharacter.skeleton.baseskelet.bones.Length];
-
+            for (int i = 0; i < _currentFames.Length; i++)
+                _currentFames[i] = Matrix.Identity;
             if (startNodes != null)
                 for (int i = 0; i < startNodes.Length; i++)
                     SetCurrentNode(i, startNodes[i]);

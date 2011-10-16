@@ -8,7 +8,7 @@ using PhysX_test2.Engine;
 using PhysX_test2.Engine.Logic;
 using PhysX_test2.Engine.Render;
 using PhysX_test2.Engine.Render.Materials;
-
+using PhysX_test2.Engine.Animation;
 using Microsoft.Xna.Framework.Graphics;
 
 
@@ -77,38 +77,111 @@ namespace PhysX_test2.Engine.ContentLoader
             return subsetmeshes;
         }
 
+        private static ContentSkinnedMesh[] loadSkinnedMeshArray(string[] mesnames, PackList packs, CharacterContent character)
+        {
+            ContentSkinnedMesh.skeleton = character;
+            ContentSkinnedMesh[] subsetmeshes = new ContentSkinnedMesh[mesnames.Length];
+            for (int i = 0; i < mesnames.Length; i++)
+            {
+                subsetmeshes[i] = new ContentSkinnedMesh();
+                subsetmeshes[i] = packs.GetObject(mesnames[i], subsetmeshes[i]) as ContentSkinnedMesh;
+            }
+            return subsetmeshes;
+        }
+
+        public static Engine.Animation.Character createCharacter(PackList packs, string name, out CharacterContent characterContent)
+        {
+            characterContent = new Content.CharacterContent();
+            characterContent = packs.GetObject(name, characterContent) as Content.CharacterContent;
+            CharacterStatic characterResult = null;
+            if (characterContent.Enginereadedobject.Count == 0)
+            {
+                characterResult = new CharacterStatic();
+                characterResult.skeleton = new ExtendedSkeleton();
+                System.IO.BinaryReader br = new System.IO.BinaryReader(new System.IO.MemoryStream(characterContent.data));
+                characterResult.skeleton.loadbody(br);
+                List<CharacterPart> parts = new List<CharacterPart>();
+                bool bottomExist = br.ReadBoolean();
+                if (bottomExist)
+                    parts.Add(new CharacterPart(AnimationGraph.AnimationGraphFromStream(br)));
+
+
+                bool topExist = br.ReadBoolean();
+                if (topExist)
+                    parts.Add(new CharacterPart(AnimationGraph.AnimationGraphFromStream(br)));
+
+                characterResult.parts = parts.ToArray();
+                characterContent.Enginereadedobject.Add(characterResult);
+            }
+            else
+            {
+                characterResult = characterContent.Enginereadedobject[0] as CharacterStatic;
+                characterContent.Enginereadedobject.Add(characterResult);
+            }
+            Character result = new Character(characterResult, new string[] { "stay1\0", "stay1\0" });
+            return result;
+        }
+
         private static RenderObject loadro(LevelObjectDescription description,
            PackList packs)
         {
             RenderObjectDescription rod = new RenderObjectDescription();
-            
-            rod = packs.GetObject(description.RODName,rod) as Content.RenderObjectDescription;
+
+            rod = packs.GetObject(description.RODName, rod) as Content.RenderObjectDescription;
             description.ROD = rod;
             if (rod.Enginereadedobject.Count == 0)
             {
-                UnAnimRenderObject.Model[] models = new UnAnimRenderObject.Model[rod.LODs.Count];
-                for (int i = 0; i < models.Length; i++)
+                if (description.IsAnimated)
                 {
-                    UnAnimRenderObject.SubSet[] modelsubsets = new UnAnimRenderObject.SubSet[rod.LODs[i].subsets.Count];
-                    for (int j = 0; j < modelsubsets.Length; j++)
+                    CharacterContent characterContent = null; ;
+                    Engine.Animation.Character character = createCharacter(packs, description.CharacterName, out characterContent);
+
+                    AnimRenderObject.Model[] models = new AnimRenderObject.Model[rod.LODs.Count];
+                    for (int i = 0; i < models.Length; i++)
                     {
-                        ContentMesh[] subsetmeshes = loadMeshArray(rod.LODs[i].subsets[j].MeshNames, packs);
-                        EngineMesh subsetmesh = EngineMesh.FromContentMeshes(subsetmeshes);
-                        //меши могут быть по-разному сгруппированы поэтому будем их каждый раз по новой загружать
-                        modelsubsets[j] = new UnAnimRenderObject.SubSet(subsetmesh);
+                        AnimRenderObject.SubSet[] modelsubsets = new AnimRenderObject.SubSet[rod.LODs[i].subsets.Count];
+                        for (int j = 0; j < modelsubsets.Length; j++)
+                        {
+                            ContentSkinnedMesh[] subsetmeshes = loadSkinnedMeshArray(rod.LODs[i].subsets[j].MeshNames, packs, characterContent);
+                            EngineSkinnedMesh subsetmesh = EngineSkinnedMesh.FromContentMeshes(subsetmeshes);
+                            //меши могут быть по-разному сгруппированы поэтому будем их каждый раз по новой загружать
+                            modelsubsets[j] = new AnimRenderObject.SubSet(subsetmesh);
+                        }
+                        models[i] = new AnimRenderObject.Model(modelsubsets);
                     }
-                    models[i] = new UnAnimRenderObject.Model(modelsubsets);
+                    RenderObject result = new AnimRenderObject(character, models, rod.IsShadowCaster, rod.IsShadowReceiver);
+                    rod.Enginereadedobject.Add(result);
+                    return result;
                 }
-                RenderObject result = new UnAnimRenderObject(models, rod.IsShadowCaster, rod.IsShadowReceiver);
-                rod.Enginereadedobject.Add(result);
-                return result;
+                else
+                {
+                    UnAnimRenderObject.Model[] models = new UnAnimRenderObject.Model[rod.LODs.Count];
+                    for (int i = 0; i < models.Length; i++)
+                    {
+                        UnAnimRenderObject.SubSet[] modelsubsets = new UnAnimRenderObject.SubSet[rod.LODs[i].subsets.Count];
+                        for (int j = 0; j < modelsubsets.Length; j++)
+                        {
+                            ContentMesh[] subsetmeshes = loadMeshArray(rod.LODs[i].subsets[j].MeshNames, packs);
+                            EngineMesh subsetmesh = EngineMesh.FromContentMeshes(subsetmeshes);
+                            //меши могут быть по-разному сгруппированы поэтому будем их каждый раз по новой загружать
+                            modelsubsets[j] = new UnAnimRenderObject.SubSet(subsetmesh);
+                        }
+                        models[i] = new UnAnimRenderObject.Model(modelsubsets);
+                    }
+                    RenderObject result = new UnAnimRenderObject(models, rod.IsShadowCaster, rod.IsShadowReceiver);
+                    rod.Enginereadedobject.Add(result);
+                    return result;
+                }
             }
             else
             {
                 RenderObject result = rod.Enginereadedobject[0] as RenderObject;
+                if (result.isanimated != description.IsAnimated)
+                    throw new Exception("wrong object animation flag!!!");
                 rod.Enginereadedobject.Add(result);
                 return result;
             }
+
         }
 
         private static RaycastBoundObject loadrcbo(Content.LevelObjectDescription description,

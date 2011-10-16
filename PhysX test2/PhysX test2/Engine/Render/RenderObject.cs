@@ -11,7 +11,7 @@ namespace PhysX_test2.Engine.Render
     {
         public string PictureTehnique;
         public string ShadowTehnique;
-        public bool isanimaated;
+        public bool isanimated;
         public bool isshadowreceiver;
         public bool isshadowcaster;
 

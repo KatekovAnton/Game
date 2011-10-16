@@ -126,7 +126,7 @@
     <Compile Include="Content\MaterialDescription.cs" />
     <Compile Include="Content\RenderObjectDescription.cs" />
     <Compile Include="Content\LevelObjectDescription.cs" />
-    <Compile Include="Content\Skeleton.cs" />
+    <Compile Include="Content\Character.cs" />
     <Compile Include="Content\StringList.cs" />
     <Compile Include="Engine\AnimationManager\AnimationManager.cs" />
     <Compile Include="Engine\AnimationManager\AnimationUser.cs" />

@@ -125,7 +125,7 @@ namespace PhysX_test2.Engine.Render
         {
             //тут решаем что за рыба и как её соотв рендерить.
 
-            if (AddedObject.isanimaated)
+            if (AddedObject.isanimated)
             {
                 if (AddedObject.isshadowcaster && EnableShadows)
                     AddedObject.ShadowTehnique = Shader.CreateAnimShadowMap;
