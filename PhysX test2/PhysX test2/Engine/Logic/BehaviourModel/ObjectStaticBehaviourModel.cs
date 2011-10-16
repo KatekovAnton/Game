@@ -7,13 +7,13 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2.Engine.Logic.BehaviourModel
 {
-    class ObjectStaticBehaviourModel:ObjectBehaviourModel
+    public class ObjectStaticBehaviourModel:ObjectBehaviourModel
     {
         public ObjectStaticBehaviourModel()
         {
             CurrentPosition = globalpose =  Matrix.Identity;
         }
-        bool mov;
+        protected bool mov;
         
         public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
         {
@@ -26,6 +26,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             moved = mov;
             mov = false;
         }
+
         public override void Move(Vector3 displacement)
         {
             Matrix newposition = Matrix.Multiply(globalpose, Matrix.CreateTranslation(displacement));

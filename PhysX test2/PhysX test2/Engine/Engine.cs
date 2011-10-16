@@ -179,6 +179,9 @@ namespace PhysX_test2.Engine {
 
         public void Update(GameTime gameTime)
         {
+            //updatelogic
+            animationManager.UpdateStart(gameTime);
+
             //Begin update world objects
             foreach (PivotObject lo in gameScene.objects)
                 lo.BeginDoFrame();
@@ -220,7 +223,7 @@ namespace PhysX_test2.Engine {
 
             //Update world(calc ray trace, deleting bullets, applying forces and other)
             //------
-            animationManager.Update(gameTime);
+            animationManager.UpdateEnd(gameTime);
 
             //Udating data for scenegraph
             gameScene.UpdateScene();
