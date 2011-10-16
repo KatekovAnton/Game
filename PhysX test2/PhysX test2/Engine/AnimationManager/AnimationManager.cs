@@ -26,13 +26,14 @@ namespace PhysX_test2.Engine.AnimationManager
 
         protected AnimationManager()
         {
-            animatedObjects = new MyContainer<AnimationUser>(100, 3);
+            animatedObjectsAtStart = new MyContainer<AnimationUser>(100, 3);
             scheduledObjects = new MyContainer<ScheduledObject>(100, 3);
 
             buffer = new MyContainer<AnimationUser>(100, 3);
         }
 
-        private MyContainer<AnimationUser> animatedObjects;
+        private MyContainer<AnimationUser> animatedObjectsAtStart;
+        
         private MyContainer<ScheduledObject> scheduledObjects;
 
         private MyContainer<AnimationUser> buffer;
@@ -40,11 +41,11 @@ namespace PhysX_test2.Engine.AnimationManager
         public void Update(GameTime gameTime)
         {
             buffer.Clear();
-            for (int i = 0; i < animatedObjects.Count; i++)
+            for (int i = 0; i < animatedObjectsAtStart.Count; i++)
             {
-                animatedObjects[i].Update(gameTime);
-                if (animatedObjects[i].animationFinished)
-                    buffer.Add(animatedObjects[i]);
+                animatedObjectsAtStart[i].Update(gameTime);
+                if (animatedObjectsAtStart[i].animationFinished)
+                    buffer.Add(animatedObjectsAtStart[i]);
             }
             for (int i = 0; i < scheduledObjects.Count; i++)
                 scheduledObjects[i].Update(gameTime);
@@ -52,29 +53,54 @@ namespace PhysX_test2.Engine.AnimationManager
             if (!buffer.IsEmpty)
             {
                 foreach (AnimationUser user in buffer)
-                    animatedObjects.Remove(user);
+                    animatedObjectsAtStart.Remove(user);
             }
         }
 
-        public void AddAnimationUser(AnimationUser newUser)
+        public void AddAnimationUser(AnimationStep _action, object newUser)
         {
-            animatedObjects.Add(newUser);
+            animatedObjectsAtStart.Add(new AnimationUser(_action, newUser));
         }
 
-        public void RemoveUser(AnimationUser user)
+        public void RemoveUser(object user)
         {
-            animatedObjects.Remove(user);
+            bool removed = true;
+            while (removed)
+            {
+                removed = false;
+                foreach (AnimationUser _obj in animatedObjectsAtStart)
+                {
+                    if (_obj.selfObject == user)
+                    {
+                        animatedObjectsAtStart.Remove(_obj);
+                        removed = true;
+                        break;
+                    }
+                }
+            }
         }
 
-        public void AddScheduledUser(ScheduledObject newUser)
+        public void AddScheduledUser(AnimationStepAction _action, double updateFreq, object newUser)
         {
-            scheduledObjects.Add(newUser);
+            scheduledObjects.Add(new ScheduledObject(_action, updateFreq, newUser));
         }
 
         public void RemoveScheduledUser(ScheduledObject user)
         {
-            scheduledObjects.Remove(user);
+            bool removed = true;
+            while (removed)
+            {
+                removed = false;
+                foreach (ScheduledObject _obj in scheduledObjects)
+                {
+                    if (_obj.selfObject == user)
+                    {
+                        scheduledObjects.Remove(_obj);
+                        removed = true;
+                        break;
+                    }
+                }
+            }
         }
     }
-
 }

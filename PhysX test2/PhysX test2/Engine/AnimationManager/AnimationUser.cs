@@ -7,26 +7,27 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2.Engine.AnimationManager
 {
-    public delegate bool AnimationStep(double animTime);
+    /// <summary>
+    /// returns is animation finished
+    /// </summary>
+    /// <param name="gametime">elapsed time</param>
+    /// <returns>is animation finished</returns>
+    public delegate bool AnimationStep(GameTime gametime);
     public delegate void AnimationStepAction();
     public class AnimationUser
     {
         public AnimationStep action;//animTime between 0.0 ....... animLength
         public object selfObject;
-        public double lastUpdateTime;
         public bool animationFinished;
         public AnimationUser(AnimationStep _actionOnStep, object _key)
         {
             this.action = _actionOnStep;
             this.selfObject = _key;
-
         }
 
-        public void Update(GameTime gtime)
+        public void Update(GameTime gametime)
         {
-            double elapsed = gtime.TotalGameTime.TotalMilliseconds - lastUpdateTime;
-            animationFinished = action(elapsed);
-            lastUpdateTime = gtime.TotalGameTime.TotalMilliseconds;
+            animationFinished = action(gametime);
         }
     }
 

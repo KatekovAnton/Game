@@ -11,7 +11,7 @@ namespace PhysX_test2.Engine.Render
 {
     public class AnimRenderObject : RenderObject
     {
-        Character character;
+        public Character character;
 
         #region RENDER
 
