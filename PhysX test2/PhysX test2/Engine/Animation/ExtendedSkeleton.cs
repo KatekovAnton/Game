@@ -53,9 +53,6 @@ namespace PhysX_test2.Engine.Animation
         public Skeleton baseskelet;
         #endregion
 
-      //  public AnimationGraph BottomGraph;
-     //   public AnimationGraph TopGraph;
-
         public ExtendedSkeleton(Skeleton s)
         {
             baseskelet = s;

@@ -57,6 +57,8 @@ namespace PhysX_test2.Engine.Animation
     {
         public AnimationGraph animGraph;
 
+        public int rootBoneIndex;
+
         public CharacterPart(AnimationGraph _baseGraph)
         {
             animGraph = _baseGraph;
