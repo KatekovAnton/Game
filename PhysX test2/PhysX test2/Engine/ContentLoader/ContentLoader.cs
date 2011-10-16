@@ -81,6 +81,7 @@ namespace PhysX_test2.Engine.ContentLoader
            PackList packs)
         {
             RenderObjectDescription rod = new RenderObjectDescription();
+            
             rod = packs.GetObject(description.RODName,rod) as Content.RenderObjectDescription;
             description.ROD = rod;
             if (rod.Enginereadedobject.Count == 0)
