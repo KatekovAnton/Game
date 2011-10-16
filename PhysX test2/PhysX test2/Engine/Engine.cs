@@ -134,7 +134,7 @@ namespace PhysX_test2.Engine {
             gameScene.AddObject(lo);
             LevelObjectCharacterBox = lo;
             lo.useDeltaMatrix = true;
-            lo.deltaMatrix = Matrix.CreateTranslation(new Vector3(0, 0, 0.19f));
+            lo.deltaMatrix = Matrix.CreateTranslation(new Vector3(0, 0, 0.1f));
             if (lo.renderaspect.isanimated)
             {
                 Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
