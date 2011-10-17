@@ -10,7 +10,6 @@ using StillDesign.PhysX;
 
 namespace PhysX_test2.Engine.Logic.BehaviourModel
 {
-    
     /// <summary>
     /// Челобарики
     /// </summary>

@@ -14,15 +14,36 @@ namespace PhysX_test2.Engine.Logic
 {
     public abstract class PivotObject
     {
+        /// <summary>
+        /// некая инфа о происхождении объекта
+        /// </summary>
         public EditorData editorAspect;
-        //mixed
+        
+        /// <summary>
+        /// mixed объект для рейкаста- тыкания мышкой и прочих взаимодействием с лучами
+        /// </summary>
         public RaycastBoundObject raycastaspect;
+
+        /// <summary>
+        /// матрица преобразования- положение поворот объекта - расчитывается на каждом кадре в behaviourmodel-е при апдейте
+        /// </summary>
         public Matrix transform = Matrix.Identity;
-        //
+
+        /// <summary>
+        /// использовать ли дополнительную матрицу преобразования для рисования
+        /// </summary>
         public bool useDeltaMatrix = false;
+
+        /// <summary>
+        /// матрица, использующаяся совместано с предыдущим флагом
+        /// </summary>
         public Microsoft.Xna.Framework.Matrix deltaMatrix;
+
+        /// <summary>
+        /// итоговая матрица для рендера
+        /// </summary>
         public Microsoft.Xna.Framework.Matrix renderMatrix;
-      //  public bool neetforceupdate = false;
+
         public PivotObject()
         { }
 

@@ -567,7 +567,6 @@ namespace PhysX_test2.Engine.ContentLoader
                     cm.Enginereadedobject.RemoveAt(cm.Enginereadedobject.Count - 1);
                 }
             }
-            gobject.deleted = true;
         }
 
 

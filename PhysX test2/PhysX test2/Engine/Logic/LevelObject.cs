@@ -9,16 +9,21 @@ namespace PhysX_test2.Engine.Logic
 {
     public class LevelObject : PivotObject
     {
-        public bool deleted = false;
-        //for one
+        /// <summary>
+        /// for one механика поведения объекта с физ точки зрения
+        /// </summary>
         public BehaviourModel.ObjectBehaviourModel behaviourmodel;
-        //for group
+        
+        /// <summary>
+        /// for group для графики
+        /// </summary>
         public RenderObject renderaspect;
         
-        //for group
+        /// <summary>
+        /// for group для графики - материал отделен от RenderObject-а чтоб их можно было по-разному группировать
+        /// </summary>
         public Render.Materials.Material material;
-        //for one
-        public object Character;
+
         public LevelObject(BehaviourModel.ObjectBehaviourModel _behaviourmodel, RenderObject _renderaspect, Render.Materials.Material _material, RaycastBoundObject _raycastaspect)
         {
             behaviourmodel = _behaviourmodel;
@@ -26,10 +31,12 @@ namespace PhysX_test2.Engine.Logic
             raycastaspect = _raycastaspect;
             material = _material;
         }
+
         public override Render.Materials.Material HaveMaterial()
         {
             return material;
         }
+
         public override RenderObject HaveRenderAspect()
         {
             return renderaspect;
@@ -40,12 +47,14 @@ namespace PhysX_test2.Engine.Logic
             behaviourmodel.Move(d);
             moved = true;
         }
+
         public override void SetGlobalPose(Microsoft.Xna.Framework.Matrix newPose)
         {
             behaviourmodel.SetGlobalPose(newPose, null);
             transform = newPose;
             moved = true;
         }
+
         public override void BeginDoFrame()
         {
             moved = false;
