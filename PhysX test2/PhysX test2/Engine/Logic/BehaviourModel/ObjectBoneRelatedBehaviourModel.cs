@@ -30,6 +30,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         {
             Matrix newpos = parentCharacter._currentFames[parentBone] * localMatrix;
             moved = newpos!=CurrentPosition|| mov;
+            CurrentPosition = newpos;
             mov = false;
         }
 

@@ -9,7 +9,11 @@ namespace PhysX_test2.Engine.Animation
 {
     public class Character
     {
+        /// <summary>
+        /// базовый чар - например один на всех пехотинцев
+        /// </summary>
         public CharacterStatic _baseCharacter;
+
         /// <summary>
         /// текущие ноды анимации (по 1му на каждый кусок чарактера)
         /// </summary>
@@ -19,6 +23,7 @@ namespace PhysX_test2.Engine.Animation
         /// итоговые матрицы для шейдера
         /// </summary>
         public Matrix[] _currentFames;
+
         /// <summary>
         /// текущее время анимации каждого куска чара 0....1
         /// </summary>
