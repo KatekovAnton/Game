@@ -29,6 +29,8 @@ namespace PhysX_test2.Engine.Animation
         /// </summary>
         public float[] _currentAnimTime;
 
+        public Matrix Position;
+
         public Character(CharacterStatic characterBase, string[] startNodes)
         {
             _baseCharacter = characterBase;

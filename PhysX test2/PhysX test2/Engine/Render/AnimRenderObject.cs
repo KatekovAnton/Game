@@ -124,5 +124,10 @@ namespace PhysX_test2.Engine.Render
                 GC.SuppressFinalize(this);
             }
         }
+
+        public override void setPosition(Microsoft.Xna.Framework.Matrix m)
+        {
+            character.Position = m;
+        }
     }
 }

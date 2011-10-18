@@ -17,6 +17,8 @@ namespace PhysX_test2.Engine.ContentLoader
     public abstract class ContentLoader
     {
         private static StillDesign.PhysX.Material characterMaterial;
+        public static Character currentCharacter;
+        public static int boneToAdd;
         private static Material loadMaterial(string name, PackList packs)
         {
             PhysX_test2.Content.MaterialDescription mat = new MaterialDescription();
@@ -355,6 +357,10 @@ namespace PhysX_test2.Engine.ContentLoader
                             //CONTACT REPORT DISABLED TEMPORARY
                             //ObjectActor.ContactReportFlags = StillDesign.PhysX.ContactPairFlag.All;
                         } break;
+                    case LevelObjectDescription.objectBonerelatedbehaviourmodel:
+                        {
+                            behaviourmodel = new Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel(currentCharacter, boneToAdd);
+                        }break;
                     default:
                         {
                             throw new Exception("Unsupported behaviour model!");
@@ -498,6 +504,10 @@ namespace PhysX_test2.Engine.ContentLoader
                             behaviourmodel = new Logic.BehaviourModel.ObjectPhysicBehaviourModel(ObjectActor);
                             //CONTACT REPORT DISABLED TEMPORARY
                             //ObjectActor.ContactReportFlags = StillDesign.PhysX.ContactPairFlag.All;
+                        } break;
+                    case LevelObjectDescription.objectBonerelatedbehaviourmodel:
+                        {
+                            behaviourmodel = new Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel(currentCharacter, boneToAdd);
                         } break;
                     default:
                         {

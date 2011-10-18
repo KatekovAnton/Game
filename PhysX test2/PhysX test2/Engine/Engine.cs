@@ -50,6 +50,7 @@ namespace PhysX_test2.Engine {
         public LevelObject LevelObjectCharacterBox;
         public LevelObject LevelObjectCursorSphere;
         public LevelObject LevelObjectTestSide;
+        public LevelObject LevelObjectSCGunLO;
         public Actor groundplane;
 
 
@@ -139,6 +140,8 @@ namespace PhysX_test2.Engine {
             {
                 Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
                 AnimationManager.AnimationManager.Manager.AddAnimationUser(ro.character.Update, ro.character);
+                ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.WeaponIndex;
+                ContentLoader.ContentLoader.currentCharacter = ro.character;
             }
 
 
@@ -161,6 +164,23 @@ namespace PhysX_test2.Engine {
             GraphicPipeleine.ProceedObject(lo.renderaspect);
             gameScene.AddObject(lo);
             LevelObjectCursorSphere = lo;
+
+
+            //gun
+            var gundesc = new LevelObjectDescription();
+            gundesc = packs.GetObject("SCGunLO\0", gundesc) as LevelObjectDescription;
+
+            
+
+            lo = ContentLoader.ContentLoader.LevelObjectFromDescription(gundesc, packs, Scene);
+            Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel bm = lo.behaviourmodel as Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel;
+      //чем меньше тем выше задран нос пушки
+            //хуз = влево/вправо, -верх/+низ
+            lo.SetGlobalPose(Matrix.CreateRotationX(MathHelper.PiOver2 - 0.13f) * Matrix.CreateTranslation(new Vector3(-0.42f,-0.20f,-0.43f)));
+            GraphicPipeleine.ProceedObject(lo.renderaspect);
+            gameScene.AddObject(lo);
+            LevelObjectSCGunLO = lo;
+            
 
             packs.Unload();
             CreateCharCameraController();

@@ -11,24 +11,25 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
     {
         public int parentBone;
         public Engine.Animation.Character parentCharacter;
-        Matrix localMatrix;
+        public Matrix localMatrix = Matrix.Identity;
         public ObjectBoneRelatedBehaviourModel(Engine.Animation.Character _parentCharacter, int _parentBone)
         {
             parentCharacter = _parentCharacter;
             parentBone = _parentBone;
+            CurrentPosition = Matrix.Identity;
         }
 
         public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
         {
             localMatrix = GlobalPoseMatrix;
-            Matrix resultMatrix = parentCharacter._currentFames[parentBone] * localMatrix;
+            Matrix resultMatrix = localMatrix * parentCharacter._currentFames[parentBone] * parentCharacter.Position; ;
             mov = CurrentPosition != resultMatrix;
             CurrentPosition = resultMatrix;
         }
 
         public override void DoFrame(GameTime gametime)
         {
-            Matrix newpos = parentCharacter._currentFames[parentBone] * localMatrix;
+            Matrix newpos = localMatrix * parentCharacter._currentFames[parentBone] * parentCharacter.Position; ;
             moved = newpos!=CurrentPosition|| mov;
             CurrentPosition = newpos;
             mov = false;
@@ -37,7 +38,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         public override void Move(Vector3 displacement)
         {
             localMatrix = localMatrix * Matrix.CreateTranslation(displacement);
-            Matrix resultMatrix = parentCharacter._currentFames[parentBone] * localMatrix;
+            Matrix resultMatrix = localMatrix * parentCharacter._currentFames[parentBone] * parentCharacter.Position;
             mov = CurrentPosition != resultMatrix;
             CurrentPosition = resultMatrix;
         }
