@@ -15,7 +15,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
     /// </summary>
     class ObjectPhysicControllerBehaviourModel:ObjectBehaviourModel
     {
-        public const float characterSpeed = 6.0f;
+        public const float characterSpeed = 5.0f;
         private readonly Actor _actor;
         private Vector3 _lastposition;
         private Vector3 _move;

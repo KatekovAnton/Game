@@ -174,12 +174,28 @@ namespace PhysX_test2.Engine {
 
             lo = ContentLoader.ContentLoader.LevelObjectFromDescription(gundesc, packs, Scene);
             Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel bm = lo.behaviourmodel as Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel;
-      //чем меньше тем выше задран нос пушки
-            //хуз = влево/вправо, -верх/+низ
-            lo.SetGlobalPose(Matrix.CreateRotationX(MathHelper.PiOver2 - 0.13f) * Matrix.CreateTranslation(new Vector3(-0.42f,-0.20f,-0.43f)));
+        //чем меньше тем выше задран нос пушки
+            //хуз = вправо/влево, -верх/+низ
+            lo.SetGlobalPose(Matrix.CreateRotationX(MathHelper.PiOver2 - 0.14f) * Matrix.CreateTranslation(new Vector3(-0.46f,-0.20f,-0.43f)));
             GraphicPipeleine.ProceedObject(lo.renderaspect);
             gameScene.AddObject(lo);
             LevelObjectSCGunLO = lo;
+
+            if (LevelObjectCharacterBox.renderaspect.isanimated)
+            {
+                Render.AnimRenderObject ro = LevelObjectCharacterBox.renderaspect as Render.AnimRenderObject;
+                ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.HeadIndex;
+            }
+            //head
+            var headdesc = new LevelObjectDescription();
+            headdesc = packs.GetObject("Head01\0", headdesc) as LevelObjectDescription;
+
+            lo = ContentLoader.ContentLoader.LevelObjectFromDescription(headdesc, packs, Scene);
+            bm = lo.behaviourmodel as Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel;
+            //хуз = вправо/влево, ,-верх/+низ
+            lo.SetGlobalPose(Matrix.CreateTranslation(new Vector3(-0.01f, -0.0f, 0.8f)));
+            GraphicPipeleine.ProceedObject(lo.renderaspect);
+            gameScene.AddObject(lo);
             
 
             packs.Unload();
