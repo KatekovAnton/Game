@@ -193,7 +193,7 @@ namespace PhysX_test2.Engine {
             lo = ContentLoader.ContentLoader.LevelObjectFromDescription(headdesc, packs, Scene);
             bm = lo.behaviourmodel as Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel;
             //хуз = вправо/влево, ,-верх/+низ
-            lo.SetGlobalPose(Matrix.CreateTranslation(new Vector3(-0.01f, -0.0f, 0.8f)));
+            lo.SetGlobalPose(Matrix.CreateTranslation(new Vector3(-0.00f, -0.01f, 0.83f)));
             GraphicPipeleine.ProceedObject(lo.renderaspect);
             gameScene.AddObject(lo);
             
