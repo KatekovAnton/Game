@@ -1,15 +1,16 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+
 using PhysX_test2.Content;
 using PhysX_test2.Engine.CameraControllers;
 using PhysX_test2.Engine.Helpers;
 using PhysX_test2.Engine.Logic;
 using PhysX_test2.Engine.Render;
+
 using StillDesign.PhysX;
-using Material = PhysX_test2.Engine.Render.Materials.Material;
-using Microsoft.Xna.Framework.Input;
 
 
 namespace PhysX_test2.Engine {
@@ -87,6 +88,7 @@ namespace PhysX_test2.Engine {
             Camera = new Camera(this);
             spriteBatch = new SpriteBatch(DeviceManager.GraphicsDevice);
 
+            //инит ФизиХ-а
             var coreDesc = new CoreDescription();
             var output = new UserOutput();
 
@@ -100,22 +102,31 @@ namespace PhysX_test2.Engine {
                                                   Gravity = new Vector3(0.0f, -9.81f * 1.7f, 0.0f), 
                                                   GroundPlaneEnabled = false};
             Scene = Core.CreateScene(sceneDesc);
+            //для обработки столкновений
+            Scene.UserContactReport = new ContactReport(MyGame.Instance);
+            //аниматор
             animationManager = AnimationManager.AnimationManager.Manager;
+            //рендерщик
+            GraphicPipeleine = new RenderPipeline(DeviceManager.GraphicsDevice, Camera);
+            //загрузка всего
             Loaddata();
         }
 
         private void Loaddata()
         {
+            //если ты с горы упал - ты ешё не экстримал
+            //чтоб далеко не падать
             groundplane = CreateGroundPlane();
 
+
+            //шойдер
             using (var stream = new FileStream(@"Content\Shaders\ObjectRender.fx", FileMode.Open))
             {
-                Material.ObjectRenderEffect = Shader.FromStream(stream, Device);
+               PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect = Shader.FromStream(stream, Device);
             }
-            Scene.UserContactReport = new ContactReport(MyGame.Instance);
 
+            //уровень
             gameScene = new GameScene();
-            GraphicPipeleine = new RenderPipeline(DeviceManager.GraphicsDevice, Camera);
 
             ///box 
             {
@@ -141,7 +152,9 @@ namespace PhysX_test2.Engine {
                 LevelObjectCharacterBox = lo;
                 lo.useDeltaMatrix = true;
                 lo.deltaMatrix = Matrix.CreateTranslation(new Vector3(0, 0, 0.1f));
-                if (lo.renderaspect.isanimated)
+                
+                //хз как сделоать поудобнее TODO
+                //if (lo.renderaspect.isanimated)
                 {
                     Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
                     AnimationManager.AnimationManager.Manager.AddAnimationUser(ro.character.Update, ro.character);
@@ -186,6 +199,7 @@ namespace PhysX_test2.Engine {
                 lo.SetGlobalPose(Matrix.CreateRotationX(MathHelper.PiOver2 - 0.14f) * Matrix.CreateTranslation(new Vector3(-0.46f, -0.20f, -0.43f)));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
+                //должен быть после чара
                 gameScene.objects.AddRule(LevelObjectCharacterBox, lo);
 
                 //memoriz
@@ -204,6 +218,7 @@ namespace PhysX_test2.Engine {
                 lo.SetGlobalPose(Matrix.CreateRotationX(MathHelper.PiOver2 - 0.14f) * Matrix.CreateTranslation(new Vector3(-0.46f, -0.20f, -0.43f)));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
+                //должен быть после чара
                 gameScene.objects.AddRule(LevelObjectCharacterBox, lo);
             }
 
@@ -225,10 +240,16 @@ namespace PhysX_test2.Engine {
                 lo.SetGlobalPose(Matrix.CreateTranslation(new Vector3(-0.00f, -0.01f, 0.84f)));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
+                //должен быть после чара
                 gameScene.objects.AddRule(LevelObjectCharacterBox, lo);
             }
 
+            //чистим временные какахи
+            //это стоит делать елси объекты больше не будут подгружаться
+            //тоесть если игра по уровням скажем
             packs.Unload();
+
+            //подключаем камеру и управление от клавы/мыши к челобарику
             CreateCharCameraController();
 
         }
@@ -248,23 +269,11 @@ namespace PhysX_test2.Engine {
             //updatelogic
             animationManager.UpdateStart(gameTime);
 
-            //Begin update world objects
+            //Begin update of level objects
             foreach (PivotObject lo in gameScene.objects)
                 lo.BeginDoFrame();
-
-
-            // обработка нажатий клавы
-            KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.W))
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Forward, _cameraController._yAngle));
-            if (keyboardState.IsKeyDown(Keys.S))
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Back, _cameraController._yAngle));
-            if (keyboardState.IsKeyDown(Keys.A))
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Left, _cameraController._yAngle));
-            if (keyboardState.IsKeyDown(Keys.D))
-                LevelObjectCharacterBox.behaviourmodel.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, _cameraController._yAngle));
            
-
+            
             foreach (PivotObject lo in gameScene.objects)
                 lo.DoFrame(gameTime);
 
@@ -279,7 +288,7 @@ namespace PhysX_test2.Engine {
 
 
             //calculatin info from controllers
-            _charcterController.Update(LevelObjectCursorSphere.transform.Translation);
+            _charcterController.Update(LevelObjectCursorSphere.transform.Translation, _cameraController._yAngle);
 
 
             //End updating world objects

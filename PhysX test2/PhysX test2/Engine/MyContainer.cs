@@ -116,6 +116,7 @@ namespace PhysX_test2.Engine
             return -1;
         }
 
+        //TODO - test it!!
         public void AddRule(T firstObject, T secondOnject)
         {
             int fi = IndexOf(firstObject);

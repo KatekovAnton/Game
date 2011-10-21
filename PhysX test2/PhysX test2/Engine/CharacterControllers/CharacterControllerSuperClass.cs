@@ -7,7 +7,7 @@ namespace PhysX_test2.Engine.CharacterControllers
 {
     public class CharacterControllerSuperClass
     {
-        public virtual void Update(Microsoft.Xna.Framework.Vector3 _target)
+        public virtual void Update(Microsoft.Xna.Framework.Vector3 _target, float yaang)
         { }
         /*
         //вообще като так в идеале но InputState-а нету покачто

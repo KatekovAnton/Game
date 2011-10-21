@@ -5,6 +5,8 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 
+using Microsoft.Xna.Framework.Input;
+
 namespace PhysX_test2.Engine.CharacterControllers
 {
     class CharacterControllerPerson:CharacterControllerSuperClass
@@ -48,9 +50,20 @@ namespace PhysX_test2.Engine.CharacterControllers
             _oldRotation = (float) buffer;
             return (float) result;
         }
-        public override void Update(Vector3 _target)
+        public override void Update(Vector3 _target, float yaang)
         {
             _charcterBehaviour.Rotate(CreateAngleForCharacter(_target) );
+
+            // обработка нажатий клавы
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.W))
+                _charcterBehaviour.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Forward, yaang));
+            if (keyboardState.IsKeyDown(Keys.S))
+                _charcterBehaviour.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Back, yaang));
+            if (keyboardState.IsKeyDown(Keys.A))
+                _charcterBehaviour.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Left, yaang));
+            if (keyboardState.IsKeyDown(Keys.D))
+                _charcterBehaviour.Move(Extensions.VectorForCharacterMoving(Extensions.Route.Right, yaang));
         }
     }
 }
