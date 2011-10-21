@@ -104,10 +104,12 @@ namespace PhysX_test2.Engine {
             Loaddata();
         }
 
-        private void Loaddata() {
+        private void Loaddata()
+        {
             groundplane = CreateGroundPlane();
 
-            using (var stream = new FileStream(@"Content\Shaders\ObjectRender.fx", FileMode.Open)) {
+            using (var stream = new FileStream(@"Content\Shaders\ObjectRender.fx", FileMode.Open))
+            {
                 Material.ObjectRenderEffect = Shader.FromStream(stream, Device);
             }
             Scene.UserContactReport = new ContactReport(MyGame.Instance);
@@ -116,87 +118,115 @@ namespace PhysX_test2.Engine {
             GraphicPipeleine = new RenderPipeline(DeviceManager.GraphicsDevice, Camera);
 
             ///box 
-            var boxrdescription = new LevelObjectDescription();
-            boxrdescription = packs.GetObject("WoodenCrate10WorldObject\0", boxrdescription) as LevelObjectDescription;
+            {
+                var boxrdescription = new LevelObjectDescription();
+                boxrdescription = packs.GetObject("WoodenCrate10WorldObject\0", boxrdescription) as LevelObjectDescription;
 
-            LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxrdescription, packs, Scene);
-            lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 30, 0));
-            GraphicPipeleine.ProceedObject(lo.renderaspect);
-            gameScene.AddObject(lo);
-            LevelObjectBox = lo;
+                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxrdescription, packs, Scene);
+                lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 30, 0));
+                GraphicPipeleine.ProceedObject(lo.renderaspect);
+                gameScene.AddObject(lo);
+                LevelObjectBox = lo;
+            }
 
             ////our character
-            var boxcharacterdescription = new LevelObjectDescription();
-            boxcharacterdescription = packs.GetObject("MyNewCharacter\0", boxcharacterdescription) as LevelObjectDescription;
-
-            lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxcharacterdescription, packs, Scene);
-            lo.SetGlobalPose(Matrix.CreateRotationX(-MathHelper.PiOver2) * Matrix.CreateTranslation(0, 20, 0));
-            GraphicPipeleine.ProceedObject(lo.renderaspect);
-            gameScene.AddObject(lo);
-            LevelObjectCharacterBox = lo;
-            lo.useDeltaMatrix = true;
-            lo.deltaMatrix = Matrix.CreateTranslation(new Vector3(0, 0, 0.1f));
-            if (lo.renderaspect.isanimated)
             {
-                Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
-                AnimationManager.AnimationManager.Manager.AddAnimationUser(ro.character.Update, ro.character);
-                ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.WeaponIndex;
-                ContentLoader.ContentLoader.currentCharacter = ro.character;
-            }
+                var boxcharacterdescription = new LevelObjectDescription();
+                boxcharacterdescription = packs.GetObject("MyNewCharacter\0", boxcharacterdescription) as LevelObjectDescription;
 
+                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxcharacterdescription, packs, Scene);
+                lo.SetGlobalPose(Matrix.CreateRotationX(-MathHelper.PiOver2) * Matrix.CreateTranslation(0, 20, 0));
+                GraphicPipeleine.ProceedObject(lo.renderaspect);
+                gameScene.AddObject(lo);
+                LevelObjectCharacterBox = lo;
+                lo.useDeltaMatrix = true;
+                lo.deltaMatrix = Matrix.CreateTranslation(new Vector3(0, 0, 0.1f));
+                if (lo.renderaspect.isanimated)
+                {
+                    Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
+                    AnimationManager.AnimationManager.Manager.AddAnimationUser(ro.character.Update, ro.character);
+                    ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.WeaponIndex;
+                    ContentLoader.ContentLoader.currentCharacter = ro.character;
+                }
+            }
 
             ////test side
-            var testsiderdescription = new LevelObjectDescription();
-            testsiderdescription = packs.GetObject("TestSideWorldObject\0", testsiderdescription) as LevelObjectDescription;
+            {
+                var testsiderdescription = new LevelObjectDescription();
+                testsiderdescription = packs.GetObject("TestSideWorldObject\0", testsiderdescription) as LevelObjectDescription;
 
-            lo = ContentLoader.ContentLoader.LevelObjectFromDescription(testsiderdescription, packs, Scene);
-            lo.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(0, 15, 0));
-            GraphicPipeleine.ProceedObject(lo.renderaspect);
-            gameScene.AddObject(lo);
-            LevelObjectTestSide = lo;
+                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(testsiderdescription, packs, Scene);
+                lo.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(0, 15, 0));
+                GraphicPipeleine.ProceedObject(lo.renderaspect);
+                gameScene.AddObject(lo);
+                LevelObjectTestSide = lo;
+            }
 
             /////sphere
-            var spheredesc = new LevelObjectDescription();
-            spheredesc = packs.GetObject("Cursor\0", spheredesc) as LevelObjectDescription;
+            {
+                var spheredesc = new LevelObjectDescription();
+                spheredesc = packs.GetObject("Cursor\0", spheredesc) as LevelObjectDescription;
 
-            lo = ContentLoader.ContentLoader.LevelObjectFromDescription(spheredesc, packs, Scene);
-            lo.SetGlobalPose(Matrix.CreateTranslation(0, 30, 0));
-            GraphicPipeleine.ProceedObject(lo.renderaspect);
-            gameScene.AddObject(lo);
-            LevelObjectCursorSphere = lo;
-
+                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(spheredesc, packs, Scene);
+                lo.SetGlobalPose(Matrix.CreateTranslation(0, 30, 0));
+                GraphicPipeleine.ProceedObject(lo.renderaspect);
+                gameScene.AddObject(lo);
+                LevelObjectCursorSphere = lo;
+            }
 
             //gun
-            var gundesc = new LevelObjectDescription();
-            gundesc = packs.GetObject("SCGunLO\0", gundesc) as LevelObjectDescription;
-
-            
-
-            lo = ContentLoader.ContentLoader.LevelObjectFromDescription(gundesc, packs, Scene);
-            Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel bm = lo.behaviourmodel as Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel;
-        //чем меньше тем выше задран нос пушки
-            //хуз = вправо/влево, -верх/+низ
-            lo.SetGlobalPose(Matrix.CreateRotationX(MathHelper.PiOver2 - 0.14f) * Matrix.CreateTranslation(new Vector3(-0.46f,-0.20f,-0.43f)));
-            GraphicPipeleine.ProceedObject(lo.renderaspect);
-            gameScene.AddObject(lo);
-            LevelObjectSCGunLO = lo;
-
-            if (LevelObjectCharacterBox.renderaspect.isanimated)
             {
-                Render.AnimRenderObject ro = LevelObjectCharacterBox.renderaspect as Render.AnimRenderObject;
-                ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.HeadIndex;
-            }
-            //head
-            var headdesc = new LevelObjectDescription();
-            headdesc = packs.GetObject("Head01\0", headdesc) as LevelObjectDescription;
+                var gundesc = new LevelObjectDescription();
+                gundesc = packs.GetObject("SCGunLO\0", gundesc) as LevelObjectDescription;
 
-            lo = ContentLoader.ContentLoader.LevelObjectFromDescription(headdesc, packs, Scene);
-            bm = lo.behaviourmodel as Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel;
-            //хуз = вправо/влево, ,-верх/+низ
-            lo.SetGlobalPose(Matrix.CreateTranslation(new Vector3(-0.00f, -0.01f, 0.83f)));
-            GraphicPipeleine.ProceedObject(lo.renderaspect);
-            gameScene.AddObject(lo);
-            
+                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(gundesc, packs, Scene);
+                Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel bm = lo.behaviourmodel as Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel;
+                //чем меньше тем выше задран нос пушки
+                //хуз = вправо/влево, -верх/+низ
+                lo.SetGlobalPose(Matrix.CreateRotationX(MathHelper.PiOver2 - 0.14f) * Matrix.CreateTranslation(new Vector3(-0.46f, -0.20f, -0.43f)));
+                GraphicPipeleine.ProceedObject(lo.renderaspect);
+                gameScene.AddObject(lo);
+                gameScene.objects.AddRule(LevelObjectCharacterBox, lo);
+
+                //memoriz
+                LevelObjectSCGunLO = lo;
+            }
+
+            //gun addon
+            {
+                var gundesc = new LevelObjectDescription();
+                gundesc = packs.GetObject("SСGunAddon\0", gundesc) as LevelObjectDescription;
+
+                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(gundesc, packs, Scene);
+                Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel bm = lo.behaviourmodel as Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel;
+                //чем меньше тем выше задран нос пушки
+                //хуз = вправо/влево, -верх/+низ
+                lo.SetGlobalPose(Matrix.CreateRotationX(MathHelper.PiOver2 - 0.14f) * Matrix.CreateTranslation(new Vector3(-0.46f, -0.20f, -0.43f)));
+                GraphicPipeleine.ProceedObject(lo.renderaspect);
+                gameScene.AddObject(lo);
+                gameScene.objects.AddRule(LevelObjectCharacterBox, lo);
+            }
+
+            //head
+            {
+
+                if (LevelObjectCharacterBox.renderaspect.isanimated)
+                {
+                    Render.AnimRenderObject ro = LevelObjectCharacterBox.renderaspect as Render.AnimRenderObject;
+                    ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.HeadIndex;
+                }
+
+                var headdesc = new LevelObjectDescription();
+                headdesc = packs.GetObject("Head01\0", headdesc) as LevelObjectDescription;
+
+                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(headdesc, packs, Scene);
+                Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel bm = lo.behaviourmodel as Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel;
+                //хуз = вправо/влево, ,-верх/+низ
+                lo.SetGlobalPose(Matrix.CreateTranslation(new Vector3(-0.00f, -0.01f, 0.84f)));
+                GraphicPipeleine.ProceedObject(lo.renderaspect);
+                gameScene.AddObject(lo);
+                gameScene.objects.AddRule(LevelObjectCharacterBox, lo);
+            }
 
             packs.Unload();
             CreateCharCameraController();
