@@ -7,5 +7,8 @@ namespace PhysX_test2.TheGame.Objects
 {
     public class GameCharacter : GameObject
     {
+
+        
     }
+
 }

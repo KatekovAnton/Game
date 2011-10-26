@@ -79,7 +79,6 @@ namespace PhysX_test2.Engine.Animation
     public class AnimationNode                              // узел графа анимаций
     {
         public string name;
-        public NodeProperties Properties;
         public int index;
         public NodeEvent[] nodeEvents;                      // исходящие рёбра
         public Animation animation;                         // соответствующая узлу анимация
@@ -89,19 +88,22 @@ namespace PhysX_test2.Engine.Animation
 
         public AnimationNode(string _name, Animation _animation)
         {
-            Properties = new NodeProperties();
             SetName(_name);
             animation = _animation;
         }
-        public AnimationNode(string _name, Animation _animation, NodeProperties _Properties)
+
+        public void SetProperties(Dictionary<string, string> dict)
         {
-            SetName(_name);
-            animation = _animation;
-            Properties = _Properties;
+            parameters = dict;
+            if (dict.Keys.Contains("speed"))
+            {
+                string data = parameters["speed"].Replace('.', ',');
+                animationSpeed = Convert.ToSingle(data);
+            }
         }
+
         public AnimationNode(string _name)
         {
-            Properties = new NodeProperties();
             SetName(_name);
         }
 
@@ -125,7 +127,7 @@ namespace PhysX_test2.Engine.Animation
         {
             int index = br.ReadInt32();
             AnimationNode node = new AnimationNode(br.ReadPackString());
-            node.index = index; // br.ReadInt32();
+            node.index = index;
             int animType = br.ReadInt32();
 
             switch (animType)
@@ -136,6 +138,7 @@ namespace PhysX_test2.Engine.Animation
                 default:
                     break;
             }
+            node.SetProperties( DictionaryMethods.FromStream(br));
             int count = br.ReadInt32();
             node.nodeEvents = new NodeEvent[count];
             for (int i = 0; i < count; i++)

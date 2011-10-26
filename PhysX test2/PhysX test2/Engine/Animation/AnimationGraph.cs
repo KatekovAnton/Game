@@ -100,20 +100,5 @@ namespace PhysX_test2.Engine.Animation
         }
     }
 
-    public class NodeProperties
-    {
-        public bool OneTimeAnimation;
-
-        
-        public static NodeProperties NodePropertiesFromStream(System.IO.BinaryReader br)
-        {
-            NodeProperties result = new NodeProperties();
-            result.LoadFromStream(br);
-            return result;
-        }
-        public void LoadFromStream(System.IO.BinaryReader br)
-        {
-            OneTimeAnimation = br.ReadBoolean();
-        }
-    }
+  
 }
