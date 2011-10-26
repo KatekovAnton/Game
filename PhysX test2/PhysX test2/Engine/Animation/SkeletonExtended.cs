@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PhysX_test2.Engine.Animation
 {
-    public class ExtendedSkeleton //: PackContent//int SkeletonWithAddInfo = 31;
+    public class SkeletonExtended //: PackContent//int SkeletonWithAddInfo = 31;
     {
         #region packcontent methods
        
@@ -24,6 +24,9 @@ namespace PhysX_test2.Engine.Animation
             topindexes = new int[br.ReadInt32()];
             for (int i = 0; i < topindexes.Length; i++)
                 topindexes[i] = br.ReadInt32();
+
+
+            //TODO load matrices
         }
         #endregion
 
@@ -38,15 +41,18 @@ namespace PhysX_test2.Engine.Animation
         public int TopRootIndex;
         public int BottomRootIndex;
 
+        public Microsoft.Xna.Framework.Matrix HeadMatrix;
+        public Microsoft.Xna.Framework.Matrix WeaponMatrix;
+
         public Skeleton baseskelet;
         #endregion
 
-        public ExtendedSkeleton(Skeleton s)
+        public SkeletonExtended(Skeleton s)
         {
             baseskelet = s;
         }
 
-        public ExtendedSkeleton()
+        public SkeletonExtended()
         {
            
         }

@@ -28,6 +28,7 @@ namespace PhysX_test2.Engine.Animation
         /// текущее время анимации каждого куска чара 0....1
         /// </summary>
         public float[] _currentAnimTime;
+        private int[] _currentFrames;
 
         public Matrix Position;
 
@@ -46,7 +47,11 @@ namespace PhysX_test2.Engine.Animation
                 for (int i = 0; i < startNodes.Length; i++)
                     SetCurrentNode(i, startNodes[i]);
 
-           
+            _currentFrames = new int[startNodes.Length];
+            for (int i = 0; i < _currentFrames.Length; i++)
+                _currentFrames[i] = -1;
+
+            temp = new DecomposedMatrix[_baseCharacter.skeleton.baseskelet.bones.Count()];
         }
 
         /// <summary>
@@ -70,6 +75,8 @@ namespace PhysX_test2.Engine.Animation
         }
 
 
+        
+
         /// <summary>
         /// на каждый раз обновляем итоговые матрицы для шейдера 
         /// </summary>
@@ -80,15 +87,38 @@ namespace PhysX_test2.Engine.Animation
             int[] frameNambers=new int[_currentNodes.Length];
             for(int i=0; i<_currentNodes.Length;i++)
             {
-                frameNambers[i]=(int)((_currentAnimTime[i]*30f)%(((FullAnimation)_currentNodes[i].animation).matrices.Length));            
-               // frameNambers[i] = 0;
-                _currentAnimTime[i] += (float) gameTime.ElapsedGameTime.TotalMilliseconds/400.0f;
+                frameNambers[i] = (int)((_currentAnimTime[i] * _currentNodes[i].animationSpeed) % (((FullAnimation)_currentNodes[i].animation).matrices.Length));            
+                _currentAnimTime[i] += (float) gameTime.ElapsedGameTime.TotalMilliseconds;
             }
-            _currentFames = _baseCharacter.GetFrameMatrix(_currentNodes, _baseCharacter.skeleton.baseskelet, frameNambers, Matrix.Identity);
-            //AnimationNode an = _currentNodes[0];
-            ///брать инфу из public AnimationNode[] _currentNodes;как то обрабатывать и строить _currentFames
-            
+            GetFrameMatrix(_currentNodes, _baseCharacter.skeleton.baseskelet, frameNambers, Matrix.Identity);
             return false;
+        }
+
+
+        private DecomposedMatrix[] temp;
+        public void GetFrameMatrix(AnimationNode[] ans, Skeleton skeleton, int[] frameNamber, Matrix chahgeRoot)
+        {
+
+            int a = 0;
+            for (int i = 0; i < ans.Length; i++)
+            {
+                if (frameNamber[i] != _currentFrames[i])//если у этой части скелета сменился кадр
+                    for (int j = 0; j < _baseCharacter.parts[i].animGraph.boneIndexes.Length; j++)
+                    {
+                        temp[_baseCharacter.parts[i].animGraph.boneIndexes[j]] = ((FullAnimation)ans[i].animation).matrices[frameNamber[i]][j];
+                    }
+                else //если кадр тотже
+                    a++;
+                
+            }
+
+            if (a != frameNamber.Length) // если a == frameNamber.Length значит матрицы вообще не надо перерасчитывать
+            {
+                Matrix[] res = DecomposedMatrix.ConvertToMartixArray(temp);
+                res[skeleton.RootIndex] = res[skeleton.RootIndex] * chahgeRoot;
+                _currentFames = Animation.GetIndependentMatrices(skeleton, res);
+                _currentFrames = frameNamber;
+            }
         }
     }
 }

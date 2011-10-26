@@ -99,7 +99,7 @@ namespace PhysX_test2.Engine.ContentLoader
             if (characterContent.Enginereadedobject.Count == 0)
             {
                 characterResult = new CharacterStatic();
-                characterResult.skeleton = new ExtendedSkeleton();
+                characterResult.skeleton = new SkeletonExtended();
                 System.IO.BinaryReader br = new System.IO.BinaryReader(new System.IO.MemoryStream(characterContent.data));
                 characterResult.skeleton.loadbody(br);
                 List<CharacterPart> parts = new List<CharacterPart>();

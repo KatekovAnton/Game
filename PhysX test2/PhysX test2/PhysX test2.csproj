@@ -137,7 +137,7 @@
     <Compile Include="Engine\Animation\Character.cs" />
     <Compile Include="Engine\Animation\CharacterStatic.cs" />
     <Compile Include="Engine\Animation\CharacterComponents.cs" />
-    <Compile Include="Engine\Animation\ExtendedSkeleton.cs" />
+    <Compile Include="Engine\Animation\SkeletonExtended.cs" />
     <Compile Include="Engine\Animation\Skeleton.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerPerson.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerSuperClass.cs" />
@@ -194,11 +194,16 @@
     <Compile Include="Engine\Engine.cs" />
     <Compile Include="Engine\Render\DebugRender\DebugRenderMesh.cs" />
     <Compile Include="Engine\Logic\PivotObject.cs" />
+    <Compile Include="TheGame\Objects\GameBulletBase.cs" />
+    <Compile Include="TheGame\Objects\GameBulletSimple.cs" />
+    <Compile Include="TheGame\Objects\GameCharacter.cs" />
+    <Compile Include="TheGame\Objects\GameObject.cs" />
     <Compile Include="MathExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="TheGame\Objects\GameSimpleObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -258,7 +263,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TheGame\Level\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

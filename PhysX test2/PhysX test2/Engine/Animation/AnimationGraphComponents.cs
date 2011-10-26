@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PhysX_test2.Engine.Animation
 {
-    public class NodeEvent                                  //событие которое возможно для конкретного узла графа анимаций- ребро графа анимаций
+    public class NodeEvent                                  // событие которое возможно для конкретного узла графа анимаций- ребро графа анимаций
     {
         public string neededEvent;                          // необходимое событие
         public AnimationNode parentNode;                        // ссылка на владельца 
@@ -83,6 +83,9 @@ namespace PhysX_test2.Engine.Animation
         public int index;
         public NodeEvent[] nodeEvents;                      // исходящие рёбра
         public Animation animation;                         // соответствующая узлу анимация
+        
+        public float animationSpeed = 0.075f;
+        public Dictionary<string, string> parameters;
 
         public AnimationNode(string _name, Animation _animation)
         {
@@ -109,7 +112,7 @@ namespace PhysX_test2.Engine.Animation
                 name += "\0";
         }
 
-        public AnimationNode Advance(string _event) // обработка перехода к слет узлу графа анмаций по событию
+        public AnimationNode Advance(string _event) // обработка перехода к след узлу графа анмаций по событию
         {
             for (int i = 0; i < nodeEvents.Length; i++)
                 if (nodeEvents[i].neededEvent.CompareTo(_event) == 0)
