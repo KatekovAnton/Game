@@ -16,6 +16,14 @@ namespace PhysX_test2
 {
     public static class Extensions
     {
+        private static Random _random;
+        public static Random GetRandomizer()
+        {
+            if (_random == null)
+                _random = new Random((int)DateTime.Now.Ticks);
+            return _random;
+        }
+
         public enum Route {
             Forward,
             Back,

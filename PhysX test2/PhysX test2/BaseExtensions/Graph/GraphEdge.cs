@@ -7,9 +7,14 @@ namespace PhysX_test2.BaseExtensions.Graph
 {
     public class GraphEdge
     {
-        public GraphNode nodeFrom;
-        public GraphNode nodeTo;
+        public GraphNode _nodeFrom;
+        public GraphNode _nodeTo;
 
-        public string edgeKey;
+        /// <summary>
+        /// probability for multiple edges with same _eventName and diffr _nodeTo
+        /// </summary>
+        public float _chance = 1.0f;
+
+        public string _eventName;
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PhysX_test2.Engine
+namespace PhysX_test2
 {
     public class MyContainer<T> : IEnumerable<T>
        where T : class
