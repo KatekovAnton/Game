@@ -252,14 +252,14 @@ namespace PhysX_test2.Engine.ContentLoader
                             {
                                 if (description.PhysXShapeType == 0)
                                 {
-                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize);
-                                    boxshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2);
+                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
+                                    boxshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
                                     ObjectActorDescription.Shapes.Add(boxshape);
                                 }
                                 else if (description.PhysXShapeType == 1)
                                 {
                                     StillDesign.PhysX.CapsuleShapeDescription capsshape = new StillDesign.PhysX.CapsuleShapeDescription(description.ShapeSize.X, description.ShapeSize.Z);
-                                    capsshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2);
+                                    capsshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
                                     ObjectActorDescription.Shapes.Add(capsshape);
                                 }
                             }
@@ -275,7 +275,7 @@ namespace PhysX_test2.Engine.ContentLoader
                             ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
                             Microsoft.Xna.Framework.Matrix MassCenterMatrix;
                             Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
-                            ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix;
+                            ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
 
                             ObjectActor = scene.CreateActor(ObjectActorDescription);
                             ObjectActor.RaiseBodyFlag(StillDesign.PhysX.BodyFlag.FrozenRotation);
@@ -296,11 +296,11 @@ namespace PhysX_test2.Engine.ContentLoader
                             {
                                 if (description.PhysXShapeType == 0)
                                 {
-                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize);
+                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
                                     Microsoft.Xna.Framework.Matrix m;
                                     Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
                                     Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
-                                    boxshape.LocalRotation = m;
+                                    boxshape.LocalRotation = m.toPhysicM();
 
                                     ObjectActorDescription.Shapes.Add(boxshape);
                                 }
@@ -310,7 +310,7 @@ namespace PhysX_test2.Engine.ContentLoader
                                     Microsoft.Xna.Framework.Matrix m;
                                     Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
                                     Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
-                                    capsshape.LocalRotation = m;
+                                    capsshape.LocalRotation = m.toPhysicM();
 
                                     ObjectActorDescription.Shapes.Add(capsshape);
                                 }
@@ -336,7 +336,7 @@ namespace PhysX_test2.Engine.ContentLoader
                                 ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
                                 Microsoft.Xna.Framework.Matrix MassCenterMatrix;
                                 Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
-                                ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix;
+                                ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
                             }
                             ObjectActor = scene.CreateActor(ObjectActorDescription);
                             if (description.IsStatic)
@@ -398,14 +398,14 @@ namespace PhysX_test2.Engine.ContentLoader
                             {
                                 if (description.PhysXShapeType == 0)
                                 {
-                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize);
-                                    boxshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2);
+                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
+                                    boxshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
                                     ObjectActorDescription.Shapes.Add(boxshape);
                                 }
                                 else if (description.PhysXShapeType == 1)
                                 {
                                     StillDesign.PhysX.CapsuleShapeDescription capsshape = new StillDesign.PhysX.CapsuleShapeDescription(description.ShapeSize.X, description.ShapeSize.Z);
-                                    capsshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2);
+                                    capsshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
                                     ObjectActorDescription.Shapes.Add(capsshape);
                                 }
                             }
@@ -421,7 +421,7 @@ namespace PhysX_test2.Engine.ContentLoader
                             ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
                             Microsoft.Xna.Framework.Matrix MassCenterMatrix;
                             Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
-                            ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix;
+                            ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
                             ObjectActorDescription.Shapes[0].Material = characterMaterial;
                             ObjectActor = scene.CreateActor(ObjectActorDescription);
                             
@@ -444,11 +444,11 @@ namespace PhysX_test2.Engine.ContentLoader
                             {
                                 if (description.PhysXShapeType == 0)
                                 {
-                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize);
+                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
                                     Microsoft.Xna.Framework.Matrix m;
                                     Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
                                     Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
-                                    boxshape.LocalRotation = m;
+                                    boxshape.LocalRotation = m.toPhysicM();
 
                                     ObjectActorDescription.Shapes.Add(boxshape);
                                 }
@@ -458,7 +458,7 @@ namespace PhysX_test2.Engine.ContentLoader
                                     Microsoft.Xna.Framework.Matrix m;
                                     Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
                                     Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
-                                    capsshape.LocalRotation = m;
+                                    capsshape.LocalRotation = m.toPhysicM();
 
                                     ObjectActorDescription.Shapes.Add(capsshape);
                                 }
@@ -484,7 +484,7 @@ namespace PhysX_test2.Engine.ContentLoader
                                 ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
                                 Microsoft.Xna.Framework.Matrix MassCenterMatrix;
                                 Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
-                                ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix;
+                                ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
                             }
                             ObjectActor = scene.CreateActor(ObjectActorDescription);
                             if (description.IsStatic)

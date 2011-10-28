@@ -77,9 +77,11 @@ namespace PhysX_test2.Engine {
 
             DeviceManager = new GraphicsDeviceManager(game);
 
+            
+
             //разме рэкрана
-            DeviceManager.PreferredBackBufferWidth = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.8);
-            DeviceManager.PreferredBackBufferHeight = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.8);
+            DeviceManager.PreferredBackBufferWidth = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.5);
+            DeviceManager.PreferredBackBufferHeight = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.5);
         }
 
 
@@ -98,8 +100,8 @@ namespace PhysX_test2.Engine {
 
             var sceneDesc = new SceneDescription {SimulationType = SimulationType.Software, //Hardware,
                                                   MaximumBounds = new Bounds3(-1000, -1000, -1000, 1000, 1000, 1000), 
-                                                  UpAxis = 2, 
-                                                  Gravity = new Vector3(0.0f, -9.81f * 1.7f, 0.0f), 
+                                                  UpAxis = 2,
+                                                  Gravity = new StillDesign.PhysX.MathPrimitives.Vector3(0.0f, -9.81f * 1.7f, 0.0f), 
                                                   GroundPlaneEnabled = false};
             Scene = Core.CreateScene(sceneDesc);
             //для обработки столкновений

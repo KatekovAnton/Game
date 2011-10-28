@@ -30,7 +30,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
         {
             this.globalpose = GlobalPoseMatrix;
-            _actor.GlobalPose = GlobalPoseMatrix;
+            _actor.GlobalPose = GlobalPoseMatrix.toPhysicM();
         }
 
         public override void Move(Vector3 displacement)
@@ -42,7 +42,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
 
         public void Rotate( float angle) {
             _angle += angle;
-            _actor.GlobalOrientation *= Matrix.CreateRotationY(angle);
+            _actor.GlobalOrientation *= Matrix.CreateRotationY(angle).toPhysicM();
             //_actor.GlobalOrientation = newOrient;
             //_actor.GlobalPose += Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), angle);
         }
@@ -59,13 +59,13 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
                 _move.X *= characterSpeed;
                 _move.Z *= characterSpeed;
 
-                _actor.LinearVelocity = new Vector3(_move.X, _move.Y + _actor.LinearVelocity.Y, _move.Z);
+                _actor.LinearVelocity = new  StillDesign.PhysX.MathPrimitives.Vector3(_move.X, _move.Y + _actor.LinearVelocity.Y, _move.Z);
             }
             else
-                _actor.LinearVelocity = new Vector3(0, _actor.LinearVelocity.Y, 0);
+                _actor.LinearVelocity = new StillDesign.PhysX.MathPrimitives.Vector3(0, _actor.LinearVelocity.Y, 0);
 
             _lastposition = CurrentPosition.Translation;
-            CurrentPosition = _actor.GlobalPose;
+            CurrentPosition = _actor.GlobalPose.toXNAM();
             _move.X = _move.Y = _move.Z =0;
         }
     }

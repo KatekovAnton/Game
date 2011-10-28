@@ -51,10 +51,10 @@ namespace PhysX_test2
                         ShapeFlag shapeFlags = iter.GetShapeFlags();
                         int numberOfPatches = iter.GetNumberOfPatches();
                         int numberOfPatchesRemaining = iter.GetNumberOfPatchesRemaining();
-                        Vector3 patchNormal = iter.GetPatchNormal();
+                        StillDesign.PhysX.MathPrimitives.Vector3 patchNormal = iter.GetPatchNormal();
                         int numberOfPoints = iter.GetNumberOfPoints();
                         int numberOfPointsRemaining = iter.GetNumberOfPointsRemaining();
-                        Vector3 point = iter.GetPoint();
+                        StillDesign.PhysX.MathPrimitives.Vector3 point = iter.GetPoint();
                         float separation = iter.GetSeperation();
                         int featureIndex0 = iter.GetFeatureIndex0();
                         int featureIndex1 = iter.GetFeatureIndex1();
@@ -68,7 +68,7 @@ namespace PhysX_test2
             {
                 if ((pair.A == a || pair.A == b) && (pair.B == a || pair.B == b))
                 {
-                    pair.Callback(a, b, events, contactInformation.FrictionForce, contactInformation.NormalForce);
+                    pair.Callback(a, b, events, contactInformation.FrictionForce.toXNAV3(), contactInformation.NormalForce.toXNAV3());
                     break;
                 }
             }

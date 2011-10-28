@@ -31,6 +31,31 @@ namespace PhysX_test2
             Right
         }
 
+        public static StillDesign.PhysX.MathPrimitives.Vector3 toPhysicV3(this Microsoft.Xna.Framework.Vector3 _vector)//стринг с нулём
+        {
+            return new StillDesign.PhysX.MathPrimitives.Vector3(_vector.X, _vector.Y, _vector.Z);
+        }
+
+        public static Microsoft.Xna.Framework.Vector3 toXNAV3(this  StillDesign.PhysX.MathPrimitives.Vector3 _vector)//стринг с нулём
+        {
+            return new Microsoft.Xna.Framework.Vector3(_vector.X, _vector.Y, _vector.Z);
+        }
+
+        public static StillDesign.PhysX.MathPrimitives.Matrix toPhysicM(this Microsoft.Xna.Framework.Matrix _matrix)//стринг с нулём
+        {
+            return new StillDesign.PhysX.MathPrimitives.Matrix(_matrix.M11, _matrix.M12, _matrix.M13, _matrix.M14,
+                                                                _matrix.M21, _matrix.M22, _matrix.M23, _matrix.M24,
+                                                                _matrix.M31, _matrix.M32, _matrix.M33, _matrix.M34,
+                                                                _matrix.M41, _matrix.M42, _matrix.M43, _matrix.M44);
+        }
+
+        public static Microsoft.Xna.Framework.Matrix toXNAM(this StillDesign.PhysX.MathPrimitives.Matrix _matrix)//стринг с нулём
+        {
+            return new Microsoft.Xna.Framework.Matrix (_matrix.M11, _matrix.M12, _matrix.M13, _matrix.M14,
+                                                                _matrix.M21, _matrix.M22, _matrix.M23, _matrix.M24,
+                                                                _matrix.M31, _matrix.M32, _matrix.M33, _matrix.M34,
+                                                                _matrix.M41, _matrix.M42, _matrix.M43, _matrix.M44);
+        }
 
         public static string ReadPackString(this System.IO.BinaryReader self)//стринг с нулём
         {
