@@ -44,19 +44,54 @@ namespace PhysX_test2.Engine.Logic
         /// </summary>
         public Microsoft.Xna.Framework.Matrix renderMatrix;
 
+        /// <summary>
+        /// for one механика поведения объекта с физ точки зрения
+        /// </summary>
+        public BehaviourModel.ObjectBehaviourModel behaviourmodel;
+
         public PivotObject()
         { }
 
         public bool moved;
        
-        public abstract void Move(Vector3 d);
-        public abstract void SetGlobalPose(Matrix newPose);
         public abstract RenderObject HaveRenderAspect();
         public abstract Render.Materials.Material HaveMaterial();
-        public abstract void Update();
-        public abstract void BeginDoFrame();
-        public abstract void EndDoFrame();
         public abstract void DoFrame(GameTime gt);
+
+
+        public void BeginDoFrame()
+        {
+            moved = false;
+            behaviourmodel.BeginDoFrame();
+        }
+
+        public void EndDoFrame()
+        {
+            behaviourmodel.EndDoFrame();
+            moved = behaviourmodel.moved;
+        }
+
+        public void Move(Microsoft.Xna.Framework.Vector3 d)
+        {
+            behaviourmodel.Move(d);
+            moved = true;
+        }
+
+        public void SetGlobalPose(Microsoft.Xna.Framework.Matrix newPose)
+        {
+            behaviourmodel.SetGlobalPose(newPose, null);
+            transform = newPose;
+            moved = true;
+        }
+
+        public void Update()
+        {
+            transform = behaviourmodel.globalpose;
+            renderMatrix = useDeltaMatrix ? deltaMatrix * transform : transform;
+            if (moved)
+                raycastaspect.boundingShape.Update(transform);
+
+        }
 
         /*from editor
          public abstract void SetActive(bool active);

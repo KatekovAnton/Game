@@ -151,6 +151,7 @@
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectBoneRelatedBehaviourModel.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectRelatedBehaviourModel.cs" />
+    <Compile Include="Engine\Logic\ObjectContainer.cs" />
     <Compile Include="Engine\Render\AnimRenderObject.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectPhysicControllerBehaviourModel.cs" />
     <Compile Include="Engine\Logic\EditorAspect.cs" />

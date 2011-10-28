@@ -9,6 +9,23 @@ namespace PhysX_test2.TheGame.Level
 {
     public class GameLevel
     {
-        EngineScene scene;
+        public EngineScene _scene;
+
+        public GameLevel(EngineScene __scene)
+        {
+            _scene = __scene;
+        }
+
+        public void AddLight(Engine.Logic.LigthSource theLight)
+        { }
+
+        public void RemoveLight(Engine.Logic.LigthSource theLight)
+        { }
+
+        public void AddObject(Engine.Logic.PivotObject theObjecr)
+        { }
+
+        public void RemoveObject(Engine.Logic.PivotObject theObjecr)
+        { }
     }
 }
