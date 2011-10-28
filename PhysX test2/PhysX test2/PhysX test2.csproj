@@ -213,7 +213,9 @@
     <Compile Include="TheGame\Objects\GameSimpleObject.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="cudart32_30_9.dll" />
+    <Content Include="cudart32_30_9.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
     <Content Include="NxCharacter.dll">
@@ -222,9 +224,15 @@
     <Content Include="NxCooking.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="PhysXCooking.dll" />
-    <Content Include="PhysXCore.dll" />
-    <Content Include="PhysXDevice.dll" />
+    <Content Include="PhysXCooking.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PhysXCore.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PhysXDevice.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="PhysXLoader.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
