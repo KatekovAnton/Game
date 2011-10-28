@@ -549,6 +549,11 @@ namespace PhysX_test2.Engine.ContentLoader
                     IDisposable i = obj;
                     i.Dispose();
                 }
+                if (description.IsAnimated)
+                {
+                    Content.CharacterContent characterContent = PackList.Instance.FindObject(description.CharacterName, ref p) as Content.CharacterContent;
+                    characterContent.Enginereadedobject.RemoveAt(characterContent.Enginereadedobject.Count - 1);
+                }
 
 
                 //unload material

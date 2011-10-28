@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PhysX_test2.Engine.Logic
 {
-    public class GameScene
+    public class EngineScene
     {
         public MyContainer<PivotObject> ShadowObjects;
         public MyContainer<PivotObject> VisibleObjects;
@@ -14,7 +14,7 @@ namespace PhysX_test2.Engine.Logic
         public SceneGraph.SceneGraph sceneGraph;
 
 
-        public GameScene()
+        public EngineScene()
         {
             objects = new MyContainer<PivotObject>(100, 10);
             VisibleObjects = new MyContainer<PivotObject>(100, 2);
@@ -22,7 +22,7 @@ namespace PhysX_test2.Engine.Logic
             sceneGraph = new SceneGraph.SceneGraph(this);
         }
 
-        public GameScene(GameScene s)
+        public EngineScene(EngineScene s)
         {
             ShadowObjects = s.ShadowObjects;
             VisibleObjects = s.VisibleObjects;

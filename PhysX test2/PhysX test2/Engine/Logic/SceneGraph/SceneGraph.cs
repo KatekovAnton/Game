@@ -9,10 +9,10 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
 {
     public class SceneGraph
     {
-        GameScene scene;
+        EngineScene scene;
         SGQdTree octree;
 
-        public SceneGraph(GameScene _scene)
+        public SceneGraph(EngineScene _scene)
         {
             octree = new SGQdTree();
             scene = _scene;

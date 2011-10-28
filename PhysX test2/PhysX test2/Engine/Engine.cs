@@ -46,7 +46,7 @@ namespace PhysX_test2.Engine {
 
 
         //scene and its objects
-        public GameScene gameScene;
+        public EngineScene gameScene;
         public LevelObject LevelObjectBox;
         public LevelObject LevelObjectCharacterBox;
         public LevelObject LevelObjectCursorSphere;
@@ -128,7 +128,7 @@ namespace PhysX_test2.Engine {
             }
 
             //уровень
-            gameScene = new GameScene();
+            gameScene = new EngineScene();
 
             ///box 
             {

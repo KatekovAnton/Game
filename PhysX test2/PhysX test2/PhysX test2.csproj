@@ -154,8 +154,7 @@
     <Compile Include="Engine\Render\AnimRenderObject.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectPhysicControllerBehaviourModel.cs" />
     <Compile Include="Engine\Logic\EditorAspect.cs" />
-    <Compile Include="Engine\Logic\GameObject.cs" />
-    <Compile Include="Engine\Logic\GameScene.cs" />
+    <Compile Include="Engine\Logic\EngineScene.cs" />
     <Compile Include="Engine\Logic\LevelObject.cs" />
     <Compile Include="Engine\Logic\OperatingModel\ObjectLevelGeometryOperatingModel.cs" />
     <Compile Include="Engine\Logic\OperatingModel\ObjectOperatingModel.cs" />
@@ -185,15 +184,12 @@
     <Compile Include="Engine\Logic\BehaviourModel\ObjectMovingBehaviourModel.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectPhysicBehaviourModel.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectStaticBehaviourModel.cs" />
-    <Compile Include="Engine\Logic\GameBeing.cs" />
-    <Compile Include="Engine\Logic\_GameObjects.cs" />
-    <Compile Include="Engine\Logic\Level.cs" />
     <Compile Include="Engine\Logic\LigthSource.cs" />
     <Compile Include="Engine\Render\RenderEngine.cs" />
     <Compile Include="Engine\Render\RenderObject.cs" />
     <Compile Include="Engine\Render\Shader.cs" />
     <Compile Include="Engine\Render\UnAnimRenderObject.cs" />
-    <Compile Include="Extensions.cs" />
+    <Compile Include="BaseExtensions\Extensions.cs" />
     <Compile Include="Engine\Camera.cs" />
     <Compile Include="Engine\Engine.cs" />
     <Compile Include="Engine\Render\DebugRender\DebugRenderMesh.cs" />
@@ -201,9 +197,14 @@
     <Compile Include="BaseExtensions\Graph\GraphStatic.cs" />
     <Compile Include="BaseExtensions\Graph\GraphEdge.cs" />
     <Compile Include="BaseExtensions\Graph\GraphNode.cs" />
+    <Compile Include="TheGame\Level\GameLevel.cs" />
     <Compile Include="TheGame\Objects\GameBulletBase.cs" />
     <Compile Include="TheGame\Objects\GameBulletSimple.cs" />
     <Compile Include="TheGame\Objects\GameCharacter.cs" />
+    <Compile Include="TheGame\Objects\ObjectGraph\ObjectGraphInstance.cs" />
+    <Compile Include="TheGame\Objects\ObjectGraph\ObjectGraphStatic.cs" />
+    <Compile Include="TheGame\Objects\GameCharacter\CharacterGraphEdge.cs" />
+    <Compile Include="TheGame\Objects\GameCharacter\CharacterGraphNode.cs" />
     <Compile Include="TheGame\Objects\GameObject.cs" />
     <Compile Include="MathExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -280,9 +281,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TheGame\Level\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--
