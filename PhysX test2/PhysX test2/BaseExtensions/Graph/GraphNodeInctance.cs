@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PhysX_test2.BaseExtensions.Graph
 {
-    public class GraphNodeInctance
+   /* public class GraphNodeInctance
     {
         public GraphNode _baseNode;
 
@@ -13,5 +13,5 @@ namespace PhysX_test2.BaseExtensions.Graph
         {
             _baseNode = _node;
         }
-    }
+    }*/
 }

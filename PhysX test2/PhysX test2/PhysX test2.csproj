@@ -122,6 +122,7 @@
   <ItemGroup>
     <Compile Include="BaseExtensions\Graph\GraphInstance.cs" />
     <Compile Include="BaseExtensions\Graph\GraphNodeInctance.cs" />
+    <Compile Include="BaseExtensions\Graph\IGraphUser.cs" />
     <Compile Include="Content\CollisionMesh.cs" />
     <Compile Include="ContactCallback.cs" />
     <Compile Include="Content\ContentMesh.cs" />
@@ -167,7 +168,7 @@
     <Compile Include="Engine\Logic\SceneGraph\SGNode.cs" />
     <Compile Include="Engine\Logic\SceneGraph\SGOcTree.cs" />
     <Compile Include="Engine\Logic\SceneGraph\SGQdTree.cs" />
-    <Compile Include="Engine\MyContainer.cs" />
+    <Compile Include="BaseExtensions\MyContainer.cs" />
     <Compile Include="Engine\Render\DebugRender\DebugRenderer.cs" />
     <Compile Include="Engine\Render\Materials\Material.cs" />
     <Compile Include="Engine\Render\Materials\TextureMaterial.cs" />
@@ -202,10 +203,13 @@
     <Compile Include="TheGame\Objects\GameBulletBase.cs" />
     <Compile Include="TheGame\Objects\GameBulletSimple.cs" />
     <Compile Include="TheGame\Objects\GameCharacter.cs" />
-    <Compile Include="TheGame\Objects\ObjectGraph\ObjectGraphInstance.cs" />
-    <Compile Include="TheGame\Objects\ObjectGraph\ObjectGraphStatic.cs" />
-    <Compile Include="TheGame\Objects\GameCharacter\CharacterGraphEdge.cs" />
-    <Compile Include="TheGame\Objects\GameCharacter\CharacterGraphNode.cs" />
+    <Compile Include="TheGame\Objects\ObjectMethods\CharacterMethods.cs" />
+    <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphEdge.cs" />
+    <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphInstance.cs" />
+    <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphNode.cs" />
+    <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphStatic.cs" />
+    <Compile Include="TheGame\Objects\StateGraphs\GameCharacter\CharacterGraphEdge.cs" />
+    <Compile Include="TheGame\Objects\StateGraphs\GameCharacter\CharacterGraphNode.cs" />
     <Compile Include="TheGame\Objects\GameObject.cs" />
     <Compile Include="MathExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -213,6 +217,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TheGame\Objects\GameSimpleObject.cs" />
+    <Compile Include="TheGame\StaticObjects.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="cudart32_30_9.dll">
