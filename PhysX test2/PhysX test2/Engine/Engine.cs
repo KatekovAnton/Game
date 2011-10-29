@@ -148,7 +148,7 @@ namespace PhysX_test2.Engine {
                 boxcharacterdescription = packs.GetObject("MyNewCharacter\0", boxcharacterdescription) as LevelObjectDescription;
 
                 LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxcharacterdescription, packs, Scene);
-                lo.SetGlobalPose(Matrix.CreateRotationX(-MathHelper.PiOver2) * Matrix.CreateTranslation(0, 20, 0));
+                lo.SetPosition(new Vector3( 0, 20, 0));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
                 LevelObjectCharacterBox = lo;

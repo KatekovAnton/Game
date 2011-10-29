@@ -42,29 +42,24 @@ namespace PhysX_test2.Engine.Logic
             //надобе сделать его не статическим- тогда будем сохранять где надо
             //а при загрузке инициализировать просто и сё.
             IdGenerator.ClearIdsCounter();
-           // LevelEditor.Cleared();
+            // LevelEditor.Cleared();
         }
-
 
         public PivotObject GetObjectWithID(uint id)
         {
             foreach (PivotObject t in objects)
                 if (t.editorAspect.id == id)
                     return t;
-         //   ConsoleWindow.TraceMessage("Unable to find object with id = " + id.ToString());
+            //   ConsoleWindow.TraceMessage("Unable to find object with id = " + id.ToString());
             return null;
         }
 
-
         public void AddObject(PivotObject newObject)
         {
-           newObject.Update();
+            newObject.Update();
             objects.Add(newObject);
             sceneGraph.AddObject(newObject);
-            
-            
         }
-
 
         public void DeleteObjects(MyContainer<PivotObject> deletingobjects)
         {
@@ -80,6 +75,17 @@ namespace PhysX_test2.Engine.Logic
             }
         }
 
+        public void RemoveObject(PivotObject deletingobjects)
+        {
+            objects.Remove(deletingobjects);
+            sceneGraph.DeleteObject(deletingobjects);
+
+            // счетчик идов будет начинать все делать с 0
+            if (objects.Count == 0)
+            {
+                IdGenerator.ClearIdsCounter();
+            }
+        }
 
         public void AddObjects(MyContainer<PivotObject> newobjects)
         {
@@ -90,7 +96,6 @@ namespace PhysX_test2.Engine.Logic
             }
         }
 
-
         public void UpdateScene()
         {
             foreach (PivotObject po in objects)
@@ -98,8 +103,9 @@ namespace PhysX_test2.Engine.Logic
                 po.Update();
             }
             sceneGraph.NewFrame();
-            
+
         }
+
         public void CalculateVisibleObjects()
         {
             sceneGraph.calculateVisibleObjects(GameEngine.Instance.Camera.cameraFrustum, VisibleObjects);

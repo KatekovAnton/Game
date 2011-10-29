@@ -84,6 +84,13 @@ namespace PhysX_test2.Engine.Logic
             moved = true;
         }
 
+        public void SetPosition(Vector3 position)
+        {
+            behaviourmodel.SetPosition(position);
+            transform = behaviourmodel.globalpose ;
+            moved = true;
+        }
+
         public void Update()
         {
             transform = behaviourmodel.globalpose;

@@ -33,6 +33,11 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             _actor.GlobalPose = GlobalPoseMatrix.toPhysicM();
         }
 
+        public override void SetPosition(Vector3 newPosition)
+        {
+            SetGlobalPose(Matrix.CreateRotationX(-MathHelper.PiOver2) * Matrix.CreateTranslation(newPosition), null);
+        }
+
         public override void Move(Vector3 displacement)
         {
             _move.X += displacement.X;

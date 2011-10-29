@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PhysX_test2.BaseExtensions.Graph
 {
-    public class GraphInstance
+    public abstract class GraphController
     {
         public GraphStatic _baseGraph;
 
@@ -13,8 +13,9 @@ namespace PhysX_test2.BaseExtensions.Graph
 
         public IGraphUser _linkedObject;
 
-        public GraphInstance(GraphStatic __baseGraph)
+        public GraphController(GraphStatic __baseGraph, IGraphUser __linkedObject)
         {
+            _linkedObject = __linkedObject;
             _baseGraph = __baseGraph;
             _currentNode = _baseGraph._nodes[0];
         }
@@ -46,6 +47,18 @@ namespace PhysX_test2.BaseExtensions.Graph
                 //event not exists
             }
             return _currentNode;
+        }
+
+        public void ReceiveEvent(string __eventName)
+        {
+            GraphNode lastnode = _currentNode;
+            GraphNode newnode = Advance(__eventName);
+            if (newnode != null)
+            {
+                //evet received, 
+                lastnode.OnDeactivate(_linkedObject);
+                newnode.OnActivate(_linkedObject);
+            }
         }
     }
 }
