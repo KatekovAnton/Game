@@ -38,11 +38,11 @@ namespace PhysX_test2.TheGame
         private StaticObjects()
         { 
             //init all static objects here
-            InitGraphCharacter();
-            InitGraphLevelGeometry();
+            InitCharacterGraph();
+            InitLevelGeometryGraph();
         }
 
-        private void InitGraphCharacter()
+        private void InitCharacterGraph()
         {
             CharacterGraphNode nodeIdle = new CharacterGraphNode();
             nodeIdle._name = _characterNodeIdle;
@@ -70,12 +70,9 @@ namespace PhysX_test2.TheGame
                 new ObjectGraphNode[] { nodeIdle, nodeDead }, 
                 new ObjectGraphEdge[] { deadToAlive, aliveToDead }
                 );
-
-
-
         }
 
-        private void InitGraphLevelGeometry()
+        private void InitLevelGeometryGraph()
         {
             ObjectGraphNode idleNode = new ObjectGraphNode();
             idleNode._name = _levelgeometryNodeIdle;
