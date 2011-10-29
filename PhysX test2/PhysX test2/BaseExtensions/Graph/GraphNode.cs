@@ -11,7 +11,7 @@ namespace PhysX_test2.BaseExtensions.Graph
     public class GraphNode
     {
         public string _name;
-        public GraphEdge[] _outEdges;
+        public MyContainer<GraphEdge> _outEdges;
 
         private MyContainer<GraphEdge> buffer;
 
@@ -24,6 +24,7 @@ namespace PhysX_test2.BaseExtensions.Graph
         public GraphNode()
         {
             buffer = new MyContainer<GraphEdge>(10, 1);
+            _outEdges = new MyContainer<GraphEdge>();
         }
 
         public GraphEdge GetEdge(string __eventName)

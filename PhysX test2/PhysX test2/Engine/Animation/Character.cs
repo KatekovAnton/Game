@@ -68,10 +68,10 @@ namespace PhysX_test2.Engine.Animation
         /// произошло какоето событие персонажа - меняем анимацию
         /// </summary>
         /// <param name="_event"></param>
-        public void ReceiveEvent(CharacterEvent _event)
+        public void ReceiveEvent(string _event)
         {
-            foreach (AnimationNode node in _currentNodes)
-                node.Advance(_event.eventName);
+            for (int i = 0; i < _currentNodes.Length;i++ )
+               _currentNodes[i] = _currentNodes[i].Advance(_event);
         }
 
 

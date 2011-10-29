@@ -20,6 +20,12 @@ namespace PhysX_test2.BaseExtensions.Graph
         public virtual void OnActivate(IGraphUser __parameter)
         { }
 
+        public void SetNodeFrom(GraphNode __nodefrom)
+        {
+            _nodeFrom = __nodefrom;
+            _nodeFrom._outEdges.Add(this);
+        }
+
 
     }
 }

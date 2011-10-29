@@ -23,23 +23,26 @@ namespace PhysX_test2.TheGame
         }
 
 
-        public const string _characterNodeIdle = "idle";
-        public const string _characterNodeDead = "dead";
+        public const string _characterNodeIdle = "idle\0";
+        public const string _characterNodeAction = "action\0";
+        public const string _characterNodeDead = "dead\0";
         public const string _characterEdgeDeadToIdle = "setalive\0";
         public const string _characterEdgeIdleToDead = "setdead\0";
+
+        public const string _characterEdgeActionToDead = "setdead\0";
+        public const string _characterEdgeActionToIdle = "setidle\0";
+        public const string _characterEdgeIdleToAction = "setaction\0";
 
         public const string _levelgeometryNodeIdle = "idle";
 
 
         public ObjectGraphStatic _graphCharacter;
-        public ObjectGraphStatic _graphLevelGeometry;
 
 
         private StaticObjects()
         { 
             //init all static objects here
             InitCharacterGraph();
-            InitLevelGeometryGraph();
         }
 
         private void InitCharacterGraph()
@@ -54,31 +57,47 @@ namespace PhysX_test2.TheGame
             nodeDead._isOperable = false;
             nodeDead._canReceiveControl = false;
 
+            CharacterGraphNode nodeAction = new CharacterGraphNode();
+            nodeDead._name = _characterNodeAction;
+            nodeDead._isOperable = true;
+            nodeDead._canReceiveControl = false;
+
+
+            //edges
             CharacterGraphEdge deadToAlive = new CharacterGraphEdge();
             deadToAlive._chance = 1.0f;
             deadToAlive._eventName = _characterEdgeDeadToIdle;
-            deadToAlive._nodeFrom = nodeDead;
+            deadToAlive.SetNodeFrom(nodeDead);
             deadToAlive._nodeTo = nodeIdle;
 
             CharacterGraphEdge aliveToDead = new CharacterGraphEdge();
             deadToAlive._chance = 1.0f;
             deadToAlive._eventName = _characterEdgeIdleToDead;
-            deadToAlive._nodeFrom = nodeIdle;
+            deadToAlive.SetNodeFrom(nodeIdle);
+            deadToAlive._nodeTo = nodeDead;
+
+            CharacterGraphEdge aliveToAction = new CharacterGraphEdge();
+            deadToAlive._chance = 1.0f;
+            deadToAlive._eventName = _characterEdgeIdleToAction;
+            deadToAlive.SetNodeFrom(nodeIdle);
+            deadToAlive._nodeTo = nodeDead;
+
+            CharacterGraphEdge actionToAlive = new CharacterGraphEdge();
+            deadToAlive._chance = 1.0f;
+            deadToAlive._eventName = _characterEdgeActionToIdle;
+            deadToAlive.SetNodeFrom(nodeIdle);
+            deadToAlive._nodeTo = nodeDead;
+
+            CharacterGraphEdge actionToDead = new CharacterGraphEdge();
+            deadToAlive._chance = 1.0f;
+            deadToAlive._eventName = _characterEdgeActionToDead;
+            deadToAlive.SetNodeFrom(nodeIdle);
             deadToAlive._nodeTo = nodeDead;
 
             _graphCharacter = new ObjectGraphStatic(
-                new ObjectGraphNode[] { nodeIdle, nodeDead }, 
-                new ObjectGraphEdge[] { deadToAlive, aliveToDead }
+                new ObjectGraphNode[] { nodeIdle, nodeDead,nodeAction }, 
+                new ObjectGraphEdge[] { deadToAlive, aliveToDead, aliveToAction,actionToAlive,actionToDead}
                 );
-        }
-
-        private void InitLevelGeometryGraph()
-        {
-            ObjectGraphNode idleNode = new ObjectGraphNode();
-            idleNode._name = _levelgeometryNodeIdle;
-            idleNode._outEdges = new BaseExtensions.Graph.GraphEdge[] { };
-
-            _graphLevelGeometry = new ObjectGraphStatic(new ObjectGraphNode[] { idleNode }, new ObjectGraphEdge[] { });
         }
     }
 }
