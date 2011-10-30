@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PhysX_test2.Engine.CharacterControllers
+namespace PhysX_test2.Engine.InputControllers
 {
-    public class CharacterControllerSuperClass
+    public class InputControllerSuperClass
     {
         public virtual void Update(Microsoft.Xna.Framework.Vector3 _target, float yaang)
         { }

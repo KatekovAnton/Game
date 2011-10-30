@@ -57,7 +57,7 @@ namespace PhysX_test2.Engine {
 
         //controllers for camera and character (objects between user and game)
         public CameraControllers.CameraControllerPerson _cameraController;
-        public CharacterControllers.CharacterControllerPerson _charcterController;
+        public InputControllers.InputControllerPerson _charcterController;
 
 
         //animation
@@ -259,7 +259,7 @@ namespace PhysX_test2.Engine {
 
         private void CreateCharCameraController() {
             _cameraController = new CameraControllerPerson(Camera, LevelObjectCharacterBox, new Vector3(-10, 6, 0));
-            _charcterController = new CharacterControllers.CharacterControllerPerson(LevelObjectCharacterBox);
+            _charcterController = new InputControllers.InputControllerPerson(LevelObjectCharacterBox);
         }
 
 

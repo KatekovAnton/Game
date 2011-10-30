@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 using Microsoft.Xna.Framework.Input;
 
-namespace PhysX_test2.Engine.CharacterControllers
+namespace PhysX_test2.Engine.InputControllers
 {
     public enum CharacterMoveState
     {
@@ -34,7 +34,7 @@ namespace PhysX_test2.Engine.CharacterControllers
         public float ActionLength = 2.0f;
     }
 
-    public class CharacterControllerPerson:CharacterControllerSuperClass
+    public class InputControllerPerson:InputControllerSuperClass
     {
         
         private Logic.BehaviourModel.ObjectPhysicControllerBehaviourModel _charcterBehaviour;
@@ -47,7 +47,7 @@ namespace PhysX_test2.Engine.CharacterControllers
 
         CharacterMoveState _state;
 
-        public CharacterControllerPerson(Logic.LevelObject charecter)
+        public InputControllerPerson(Logic.LevelObject charecter)
         {
             _character = charecter;
             _charcterBehaviour = charecter.behaviourmodel as Logic.BehaviourModel.ObjectPhysicControllerBehaviourModel;
