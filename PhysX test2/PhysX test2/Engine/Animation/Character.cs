@@ -75,7 +75,7 @@ namespace PhysX_test2.Engine.Animation
             {
                 frameNambers[i]=(int)((_currentAnimTime[i]*30f)%(((FullAnimation)_currentNodes[i].animation).matrices.Length));            
                // frameNambers[i] = 0;
-                _currentAnimTime[i] += 0.005f;
+                _currentAnimTime[i] += 0.003f;
             }
             _currentFames = _baseCharacter.GetFrameMatrix(_currentNodes, _baseCharacter.skeleton.baseskelet, frameNambers, Matrix.Identity);
             //AnimationNode an = _currentNodes[0];
