@@ -74,6 +74,11 @@ namespace PhysX_test2.Engine.Render
 
         #endregion
 
+        public void ReceiveEvent(string __eventname)
+        {
+            character.ReceiveEvent(__eventname);
+        }
+
         public AnimRenderObject(Character _char, AnimRenderObject.Model[] models, bool shadowcaster, bool shadowreceiver)
             : base()
         {
@@ -123,6 +128,11 @@ namespace PhysX_test2.Engine.Render
                 Disposed = true;
                 GC.SuppressFinalize(this);
             }
+        }
+
+        public override void setPosition(Microsoft.Xna.Framework.Matrix m)
+        {
+            character.Position = m;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace PhysX_test2.Content
             for (int j = 0; j < packs.Length; j++)
                 if (packs[j].Objects != null)
                     for (int i = 0; i < packs[j].Objects.Length; i++)
-                        if (packs[j].Objects[i].name == name)
+                        if (packs[j].Objects[i].name.CompareTo(name) == 0)
                         {
                             pp = packs[j];
                             return packs[j].Objects[i];

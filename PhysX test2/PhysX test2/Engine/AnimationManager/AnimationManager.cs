@@ -27,18 +27,19 @@ namespace PhysX_test2.Engine.AnimationManager
         protected AnimationManager()
         {
             animatedObjectsAtStart = new MyContainer<AnimationUser>(100, 3);
+            animatedObjectsAtEnd = new MyContainer<AnimationUser>(100, 3);
             scheduledObjects = new MyContainer<ScheduledObject>(100, 3);
 
             buffer = new MyContainer<AnimationUser>(100, 3);
         }
 
         private MyContainer<AnimationUser> animatedObjectsAtStart;
-        
+        private MyContainer<AnimationUser> animatedObjectsAtEnd;
         private MyContainer<ScheduledObject> scheduledObjects;
 
         private MyContainer<AnimationUser> buffer;
 
-        public void Update(GameTime gameTime)
+        public void UpdateStart(GameTime gameTime)
         {
             buffer.Clear();
             for (int i = 0; i < animatedObjectsAtStart.Count; i++)
@@ -47,8 +48,6 @@ namespace PhysX_test2.Engine.AnimationManager
                 if (animatedObjectsAtStart[i].animationFinished)
                     buffer.Add(animatedObjectsAtStart[i]);
             }
-            for (int i = 0; i < scheduledObjects.Count; i++)
-                scheduledObjects[i].Update(gameTime);
 
             if (!buffer.IsEmpty)
             {
@@ -56,10 +55,32 @@ namespace PhysX_test2.Engine.AnimationManager
                     animatedObjectsAtStart.Remove(user);
             }
         }
+        public void UpdateEnd(GameTime gameTime)
+        {
+            buffer.Clear();
+            for (int i = 0; i < animatedObjectsAtEnd.Count; i++)
+            {
+                animatedObjectsAtEnd[i].Update(gameTime);
+                if (animatedObjectsAtEnd[i].animationFinished)
+                    buffer.Add(animatedObjectsAtEnd[i]);
+            }
+            for (int i = 0; i < scheduledObjects.Count; i++)
+                scheduledObjects[i].Update(gameTime);
+
+            if (!buffer.IsEmpty)
+            {
+                foreach (AnimationUser user in buffer)
+                    animatedObjectsAtEnd.Remove(user);
+            }
+        }
 
         public void AddAnimationUser(AnimationStep _action, object newUser)
         {
             animatedObjectsAtStart.Add(new AnimationUser(_action, newUser));
+        }
+        public void AddAnimationUserEnd(AnimationStep _action, object newUser)
+        {
+            animatedObjectsAtEnd.Add(new AnimationUser(_action, newUser));
         }
 
         public void RemoveUser(object user)
@@ -73,6 +94,20 @@ namespace PhysX_test2.Engine.AnimationManager
                     if (_obj.selfObject == user)
                     {
                         animatedObjectsAtStart.Remove(_obj);
+                        removed = true;
+                        break;
+                    }
+                }
+            }
+            removed = true;
+            while (removed)
+            {
+                removed = false;
+                foreach (AnimationUser _obj in animatedObjectsAtEnd)
+                {
+                    if (_obj.selfObject == user)
+                    {
+                        animatedObjectsAtEnd.Remove(_obj);
                         removed = true;
                         break;
                     }

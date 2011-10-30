@@ -17,6 +17,8 @@ namespace PhysX_test2.Engine.ContentLoader
     public abstract class ContentLoader
     {
         private static StillDesign.PhysX.Material characterMaterial;
+        public static Character currentCharacter;
+        public static int boneToAdd;
         private static Material loadMaterial(string name, PackList packs)
         {
             PhysX_test2.Content.MaterialDescription mat = new MaterialDescription();
@@ -97,7 +99,7 @@ namespace PhysX_test2.Engine.ContentLoader
             if (characterContent.Enginereadedobject.Count == 0)
             {
                 characterResult = new CharacterStatic();
-                characterResult.skeleton = new ExtendedSkeleton();
+                characterResult.skeleton = new SkeletonExtended();
                 System.IO.BinaryReader br = new System.IO.BinaryReader(new System.IO.MemoryStream(characterContent.data));
                 characterResult.skeleton.loadbody(br);
                 List<CharacterPart> parts = new List<CharacterPart>();
@@ -118,7 +120,7 @@ namespace PhysX_test2.Engine.ContentLoader
                 characterResult = characterContent.Enginereadedobject[0] as CharacterStatic;
                 characterContent.Enginereadedobject.Add(characterResult);
             }
-            Character result = new Character(characterResult, new string[] { "walkForward\0", "stay1\0" });
+            Character result = new Character(characterResult, new string[] { "stay1\0", "stay1\0" });
             return result;
         }
 
@@ -250,14 +252,14 @@ namespace PhysX_test2.Engine.ContentLoader
                             {
                                 if (description.PhysXShapeType == 0)
                                 {
-                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize);
-                                    boxshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2);
+                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
+                                    boxshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
                                     ObjectActorDescription.Shapes.Add(boxshape);
                                 }
                                 else if (description.PhysXShapeType == 1)
                                 {
                                     StillDesign.PhysX.CapsuleShapeDescription capsshape = new StillDesign.PhysX.CapsuleShapeDescription(description.ShapeSize.X, description.ShapeSize.Z);
-                                    capsshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2);
+                                    capsshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
                                     ObjectActorDescription.Shapes.Add(capsshape);
                                 }
                             }
@@ -273,7 +275,7 @@ namespace PhysX_test2.Engine.ContentLoader
                             ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
                             Microsoft.Xna.Framework.Matrix MassCenterMatrix;
                             Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
-                            ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix;
+                            ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
 
                             ObjectActor = scene.CreateActor(ObjectActorDescription);
                             ObjectActor.RaiseBodyFlag(StillDesign.PhysX.BodyFlag.FrozenRotation);
@@ -294,11 +296,11 @@ namespace PhysX_test2.Engine.ContentLoader
                             {
                                 if (description.PhysXShapeType == 0)
                                 {
-                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize);
+                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
                                     Microsoft.Xna.Framework.Matrix m;
                                     Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
                                     Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
-                                    boxshape.LocalRotation = m;
+                                    boxshape.LocalRotation = m.toPhysicM();
 
                                     ObjectActorDescription.Shapes.Add(boxshape);
                                 }
@@ -308,7 +310,7 @@ namespace PhysX_test2.Engine.ContentLoader
                                     Microsoft.Xna.Framework.Matrix m;
                                     Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
                                     Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
-                                    capsshape.LocalRotation = m;
+                                    capsshape.LocalRotation = m.toPhysicM();
 
                                     ObjectActorDescription.Shapes.Add(capsshape);
                                 }
@@ -334,7 +336,7 @@ namespace PhysX_test2.Engine.ContentLoader
                                 ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
                                 Microsoft.Xna.Framework.Matrix MassCenterMatrix;
                                 Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
-                                ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix;
+                                ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
                             }
                             ObjectActor = scene.CreateActor(ObjectActorDescription);
                             if (description.IsStatic)
@@ -355,6 +357,10 @@ namespace PhysX_test2.Engine.ContentLoader
                             //CONTACT REPORT DISABLED TEMPORARY
                             //ObjectActor.ContactReportFlags = StillDesign.PhysX.ContactPairFlag.All;
                         } break;
+                    case LevelObjectDescription.objectBonerelatedbehaviourmodel:
+                        {
+                            behaviourmodel = new Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel(currentCharacter, boneToAdd);
+                        }break;
                     default:
                         {
                             throw new Exception("Unsupported behaviour model!");
@@ -392,14 +398,14 @@ namespace PhysX_test2.Engine.ContentLoader
                             {
                                 if (description.PhysXShapeType == 0)
                                 {
-                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize);
-                                    boxshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2);
+                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
+                                    boxshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
                                     ObjectActorDescription.Shapes.Add(boxshape);
                                 }
                                 else if (description.PhysXShapeType == 1)
                                 {
                                     StillDesign.PhysX.CapsuleShapeDescription capsshape = new StillDesign.PhysX.CapsuleShapeDescription(description.ShapeSize.X, description.ShapeSize.Z);
-                                    capsshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2);
+                                    capsshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
                                     ObjectActorDescription.Shapes.Add(capsshape);
                                 }
                             }
@@ -415,7 +421,7 @@ namespace PhysX_test2.Engine.ContentLoader
                             ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
                             Microsoft.Xna.Framework.Matrix MassCenterMatrix;
                             Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
-                            ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix;
+                            ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
                             ObjectActorDescription.Shapes[0].Material = characterMaterial;
                             ObjectActor = scene.CreateActor(ObjectActorDescription);
                             
@@ -438,11 +444,11 @@ namespace PhysX_test2.Engine.ContentLoader
                             {
                                 if (description.PhysXShapeType == 0)
                                 {
-                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize);
+                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
                                     Microsoft.Xna.Framework.Matrix m;
                                     Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
                                     Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
-                                    boxshape.LocalRotation = m;
+                                    boxshape.LocalRotation = m.toPhysicM();
 
                                     ObjectActorDescription.Shapes.Add(boxshape);
                                 }
@@ -452,7 +458,7 @@ namespace PhysX_test2.Engine.ContentLoader
                                     Microsoft.Xna.Framework.Matrix m;
                                     Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
                                     Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
-                                    capsshape.LocalRotation = m;
+                                    capsshape.LocalRotation = m.toPhysicM();
 
                                     ObjectActorDescription.Shapes.Add(capsshape);
                                 }
@@ -478,7 +484,7 @@ namespace PhysX_test2.Engine.ContentLoader
                                 ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
                                 Microsoft.Xna.Framework.Matrix MassCenterMatrix;
                                 Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
-                                ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix;
+                                ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
                             }
                             ObjectActor = scene.CreateActor(ObjectActorDescription);
                             if (description.IsStatic)
@@ -498,6 +504,10 @@ namespace PhysX_test2.Engine.ContentLoader
                             behaviourmodel = new Logic.BehaviourModel.ObjectPhysicBehaviourModel(ObjectActor);
                             //CONTACT REPORT DISABLED TEMPORARY
                             //ObjectActor.ContactReportFlags = StillDesign.PhysX.ContactPairFlag.All;
+                        } break;
+                    case LevelObjectDescription.objectBonerelatedbehaviourmodel:
+                        {
+                            behaviourmodel = new Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel(currentCharacter, boneToAdd);
                         } break;
                     default:
                         {
@@ -539,6 +549,11 @@ namespace PhysX_test2.Engine.ContentLoader
                     IDisposable i = obj;
                     i.Dispose();
                 }
+                if (description.IsAnimated)
+                {
+                    Content.CharacterContent characterContent = PackList.Instance.FindObject(description.CharacterName, ref p) as Content.CharacterContent;
+                    characterContent.Enginereadedobject.RemoveAt(characterContent.Enginereadedobject.Count - 1);
+                }
 
 
                 //unload material
@@ -567,7 +582,6 @@ namespace PhysX_test2.Engine.ContentLoader
                     cm.Enginereadedobject.RemoveAt(cm.Enginereadedobject.Count - 1);
                 }
             }
-            gobject.deleted = true;
         }
 
 

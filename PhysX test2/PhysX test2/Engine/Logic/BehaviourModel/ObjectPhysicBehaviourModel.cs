@@ -31,28 +31,28 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         }
         public override void Move(Vector3 displacement)
         {
-            SetGlobalPose(Matrix.Multiply(actor.GlobalPose, Matrix.CreateTranslation(displacement)), null);
+            SetGlobalPose(Matrix.Multiply(actor.GlobalPose.toXNAM(), Matrix.CreateTranslation(displacement)), null);
         }
         public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
         {
             this.globalpose = GlobalPoseMatrix;
-            actor.GlobalPose = GlobalPoseMatrix;
+            actor.GlobalPose = GlobalPoseMatrix.toPhysicM();
             if (Additionaldata != null)
             {
                 PhysicData pd = Additionaldata as PhysicData;
                
-                actor.LinearVelocity = pd.LinearVelocity;
-                actor.LinearMomentum = pd.LinearMomentum;
-                actor.AngularVelocity = pd.AngularVelocity;
-                actor.AngularMomentum = pd.AngularMomentum;
+                actor.LinearVelocity = pd.LinearVelocity.toPhysicV3();
+                actor.LinearMomentum = pd.LinearMomentum.toPhysicV3();
+                actor.AngularVelocity = pd.AngularVelocity.toPhysicV3();
+                actor.AngularMomentum = pd.AngularMomentum.toPhysicV3();
             }
            
 
         }
         public override void DoFrame(GameTime gametime)
         {
-            moved = CurrentPosition != actor.GlobalPose;
-            CurrentPosition = actor.GlobalPose;
+            moved = CurrentPosition.Translation != new Vector3( actor.GlobalPose.M41,actor.GlobalPose.M42,actor.GlobalPose.M43);
+            CurrentPosition = actor.GlobalPose.toXNAM();
         }
     }
 }

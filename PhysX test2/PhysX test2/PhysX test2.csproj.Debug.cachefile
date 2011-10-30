@@ -1,8 +1,11 @@
 Content\Courier New.xnb
 Content\Shaders\ObjectRender.xnb
 Content\Shaders\ObjectRender.fx
+cudart32_30_9.dll
 NxCharacter.dll
 NxCooking.dll
+PhysXCooking.dll
+PhysXCore.dll
+PhysXDevice.dll
 PhysXLoader.dll
-StillDesign.PhysX.Net.dll
 Data\Data.pack

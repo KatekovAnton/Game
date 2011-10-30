@@ -210,6 +210,7 @@ namespace PhysX_test2.Content
         public virtual void Unload()
         {
             objectReaded = false;
+            ReadedContentObject = null;
         }
     }
 }

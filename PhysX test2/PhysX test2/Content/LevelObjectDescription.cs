@@ -157,5 +157,11 @@ namespace PhysX_test2.Content
         //физические чарактерконтроллеры
         public const int objectphysiccharcontrollerbehaviourmodel = 3;
         const string ObjectPhysicCharacterControllerBehaviourModel = "Physic character controller behaviour model";
+        //зависимые от парента объекты
+        public const int objectrelatedbehaviourmodel = 4;
+        const string ObjectRelatedBehaviourModel = "Related behaviour model";
+        //зависимые от кости парента объекты
+        public const int objectBonerelatedbehaviourmodel = 5;
+        const string ObjectBoneRelatedBehaviourModel = "Bone related behaviour model";
     }
 }

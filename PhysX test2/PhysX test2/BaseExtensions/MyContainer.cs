@@ -4,12 +4,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PhysX_test2.Engine
+namespace PhysX_test2
 {
     public class MyContainer<T> : IEnumerable<T>
        where T : class
     {
+        class MyContainerRule
+        {
+            public T firstObject;
+            public int firstObjectIndex;
+            public T secondObject;
+            public int secondObjectIndex;
+
+            public MyContainerRule(T _first, T _second, int _fi, int _si)
+            {
+                firstObject = _first;
+                secondObject = _second;
+                firstObjectIndex = _fi;
+                secondObjectIndex = _si;
+            }
+        }
+        List<MyContainerRule> rules;
         T[] array;
+        int m, n;
+
         public IEnumerator<T> GetEnumerator()
         {
             for (int iii = 0; iii < Count; iii++)
@@ -30,10 +48,9 @@ namespace PhysX_test2.Engine
             m = 10;
             n = 1;
             array = new T[m * n];
-            // firstnullindex = 0;
-            //   LastNotNullIndex = -1;
-
+            rules = new List<MyContainerRule>();
         }
+
         public MyContainer(int _m, int _n)
         {
             Count = 0;
@@ -41,26 +58,17 @@ namespace PhysX_test2.Engine
             m = _m;
             n = _n;
             array = new T[m * n];
-            //   firstnullindex = 0;
-            //  LastNotNullIndex = -1;
+            rules = new List<MyContainerRule>();
         }
-        int m, n;
-        // int firstnullindex;
-        /* public int LastNotNullIndex
-         {
-             get;
-             private set;
-         }*/
 
         public void Clear()
         {
             for (int i = 0; i < Count; i++)
                 array[i] = null;
             Count = 0;
-            // firstnullindex = 0;
-            // LastNotNullIndex = -1;
             IsEmpty = true;
         }
+
         public static int CompareByNull(T value1, T value2)
         {
             if (value1 == null)
@@ -69,6 +77,7 @@ namespace PhysX_test2.Engine
                 return 1;
             return 0;
         }
+
         public void AddRange(T[] objects)
         {
             for (int i = 0; i < objects.Length; i++)
@@ -80,12 +89,10 @@ namespace PhysX_test2.Engine
             {
                 //если мы можем добавить, не расширяя массива
                 objects.CopyTo(array, Count);
-                //  LastNotNullIndex += objects.Length;
             }
             else
             {
                 //надо расширять основной массив
-
                 int neededsize = array.Length + objects.Length;
                 double times = Math.Floor((double)(objects.Length - (array.Length - Count)) / (double)(m * n)) + 1.0;
 
@@ -97,12 +104,38 @@ namespace PhysX_test2.Engine
                 tmparray.CopyTo(array, 0);
 
                 objects.CopyTo(array, Count);
-
-                //   firstnullindex += objects.Length;
             }
-            // LastNotNullIndex+=objects.Length;
             Count += objects.Length;
         }
+
+        public int IndexOf(T neededObject)
+        {
+            for (int i = 0; i < Count; i++)
+                if (neededObject == array[i])
+                    return i;
+            return -1;
+        }
+
+        //TODO - test it!!
+        public void AddRule(T firstObject, T secondOnject)
+        {
+            int fi = IndexOf(firstObject);
+            if (fi == -1)
+                return;
+            int si = IndexOf(secondOnject);
+            if (si == -1)
+                return;
+            if (fi == si)
+                return;
+            if (fi > si)
+            {
+                //swap before finish
+                array[fi] = secondOnject;
+                array[si] = firstObject;
+            }
+            rules.Add(new MyContainerRule(array[fi], array[si], fi, si));
+        }
+
         public void Add(T @object)
         {
             if (Count == array.Length - 1)
@@ -113,13 +146,8 @@ namespace PhysX_test2.Engine
                 tmparray.CopyTo(array, 0);
             }
             array[Count] = @object;
-            // LastNotNullIndex++;
             Count++;
             IsEmpty = false;
-
-
-
-
         }
 
         public T this[int index]
@@ -129,16 +157,19 @@ namespace PhysX_test2.Engine
                 return array[index];
             }
         }
+
         public bool IsEmpty
         {
             get;
             private set;
         }
+
         public int Count
         {
             get;
             private set;
         }
+
         public bool Remove(T element)
         {
             if (!IsEmpty)
@@ -150,6 +181,7 @@ namespace PhysX_test2.Engine
                     }
             return false;
         }
+
         public bool Remove(Predicate<T> match)
         {
             if (!IsEmpty)
@@ -161,22 +193,82 @@ namespace PhysX_test2.Engine
                     }
             return false;
         }
+
+        private int findRuleForSecondObject(T neededObject, out MyContainerRule rule)
+        {
+            for (int i = 0; i < rules.Count; i++)// MyContainerRule rile in rules)
+            {
+                if (rules[i].secondObject == neededObject)
+                {
+                    rule = rules[i];
+                    return i;
+                }
+            }
+            rule = null;
+            return -1;
+        }
+
+        public void removeAllrulesForObject(T neededObject)
+        {
+            bool removed = true;
+            while (removed)
+            {
+                removed = false;
+                foreach (MyContainerRule rule in rules)
+                    if (rule.firstObject == neededObject)
+                    {
+                        rules.Remove(rule);
+                        removed = true;
+                        break;
+                    }
+            }
+        }
+
         public void RemoveAt(int index)
         {
             if (Count != 0)
             {
                 if (array[index] != null)
                 {
-                    array[index] = null;
-                    array[index] = array[Count - 1];
-                    array[Count - 1] = null;
+                    //удалить все правила, в которых первый объект - тот который мы удаляем
+                    removeAllrulesForObject(array[index]);
+                    MyContainerRule rule = null;
+                    int ruleposition = findRuleForSecondObject(array[Count - 1], out rule);
+                    if (ruleposition != -1)
+                    {
+                        if (rule.firstObjectIndex > index)
+                        {
+                            //последний объект встанет перед тем, после которого должен находиться
+                            array[index] = null;
+                            array[index] = array[rule.firstObjectIndex];
+                            array[rule.firstObjectIndex] = array[rule.secondObjectIndex];
+                            array[Count - 1] = null;
 
+                            rule.secondObjectIndex = rule.firstObjectIndex;
+                            rule.firstObjectIndex = index;
+                        }
+                        else
+                        {
+                            //он назначен, но перемещается в позицию после
+                            array[index] = null;
+                            array[index] = array[Count - 1];
+                            array[Count - 1] = null;
+
+                            rule.secondObjectIndex = index;
+                        }
+                    }
+                    else
+                    {
+                        //никаких правил - удаляем и всё
+                        array[index] = null;
+                        array[index] = array[Count - 1];
+                        array[Count - 1] = null;
+                    }
                     Count--;
                     if (Count == 0)
                     {
                         IsEmpty = true;
                     }
-
                 }
             }
         }

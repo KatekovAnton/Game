@@ -64,7 +64,7 @@ namespace PhysX_test2.Engine.Animation
             return clip;
         }
 
-        public static FullAnimation From3DMAXStream(System.IO.Stream stream, ExtendedSkeleton skeleton, bool reverse)
+        public static FullAnimation From3DMAXStream(System.IO.Stream stream, SkeletonExtended skeleton, bool reverse)
         {
             Matrix[][] Frames;
             var clip = new FullAnimation();
@@ -97,7 +97,7 @@ namespace PhysX_test2.Engine.Animation
             clip.matrices = decomposedMatrices;
             return clip;
         }
-        public static FullAnimation From3DMAXStream(System.IO.Stream stream, ExtendedSkeleton skeleton, bool reverse, int[] partIndexes)
+        public static FullAnimation From3DMAXStream(System.IO.Stream stream, SkeletonExtended skeleton, bool reverse, int[] partIndexes)
         {
             Matrix[][] Frames;
             var clip = new FullAnimation();

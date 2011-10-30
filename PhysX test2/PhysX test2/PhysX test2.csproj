@@ -14,11 +14,12 @@
     </TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>HiDef</XnaProfile>
+    <XnaProfile>Reach</XnaProfile>
     <XnaCrossPlatformGroupID>04fceed5-37d2-4cbb-90ce-35eb82228913</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,7 +32,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -62,8 +62,10 @@
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>PhysX_test2.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
@@ -98,7 +100,7 @@
     </Reference>
     <Reference Include="StillDesign.PhysX.Net, Version=0.12.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\x86\Debug\StillDesign.PhysX.Net.dll</HintPath>
+      <HintPath>.\StillDesign.PhysX.Net.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>False</Private>
@@ -118,6 +120,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseExtensions\Graph\GraphController.cs" />
+    <Compile Include="BaseExtensions\Graph\GraphNodeInctance.cs" />
+    <Compile Include="BaseExtensions\Graph\IGraphUser.cs" />
     <Compile Include="Content\CollisionMesh.cs" />
     <Compile Include="ContactCallback.cs" />
     <Compile Include="Content\ContentMesh.cs" />
@@ -137,7 +142,7 @@
     <Compile Include="Engine\Animation\Character.cs" />
     <Compile Include="Engine\Animation\CharacterStatic.cs" />
     <Compile Include="Engine\Animation\CharacterComponents.cs" />
-    <Compile Include="Engine\Animation\ExtendedSkeleton.cs" />
+    <Compile Include="Engine\Animation\SkeletonExtended.cs" />
     <Compile Include="Engine\Animation\Skeleton.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerPerson.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerSuperClass.cs" />
@@ -145,11 +150,13 @@
     <Compile Include="Engine\CharacterControllers\CharacterControllerSuperClass.cs" />
     <Compile Include="Engine\ContentLoader\ContentLoader.cs" />
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
+    <Compile Include="Engine\Logic\BehaviourModel\ObjectBoneRelatedBehaviourModel.cs" />
+    <Compile Include="Engine\Logic\BehaviourModel\ObjectRelatedBehaviourModel.cs" />
+    <Compile Include="Engine\Logic\ObjectContainer.cs" />
     <Compile Include="Engine\Render\AnimRenderObject.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectPhysicControllerBehaviourModel.cs" />
     <Compile Include="Engine\Logic\EditorAspect.cs" />
-    <Compile Include="Engine\Logic\GameObject.cs" />
-    <Compile Include="Engine\Logic\GameScene.cs" />
+    <Compile Include="Engine\Logic\EngineScene.cs" />
     <Compile Include="Engine\Logic\LevelObject.cs" />
     <Compile Include="Engine\Logic\OperatingModel\ObjectLevelGeometryOperatingModel.cs" />
     <Compile Include="Engine\Logic\OperatingModel\ObjectOperatingModel.cs" />
@@ -161,7 +168,7 @@
     <Compile Include="Engine\Logic\SceneGraph\SGNode.cs" />
     <Compile Include="Engine\Logic\SceneGraph\SGOcTree.cs" />
     <Compile Include="Engine\Logic\SceneGraph\SGQdTree.cs" />
-    <Compile Include="Engine\MyContainer.cs" />
+    <Compile Include="BaseExtensions\MyContainer.cs" />
     <Compile Include="Engine\Render\DebugRender\DebugRenderer.cs" />
     <Compile Include="Engine\Render\Materials\Material.cs" />
     <Compile Include="Engine\Render\Materials\TextureMaterial.cs" />
@@ -179,26 +186,42 @@
     <Compile Include="Engine\Logic\BehaviourModel\ObjectMovingBehaviourModel.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectPhysicBehaviourModel.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectStaticBehaviourModel.cs" />
-    <Compile Include="Engine\Logic\GameBeing.cs" />
-    <Compile Include="Engine\Logic\_GameObjects.cs" />
-    <Compile Include="Engine\Logic\Level.cs" />
     <Compile Include="Engine\Logic\LigthSource.cs" />
     <Compile Include="Engine\Render\RenderEngine.cs" />
     <Compile Include="Engine\Render\RenderObject.cs" />
     <Compile Include="Engine\Render\Shader.cs" />
     <Compile Include="Engine\Render\UnAnimRenderObject.cs" />
-    <Compile Include="Extensions.cs" />
+    <Compile Include="BaseExtensions\Extensions.cs" />
     <Compile Include="Engine\Camera.cs" />
     <Compile Include="Engine\Engine.cs" />
     <Compile Include="Engine\Render\DebugRender\DebugRenderMesh.cs" />
     <Compile Include="Engine\Logic\PivotObject.cs" />
+    <Compile Include="BaseExtensions\Graph\GraphStatic.cs" />
+    <Compile Include="BaseExtensions\Graph\GraphEdge.cs" />
+    <Compile Include="BaseExtensions\Graph\GraphNode.cs" />
+    <Compile Include="TheGame\Level\GameLevel.cs" />
+    <Compile Include="TheGame\Objects\GameBulletBase.cs" />
+    <Compile Include="TheGame\Objects\GameBulletSimple.cs" />
+    <Compile Include="TheGame\Objects\GameCharacter.cs" />
+    <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphEdge.cs" />
+    <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphController.cs" />
+    <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphNode.cs" />
+    <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphStatic.cs" />
+    <Compile Include="TheGame\Objects\StateGraphs\GameCharacter\CharacterGraphEdge.cs" />
+    <Compile Include="TheGame\Objects\StateGraphs\GameCharacter\CharacterGraphNode.cs" />
+    <Compile Include="TheGame\Objects\GameObject.cs" />
     <Compile Include="MathExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="TheGame\Objects\GameSimpleObject.cs" />
+    <Compile Include="TheGame\StaticObjects.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="cudart32_30_9.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
     <Content Include="NxCharacter.dll">
@@ -207,12 +230,19 @@
     <Content Include="NxCooking.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="PhysXCooking.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PhysXCore.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PhysXDevice.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="PhysXLoader.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="StillDesign.PhysX.Net.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="StillDesign.PhysX.Net.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PhysX test2Content\PhysX test2Content.contentproj">
@@ -223,12 +253,12 @@
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>
-      <ProductName>Клиентский профиль Microsoft .NET Framework 4 %28x86 и x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
-      <ProductName>Клиентский профиль .NET Framework 3.5 SP1</ProductName>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -238,7 +268,7 @@
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
       <Visible>False</Visible>
-      <ProductName>Установщик Windows 3.1</ProductName>
+      <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Xna.Framework.4.0">

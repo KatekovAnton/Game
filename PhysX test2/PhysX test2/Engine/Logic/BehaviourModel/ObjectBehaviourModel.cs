@@ -23,6 +23,12 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             PreviousPosition = globalpose;
             moved = false;
         }
+
+        public virtual void SetPosition(Vector3 newPosition)
+        {
+            SetGlobalPose(Matrix.CreateTranslation(newPosition), null);
+        }
+
         public bool moved
         {
             get;

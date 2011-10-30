@@ -22,6 +22,9 @@ namespace PhysX_test2.Engine.Render
         
         }
 
+        public virtual void setPosition(Microsoft.Xna.Framework.Matrix m)
+        { }
+
         public abstract void SelfRender(int lod, Engine.Render.Materials.Material mat = null);
 
         public virtual void Dispose()
