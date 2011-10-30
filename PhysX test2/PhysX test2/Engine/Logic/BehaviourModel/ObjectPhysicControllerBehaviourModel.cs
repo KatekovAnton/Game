@@ -15,7 +15,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
     /// </summary>
     class ObjectPhysicControllerBehaviourModel:ObjectBehaviourModel
     {
-        public const float characterSpeed = 5.0f;
+        public const float characterSpeed = 6.0f;
         private readonly Actor _actor;
         private Vector3 _lastposition;
         private Vector3 _move;
@@ -45,11 +45,10 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         }
 
 
-        public void Rotate( float angle) {
+        public void Rotate( float angle) 
+        {
             _angle += angle;
             _actor.GlobalOrientation *= Matrix.CreateRotationY(angle).toPhysicM();
-            //_actor.GlobalOrientation = newOrient;
-            //_actor.GlobalPose += Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), angle);
         }
 
 

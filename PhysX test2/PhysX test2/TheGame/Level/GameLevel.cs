@@ -20,7 +20,7 @@ namespace PhysX_test2.TheGame.Level
 
         public Vector3 GetSpawnPlace()
         {
-            return new Vector3(0, 15, 0);
+            return new Vector3(0, 16.0f, 0);
         }
 
         public void AddLight(Engine.Logic.LigthSource theLight)

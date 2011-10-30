@@ -148,7 +148,7 @@ namespace PhysX_test2.Engine {
                 boxcharacterdescription = packs.GetObject("MyNewCharacter\0", boxcharacterdescription) as LevelObjectDescription;
 
                 LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxcharacterdescription, packs, Scene);
-                lo.SetPosition(new Vector3( 0, 20, 0));
+                lo.SetPosition(new Vector3( 0, 16.0f, 0));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
                 LevelObjectCharacterBox = lo;
@@ -183,7 +183,7 @@ namespace PhysX_test2.Engine {
                 spheredesc = packs.GetObject("Cursor\0", spheredesc) as LevelObjectDescription;
 
                 LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(spheredesc, packs, Scene);
-                lo.SetGlobalPose(Matrix.CreateTranslation(0, 30, 0));
+                lo.SetGlobalPose(Matrix.CreateTranslation(0, 15, 0));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
                 LevelObjectCursorSphere = lo;

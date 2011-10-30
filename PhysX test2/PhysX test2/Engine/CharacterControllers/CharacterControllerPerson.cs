@@ -127,7 +127,7 @@ namespace PhysX_test2.Engine.CharacterControllers
             if (movestate != newstate)
             {
                 Render.AnimRenderObject ro = _character.renderaspect as Render.AnimRenderObject;
-                ro.ReceiveEvent(GetEventName(newstate));
+                ro.ReceiveEvent(GetEventName(newstate),movestate== CharacterMoveState.Stay);
                 movestate = newstate;
             }
         }

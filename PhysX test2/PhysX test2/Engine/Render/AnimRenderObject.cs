@@ -74,9 +74,9 @@ namespace PhysX_test2.Engine.Render
 
         #endregion
 
-        public void ReceiveEvent(string __eventname)
+        public void ReceiveEvent(string __eventname, bool zeroframes)
         {
-            character.ReceiveEvent(__eventname);
+            character.ReceiveEvent(__eventname, zeroframes);
         }
 
         public AnimRenderObject(Character _char, AnimRenderObject.Model[] models, bool shadowcaster, bool shadowreceiver)

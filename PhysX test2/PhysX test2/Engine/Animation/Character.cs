@@ -28,7 +28,7 @@ namespace PhysX_test2.Engine.Animation
         /// текущее время анимации каждого куска чара 0....1
         /// </summary>
         public float[] _currentAnimTime;
-        private int[] _currentFrames;
+        public int[] _currentFrames;
 
         public Matrix Position;
 
@@ -68,10 +68,17 @@ namespace PhysX_test2.Engine.Animation
         /// произошло какоето событие персонажа - меняем анимацию
         /// </summary>
         /// <param name="_event"></param>
-        public void ReceiveEvent(string _event)
+        public void ReceiveEvent(string _event, bool zerodrames)
         {
-            for (int i = 0; i < _currentNodes.Length;i++ )
-               _currentNodes[i] = _currentNodes[i].Advance(_event);
+            for (int i = 0; i < _currentNodes.Length; i++)
+            {
+                if (zerodrames)
+                {
+                    _currentFrames[i] = 0;
+                    _currentAnimTime[i] = 0;
+                }
+                _currentNodes[i] = _currentNodes[i].Advance(_event);
+            }
         }
 
 
