@@ -67,6 +67,10 @@
   <PropertyGroup />
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="Community.CsharpSqlite, Version=3.7.7.1, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Community.CsharpSqlite.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -120,9 +124,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseExtensions\DatabaseManager.cs" />
     <Compile Include="BaseExtensions\Graph\GraphController.cs" />
     <Compile Include="BaseExtensions\Graph\GraphNodeInctance.cs" />
     <Compile Include="BaseExtensions\Graph\IGraphUser.cs" />
+    <Compile Include="BaseExtensions\SQliteShell\SQliteConnector.cs" />
+    <Compile Include="BaseExtensions\SQliteShell\SQliteResultSet.cs" />
     <Compile Include="Content\CollisionMesh.cs" />
     <Compile Include="ContactCallback.cs" />
     <Compile Include="Content\ContentMesh.cs" />
@@ -150,6 +157,10 @@
     <Compile Include="Engine\InputControllers\InputControllerSuperClass.cs" />
     <Compile Include="Engine\ContentLoader\ContentLoader.cs" />
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
+    <Compile Include="Engine\InputManagers\InputManagerAI.cs" />
+    <Compile Include="Engine\InputManagers\InputManagerNetwork.cs" />
+    <Compile Include="Engine\InputManagers\InputManagerPlayer.cs" />
+    <Compile Include="Engine\InputManagers\InputManagerSuperClass.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectBoneRelatedBehaviourModel.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectRelatedBehaviourModel.cs" />
     <Compile Include="Engine\Logic\ObjectContainer.cs" />
@@ -219,6 +230,9 @@
     <Compile Include="TheGame\StaticObjects.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Community.CsharpSqlite.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="cudart32_30_9.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

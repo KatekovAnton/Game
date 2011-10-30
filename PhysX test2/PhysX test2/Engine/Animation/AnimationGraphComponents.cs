@@ -102,10 +102,10 @@ namespace PhysX_test2.Engine.Animation
             {
                 string data = parameters["speed"].Replace('.', ',');
                 animationSpeed = Convert.ToSingle(data);
-                
+
             }
-animTime = animation.animlength / animationSpeed;
-            if(dict.Keys.Contains("onetime"))
+            animTime = animation.animlength / animationSpeed;
+            if (dict.Keys.Contains("onetime"))
             {
                 string data = parameters["onetime"].ToLower();
                 if (data.CompareTo("1") == 0 || data.CompareTo("yes") == 0 || data.CompareTo("true") == 0)
