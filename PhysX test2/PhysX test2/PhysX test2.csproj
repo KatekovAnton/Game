@@ -139,7 +139,7 @@
     <Compile Include="Engine\Animation\AnimationFull.cs" />
     <Compile Include="Engine\Animation\AnimationGraph.cs" />
     <Compile Include="Engine\Animation\AnimationGraphComponents.cs" />
-    <Compile Include="Engine\Animation\Character.cs" />
+    <Compile Include="Engine\Animation\CharacterController.cs" />
     <Compile Include="Engine\Animation\CharacterStatic.cs" />
     <Compile Include="Engine\Animation\CharacterComponents.cs" />
     <Compile Include="Engine\Animation\SkeletonExtended.cs" />

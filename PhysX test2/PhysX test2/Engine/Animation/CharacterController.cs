@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2.Engine.Animation
 {
-    public class Character
+    public class CharacterController
     {
         /// <summary>
         /// базовый чар - например один на всех пехотинцев
@@ -20,6 +20,12 @@ namespace PhysX_test2.Engine.Animation
         public AnimationNode[] _currentNodes;           // текущие узлы- по одному на часть
 
         /// <summary>
+        /// для одноразовых и переходных анимаций - для одноразовых тут пердыдущая,
+        /// для переходных (интрполяция между анимациями) - следующая
+        /// </summary>
+        private AnimationNode[] _lastNodes;
+
+        /// <summary>
         /// итоговые матрицы для шейдера
         /// </summary>
         public Matrix[] _currentFames;
@@ -28,11 +34,11 @@ namespace PhysX_test2.Engine.Animation
         /// текущее время анимации каждого куска чара 0....1
         /// </summary>
         public float[] _currentAnimTime;
-        public int[] _currentFrames;
+        private int[] _currentFrames;
 
         public Matrix Position;
 
-        public Character(CharacterStatic characterBase, string[] startNodes)
+        public CharacterController(CharacterStatic characterBase, string[] startNodes)
         {
             _baseCharacter = characterBase;
 
@@ -89,7 +95,7 @@ namespace PhysX_test2.Engine.Animation
             }
         }
 
-        public AnimationNode[] _lastNodes;
+        
         
 
         /// <summary>

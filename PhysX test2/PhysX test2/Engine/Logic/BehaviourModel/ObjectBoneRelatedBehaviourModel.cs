@@ -10,9 +10,9 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
     public class ObjectBoneRelatedBehaviourModel: ObjectStaticBehaviourModel
     {
         public int parentBone;
-        public Engine.Animation.Character parentCharacter;
+        public Engine.Animation.CharacterController parentCharacter;
         public Matrix localMatrix = Matrix.Identity;
-        public ObjectBoneRelatedBehaviourModel(Engine.Animation.Character _parentCharacter, int _parentBone)
+        public ObjectBoneRelatedBehaviourModel(Engine.Animation.CharacterController _parentCharacter, int _parentBone)
         {
             parentCharacter = _parentCharacter;
             parentBone = _parentBone;

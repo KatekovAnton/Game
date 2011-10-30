@@ -17,7 +17,7 @@ namespace PhysX_test2.Engine.ContentLoader
     public abstract class ContentLoader
     {
         private static StillDesign.PhysX.Material characterMaterial;
-        public static Character currentCharacter;
+        public static CharacterController currentCharacter;
         public static int boneToAdd;
         private static Material loadMaterial(string name, PackList packs)
         {
@@ -91,7 +91,7 @@ namespace PhysX_test2.Engine.ContentLoader
             return subsetmeshes;
         }
 
-        public static Engine.Animation.Character createCharacter(PackList packs, string name, out CharacterContent characterContent)
+        public static Engine.Animation.CharacterController createCharacter(PackList packs, string name, out CharacterContent characterContent)
         {
             characterContent = new Content.CharacterContent();
             characterContent = packs.GetObject(name, characterContent) as Content.CharacterContent;
@@ -120,7 +120,7 @@ namespace PhysX_test2.Engine.ContentLoader
                 characterResult = characterContent.Enginereadedobject[0] as CharacterStatic;
                 characterContent.Enginereadedobject.Add(characterResult);
             }
-            Character result = new Character(characterResult, new string[] { "stay1\0", "stay1\0" });
+            CharacterController result = new CharacterController(characterResult, new string[] { "stay1\0", "stay1\0" });
             return result;
         }
 
@@ -136,7 +136,7 @@ namespace PhysX_test2.Engine.ContentLoader
                 if (description.IsAnimated)
                 {
                     CharacterContent characterContent = null; ;
-                    Engine.Animation.Character character = createCharacter(packs, description.CharacterName, out characterContent);
+                    Engine.Animation.CharacterController character = createCharacter(packs, description.CharacterName, out characterContent);
 
                     AnimRenderObject.Model[] models = new AnimRenderObject.Model[rod.LODs.Count];
                     for (int i = 0; i < models.Length; i++)

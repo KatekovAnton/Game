@@ -11,7 +11,7 @@ namespace PhysX_test2.Engine.Render
 {
     public class AnimRenderObject : RenderObject
     {
-        public Character character;
+        public CharacterController character;
 
         #region RENDER
 
@@ -79,7 +79,7 @@ namespace PhysX_test2.Engine.Render
             character.ReceiveEvent(__eventname, zeroframes);
         }
 
-        public AnimRenderObject(Character _char, AnimRenderObject.Model[] models, bool shadowcaster, bool shadowreceiver)
+        public AnimRenderObject(CharacterController _char, AnimRenderObject.Model[] models, bool shadowcaster, bool shadowreceiver)
             : base()
         {
             character = _char;
