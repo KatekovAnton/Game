@@ -124,8 +124,27 @@ namespace PhysX_test2.Engine.CharacterControllers
             CharacterMoveState newstate = CharacterMoveState.Stay;
             if (moveVector != Vector3.Zero)
                 newstate = calculateCurrentState(moveVector, viewVector);
-            movestate = newstate;
+            if (movestate != newstate)
+            {
+                Render.AnimRenderObject ro = _character.renderaspect as Render.AnimRenderObject;
+                ro.ReceiveEvent(GetEventName(newstate));
+                movestate = newstate;
+            }
         }
+
+        private string GetEventName(CharacterMoveState newstate)
+        {
+            switch (newstate)
+            {
+                case CharacterMoveState.Stay:
+                    return "stopMove\0";
+                case CharacterMoveState.WalkBackward:
+                    return "beginWalkBack\0";
+                case CharacterMoveState.WalkForward:
+                    return "beginWalk\0";
+                default: return "stopMove\0";
+            }
+        } 
         public CharacterMoveState movestate;
 
         public float cospi18 = (float)Math.Cos(Math.PI * 1.0 / 8.0);
