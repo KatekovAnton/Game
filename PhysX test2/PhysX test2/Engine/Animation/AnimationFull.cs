@@ -61,6 +61,7 @@ namespace PhysX_test2.Engine.Animation
             DecomposedMatrix[][] decomposedMatrices = GetDecomposedMatrices(skeleton, relatedMatrices);
 
             clip.matrices = decomposedMatrices;
+            clip.length = clip.matrices.Length;
             return clip;
         }
 
@@ -195,7 +196,7 @@ namespace PhysX_test2.Engine.Animation
             }
 
             result.matrices = res;
-
+            result.animlength = result.matrices.Length;
             return result;
         }
     }

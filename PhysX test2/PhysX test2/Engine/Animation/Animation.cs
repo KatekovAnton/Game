@@ -13,6 +13,7 @@ namespace PhysX_test2.Engine.Animation
         public abstract Matrix[] GetMatrices(float frame);
         public bool isTransition;
         public int type;
+        public float animlength;
 
         public static Matrix[][] GetRelatedMatrices(Matrix[][] Frames, Skeleton _skeleton)
         {

@@ -86,6 +86,9 @@ namespace PhysX_test2.Engine.Animation
         public float animationSpeed = 0.075f;
         public Dictionary<string, string> parameters;
 
+        public float animTime;
+        public bool isOneTime;
+
         public AnimationNode(string _name, Animation _animation)
         {
             SetName(_name);
@@ -99,6 +102,16 @@ namespace PhysX_test2.Engine.Animation
             {
                 string data = parameters["speed"].Replace('.', ',');
                 animationSpeed = Convert.ToSingle(data);
+                
+            }
+animTime = animation.animlength / animationSpeed;
+            if(dict.Keys.Contains("onetime"))
+            {
+                string data = parameters["onetime"].ToLower();
+                if (data.CompareTo("1") == 0 || data.CompareTo("yes") == 0 || data.CompareTo("true") == 0)
+                    isOneTime = true;
+                else
+                    isOneTime = false;
             }
         }
 

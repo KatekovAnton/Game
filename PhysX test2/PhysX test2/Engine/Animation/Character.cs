@@ -38,7 +38,7 @@ namespace PhysX_test2.Engine.Animation
 
             _currentNodes = new AnimationNode[characterBase.parts.Length];
             _currentAnimTime = new float[characterBase.parts.Length];
-
+            _lastNodes = new AnimationNode[characterBase.parts.Length];
             _currentFames = new Matrix[_baseCharacter.skeleton.baseskelet.bones.Length];
 
             for (int i = 0; i < _currentFames.Length; i++)
@@ -77,11 +77,19 @@ namespace PhysX_test2.Engine.Animation
                     _currentFrames[i] = 0;
                     _currentAnimTime[i] = 0;
                 }
-                _currentNodes[i] = _currentNodes[i].Advance(_event);
+
+                AnimationNode lastnode = _currentNodes[i];
+                AnimationNode newnode = _currentNodes[i].Advance(_event);
+                _currentNodes[i] = newnode;
+
+                if (newnode.isOneTime)
+                {
+                    _lastNodes[i] = lastnode;
+                }
             }
         }
 
-
+        public AnimationNode[] _lastNodes;
         
 
         /// <summary>
@@ -94,8 +102,22 @@ namespace PhysX_test2.Engine.Animation
             int[] frameNambers=new int[_currentNodes.Length];
             for(int i=0; i<_currentNodes.Length;i++)
             {
-                frameNambers[i] = (int)((_currentAnimTime[i] * _currentNodes[i].animationSpeed) % (((FullAnimation)_currentNodes[i].animation).matrices.Length));            
+                frameNambers[i] = (int)(_currentAnimTime[i] * _currentNodes[i].animationSpeed) ;            
                 _currentAnimTime[i] += (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (_currentAnimTime[i] > _currentNodes[i].animTime)
+                {
+                    if (_currentNodes[i].isOneTime)
+                    {
+                        //go to previous animnode
+                        _currentNodes[i] = _lastNodes[i];
+                        _lastNodes[i] = null;
+                    }
+                    else
+                    {
+                        //continue anim
+                        _currentAnimTime[i] -= _currentNodes[i].animTime;
+                    }
+                }
             }
             GetFrameMatrix(_currentNodes, _baseCharacter.skeleton.baseskelet, frameNambers, Matrix.Identity);
             return false;
@@ -105,7 +127,6 @@ namespace PhysX_test2.Engine.Animation
         private DecomposedMatrix[] temp;
         public void GetFrameMatrix(AnimationNode[] ans, Skeleton skeleton, int[] frameNamber, Matrix chahgeRoot)
         {
-
             int a = 0;
             for (int i = 0; i < ans.Length; i++)
             {
@@ -116,7 +137,6 @@ namespace PhysX_test2.Engine.Animation
                     }
                 else //если кадр тотже
                     a++;
-                
             }
 
             if (a != frameNamber.Length) // если a == frameNamber.Length значит матрицы вообще не надо перерасчитывать
