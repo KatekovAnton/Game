@@ -89,6 +89,12 @@ namespace PhysX_test2.Engine.Render
             isshadowreceiver = shadowreceiver;
         }
 
+        public bool Update(Microsoft.Xna.Framework.GameTime __gameTime)
+        {
+            character.Update(__gameTime, visible);
+            return false;
+        }
+
         public override void SelfRender(int lod, Engine.Render.Materials.Material mat = null)
         {
             Microsoft.Xna.Framework.Graphics.Effect currentEffect = PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect;

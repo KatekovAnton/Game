@@ -27,6 +27,12 @@ namespace PhysX_test2.Engine.Logic
             material = _material;
         }
 
+        public override void SetVisible(bool __visible)
+        {
+            _visible = __visible;
+            renderaspect.visible = __visible;
+        }
+
         public override Render.Materials.Material HaveMaterial()
         {
             return material;

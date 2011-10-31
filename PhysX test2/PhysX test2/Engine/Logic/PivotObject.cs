@@ -49,6 +49,13 @@ namespace PhysX_test2.Engine.Logic
         /// </summary>
         public BehaviourModel.ObjectBehaviourModel behaviourmodel;
 
+        protected bool _visible;
+
+        public virtual void SetVisible(bool __visible)
+        {
+            _visible = __visible;
+        }
+
         public PivotObject()
         { }
 
@@ -63,6 +70,7 @@ namespace PhysX_test2.Engine.Logic
         {
             moved = false;
             behaviourmodel.BeginDoFrame();
+            SetVisible(false);
         }
 
         public void EndDoFrame()
