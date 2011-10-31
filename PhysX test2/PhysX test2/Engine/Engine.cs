@@ -108,6 +108,11 @@ namespace PhysX_test2.Engine {
             Scene.UserContactReport = new ContactReport(MyGame.Instance);
             //аниматор
             animationManager = AnimationManager.AnimationManager.Manager;
+            //шойдер
+            using (var stream = new FileStream(@"Content\Shaders\ObjectRender.fx", FileMode.Open))
+            {
+                PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect = Shader.FromStream(stream, Device);
+            }
             //рендерщик
             GraphicPipeleine = new RenderPipeline(DeviceManager.GraphicsDevice, Camera);
             //загрузка всего
@@ -119,13 +124,7 @@ namespace PhysX_test2.Engine {
             //если ты с горы упал - ты ешё не экстримал
             //чтоб далеко не падать
             groundplane = CreateGroundPlane();
-
-
-            //шойдер
-            using (var stream = new FileStream(@"Content\Shaders\ObjectRender.fx", FileMode.Open))
-            {
-               PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect = Shader.FromStream(stream, Device);
-            }
+            
 
             //уровень
             gameScene = new EngineScene();

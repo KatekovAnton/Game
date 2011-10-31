@@ -64,6 +64,7 @@ namespace PhysX_test2
 
             IsMouseVisible = true;
             LoadPhysics();
+
         }
 
 
