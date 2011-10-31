@@ -79,7 +79,7 @@ namespace PhysX_test2.Engine.Render
             character.ReceiveEvent(__eventname, zeroframes);
         }
 
-        public AnimRenderObject(CharacterController _char, AnimRenderObject.Model[] models, bool shadowcaster, bool shadowreceiver)
+        public AnimRenderObject( CharacterController _char, AnimRenderObject.Model[] models, bool shadowcaster, bool shadowreceiver)
             : base()
         {
             character = _char;
