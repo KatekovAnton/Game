@@ -15,6 +15,8 @@ namespace PhysX_test2.Engine.Animation
         public int type;
         public float animlength;
 
+        public abstract DecomposedMatrix[] GetMatrices(int frame);
+
         public static Matrix[][] GetRelatedMatrices(Matrix[][] Frames, Skeleton _skeleton)
         {
             int ss = _skeleton.RootIndex;

@@ -19,6 +19,13 @@ namespace PhysX_test2.Engine.Animation
             type = 0;
         }
 
+        public override DecomposedMatrix[] GetMatrices(int __frame)
+        {
+            int frame = __frame % matrices.Length;
+            return matrices[frame];
+         
+        }
+
         public override Matrix[] GetMatrices(float frame)
         {
             return DecomposedMatrix.ConvertToMartixArray(matrices[Convert.ToInt32(frame)]);

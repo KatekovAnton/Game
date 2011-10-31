@@ -78,12 +78,7 @@ namespace PhysX_test2.Engine.Animation
         {
             for (int i = 0; i < _currentNodes.Length; i++)
             {
-                if (zerodrames)
-                {
-                    _currentFrames[i] = 0;
-                    _currentAnimTime[i] = 0;
-                }
-
+                
                 AnimationNode lastnode = _currentNodes[i];
                 AnimationNode newnode = _currentNodes[i].Advance(_event);
                 _currentNodes[i] = newnode;
@@ -92,6 +87,18 @@ namespace PhysX_test2.Engine.Animation
                 {
                     _lastNodes[i] = lastnode;
                 }
+
+                if (zerodrames)
+                {
+                    _currentFrames[i] = 0;
+                    _currentAnimTime[i] = 0;
+                }
+                else
+                {
+                    if (_currentAnimTime[i] > _currentNodes[i].animTime)
+                        _currentAnimTime[i] -= _currentNodes[i].animTime;
+                }
+
             }
         }
 
@@ -139,7 +146,7 @@ namespace PhysX_test2.Engine.Animation
                 if (frameNamber[i] != _currentFrames[i])//если у этой части скелета сменился кадр
                     for (int j = 0; j < _baseCharacter.parts[i].animGraph.boneIndexes.Length; j++)
                     {
-                        temp[_baseCharacter.parts[i].animGraph.boneIndexes[j]] = ((FullAnimation)ans[i].animation).matrices[frameNamber[i]][j];
+                        temp[_baseCharacter.parts[i].animGraph.boneIndexes[j]] = ans[i].animation.GetMatrices(frameNamber[i])[j];
                     }
                 else //если кадр тотже
                     a++;
