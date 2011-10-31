@@ -110,7 +110,7 @@ namespace PhysX_test2.Engine.Animation
         /// </summary>
         /// <param name="gameTime"></param>
         /// <returns></returns>
-        public bool Update(GameTime gameTime)
+        public void Update(GameTime gameTime, bool __visible = true)
         {   
             int[] frameNambers=new int[_currentNodes.Length];
             for(int i=0; i<_currentNodes.Length;i++)
@@ -132,12 +132,13 @@ namespace PhysX_test2.Engine.Animation
                     }
                 }
             }
-            GetFrameMatrix(_currentNodes, _baseCharacter.skeleton.baseskelet, frameNambers, Matrix.Identity);
-            return false;
+            if(__visible)
+                GetFrameMatrix(_currentNodes, _baseCharacter.skeleton.baseskelet, frameNambers, Matrix.Identity);
+
         }
 
-
         private DecomposedMatrix[] temp;
+
         public void GetFrameMatrix(AnimationNode[] ans, Skeleton skeleton, int[] frameNamber, Matrix chahgeRoot)
         {
             int a = 0;

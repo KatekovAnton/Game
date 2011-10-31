@@ -108,6 +108,11 @@ namespace PhysX_test2.Engine {
             Scene.UserContactReport = new ContactReport(MyGame.Instance);
             //аниматор
             animationManager = AnimationManager.AnimationManager.Manager;
+            //шойдер
+            using (var stream = new FileStream(@"Content\Shaders\ObjectRender.fx", FileMode.Open))
+            {
+                PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect = Shader.FromStream(stream, Device);
+            }
             //рендерщик
             GraphicPipeleine = new RenderPipeline(DeviceManager.GraphicsDevice, Camera);
             //загрузка всего
@@ -119,13 +124,7 @@ namespace PhysX_test2.Engine {
             //если ты с горы упал - ты ешё не экстримал
             //чтоб далеко не падать
             groundplane = CreateGroundPlane();
-
-
-            //шойдер
-            using (var stream = new FileStream(@"Content\Shaders\ObjectRender.fx", FileMode.Open))
-            {
-               PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect = Shader.FromStream(stream, Device);
-            }
+            
 
             //уровень
             gameScene = new EngineScene();
@@ -159,7 +158,7 @@ namespace PhysX_test2.Engine {
                 //if (lo.renderaspect.isanimated)
                 {
                     Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
-                    AnimationManager.AnimationManager.Manager.AddAnimationUser(ro.character.Update, ro.character);
+                    AnimationManager.AnimationManager.Manager.AddAnimationUserEnd(ro.Update, ro.character);
                     ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.WeaponIndex;
                     ContentLoader.ContentLoader.currentCharacter = ro.character;
                 }
@@ -300,7 +299,7 @@ namespace PhysX_test2.Engine {
 
             //Update world(calc ray trace, deleting bullets, applying forces and other)
             //------
-            animationManager.UpdateEnd(gameTime);
+            
 
             //Udating data for scenegraph
             gameScene.UpdateScene();
@@ -323,8 +322,9 @@ namespace PhysX_test2.Engine {
             //добавляем все нобходимые объекты на отрисовку
             GraphicPipeleine.AddObjectToPipeline(gameScene.VisibleObjects);
             GraphicPipeleine.AddObjectToShadow(gameScene.ShadowObjects);
-            visibleobjectscount = gameScene.VisibleObjects.Count;
 
+            visibleobjectscount = gameScene.VisibleObjects.Count;
+            animationManager.UpdateEnd(gameTime);
             FPSCounter.Update(gameTime);
         }
 

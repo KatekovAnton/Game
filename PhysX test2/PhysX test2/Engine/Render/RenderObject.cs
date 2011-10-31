@@ -15,13 +15,10 @@ namespace PhysX_test2.Engine.Render
         public bool isshadowreceiver;
         public bool isshadowcaster;
 
+        public bool visible;
+
         public bool Disposed = false;
-
-        protected RenderObject()
-        {
-        
-        }
-
+       
         public virtual void setPosition(Microsoft.Xna.Framework.Matrix m)
         { }
 

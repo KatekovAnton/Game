@@ -216,6 +216,10 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
             while (_subtreeStack.Count > 0)
             {
                 SGNode n = _subtreeStack.Pop();
+                PivotObject[] objects = n.Entities.ToArray();
+                foreach (PivotObject obj in objects)
+                    obj.SetVisible(true);
+                    
                 visibleEntities.AddRange(n.Entities.ToArray());
                 if (n.Children != null)
                     for (int i = 0; i < n.Children.Length; i++)
@@ -271,6 +275,7 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
                                 if (entContType != ContainmentType.Disjoint)
                                 {
                                     visibleEntities.Add(wo);
+                                    wo.SetVisible(true);
                                 }
                             }
                             if(node.nestingLevel!=_maxNestingLevel)

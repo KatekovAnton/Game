@@ -94,8 +94,7 @@ namespace PhysX_test2.Engine.Render
             arrays.Add(Shader.NotAnimRenderNoSM);
             arrays.Add(Shader.AnimRenderSM);
             arrays.Add(Shader.NotAnimRenderSM);
-            arrays.Add(Shader.AnimRenderSMSmooth);
-            arrays.Add(Shader.NotAnimRenderSMSmooth);
+  
             arrays.Add(Shader.CreateStaticShadowMap);
             arrays.Add(Shader.CreateAnimShadowMap);
 
@@ -111,7 +110,10 @@ namespace PhysX_test2.Engine.Render
             {
                 ArraysPerTehnique.Add(Shader.AnimRenderSMSmooth, new RenderArray(Shader.AnimRenderSMSmooth));
                 ArraysPerTehnique.Add(Shader.NotAnimRenderSMSmooth, new RenderArray(Shader.NotAnimRenderSMSmooth));
+                arrays.Add(Shader.AnimRenderSMSmooth);
+                arrays.Add(Shader.NotAnimRenderSMSmooth);
             }
+            
             ArraysPerTehnique.Add(Shader.CreateStaticShadowMap, new RenderArray(Shader.CreateStaticShadowMap));
             ArraysPerTehnique.Add(Shader.CreateAnimShadowMap, new RenderArray(Shader.CreateAnimShadowMap));
         }

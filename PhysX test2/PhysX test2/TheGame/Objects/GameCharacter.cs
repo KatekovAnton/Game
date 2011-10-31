@@ -18,12 +18,12 @@ namespace PhysX_test2.TheGame.Objects
 {
     public class GameCharacter : GameObject,IGraphUser
     {
-        GameLevel _hisLevel;
+        public GameLevel _hisLevel;
 
-        PivotObject _deadObject;
-        PivotObject _aliveObject;
+        public PivotObject _deadObject;
+        public PivotObject _aliveObject;
 
-        ObjectGraphController _characterStateController;
+        public ObjectGraphController _characterStateController;
 
         public GameCharacter(PivotObject __aliveObject, PivotObject __deadObject, GameLevel __level)
         {

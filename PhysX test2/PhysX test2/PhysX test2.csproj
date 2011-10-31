@@ -211,6 +211,12 @@
     <Compile Include="BaseExtensions\Graph\GraphEdge.cs" />
     <Compile Include="BaseExtensions\Graph\GraphNode.cs" />
     <Compile Include="TheGame\Level\GameLevel.cs" />
+    <Compile Include="TheGame\ObjectControllers\BeamController.cs" />
+    <Compile Include="TheGame\ObjectControllers\BulletController.cs" />
+    <Compile Include="TheGame\ObjectControllers\ControlActions\ControlAction.cs" />
+    <Compile Include="TheGame\ObjectControllers\ObjectController.cs" />
+    <Compile Include="TheGame\ObjectLogic\LogicNPC.cs" />
+    <Compile Include="TheGame\ObjectLogic\LogicWeapon.cs" />
     <Compile Include="TheGame\Objects\GameBulletBase.cs" />
     <Compile Include="TheGame\Objects\GameBulletSimple.cs" />
     <Compile Include="TheGame\Objects\GameCharacter.cs" />
@@ -228,6 +234,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="TheGame\Objects\GameSimpleObject.cs" />
     <Compile Include="TheGame\StaticObjects.cs" />
+    <Compile Include="TheGame\TheGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Community.CsharpSqlite.dll">
