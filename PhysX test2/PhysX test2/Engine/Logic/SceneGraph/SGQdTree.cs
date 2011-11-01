@@ -229,6 +229,22 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
             }
         }
 
+        /// <summary>
+        /// for bullets
+        /// </summary>
+        /// <param name="box"></param>
+        /// <param name="intersectedEntities"></param>
+        public void Query(BoundingBox box, MyContainer<PivotObject> intersectedEntities)
+        { }
+
+        /// <summary>
+        /// for explosions
+        /// </summary>
+        /// <param name="box"></param>
+        /// <param name="intersectedEntities"></param>
+        public void Query(BoundingSphere sphere, MyContainer<PivotObject> intersectedEntities)
+        { }
+
         public void Query(BoundingFrustum frustum, MyContainer<PivotObject> visibleEntities)
         {
             _visibleObjectCount = 0;
@@ -322,6 +338,7 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
                 //удаляем объект
                 if (obj.moved)
                 {
+                    //TODO
                     _entityRecalculateCount++;
                     RemoveObject(obj);
                     
