@@ -18,7 +18,7 @@ namespace PhysX_test2.TheGame.Objects
 {
     public class GameCharacter : GameObject,IGraphUser
     {
-        public GameLevel _hisLevel;
+        
 
         public PivotObject _deadObject;
         public PivotObject _aliveObject;
@@ -26,10 +26,10 @@ namespace PhysX_test2.TheGame.Objects
         public ObjectGraphController _characterStateController;
 
         public GameCharacter(PivotObject __aliveObject, PivotObject __deadObject, GameLevel __level)
+            : base(__level, true, true)
         {
             _deadObject = __deadObject;
             _aliveObject = __aliveObject;
-            _hisLevel = __level;
 
             _characterStateController = new ObjectGraphController(StaticObjects.Instance()._graphCharacter, this);
         }

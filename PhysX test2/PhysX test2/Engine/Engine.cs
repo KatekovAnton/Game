@@ -221,7 +221,7 @@ namespace PhysX_test2.Engine {
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
                 //должен быть после чара
-                gameScene.objects.AddRule(LevelObjectCharacterBox, lo);
+                gameScene.objects.AddRule(LevelObjectSCGunLO, lo);
             }
 
             //head
@@ -258,7 +258,7 @@ namespace PhysX_test2.Engine {
 
 
         private void CreateCharCameraController() {
-            _cameraController = new CameraControllerPerson(Camera, LevelObjectCharacterBox, new Vector3(-10, 6, 0));
+            _cameraController = new CameraControllerPerson(Camera, LevelObjectCharacterBox, new Vector3(-10, 10, 0));
             _charcterController = new InputControllers.InputControllerPerson(LevelObjectCharacterBox);
         }
 
@@ -307,7 +307,7 @@ namespace PhysX_test2.Engine {
 
             {
                 // обработка камеры
-                _cameraController.UpdateCamerafromUser();
+                _cameraController.UpdateCamerafromUser(MyGame.Instance._mousepoint);
 
                 if (LevelObjectCharacterBox.behaviourmodel.moved)
                     _cameraController.UpdateCamera();

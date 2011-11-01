@@ -1,45 +1,55 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace PhysX_test2.Engine.CameraControllers {
-   abstract public class CameraControllerSuperClass {
-        public Camera _camera;
+namespace PhysX_test2.Engine.CameraControllers
+{
+    abstract public class CameraControllerSuperClass
+    {
+        private Camera _camera;
         public Vector3 _currendPosition;
         public Vector3 _currentTarget;
 
+       
+        protected Vector3 _delta = Vector3.Zero;
 
-       protected CameraControllerSuperClass(Camera cam, Vector3 currentPos, Vector3 targetPosition) {
+        protected CameraControllerSuperClass(Camera cam, Vector3 currentPos, Vector3 targetPosition)
+        {
             _camera = cam;
             _currendPosition = currentPos;
             _currentTarget = targetPosition;
-            _camera.Update(_currendPosition, _currentTarget);
+            _camera.Update(_currendPosition + _delta, _currentTarget + _delta);
         }
 
 
-       public Vector3 CurrentPosition() {
+        public Vector3 CurrentPosition()
+        {
             return _currendPosition;
         }
 
 
-        public void SetCurrentPosition(Vector3 vect) {
+        public void SetCurrentPosition(Vector3 vect)
+        {
             _currendPosition = vect;
-            _camera.Update(_currendPosition, _currentTarget);
+            _camera.Update(_currendPosition + _delta, _currentTarget + _delta);
         }
 
 
-        public Vector3 CurrentTarget() {
+        public Vector3 CurrentTarget()
+        {
             return _currentTarget;
         }
 
 
-        public void SetCurrentTarget(Vector3 vect) {
+        public void SetCurrentTarget(Vector3 vect)
+        {
             _currentTarget = vect;
-            _camera.Update(_currendPosition, _currentTarget);
+            _camera.Update(_currendPosition + _delta, _currentTarget + _delta);
         }
 
-        
-       public virtual void UpdateCamera() {
-           _camera.Update(_currendPosition, _currentTarget);
-       }
 
-   }
+        public virtual void UpdateCamera()
+        {
+            _camera.Update(_currendPosition + _delta, _currentTarget + _delta);
+        }
+
+    }
 }

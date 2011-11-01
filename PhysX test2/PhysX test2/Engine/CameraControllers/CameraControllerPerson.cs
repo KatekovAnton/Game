@@ -14,12 +14,11 @@ namespace PhysX_test2.Engine.CameraControllers
 
         private Vector3 _offset;
         private LevelObject _character;
-
+        public float _cameraDelta = 2.00f;
 
         private int _mouseWheelOld;
         private float _lastMousePosX;
         private float _lastMousePosY;
-        
 
         public CameraControllerPerson(Camera cam, LevelObject character, Vector3 offset) :
             base(cam, character.transform.Translation + offset, character.transform.Translation)
@@ -41,10 +40,10 @@ namespace PhysX_test2.Engine.CameraControllers
             Vector3 vect = new Vector3(0, 1, 0);
             Matrix.CreateFromAxisAngle(ref vect, angle, out resMatr);
             Vector3 res = Vector3.Transform(_offset, resMatr);
+           // _delta = Vector3.Transform(Vector3.Forward, resMatr)*_cameraDelta;
             _offset = res;
             UpdateCamera();
         }
-
 
 
         public void UpDownCamera(float angle)
@@ -68,7 +67,6 @@ namespace PhysX_test2.Engine.CameraControllers
         }
 
 
-
         public void ZoomCameraFromCha(float value)
         {
             if (value == 1.0)
@@ -78,11 +76,14 @@ namespace PhysX_test2.Engine.CameraControllers
             _offset.X *= value;
             _offset.Y *= value;
             _offset.Z *= value;
+
+            _cameraDelta *= value;
+
             UpdateCamera();
         }
 
 
-        public void UpdateCamerafromUser()
+        public void UpdateCamerafromUser(Vector3 _targetPoint)
         {
             float cursorPositionX = Mouse.GetState().X;
             float deltaX = cursorPositionX - _lastMousePosX;
@@ -106,12 +107,22 @@ namespace PhysX_test2.Engine.CameraControllers
                 ZoomCameraFromCha(Settings.zoomSpeed);
 
             _mouseWheelOld = mouseState.ScrollWheelValue;
+
+            _delta = _targetPoint - _currentTarget;
+            _delta.Y = 0;
+            _delta.Normalize();
+            _delta *= _cameraDelta;
         }
 
         public override void UpdateCamera()
         {
             _currentTarget = _character.transform.Translation;
             _currendPosition = _currentTarget + _offset;
+
+         /*   Matrix resMatr;
+            Vector3 vect = Vector3.Forward;
+            Matrix.CreateFromAxisAngle(ref vect, angle, out resMatr);*/
+
             base.UpdateCamera();
         }
     }
