@@ -35,7 +35,7 @@ namespace PhysX_test2.Engine.Render
         //ОТДЕЛЬНЫЕ ТЕХНИКИ НА ТРАВУ И ПУЛИ СО ВЗРЫВАМИ
 
 
-        protected class LoggerTrick : ContentBuildLogger
+       /* protected class LoggerTrick : ContentBuildLogger
         {
             public override void LogMessage(string message, params object[] messageArgs)
             {
@@ -84,12 +84,18 @@ namespace PhysX_test2.Engine.Render
             {
                 throw new NotImplementedException();
             }
-        }
+        }*/
 
         protected Shader(GraphicsDevice device, byte[] effecCode)
             : base(device, effecCode)
         {
-            if (device.GraphicsProfile == GraphicsProfile.Reach)
+            
+        }
+
+        public static Effect Load(Microsoft.Xna.Framework.Content.ContentManager content)
+        {
+            Effect e = content.Load<Effect>("Shaders\\ObjectRender");
+            if (MyGame.Instance.GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)
             {
                 AnimRenderSM = "AnimRenderSMR";
                 NotAnimRenderSM = "NotAnimRenderSMR";
@@ -100,8 +106,9 @@ namespace PhysX_test2.Engine.Render
                 CreateStaticShadowMap = "CreateStaticShadowMapR";
                 CreateAnimShadowMap = "CreateAnimShadowMapR";
             }
+            return e;
         }
-
+        /*
         public static Effect FromStream(Stream stream, GraphicsDevice device)
         {
             var content = new EffectContent();
@@ -117,7 +124,7 @@ namespace PhysX_test2.Engine.Render
 
 
             return new Shader(device, ec);
-        }
+        }*/
     }
 
     

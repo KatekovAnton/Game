@@ -37,7 +37,7 @@ namespace PhysX_test2
         {
             Instance = this;
             _log = new Log();
-
+           
             _engine = new GameEngine(this);
 
             _graphics = GameEngine.DeviceManager;
