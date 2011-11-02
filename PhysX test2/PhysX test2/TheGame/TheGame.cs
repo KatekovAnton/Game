@@ -10,7 +10,7 @@ namespace PhysX_test2.TheGame
 {
     public class TheGame
     {
-        public LogicNPC _player;
+        public LogicCharacter _player;
         public LogicWeapon _playerWeapon;
 
         public GameLevel _level;

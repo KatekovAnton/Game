@@ -21,7 +21,8 @@ namespace PhysX_test2.Engine.Render.Materials
                 return ObjectRenderEffect.Techniques[TehniqueName];
             }
             set
-            { 
+            {
+                TehniqueName = value.Name;
             }
         }
 
