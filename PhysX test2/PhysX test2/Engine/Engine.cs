@@ -136,13 +136,32 @@ namespace PhysX_test2.Engine {
                 boxrdescription = packs.GetObject("WoodenCrate10WorldObject\0", boxrdescription) as LevelObjectDescription;
 
                 LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxrdescription, packs, Scene);
-                lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 30, 0));
+                lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 20, 0));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
                 lo._needMouseCast = true;
                 LevelObjectBox = lo;
 
             }
+
+            float delta = 4;
+            int x = 5;
+            int y = 5;
+
+            for (int i = 0; i < x;i++ )
+                for (int j = 0; j < y; j++)
+                {
+                    var boxrdescription = new LevelObjectDescription();
+                    boxrdescription = packs.GetObject("WoodenCrate10WorldObject\0", boxrdescription) as LevelObjectDescription;
+
+                    LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxrdescription, packs, Scene);
+                    lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(i * delta, 25, j * delta));
+                    GraphicPipeleine.ProceedObject(lo.renderaspect);
+                    gameScene.AddObject(lo);
+                    lo._needMouseCast = true;
+                }
+
+            
 
             ////our character
             {

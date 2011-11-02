@@ -28,6 +28,10 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         public ObjectPhysicBehaviourModel(Actor _actor)
         {
             actor = _actor;
+            actor.LinearVelocity = Vector3.Zero.toPhysicV3();
+            actor.LinearMomentum = Vector3.Zero.toPhysicV3();
+            actor.AngularVelocity = Vector3.Zero.toPhysicV3();
+            actor.AngularMomentum = Vector3.Zero.toPhysicV3();
         }
         public override void Move(Vector3 displacement)
         {
@@ -40,7 +44,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             if (Additionaldata != null)
             {
                 PhysicData pd = Additionaldata as PhysicData;
-               
+
                 actor.LinearVelocity = pd.LinearVelocity.toPhysicV3();
                 actor.LinearMomentum = pd.LinearMomentum.toPhysicV3();
                 actor.AngularVelocity = pd.AngularVelocity.toPhysicV3();
