@@ -11,6 +11,18 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
 {
     class SGQdTree
     {
+        struct points
+        {
+            public Point pmin, pmax;
+            public points(int minx, int maxx, int miny, int maxy)
+            {
+                pmin.X = minx;
+                pmin.Y = miny;
+                pmax.X = maxx;
+                pmax.Y = maxy;
+            }
+        }
+
         public const float maxSize = 8192;
         public const float halfHeight = 128;
 
@@ -121,17 +133,7 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
                 }
             }
         }
-        struct points
-        {
-            public Point pmin, pmax;
-            public points(int minx, int maxx, int miny, int maxy)
-            {
-                pmin.X = minx;
-                pmin.Y = miny;
-                pmax.X = maxx;
-                pmax.Y = maxy;
-            }
-        }
+        
         private SGNode GetLeaf(PivotObject entity)
         {
             BoundingBox rootBbox = baseNode.boundingBox;
@@ -166,9 +168,7 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
                 _objectNodeMap.Add(hashCode, node);
         }
 
-
-
-        public void AddEntity(PivotObject entity)
+        public void AddObject(PivotObject entity)
         {
             //получаем лист, в котором находится объект
 
@@ -206,7 +206,6 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
                 }
             }
         }
-
 
         private void GetSubtree(SGNode node, MyContainer<PivotObject> visibleEntities)
         {
@@ -312,16 +311,15 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
         public bool RemoveObject(PivotObject wo)
         {
             int hashCode = wo.GetHashCode();
-            if (_objectNodeMap.ContainsKey(hashCode))
+            if (!_objectNodeMap.ContainsKey(hashCode))
             {
-                SGNode node = _objectNodeMap[hashCode];
-                bool r1 = node.Entities.Remove(wo);
-                bool r2 = _objectNodeMap.Remove(hashCode);
-
-                return r1 && r2;
+                return false;
             }
+            SGNode node = _objectNodeMap[hashCode];
+            bool r1 = node.Entities.Remove(wo);
+            bool r2 = _objectNodeMap.Remove(hashCode);
 
-            return false;
+            return r1 && r2;
         }
 
         /// <summary>
@@ -335,20 +333,43 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
             _entityRecalculateCount = 0;
             foreach (PivotObject obj in objects)
             {
-                //удаляем объект
                 if (obj.moved)
                 {
-                    //TODO
-                    _entityRecalculateCount++;
-                    RemoveObject(obj);
                     
-                    //добавляем объект в дерево.
-                    AddEntity(obj);
+                  /*  int hashCode = obj.GetHashCode();
+                    bool needupdate = false;
+                    if (_objectNodeMap.ContainsKey(hashCode))
+                    {
+                        SGNode node = _objectNodeMap[hashCode];
+                        ContainmentType type;
+                        node.boundingBox.Contains(ref obj.raycastaspect.boundingShape.aabb.XNAbb, out type);
+                        if (type != ContainmentType.Contains)
+                            needupdate = true;
+                    }
+                    if (needupdate)
+                    {*/
+                        _entityRecalculateCount++;
+                        RemoveObject(obj);
+                        AddObject(obj);
+                   // }
                 }
             }
 
             _timer.Stop();
             _updateTime = _timer.ElapsedMilliseconds;
+        }
+
+        public void SwapObjects(PivotObject __oldObject, PivotObject __newObject)
+        {
+            int hashCode = __oldObject.GetHashCode();
+            if (!_objectNodeMap.ContainsKey(hashCode))
+                return;
+
+            SGNode node = _objectNodeMap[hashCode];
+            node.Entities.Swap(__oldObject, __newObject);
+
+            _objectNodeMap.Remove(hashCode);
+            _objectNodeMap.Add(__newObject.GetHashCode(), node);
         }
     }
 }

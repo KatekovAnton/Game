@@ -202,7 +202,7 @@ namespace PhysX_test2.Engine {
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
                 //должен быть после чара
-                gameScene.objects.AddRule(LevelObjectCharacterBox, lo);
+                gameScene._objects.AddRule(LevelObjectCharacterBox, lo);
 
                 //memoriz
                 LevelObjectSCGunLO = lo;
@@ -221,7 +221,7 @@ namespace PhysX_test2.Engine {
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
                 //должен быть после чара
-                gameScene.objects.AddRule(LevelObjectSCGunLO, lo);
+                gameScene._objects.AddRule(LevelObjectSCGunLO, lo);
             }
 
             //head
@@ -243,7 +243,7 @@ namespace PhysX_test2.Engine {
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
                 //должен быть после чара
-                gameScene.objects.AddRule(LevelObjectCharacterBox, lo);
+                gameScene._objects.AddRule(LevelObjectCharacterBox, lo);
             }
 
             //чистим временные какахи
@@ -272,11 +272,11 @@ namespace PhysX_test2.Engine {
             animationManager.UpdateStart(gameTime);
 
             //Begin update of level objects
-            foreach (PivotObject lo in gameScene.objects)
+            foreach (PivotObject lo in gameScene._objects)
                 lo.BeginDoFrame();
            
             
-            foreach (PivotObject lo in gameScene.objects)
+            foreach (PivotObject lo in gameScene._objects)
                 lo.DoFrame(gameTime);
 
 
@@ -294,7 +294,7 @@ namespace PhysX_test2.Engine {
 
 
             //End updating world objects
-            foreach (PivotObject lo in gameScene.objects)
+            foreach (PivotObject lo in gameScene._objects)
                 lo.EndDoFrame();
 
 
@@ -317,14 +317,14 @@ namespace PhysX_test2.Engine {
             GraphicPipeleine.NewFrame(lightDir);
 
             gameScene.CalculateVisibleObjects();
-            Vector3 v1 = DeviceManager.GraphicsDevice.Viewport.Project(gameScene.objects[0].transform.Translation, Camera.Projection, Camera.View, Matrix.Identity);
+            Vector3 v1 = DeviceManager.GraphicsDevice.Viewport.Project(gameScene._objects[0].transform.Translation, Camera.Projection, Camera.View, Matrix.Identity);
             BoxScreenPosition = new Vector3(Convert.ToSingle(Convert.ToInt32(v1.X)), Convert.ToSingle(Convert.ToInt32(v1.Y)), v1.Z);
 
             //добавляем все нобходимые объекты на отрисовку
-            GraphicPipeleine.AddObjectToPipeline(gameScene.VisibleObjects);
-            GraphicPipeleine.AddObjectToShadow(gameScene.ShadowObjects);
+            GraphicPipeleine.AddObjectToPipeline(gameScene._visibleObjects);
+            GraphicPipeleine.AddObjectToShadow(gameScene._shadowObjects);
 
-            visibleobjectscount = gameScene.VisibleObjects.Count;
+            visibleobjectscount = gameScene._visibleObjects.Count;
             animationManager.UpdateEnd(gameTime);
             FPSCounter.Update(gameTime);
         }

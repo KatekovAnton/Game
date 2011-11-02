@@ -7,35 +7,73 @@ namespace PhysX_test2.Engine.Logic
 {
     public class EngineScene
     {
-        public MyContainer<PivotObject> ShadowObjects;
-        public MyContainer<PivotObject> VisibleObjects;
-        public MyContainer<PivotObject> objects;
+        public MyContainer<PivotObject> _shadowObjects;
+        public MyContainer<PivotObject> _visibleObjects;
+        public MyContainer<PivotObject> _objects;
         //мы же хотим переключать сцены?? поэтому каждой - свой сценграф
-        public SceneGraph.SceneGraph sceneGraph;
+        public SceneGraph.SceneGraph _sceneGraph;
 
 
         public EngineScene()
         {
-            objects = new MyContainer<PivotObject>(100, 10);
-            VisibleObjects = new MyContainer<PivotObject>(100, 2);
-            ShadowObjects = new MyContainer<PivotObject>(100, 2);
-            sceneGraph = new SceneGraph.SceneGraph(this);
+            _objects = new MyContainer<PivotObject>(100, 10);
+            _visibleObjects = new MyContainer<PivotObject>(100, 2);
+            _shadowObjects = new MyContainer<PivotObject>(100, 2);
+            _sceneGraph = new SceneGraph.SceneGraph(this);
         }
 
         public EngineScene(EngineScene s)
         {
-            ShadowObjects = s.ShadowObjects;
-            VisibleObjects = s.VisibleObjects;
-            objects = s.objects;
-            sceneGraph = s.sceneGraph;
+            _shadowObjects = s._shadowObjects;
+            _visibleObjects = s._visibleObjects;
+            _objects = s._objects;
+            _sceneGraph = s._sceneGraph;
+        }
+
+        /// <summary>
+        /// TODO - TEST
+        /// </summary>
+        /// <param name="__oldObject"></param>
+        /// <param name="__newObject"></param>
+        /// <param name="__recalculate"></param>
+        public bool SwapObjects(PivotObject __oldObject, PivotObject __newObject, bool __recalculate)
+        {
+            bool finded = false;
+            foreach(PivotObject obj in _objects)
+                if (obj == __oldObject)
+                {
+                    finded = true;
+                    break;
+                }
+
+            if (!finded)
+            {
+                __newObject.Update();
+                _objects.Add(__newObject);
+                _sceneGraph.AddObject(__newObject);
+                return false;
+            }
+
+            MyContainer<MyContainer<PivotObject>.MyContainerRule> rules = _objects.FindAllRulesForObject(__oldObject);
+            foreach (MyContainer<PivotObject>.MyContainerRule rule in rules)
+            {
+                if (rule.firstObject == __oldObject)
+                    rule.firstObject = __newObject;
+                else if (rule.secondObject == __oldObject)
+                    rule.secondObject = __newObject;
+            }
+            _objects.Swap(__oldObject, __newObject, false);
+            _sceneGraph.SwapObjects(__oldObject, __newObject, __recalculate);
+
+            return true;
         }
 
         public void Clear()
         {
-            VisibleObjects.Clear();
-            ShadowObjects.Clear();
-            sceneGraph.Clear();
-            objects.Clear();
+            _visibleObjects.Clear();
+            _shadowObjects.Clear();
+            _sceneGraph.Clear();
+            _objects.Clear();
 
             //вот тут странно- вдруг мы хотим юзать редактор идешников в какомто другом
             //месте? получается идешники одни на весь пак? а если паков несколько? 
@@ -47,7 +85,7 @@ namespace PhysX_test2.Engine.Logic
 
         public PivotObject GetObjectWithID(uint id)
         {
-            foreach (PivotObject t in objects)
+            foreach (PivotObject t in _objects)
                 if (t.editorAspect.id == id)
                     return t;
             //   ConsoleWindow.TraceMessage("Unable to find object with id = " + id.ToString());
@@ -57,19 +95,19 @@ namespace PhysX_test2.Engine.Logic
         public void AddObject(PivotObject newObject)
         {
             newObject.Update();
-            objects.Add(newObject);
-            sceneGraph.AddObject(newObject);
+            _objects.Add(newObject);
+            _sceneGraph.AddObject(newObject);
         }
 
         public void DeleteObjects(MyContainer<PivotObject> deletingobjects)
         {
             foreach (PivotObject t in deletingobjects)
             {
-                objects.Remove(t);
-                sceneGraph.DeleteObject(t);
+                _objects.Remove(t);
+                _sceneGraph.RemoveObject(t);
             }
             // счетчик идов будет начинать все делать с 0
-            if (objects.Count == 0)
+            if (_objects.Count == 0)
             {
                 IdGenerator.ClearIdsCounter();
             }
@@ -77,11 +115,11 @@ namespace PhysX_test2.Engine.Logic
 
         public void RemoveObject(PivotObject deletingobjects)
         {
-            objects.Remove(deletingobjects);
-            sceneGraph.DeleteObject(deletingobjects);
+            _objects.Remove(deletingobjects);
+            _sceneGraph.RemoveObject(deletingobjects);
 
             // счетчик идов будет начинать все делать с 0
-            if (objects.Count == 0)
+            if (_objects.Count == 0)
             {
                 IdGenerator.ClearIdsCounter();
             }
@@ -91,25 +129,25 @@ namespace PhysX_test2.Engine.Logic
         {
             foreach (PivotObject t in newobjects)
             {
-                objects.Add(t);
-                sceneGraph.AddObject(t);
+                _objects.Add(t);
+                _sceneGraph.AddObject(t);
             }
         }
 
         public void UpdateScene()
         {
-            foreach (PivotObject po in objects)
+            foreach (PivotObject po in _objects)
             {
                 po.Update();
             }
-            sceneGraph.NewFrame();
+            _sceneGraph.NewFrame();
 
         }
 
         public void CalculateVisibleObjects()
         {
-            sceneGraph.calculateVisibleObjects(GameEngine.Instance.Camera.cameraFrustum, VisibleObjects);
-            sceneGraph.calculateShadowVisibleObjects(GameEngine.Instance.GraphicPipeleine.frustumForShadow, ShadowObjects);
+            _sceneGraph.calculateVisibleObjects(GameEngine.Instance.Camera.cameraFrustum, _visibleObjects);
+            _sceneGraph.calculateShadowVisibleObjects(GameEngine.Instance.GraphicPipeleine.frustumForShadow, _shadowObjects);
         }
     }
 }

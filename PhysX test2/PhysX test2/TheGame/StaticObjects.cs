@@ -57,6 +57,7 @@ namespace PhysX_test2.TheGame
             nodeDead._isOperable = false;
             nodeDead._canReceiveControl = false;
 
+            //all actions, jump, etc
             CharacterGraphNode nodeAction = new CharacterGraphNode();
             nodeDead._name = _characterNodeAction;
             nodeDead._isOperable = true;

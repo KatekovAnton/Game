@@ -9,49 +9,67 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
 {
     public class SceneGraph
     {
-        EngineScene scene;
-        SGQdTree octree;
+        EngineScene _scene;
+        SGQdTree _octree;
 
-        public SceneGraph(EngineScene _scene)
+        public SceneGraph(EngineScene __scene)
         {
-            octree = new SGQdTree();
-            scene = _scene;
+            _octree = new SGQdTree();
+            _scene = __scene;
         }
-        public void AddObject(PivotObject wo)
+        public void AddObject(PivotObject __wo)
         {
-            // objects.Add(wo);
-            octree.AddEntity(wo);
+            _octree.AddObject(__wo);
         }
-        public void DeleteObject(PivotObject wo)
+        public void RemoveObject(PivotObject __wo)
         {
-            // objects.Add(wo);
-            octree.RemoveObject(wo);
+            _octree.RemoveObject(__wo);
         }
         public void NewFrame()
         {
-            octree.Update(scene.objects);
+            _octree.Update(_scene._objects);
         }
-        public void calculateVisibleObjects(BoundingFrustum _viewFrustum, MyContainer<PivotObject> container)
+        public void calculateVisibleObjects(BoundingFrustum __viewFrustum, MyContainer<PivotObject> __container)
         {
-            container.Clear();
-            octree.Query(_viewFrustum, container);
+            __container.Clear();
+            _octree.Query(__viewFrustum, __container);
         }
-        public void calculateShadowVisibleObjects(BoundingFrustum _lightViewFrustum, MyContainer<PivotObject> container)
+        public void calculateShadowVisibleObjects(BoundingFrustum __lightViewFrustum, MyContainer<PivotObject> __container)
         {
-            container.Clear();
-            octree.Query(_lightViewFrustum, container);
+            __container.Clear();
+            _octree.Query(__lightViewFrustum, __container);
         }
         public void Clear()
         {
-            foreach (PivotObject lo in scene.objects)
+            foreach (PivotObject lo in _scene._objects)
             {
-                octree.RemoveObject(lo);
+                _octree.RemoveObject(lo);
             }
             //objects.Clear();
         }
         public int recalulcalated()
         {
-            return octree._entityRecalculateCount;
+            return _octree._entityRecalculateCount;
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="__oldObject"></param>
+        /// <param name="__newObject"></param>
+        /// <param name="__recalculate"></param>
+        public void SwapObjects(PivotObject __oldObject, PivotObject __newObject, bool __recalculate)
+        {
+            if (__recalculate)
+            {
+                _octree.RemoveObject(__oldObject);
+                _octree.AddObject(__newObject);
+            }
+            else
+            {
+                _octree.SwapObjects(__oldObject, __newObject);
+            }
+
         }
     }
 }

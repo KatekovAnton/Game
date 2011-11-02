@@ -7,12 +7,30 @@ using PhysX_test2.TheGame.Objects;
 
 namespace PhysX_test2.TheGame.ObjectLogic
 {
+
+
     public class LogicNPC
     {
-        GameObject _hisObject;
+        public bool _isAlive;
+
+        GameCharacter _hisObject;
 
         GameObject _hisWeapon;
 
         GameObject _hisHead;
+
+        public void SetAlive(bool __liveState)
+        {
+            if (__liveState == _isAlive)
+                return;
+
+            if (__liveState)
+                _hisObject.setAlive();
+            else
+            {
+                _hisObject.setDead();
+                
+            }
+        }
     }
 }

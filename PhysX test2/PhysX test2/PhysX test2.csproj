@@ -220,6 +220,7 @@
     <Compile Include="TheGame\Objects\GameBulletBase.cs" />
     <Compile Include="TheGame\Objects\GameBulletSimple.cs" />
     <Compile Include="TheGame\Objects\GameCharacter.cs" />
+    <Compile Include="TheGame\Objects\GameWeapon.cs" />
     <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphEdge.cs" />
     <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphController.cs" />
     <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphNode.cs" />

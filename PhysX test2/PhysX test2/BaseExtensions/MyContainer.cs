@@ -6,10 +6,12 @@ using System.Text;
 
 namespace PhysX_test2
 {
+    
+
     public class MyContainer<T> : IEnumerable<T>
        where T : class
     {
-        class MyContainerRule
+        public class MyContainerRule
         {
             public T firstObject;
             public int firstObjectIndex;
@@ -24,6 +26,7 @@ namespace PhysX_test2
                 secondObjectIndex = _si;
             }
         }
+        
         List<MyContainerRule> rules;
         T[] array;
         int m, n;
@@ -34,6 +37,7 @@ namespace PhysX_test2
                 if (array[iii] != null)
                     yield return array[iii];
         }
+        
         IEnumerator IEnumerable.GetEnumerator()
         {
             for (int iii = 0; iii < Count; iii++)
@@ -194,7 +198,7 @@ namespace PhysX_test2
             return false;
         }
 
-        private int findRuleForSecondObject(T neededObject, out MyContainerRule rule)
+        private int FindRuleForSecondObject(T neededObject, out MyContainerRule rule)
         {
             for (int i = 0; i < rules.Count; i++)// MyContainerRule rile in rules)
             {
@@ -208,7 +212,7 @@ namespace PhysX_test2
             return -1;
         }
 
-        public void removeAllrulesForObject(T neededObject)
+        public void RemoveAllRulesForObject(T neededObject)
         {
             bool removed = true;
             while (removed)
@@ -224,6 +228,16 @@ namespace PhysX_test2
             }
         }
 
+        public MyContainer<MyContainerRule> FindAllRulesForObject(T neededObject)//TODO TEST
+        {
+            MyContainer<MyContainerRule> rulesResult = new MyContainer<MyContainerRule>(10, 1);
+            foreach (MyContainerRule rule in rules)
+                if (rule.firstObject == neededObject || rule.secondObject == neededObject)
+                    rulesResult.Add(rule);
+                    
+            return rulesResult;
+        }
+
         public void RemoveAt(int index)
         {
             if (Count != 0)
@@ -231,9 +245,9 @@ namespace PhysX_test2
                 if (array[index] != null)
                 {
                     //удалить все правила, в которых первый объект - тот который мы удаляем
-                    removeAllrulesForObject(array[index]);
+                    RemoveAllRulesForObject(array[index]);
                     MyContainerRule rule = null;
-                    int ruleposition = findRuleForSecondObject(array[Count - 1], out rule);
+                    int ruleposition = FindRuleForSecondObject(array[Count - 1], out rule);
                     if (ruleposition != -1)
                     {
                         if (rule.firstObjectIndex > index)
@@ -271,6 +285,16 @@ namespace PhysX_test2
                     }
                 }
             }
+        }
+
+        public void Swap(T __oldobject, T __newobject, bool __searchSame = false)
+        {
+            if (__searchSame)
+                Remove(__newobject);
+
+            for (int i = 0; i < Count; i++)
+                if (array[i] == __oldobject)
+                    array[i] = __newobject;
         }
     }
 }

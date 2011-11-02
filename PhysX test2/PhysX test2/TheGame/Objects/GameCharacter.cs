@@ -43,23 +43,22 @@ namespace PhysX_test2.TheGame.Objects
         {
             //method
             _deadObject.SetGlobalPose(_aliveObject.transform);
-            _hisLevel.RemoveObject(_aliveObject);
-            _hisLevel.AddObject(_deadObject);
+             _hisLevel._scene.SwapObjects(_aliveObject, _deadObject, false);
             
         }
 
-        public void setAlive(Vector3 location)
+        public void setAlive()
         {
             //method
             _aliveObject.SetPosition(_hisLevel.GetSpawnPlace());
-            _hisLevel.RemoveObject(_deadObject);
-            _hisLevel.AddObject(_aliveObject);
+            _hisLevel._scene.SwapObjects(_deadObject, _aliveObject, false);
+            
         }
 
         public static void edgeDeadToAlive(GameCharacter __object)
         {
             //method
-            __object.setAlive(__object._hisLevel.GetSpawnPlace());
+            __object.setAlive();
         }
 
         public static void edgeAliveToDead(GameCharacter __object)
