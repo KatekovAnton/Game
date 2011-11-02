@@ -103,9 +103,10 @@ namespace PhysX_test2
         }
 
         public Vector3 _mousepoint;
+        public Ray ray;
         private void HandleKeyboard(KeyboardState keyboardState)
         {
-            Ray ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), _engine.Camera.View, _engine.Camera.Projection);
+            ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), _engine.Camera.View, _engine.Camera.Projection);
 
             Vector3? point = _engine.LevelObjectTestSide.raycastaspect.IntersectionClosest(ray, _engine.LevelObjectTestSide.transform);
             if (point != null)

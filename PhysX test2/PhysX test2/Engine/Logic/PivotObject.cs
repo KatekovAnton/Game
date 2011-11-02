@@ -49,6 +49,16 @@ namespace PhysX_test2.Engine.Logic
         /// </summary>
         public BehaviourModel.ObjectBehaviourModel behaviourmodel;
 
+        /// <summary>
+        /// associated game object
+        /// </summary>
+        public object _upperObject;
+
+        /// <summary>
+        /// calc or not cast with mouse ray for searching target point
+        /// </summary>
+        public bool _needMouseCast;
+
         protected bool _visible;
 
         public virtual void SetVisible(bool __visible)

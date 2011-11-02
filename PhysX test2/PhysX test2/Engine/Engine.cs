@@ -139,7 +139,9 @@ namespace PhysX_test2.Engine {
                 lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 30, 0));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
+                lo._needMouseCast = true;
                 LevelObjectBox = lo;
+
             }
 
             ////our character
@@ -154,7 +156,7 @@ namespace PhysX_test2.Engine {
                 LevelObjectCharacterBox = lo;
                 lo.useDeltaMatrix = true;
                 lo.deltaMatrix = Matrix.CreateTranslation(new Vector3(0, 0, 0.1f));
-                
+                lo._needMouseCast = true;
                 //хз как сделоать поудобнее TODO
                 //if (lo.renderaspect.isanimated)
                 {
@@ -174,6 +176,7 @@ namespace PhysX_test2.Engine {
                 lo.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(0, 15, 0));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
+                lo._needMouseCast = true;
                 LevelObjectTestSide = lo;
             }
 
@@ -186,6 +189,7 @@ namespace PhysX_test2.Engine {
                 lo.SetGlobalPose(Matrix.CreateTranslation(0, 15, 0));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
+                lo._needMouseCast = false;
                 LevelObjectCursorSphere = lo;
             }
 
@@ -201,6 +205,7 @@ namespace PhysX_test2.Engine {
                 lo.SetGlobalPose(Matrix.CreateRotationX(MathHelper.PiOver2 - 0.14f) * Matrix.CreateTranslation(new Vector3(-0.46f, -0.20f, -0.43f)));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
+                lo._needMouseCast = false;
                 //должен быть после чара
                 gameScene._objects.AddRule(LevelObjectCharacterBox, lo);
 
@@ -220,6 +225,7 @@ namespace PhysX_test2.Engine {
                 lo.SetGlobalPose(Matrix.CreateRotationX(MathHelper.PiOver2 - 0.14f) * Matrix.CreateTranslation(new Vector3(-0.46f, -0.20f, -0.43f)));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
+                lo._needMouseCast = false;
                 //должен быть после чара
                 gameScene._objects.AddRule(LevelObjectSCGunLO, lo);
             }
@@ -242,6 +248,7 @@ namespace PhysX_test2.Engine {
                 lo.SetGlobalPose(Matrix.CreateTranslation(new Vector3(-0.00f, -0.01f, 0.84f)));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
+                lo._needMouseCast = false;
                 //должен быть после чара
                 gameScene._objects.AddRule(LevelObjectCharacterBox, lo);
             }

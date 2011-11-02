@@ -10,7 +10,7 @@ namespace PhysX_test2.TheGame.Objects
     /// <summary>
     /// base class for all objects
     /// </summary>
-    public class GameObject
+    public abstract class GameObject
     {
         public GameLevel _hisLevel;
         protected bool _bulletRayCasted;
