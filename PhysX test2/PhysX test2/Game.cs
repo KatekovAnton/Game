@@ -91,12 +91,12 @@ namespace PhysX_test2
             _engine.UnLoad();
         }
 
-        public Vector3 _mousepoint;
+        public Vector3 _mousepoint = Vector3.Zero;
         public Ray ray;
         private void HandleKeyboard(KeyboardState keyboardState)
         {
             ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), _engine.Camera.View, _engine.Camera.Projection);
-            _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.Identity,null);
+          /*  _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.Identity,null);
             System.Collections.Generic.List<Vector3?> VectorList=new System.Collections.Generic.List<Vector3?>();
             Vector3? point=new Vector3?();
             int CrossCount = 0;
@@ -170,7 +170,35 @@ namespace PhysX_test2
             {
                 _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.CreateTranslation(point.Value), null);
                 _mousepoint = point.Value;
+            }*/
+        }
+
+        public void SearchClickedObject()
+        {
+            //ищем объект на кот тыкнули
+            Engine.Logic.PivotObject clickedlo = null;
+            Vector3 newpoint = _mousepoint;
+            float distance = 10000;
+
+            Vector3 camerapos = ray.Position;
+            foreach (Engine.Logic.PivotObject lo in this._engine.gameScene._visibleObjects)
+            {
+                if (!lo._needMouseCast)
+                    continue;
+                Vector3? point = lo.raycastaspect.IntersectionClosest(ray, lo.transform);
+                if (point != null)
+                {
+                    float range = (point.Value - camerapos).Length();
+                    if (range < distance)
+                    {
+                        clickedlo = lo;
+                        distance = range;
+                        newpoint = point.Value;
+                    }
+                }
             }
+            _mousepoint = newpoint;
+            _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.CreateTranslation(newpoint), null);
         }
 
 
@@ -178,7 +206,7 @@ namespace PhysX_test2
         {
             HandleKeyboard(Keyboard.GetState());
             _engine.Update(gameTime);
-
+            SearchClickedObject();
             base.Update(gameTime);
         }
 

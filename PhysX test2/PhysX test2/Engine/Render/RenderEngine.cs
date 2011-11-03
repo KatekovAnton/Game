@@ -63,7 +63,7 @@ namespace PhysX_test2.Engine.Render
             frustumForShadow = new BoundingFrustum(Matrix.Identity);
             debugRenderer = new DebugRender.DebugRenderer(Device, _visualizationEffect);
             debugRenderArray = new MyContainer<PivotObject>(10, 3);
-            EnableShadows= EnableGrass = true;
+            EnableShadows= EnableGrass=SmoothShadows = true;
            EnableDebugRender = true;
             //EnableShadows = false;
             //SmoothShadows = false;

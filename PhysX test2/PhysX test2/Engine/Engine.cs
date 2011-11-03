@@ -238,7 +238,7 @@ namespace PhysX_test2.Engine
 
             /////sphere
             {
-                LevelObjectCursorSphere = loadObject("Cursor\0", null, true) as LevelObject;
+                LevelObjectCursorSphere = loadObject("Cursor\0", null, false) as LevelObject;
                 gameScene.AddObject(LevelObjectCursorSphere);
             }
 
@@ -356,7 +356,7 @@ namespace PhysX_test2.Engine
             GraphicPipeleine.NewFrame(lightDir);
 
             gameScene.CalculateVisibleObjects();
-            Vector3 v1 = DeviceManager.GraphicsDevice.Viewport.Project(gameScene._objects[0].transform.Translation, Camera.Projection, Camera.View, Matrix.Identity);
+            Vector3 v1 = DeviceManager.GraphicsDevice.Viewport.Project(LevelObjectBox.transform.Translation, Camera.Projection, Camera.View, Matrix.Identity);
             BoxScreenPosition = new Vector3(Convert.ToSingle(Convert.ToInt32(v1.X)), Convert.ToSingle(Convert.ToInt32(v1.Y)), v1.Z);
 
             //добавляем все нобходимые объекты на отрисовку
