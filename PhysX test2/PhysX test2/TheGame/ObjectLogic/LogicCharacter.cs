@@ -13,8 +13,6 @@ namespace PhysX_test2.TheGame.ObjectLogic
 
         GameCharacter _hisObject;
 
-        GameObject _hisWeapon;
-
         GameObject _hisHead;
 
         public void SetAlive(bool __liveState)
