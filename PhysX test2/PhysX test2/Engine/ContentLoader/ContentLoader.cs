@@ -17,7 +17,7 @@ namespace PhysX_test2.Engine.ContentLoader
     public abstract class ContentLoader
     {
         private static StillDesign.PhysX.Material characterMaterial;
-        public static CharacterController currentCharacter;
+        public static PivotObject currentParentObject;
         public static int boneToAdd;
 
         public static Logic.BehaviourModel.ObjectBehaviourModel createBehaviourModel(
@@ -151,7 +151,7 @@ namespace PhysX_test2.Engine.ContentLoader
                     } break;
                 case LevelObjectDescription.objectBonerelatedbehaviourmodel:
                     {
-                        behaviourmodel = new Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel(currentCharacter, boneToAdd);
+                        behaviourmodel = new Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel(currentParentObject, boneToAdd);
                     } break;
                 default:
                     {

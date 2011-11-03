@@ -8,7 +8,9 @@ using PhysX_test2.TheGame.Level;
 namespace PhysX_test2.TheGame.Objects
 {
     /// <summary>
-    /// base class for all objects
+    /// базовый класс для всех объеков, обеспечивает смены состояний если надо
+    /// онже инкапсулирует PivotObject-ы нижнего уровня и переключает их при 
+    /// смене состояния геймобжекта (если надо)
     /// </summary>
     public abstract class GameObject
     {

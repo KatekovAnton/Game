@@ -14,19 +14,25 @@ using PhysX_test2.TheGame.Objects.StateGraphs;
 
 namespace PhysX_test2.TheGame.Objects
 {
-    public class GameWeapon : GameObject
+    public class GameWeapon : GameObject, IGraphUser
     {
         public PivotObject _inHandObject;
         public PivotObject _onFloorObject;
 
         public PivotObject _addonObject;
 
-        public GameWeapon(GameLevel __level)
+        public GameWeapon(PivotObject __inHandObject, PivotObject __onFloorObject, PivotObject __addonObject, GameLevel __level)
             : base(__level, true, false)
-        { }
+        {
+            _inHandObject = __inHandObject;
+            _onFloorObject = __onFloorObject;
+            _addonObject = __addonObject;
+        }
 
         public void DropOnFloor()
-        { }
+        {
+
+        }
 
         public void TakeInHand(PivotObject __character)
         {

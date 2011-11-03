@@ -9,8 +9,7 @@ namespace PhysX_test2.TheGame.ObjectLogic
 {
     public class LogicWeapon
     {
-        public GameObject _weaponObject;
-        public GameObject _addonObject;
+        public GameWeapon _weaponObject;
 
 
     }

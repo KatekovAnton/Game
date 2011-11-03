@@ -125,13 +125,14 @@ namespace PhysX_test2.Engine {
                             Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
                             if (ro == null)
                                 throw new Exception();
-                            
-                            ContentLoader.ContentLoader.currentCharacter = ro.character;
 
                             //TODO
                             //все сломается когда заменится объект при смерте
                             //будет депедндится на живой объект
                             //надо катко тут все поменять
+                            ContentLoader.ContentLoader.currentParentObject = __parentObject;
+
+                            
                             switch (__dependType)
                             {
                                 case PivotObjectDependType.Head:
@@ -228,7 +229,7 @@ namespace PhysX_test2.Engine {
                     Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
                     AnimationManager.AnimationManager.Manager.AddAnimationUserEnd(ro.Update, ro.character);
                     ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.WeaponIndex;
-                    ContentLoader.ContentLoader.currentCharacter = ro.character;
+                    ContentLoader.ContentLoader.currentParentObject = lo;
                 }
             }
 

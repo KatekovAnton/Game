@@ -14,7 +14,7 @@ namespace PhysX_test2.Engine.CameraControllers
 
         private Vector3 _offset;
         private LevelObject _character;
-        public float _cameraDelta = 2.00f;
+        public float _cameraDelta = 2.50f;
 
         private int _mouseWheelOld;
         private float _lastMousePosX;

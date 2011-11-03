@@ -103,6 +103,23 @@ namespace PhysX_test2.Engine.Logic
             moved = true;
         }
 
+        public void SetParentObject(PivotObject __object)
+        {
+            BehaviourModel.ObjectBoneRelatedBehaviourModel model = behaviourmodel as BehaviourModel.ObjectBoneRelatedBehaviourModel;
+            if (model != null)
+            {
+                model.SetParentCharacter(__object);
+                return;
+            }
+
+            BehaviourModel.ObjectRelatedBehaviourModel model1 = behaviourmodel as BehaviourModel.ObjectRelatedBehaviourModel;
+            if (model1 != null)
+            {
+                model1.SetParentCharacter(__object);
+                return;
+            }
+        }
+
         public void SetGlobalPose(Microsoft.Xna.Framework.Matrix newPose)
         {
             behaviourmodel.SetGlobalPose(newPose, null);

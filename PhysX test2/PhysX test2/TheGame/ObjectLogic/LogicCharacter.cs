@@ -30,9 +30,9 @@ namespace PhysX_test2.TheGame.ObjectLogic
                 return;
 
             if (__liveState)
-                _hisObject.setAlive();
+                _hisObject.SetAlive();
             else
-                _hisObject.setDead();
+                _hisObject.SetDead();
 
             _isAlive = __liveState;
         }
