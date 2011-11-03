@@ -52,6 +52,9 @@ namespace PhysX_test2.Content
         public int TopRootIndex;
         public int BottomRootIndex;
 
+        public Matrix HeadMatrix;
+        public Matrix   WeaponMatrix;
+
         public byte[] data;
 
         public CharacterContent()
@@ -107,6 +110,10 @@ namespace PhysX_test2.Content
 
             HeadIndex = self.ReadInt32();
             WeaponIndex = self.ReadInt32();
+
+            HeadMatrix = self.ReadMatrix();
+            WeaponMatrix = self.ReadMatrix();
+
             RootIndex = self.ReadInt32();
             TopRootIndex = self.ReadInt32();
             BottomRootIndex = self.ReadInt32();

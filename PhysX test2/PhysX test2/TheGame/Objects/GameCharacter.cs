@@ -16,9 +16,9 @@ using PhysX_test2.TheGame.Objects.StateGraphs;
 
 namespace PhysX_test2.TheGame.Objects
 {
-    public class GameCharacter : GameObject,IGraphUser
+    public class GameCharacter : GameObject, IGraphUser
     {
-        
+
 
         public PivotObject _deadObject;
         public PivotObject _aliveObject;
@@ -34,6 +34,13 @@ namespace PhysX_test2.TheGame.Objects
             _characterStateController = new ObjectGraphController(StaticObjects.Instance()._graphCharacter, this);
         }
 
+        public GameCharacter(string __aliveName, Matrix __aliveMatrix, string __deadName, Matrix __deadMatrix, GameLevel __level)
+            : base(__level, true, true)
+        {
+            _aliveObject = Engine.GameEngine.loadObject(__aliveName, __aliveMatrix, true);
+            _deadObject = Engine.GameEngine.loadObject(__deadName, __deadMatrix, true);
+        }
+
         public void dropParameters()
         {
             //method
@@ -43,8 +50,8 @@ namespace PhysX_test2.TheGame.Objects
         {
             //method
             _deadObject.SetGlobalPose(_aliveObject.transform);
-             _hisLevel._scene.SwapObjects(_aliveObject, _deadObject, false);
-            
+            _hisLevel._scene.SwapObjects(_aliveObject, _deadObject, false);
+
         }
 
         public void SetAlive()
@@ -52,7 +59,7 @@ namespace PhysX_test2.TheGame.Objects
             //method
             _aliveObject.SetPosition(_hisLevel.GetSpawnPlace());
             _hisLevel._scene.SwapObjects(_deadObject, _aliveObject, false);
-            
+
         }
 
         public static void edgeDeadToAlive(GameCharacter __object)

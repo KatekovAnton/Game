@@ -12,6 +12,8 @@ using PhysX_test2.TheGame;
 using PhysX_test2.TheGame.Level;
 using PhysX_test2.TheGame.Objects.StateGraphs;
 
+using Microsoft.Xna.Framework;
+
 namespace PhysX_test2.TheGame.Objects
 {
     public class GameSimpleObject : GameObject
@@ -21,6 +23,12 @@ namespace PhysX_test2.TheGame.Objects
             : base(__level, __mouseRC, __bulletRC)
         {
             _object = __object;
+        }
+
+        public GameSimpleObject(string __objectName, PivotObject __parentObject, Engine.Logic.PivotObjectDependType __dependType, GameLevel __level, bool __mouseRC, bool __bulletRC)
+            :base(__level, __mouseRC, __bulletRC)
+        {
+            Engine.GameEngine.loadObject(__objectName, null, __mouseRC, __parentObject, __dependType); 
         }
     }
 }

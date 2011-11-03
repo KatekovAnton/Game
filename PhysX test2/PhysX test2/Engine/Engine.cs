@@ -13,8 +13,10 @@ using PhysX_test2.Engine.Render;
 using StillDesign.PhysX;
 
 
-namespace PhysX_test2.Engine {
-    public class GameEngine {
+namespace PhysX_test2.Engine 
+{
+    public class GameEngine
+    {
 
         //static variables for enviroment
         public static GameEngine Instance;
@@ -107,11 +109,16 @@ namespace PhysX_test2.Engine {
             Loaddata();
         }
 
-        public static PivotObject loadObject(string __name, Matrix? __deltaMatrix, bool __needMouseCast, PivotObject __parentObject = null, PivotObjectDependType __dependType = PivotObjectDependType.Body)
+        public static PivotObject loadObject(string __name,
+            Matrix? __deltaMatrix,
+            bool __needMouseCast, 
+            PivotObject __parentObject = null,
+            PivotObjectDependType __dependType = PivotObjectDependType.Body)
         {
             var boxcharacterdescription = new LevelObjectDescription();
             boxcharacterdescription = PackList.Instance .GetObject(__name, boxcharacterdescription) as LevelObjectDescription;
-
+            Matrix position = Matrix.Identity;
+            bool needSetPosition = false;
             if (__parentObject != null)
             {
                 //we need to create dependeces
@@ -136,9 +143,17 @@ namespace PhysX_test2.Engine {
                             switch (__dependType)
                             {
                                 case PivotObjectDependType.Head:
-                                    ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.HeadIndex; break;
+                                    {
+                                        needSetPosition = true;
+                                        position = ro.character._baseCharacter.skeleton.HeadMatrix;
+                                        ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.HeadIndex;
+                                    } break;
                                 case PivotObjectDependType.Weapon:
-                                    ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.WeaponIndex; break;
+                                    {
+                                        needSetPosition = true;
+                                        position = ro.character._baseCharacter.skeleton.WeaponMatrix;
+                                        ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.WeaponIndex;
+                                    } break;
                                 default: break;
                             }
                         } break;
@@ -164,7 +179,8 @@ namespace PhysX_test2.Engine {
                 Render.AnimRenderObject ro = loNew.renderaspect as Render.AnimRenderObject;
                 AnimationManager.AnimationManager.Manager.AddAnimationUserEnd(ro.Update, ro.character);
             }
-
+            if (needSetPosition)
+                loNew.SetGlobalPose(position);
             return loNew;
         }
 
@@ -180,15 +196,9 @@ namespace PhysX_test2.Engine {
 
             ///box 
             {
-                var boxrdescription = new LevelObjectDescription();
-                boxrdescription = packs.GetObject("WoodenCrate10WorldObject\0", boxrdescription) as LevelObjectDescription;
-
-                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxrdescription, packs, Scene);
-                lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 25, 0));
-                GraphicPipeleine.ProceedObject(lo.renderaspect);
-                gameScene.AddObject(lo);
-                lo._needMouseCast = true;
-                LevelObjectBox = lo;
+                LevelObjectBox = loadObject("WoodenCrate10WorldObject\0", null, true) as LevelObject;
+                LevelObjectBox.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 25, 0));
+                gameScene.AddObject(LevelObjectBox);
             }
 
             float delta = 4;
@@ -198,125 +208,62 @@ namespace PhysX_test2.Engine {
             for (int i = 0; i < x;i++ )
                 for (int j = 0; j < y; j++)
                 {
-                    var boxrdescription = new LevelObjectDescription();
-                    boxrdescription = packs.GetObject("WoodenCrate10WorldObject\0", boxrdescription) as LevelObjectDescription;
-
-                    LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxrdescription, packs, Scene);
+                    LevelObject lo = loadObject("WoodenCrate10WorldObject\0", null, true) as LevelObject;
                     lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(i * delta, 25, j * delta));
-                    GraphicPipeleine.ProceedObject(lo.renderaspect);
                     gameScene.AddObject(lo);
-                    lo._needMouseCast = true;
                 }
 
-            
 
             ////our character
             {
-                var boxcharacterdescription = new LevelObjectDescription();
-                boxcharacterdescription = packs.GetObject("MyNewCharacter\0", boxcharacterdescription) as LevelObjectDescription;
+                LevelObjectCharacterBox = loadObject("MyNewCharacter\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), true) as LevelObject;
+                LevelObjectCharacterBox.SetPosition(new Vector3(0, 16.0f, 0));
+                gameScene.AddObject(LevelObjectCharacterBox);
 
-                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxcharacterdescription, packs, Scene);
-                lo.SetPosition(new Vector3( 0, 16.0f, 0));
-                GraphicPipeleine.ProceedObject(lo.renderaspect);
-                gameScene.AddObject(lo);
-                LevelObjectCharacterBox = lo;
-                lo.useDeltaMatrix = true;
-                lo.deltaMatrix = Matrix.CreateTranslation(new Vector3(0, 0, 0.1f));
-                lo._needMouseCast = true;
                 //хз как сделоать поудобнее TODO
                 //if (lo.renderaspect.isanimated)
                 {
-                    Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
-                    AnimationManager.AnimationManager.Manager.AddAnimationUserEnd(ro.Update, ro.character);
+                    Render.AnimRenderObject ro = LevelObjectCharacterBox.renderaspect as Render.AnimRenderObject;
                     ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.WeaponIndex;
-                    ContentLoader.ContentLoader.currentParentObject = lo;
+                    ContentLoader.ContentLoader.currentParentObject = LevelObjectCharacterBox;
                 }
             }
 
             ////test side
             {
-                var testsiderdescription = new LevelObjectDescription();
-                testsiderdescription = packs.GetObject("TestSideWorldObject\0", testsiderdescription) as LevelObjectDescription;
-
-                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(testsiderdescription, packs, Scene);
-                lo.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(0, 15, 0));
-                GraphicPipeleine.ProceedObject(lo.renderaspect);
-                gameScene.AddObject(lo);
-                lo._needMouseCast = true;
-                LevelObjectTestSide = lo;
+                LevelObjectTestSide = loadObject("TestSideWorldObject\0", null, true) as LevelObject;
+                LevelObjectTestSide.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(0, 15, 0));
+                gameScene.AddObject(LevelObjectTestSide);
             }
 
             /////sphere
             {
-                var spheredesc = new LevelObjectDescription();
-                spheredesc = packs.GetObject("Cursor\0", spheredesc) as LevelObjectDescription;
-
-                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(spheredesc, packs, Scene);
-                lo.SetGlobalPose(Matrix.CreateTranslation(0, 15, 0));
-                GraphicPipeleine.ProceedObject(lo.renderaspect);
-                gameScene.AddObject(lo);
-                lo._needMouseCast = false;
-                LevelObjectCursorSphere = lo;
+                LevelObjectCursorSphere = loadObject("Cursor\0", null, true) as LevelObject;
+                gameScene.AddObject(LevelObjectCursorSphere);
             }
 
             //gun
             {
-                var gundesc = new LevelObjectDescription();
-                gundesc = packs.GetObject("SCGunLO\0", gundesc) as LevelObjectDescription;
-
-                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(gundesc, packs, Scene);
-                Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel bm = lo.behaviourmodel as Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel;
-                //чем меньше тем выше задран нос пушки
-                //хуз = вправо/влево, -верх/+низ
-                lo.SetGlobalPose(Matrix.CreateRotationX(MathHelper.PiOver2 - 0.14f) * Matrix.CreateTranslation(new Vector3(-0.46f, -0.20f, -0.43f)));
-                GraphicPipeleine.ProceedObject(lo.renderaspect);
-                gameScene.AddObject(lo);
-                lo._needMouseCast = false;
+                LevelObjectSCGunLO = loadObject("SCGunLO\0", null, false, LevelObjectCharacterBox, PivotObjectDependType.Weapon) as LevelObject;
+                gameScene.AddObject(LevelObjectSCGunLO);
                 //должен быть после чара
-                gameScene._objects.AddRule(LevelObjectCharacterBox, lo);
-
-                //memoriz
-                LevelObjectSCGunLO = lo;
+                gameScene._objects.AddRule(LevelObjectCharacterBox, LevelObjectSCGunLO);
             }
 
             //gun addon
             {
-                var gundesc = new LevelObjectDescription();
-                gundesc = packs.GetObject("SСGunAddon\0", gundesc) as LevelObjectDescription;
-
-                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(gundesc, packs, Scene);
-                Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel bm = lo.behaviourmodel as Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel;
-                //чем меньше тем выше задран нос пушки
-                //хуз = вправо/влево, -верх/+низ
-                lo.SetGlobalPose(Matrix.CreateRotationX(MathHelper.PiOver2 - 0.14f) * Matrix.CreateTranslation(new Vector3(-0.46f, -0.20f, -0.43f)));
-                GraphicPipeleine.ProceedObject(lo.renderaspect);
-                gameScene.AddObject(lo);
-                lo._needMouseCast = false;
+                LevelObject SCGunLO = loadObject("SСGunAddon\0", null, false, LevelObjectCharacterBox, PivotObjectDependType.Weapon) as LevelObject;
+                gameScene.AddObject(SCGunLO);
                 //должен быть после чара
-                gameScene._objects.AddRule(LevelObjectSCGunLO, lo);
+                gameScene._objects.AddRule(LevelObjectSCGunLO, SCGunLO);
             }
 
             //head
             {
-
-                if (LevelObjectCharacterBox.renderaspect.isanimated)
-                {
-                    Render.AnimRenderObject ro = LevelObjectCharacterBox.renderaspect as Render.AnimRenderObject;
-                    ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.HeadIndex;
-                }
-
-                var headdesc = new LevelObjectDescription();
-                headdesc = packs.GetObject("Head01\0", headdesc) as LevelObjectDescription;
-
-                LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(headdesc, packs, Scene);
-                Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel bm = lo.behaviourmodel as Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel;
-                //хуз = вправо/влево, ,-верх/+низ
-                lo.SetGlobalPose(Matrix.CreateTranslation(new Vector3(-0.00f, -0.01f, 0.84f)));
-                GraphicPipeleine.ProceedObject(lo.renderaspect);
-                gameScene.AddObject(lo);
-                lo._needMouseCast = false;
+                LevelObject head = loadObject("Head01\0", null, false, LevelObjectCharacterBox, PivotObjectDependType.Head) as LevelObject;
+                gameScene.AddObject(head);
                 //должен быть после чара
-                gameScene._objects.AddRule(LevelObjectCharacterBox, lo);
+                gameScene._objects.AddRule(LevelObjectSCGunLO, head);
             }
 
             //чистим временные какахи
@@ -330,7 +277,8 @@ namespace PhysX_test2.Engine {
         }
 
 
-        private void CreateCharCameraController() {
+        private void CreateCharCameraController()
+        {
             _cameraController = new CameraControllerPerson(Camera, LevelObjectCharacterBox, new Vector3(-10, 10, 0));
             _charcterController = new InputControllers.InputControllerPerson(LevelObjectCharacterBox);
         }

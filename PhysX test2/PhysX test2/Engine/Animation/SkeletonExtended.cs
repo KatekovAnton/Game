@@ -14,6 +14,10 @@ namespace PhysX_test2.Engine.Animation
             baseskelet = Skeleton.FromStream(br);
             HeadIndex = br.ReadInt32();
             WeaponIndex = br.ReadInt32();
+
+            HeadMatrix = br.ReadMatrix();
+            WeaponMatrix = br.ReadMatrix();
+
             RootIndex = br.ReadInt32();
             TopRootIndex = br.ReadInt32();
             BottomRootIndex = br.ReadInt32();

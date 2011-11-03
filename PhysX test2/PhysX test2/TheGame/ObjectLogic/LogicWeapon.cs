@@ -11,6 +11,10 @@ namespace PhysX_test2.TheGame.ObjectLogic
     {
         public GameWeapon _weaponObject;
 
+        public LogicWeapon(GameWeapon __weaponObject)
+        {
+            _weaponObject = __weaponObject;
+        }
 
     }
 }
