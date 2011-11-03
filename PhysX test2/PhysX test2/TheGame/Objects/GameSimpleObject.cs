@@ -17,8 +17,10 @@ namespace PhysX_test2.TheGame.Objects
     public class GameSimpleObject : GameObject
     {
         public PivotObject _object;
-        public GameSimpleObject(GameLevel __level, bool __mouseRC, bool __bulletRC)
+        public GameSimpleObject(PivotObject __object, GameLevel __level, bool __mouseRC, bool __bulletRC)
             : base(__level, __mouseRC, __bulletRC)
-        { }
+        {
+            _object = __object;
+        }
     }
 }

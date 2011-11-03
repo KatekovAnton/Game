@@ -12,6 +12,13 @@ using PhysX_test2.Engine.Render;
 
 namespace PhysX_test2.Engine.Logic
 {
+    public enum PivotObjectDependType
+    {
+        Weapon,
+        Head,
+        Body
+    }
+
     public abstract class PivotObject
     {
         /// <summary>
@@ -48,6 +55,7 @@ namespace PhysX_test2.Engine.Logic
         /// for one механика поведения объекта с физ точки зрения
         /// </summary>
         public BehaviourModel.ObjectBehaviourModel behaviourmodel;
+        public BehaviourModel.BehaviourModelDescription bmDescription;
 
         /// <summary>
         /// associated game object
@@ -93,6 +101,23 @@ namespace PhysX_test2.Engine.Logic
         {
             behaviourmodel.Move(d);
             moved = true;
+        }
+
+        public void SetParentObject(PivotObject __object)
+        {
+            BehaviourModel.ObjectBoneRelatedBehaviourModel model = behaviourmodel as BehaviourModel.ObjectBoneRelatedBehaviourModel;
+            if (model != null)
+            {
+                model.SetParentCharacter(__object);
+                return;
+            }
+
+            BehaviourModel.ObjectRelatedBehaviourModel model1 = behaviourmodel as BehaviourModel.ObjectRelatedBehaviourModel;
+            if (model1 != null)
+            {
+                model1.SetParentCharacter(__object);
+                return;
+            }
         }
 
         public void SetGlobalPose(Microsoft.Xna.Framework.Matrix newPose)

@@ -23,10 +23,10 @@ namespace PhysX_test2
         public Vector3 _boxScreenPosition;
         private SpriteFont _font1;
         private Vector2 _fontPos;
-        private Core _core;
+     
         public GameEngine _engine;
         private BasicEffect _lighting;
-        private Scene _scene;
+      
         private GraphicsDeviceManager _graphics;
         private Log _log;
         private string _outputstring = string.Empty;
@@ -58,20 +58,9 @@ namespace PhysX_test2
 
             _engine.Initalize();
 
-            // For convenience
-            _core = _engine.Core;
-            _scene = _engine.Scene;
 
             IsMouseVisible = true;
-            LoadPhysics();
 
-        }
-
-
-        private void LoadPhysics()
-        {
-            _core.SetParameter(PhysicsParameter.ContinuousCollisionDetection, true);
-            _core.SetParameter(PhysicsParameter.ContinuousCollisionDetectionEpsilon, 0.01f);
         }
 
 

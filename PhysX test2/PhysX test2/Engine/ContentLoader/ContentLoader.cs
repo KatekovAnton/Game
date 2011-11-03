@@ -17,8 +17,151 @@ namespace PhysX_test2.Engine.ContentLoader
     public abstract class ContentLoader
     {
         private static StillDesign.PhysX.Material characterMaterial;
-        public static CharacterController currentCharacter;
+        public static PivotObject currentParentObject;
         public static int boneToAdd;
+
+        public static Logic.BehaviourModel.ObjectBehaviourModel createBehaviourModel(
+            Logic.BehaviourModel.BehaviourModelDescription description,
+            StillDesign.PhysX.Scene scene)
+        {
+            Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel;
+            StillDesign.PhysX.Actor ObjectActor = null;
+            switch (description.BehaviourType)
+            {
+                case LevelObjectDescription.objectmovingbehaviourmodel:
+                    {
+                        throw new Exception("Unsupported behaviour model!");
+                    } break;
+                case LevelObjectDescription.objectphysiccharcontrollerbehaviourmodel:
+                    {
+                        StillDesign.PhysX.ActorDescription ObjectActorDescription = new StillDesign.PhysX.ActorDescription();
+
+                        if (description.ShapeType == 0)
+                        {
+                            if (description.PhysXShapeType == 0)
+                            {
+                                StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
+                                boxshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
+                                ObjectActorDescription.Shapes.Add(boxshape);
+                            }
+                            else if (description.PhysXShapeType == 1)
+                            {
+                                StillDesign.PhysX.CapsuleShapeDescription capsshape = new StillDesign.PhysX.CapsuleShapeDescription(description.ShapeSize.X, description.ShapeSize.Z);
+                                capsshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
+                                ObjectActorDescription.Shapes.Add(capsshape);
+                            }
+                        }
+                        else if (description.ShapeType == 1)
+                        {
+                            
+                            CollisionMesh physicCM = new CollisionMesh();
+                            physicCM = PackList.Instance.GetObject(description.RCCMName, physicCM) as CollisionMesh;
+
+                            ObjectActorDescription.Shapes.Add(physicCM.CreatreConvexShape(scene.Core));
+                        }
+
+
+                        ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
+                        Microsoft.Xna.Framework.Matrix MassCenterMatrix;
+                        Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
+                        ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
+                        ObjectActorDescription.Shapes[0].Material = characterMaterial;
+                        ObjectActor = scene.CreateActor(ObjectActorDescription);
+
+
+                        ObjectActor.RaiseBodyFlag(StillDesign.PhysX.BodyFlag.FrozenRotation);
+                        foreach (var c in ObjectActor.Shapes)
+                        {
+                            c.Group = 31;
+                        }
+                        behaviourmodel = new Logic.BehaviourModel.ObjectPhysicControllerBehaviourModel(ObjectActor);
+                    } break;
+                case LevelObjectDescription.objectstaticbehaviourmodel:
+                    {
+                        behaviourmodel = new Logic.BehaviourModel.ObjectStaticBehaviourModel();
+                    } break;
+                case LevelObjectDescription.objectphysicbehaviourmodel:
+                    {
+                        StillDesign.PhysX.ActorDescription ObjectActorDescription = new StillDesign.PhysX.ActorDescription();
+                        if (description.ShapeType == 0)
+                        {
+                            if (description.PhysXShapeType == 0)
+                            {
+                                StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
+                                Microsoft.Xna.Framework.Matrix m;
+                                Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
+                                Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
+                                boxshape.LocalRotation = m.toPhysicM();
+
+                                ObjectActorDescription.Shapes.Add(boxshape);
+                            }
+                            else if (description.PhysXShapeType == 1)
+                            {
+                                StillDesign.PhysX.CapsuleShapeDescription capsshape = new StillDesign.PhysX.CapsuleShapeDescription(description.ShapeSize.X, description.ShapeSize.Z);
+                                Microsoft.Xna.Framework.Matrix m;
+                                Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
+                                Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
+                                capsshape.LocalRotation = m.toPhysicM();
+
+                                ObjectActorDescription.Shapes.Add(capsshape);
+                            }
+                        }
+                        else if (description.ShapeType == 1)
+                        {
+                            CollisionMesh physicCM = new CollisionMesh();
+
+                            physicCM = PackList.Instance.GetObject(description.RCCMName, physicCM) as CollisionMesh;
+
+
+                            if (description.IsStatic)
+                                ObjectActorDescription.Shapes.Add(physicCM.CreateTriangleMeshShape(scene.Core));
+                            else
+                                ObjectActorDescription.Shapes.Add(physicCM.CreatreConvexShape(scene.Core));
+                        }
+
+                        if (description.IsStatic)
+                        {
+                            ObjectActorDescription.BodyDescription = null;
+                        }
+                        else
+                        {
+                            ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
+                            Microsoft.Xna.Framework.Matrix MassCenterMatrix;
+                            Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
+                            ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
+                        }
+                        ObjectActor = scene.CreateActor(ObjectActorDescription);
+                        if (description.IsStatic)
+                        {
+                            foreach (var c in ObjectActor.Shapes)
+                            {
+                                c.Group = 1;
+                            }
+                        }
+                        else
+                        {
+                            foreach (var c in ObjectActor.Shapes)
+                            {
+                                c.Group = 31;
+                            }
+                        }
+                        behaviourmodel = new Logic.BehaviourModel.ObjectPhysicBehaviourModel(ObjectActor);
+                        //CONTACT REPORT DISABLED TEMPORARY
+                        //ObjectActor.ContactReportFlags = StillDesign.PhysX.ContactPairFlag.All;
+                    } break;
+                case LevelObjectDescription.objectBonerelatedbehaviourmodel:
+                    {
+                        behaviourmodel = new Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel(currentParentObject, boneToAdd);
+                    } break;
+                default:
+                    {
+                        throw new Exception("Unsupported behaviour model!");
+                    } break;
+            }
+            behaviourmodel.Disable();
+            return behaviourmodel;
+        }
+
         private static Material loadMaterial(string name, PackList packs)
         {
             PhysX_test2.Content.MaterialDescription mat = new MaterialDescription();
@@ -235,140 +378,24 @@ namespace PhysX_test2.Engine.ContentLoader
                 Material material = loadMaterial(description.matname, packs);
                 //его тоже удалят
                 RaycastBoundObject raycastaspect = loadrcbo(description, packs);
-                Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel; 
-                #region behaviour
-                StillDesign.PhysX.Actor ObjectActor = null;
-                switch (description.BehaviourType)
-                {
-                    case LevelObjectDescription.objectmovingbehaviourmodel:
-                        {
-                            throw new Exception("Unsupported behaviour model!");
-                        } break;
-                    case LevelObjectDescription.objectphysiccharcontrollerbehaviourmodel:
-                        {
-                            StillDesign.PhysX.ActorDescription ObjectActorDescription = new StillDesign.PhysX.ActorDescription();
-
-                            if (description.ShapeType == 0)
-                            {
-                                if (description.PhysXShapeType == 0)
-                                {
-                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
-                                    boxshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
-                                    ObjectActorDescription.Shapes.Add(boxshape);
-                                }
-                                else if (description.PhysXShapeType == 1)
-                                {
-                                    StillDesign.PhysX.CapsuleShapeDescription capsshape = new StillDesign.PhysX.CapsuleShapeDescription(description.ShapeSize.X, description.ShapeSize.Z);
-                                    capsshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
-                                    ObjectActorDescription.Shapes.Add(capsshape);
-                                }
-                            }
-                            else if (description.ShapeType == 1)
-                            {
-                                CollisionMesh physicCM = new CollisionMesh();
-                                physicCM = packs.GetObject(description.RCCMName, physicCM) as CollisionMesh;
-
-                                ObjectActorDescription.Shapes.Add(physicCM.CreatreConvexShape(scene.Core));
-                            }
+                Logic.BehaviourModel.BehaviourModelDescription desc = new Logic.BehaviourModel.BehaviourModelDescription();
+                desc.BehaviourType = description.BehaviourType;
+                desc.CenterOfMass = description.CenterOfMass;
+                desc.IsStatic = description.IsStatic;
+                desc.Mass = description.Mass;
+                desc.PhysXShapeType = description.PhysXShapeType;
+                desc.RCCMName = description.RCCMName;
+                desc.ShapeRotationAngle = description.ShapeRotationAngle;
+                desc.ShapeRotationAxis = description.ShapeRotationAxis;
+                desc.ShapeSize = description.ShapeSize;
+                desc.ShapeType = description.ShapeType;
 
 
-                            ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
-                            Microsoft.Xna.Framework.Matrix MassCenterMatrix;
-                            Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
-                            ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
-
-                            ObjectActor = scene.CreateActor(ObjectActorDescription);
-                            ObjectActor.RaiseBodyFlag(StillDesign.PhysX.BodyFlag.FrozenRotation);
-                            foreach (var c in ObjectActor.Shapes)
-                            {
-                                c.Group = 31;
-                            }
-                            behaviourmodel = new Logic.BehaviourModel.ObjectPhysicControllerBehaviourModel(ObjectActor);
-                        } break;
-                    case LevelObjectDescription.objectstaticbehaviourmodel:
-                        {
-                            behaviourmodel = new Logic.BehaviourModel.ObjectStaticBehaviourModel();
-                        } break;
-                    case LevelObjectDescription.objectphysicbehaviourmodel:
-                        {
-                            StillDesign.PhysX.ActorDescription ObjectActorDescription = new StillDesign.PhysX.ActorDescription();
-                            if (description.ShapeType == 0)
-                            {
-                                if (description.PhysXShapeType == 0)
-                                {
-                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
-                                    Microsoft.Xna.Framework.Matrix m;
-                                    Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
-                                    Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
-                                    boxshape.LocalRotation = m.toPhysicM();
-
-                                    ObjectActorDescription.Shapes.Add(boxshape);
-                                }
-                                else if (description.PhysXShapeType == 1)
-                                {
-                                    StillDesign.PhysX.CapsuleShapeDescription capsshape = new StillDesign.PhysX.CapsuleShapeDescription(description.ShapeSize.X, description.ShapeSize.Z);
-                                    Microsoft.Xna.Framework.Matrix m;
-                                    Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
-                                    Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
-                                    capsshape.LocalRotation = m.toPhysicM();
-
-                                    ObjectActorDescription.Shapes.Add(capsshape);
-                                }
-                            }
-                            else if (description.ShapeType == 1)
-                            {
-                                CollisionMesh physicCM = new CollisionMesh();
-                                physicCM = packs.GetObject(description.RCCMName, physicCM) as CollisionMesh;
-
-
-                                if (description.IsStatic)
-                                    ObjectActorDescription.Shapes.Add(physicCM.CreateTriangleMeshShape(scene.Core));
-                                else
-                                    ObjectActorDescription.Shapes.Add(physicCM.CreatreConvexShape(scene.Core));
-                            }
-
-                            if (description.IsStatic)
-                            {
-                                ObjectActorDescription.BodyDescription = null;
-                            }
-                            else
-                            {
-                                ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
-                                Microsoft.Xna.Framework.Matrix MassCenterMatrix;
-                                Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
-                                ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
-                            }
-                            ObjectActor = scene.CreateActor(ObjectActorDescription);
-                            if (description.IsStatic)
-                            {
-                                foreach (var c in ObjectActor.Shapes)
-                                {
-                                    c.Group = 1;
-                                }
-                            }
-                            else
-                            {
-                                foreach (var c in ObjectActor.Shapes)
-                                {
-                                    c.Group = 31;
-                                }
-                            }
-                            behaviourmodel = new Logic.BehaviourModel.ObjectPhysicBehaviourModel(ObjectActor);
-                            //CONTACT REPORT DISABLED TEMPORARY
-                            //ObjectActor.ContactReportFlags = StillDesign.PhysX.ContactPairFlag.All;
-                        } break;
-                    case LevelObjectDescription.objectBonerelatedbehaviourmodel:
-                        {
-                            behaviourmodel = new Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel(currentCharacter, boneToAdd);
-                        }break;
-                    default:
-                        {
-                            throw new Exception("Unsupported behaviour model!");
-                        } break;
-                }
-                #endregion
+                Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel = createBehaviourModel(desc, scene); 
+              
                 //её гк удалит
                 LevelObject createdobject = new LevelObject(behaviourmodel, renderaspect, material, raycastaspect);
+                createdobject.bmDescription = desc;
                 description.Enginereadedobject.Add(createdobject);
                 return createdobject;
             }
@@ -381,146 +408,17 @@ namespace PhysX_test2.Engine.ContentLoader
 
 
 
-                Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel;
-                #region behaviour
-                StillDesign.PhysX.Actor ObjectActor = null;
-                switch (description.BehaviourType)
-                {
-                    case LevelObjectDescription.objectmovingbehaviourmodel:
-                        {
-                            throw new Exception("Unsupported behaviour model!");
-                        } break;
-                    case LevelObjectDescription.objectphysiccharcontrollerbehaviourmodel:
-                        {
-                            StillDesign.PhysX.ActorDescription ObjectActorDescription = new StillDesign.PhysX.ActorDescription();
-
-                            if (description.ShapeType == 0)
-                            {
-                                if (description.PhysXShapeType == 0)
-                                {
-                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
-                                    boxshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
-                                    ObjectActorDescription.Shapes.Add(boxshape);
-                                }
-                                else if (description.PhysXShapeType == 1)
-                                {
-                                    StillDesign.PhysX.CapsuleShapeDescription capsshape = new StillDesign.PhysX.CapsuleShapeDescription(description.ShapeSize.X, description.ShapeSize.Z);
-                                    capsshape.LocalRotation = Microsoft.Xna.Framework.Matrix.CreateRotationX(Microsoft.Xna.Framework.MathHelper.PiOver2).toPhysicM();
-                                    ObjectActorDescription.Shapes.Add(capsshape);
-                                }
-                            }
-                            else if (description.ShapeType == 1)
-                            {
-                                CollisionMesh physicCM = new CollisionMesh();
-                                physicCM = packs.GetObject(description.RCCMName, physicCM) as CollisionMesh;
-
-                                ObjectActorDescription.Shapes.Add(physicCM.CreatreConvexShape(scene.Core));
-                            }
+                Logic.BehaviourModel.BehaviourModelDescription desc = createdobject.bmDescription;
 
 
-                            ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
-                            Microsoft.Xna.Framework.Matrix MassCenterMatrix;
-                            Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
-                            ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
-                            ObjectActorDescription.Shapes[0].Material = characterMaterial;
-                            ObjectActor = scene.CreateActor(ObjectActorDescription);
-                            
-
-                            ObjectActor.RaiseBodyFlag(StillDesign.PhysX.BodyFlag.FrozenRotation);
-                            foreach (var c in ObjectActor.Shapes)
-                            {
-                                c.Group = 31;
-                            }
-                            behaviourmodel = new Logic.BehaviourModel.ObjectPhysicControllerBehaviourModel(ObjectActor);
-                        } break;
-                    case LevelObjectDescription.objectstaticbehaviourmodel:
-                        {
-                            behaviourmodel = new Logic.BehaviourModel.ObjectStaticBehaviourModel();
-                        } break;
-                    case LevelObjectDescription.objectphysicbehaviourmodel:
-                        {
-                            StillDesign.PhysX.ActorDescription ObjectActorDescription = new StillDesign.PhysX.ActorDescription();
-                            if (description.ShapeType == 0)
-                            {
-                                if (description.PhysXShapeType == 0)
-                                {
-                                    StillDesign.PhysX.BoxShapeDescription boxshape = new StillDesign.PhysX.BoxShapeDescription(description.ShapeSize.toPhysicV3());
-                                    Microsoft.Xna.Framework.Matrix m;
-                                    Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
-                                    Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
-                                    boxshape.LocalRotation = m.toPhysicM();
-
-                                    ObjectActorDescription.Shapes.Add(boxshape);
-                                }
-                                else if (description.PhysXShapeType == 1)
-                                {
-                                    StillDesign.PhysX.CapsuleShapeDescription capsshape = new StillDesign.PhysX.CapsuleShapeDescription(description.ShapeSize.X, description.ShapeSize.Z);
-                                    Microsoft.Xna.Framework.Matrix m;
-                                    Microsoft.Xna.Framework.Vector3 v = description.ShapeRotationAxis;
-                                    Microsoft.Xna.Framework.Matrix.CreateFromAxisAngle(ref v, description.ShapeRotationAngle, out m);
-                                    capsshape.LocalRotation = m.toPhysicM();
-
-                                    ObjectActorDescription.Shapes.Add(capsshape);
-                                }
-                            }
-                            else if (description.ShapeType == 1)
-                            {
-                                CollisionMesh physicCM = new CollisionMesh();
-                                physicCM = packs.GetObject(description.RCCMName, physicCM) as CollisionMesh;
-
-
-                                if (description.IsStatic)
-                                    ObjectActorDescription.Shapes.Add(physicCM.CreateTriangleMeshShape(scene.Core));
-                                else
-                                    ObjectActorDescription.Shapes.Add(physicCM.CreatreConvexShape(scene.Core));
-                            }
-
-                            if (description.IsStatic)
-                            {
-                                ObjectActorDescription.BodyDescription = null;
-                            }
-                            else
-                            {
-                                ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
-                                Microsoft.Xna.Framework.Matrix MassCenterMatrix;
-                                Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
-                                ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
-                            }
-                            ObjectActor = scene.CreateActor(ObjectActorDescription);
-                            if (description.IsStatic)
-                            {
-                                foreach (var c in ObjectActor.Shapes)
-                                {
-                                    c.Group = 1;
-                                }
-                            }
-                            else
-                            {
-                                foreach (var c in ObjectActor.Shapes)
-                                {
-                                    c.Group = 31;
-                                }
-                            }
-                            behaviourmodel = new Logic.BehaviourModel.ObjectPhysicBehaviourModel(ObjectActor);
-                            //CONTACT REPORT DISABLED TEMPORARY
-                            //ObjectActor.ContactReportFlags = StillDesign.PhysX.ContactPairFlag.All;
-                        } break;
-                    case LevelObjectDescription.objectBonerelatedbehaviourmodel:
-                        {
-                            behaviourmodel = new Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel(currentCharacter, boneToAdd);
-                        } break;
-                    default:
-                        {
-                            throw new Exception("Unsupported behaviour model!");
-                        } break;
-                }
-                #endregion
+                Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel = createBehaviourModel(desc, scene); 
                 
 
                 RaycastBoundObject raycastaspect = loadrcbo(description, packs);
 
                 LevelObject createdobject1 = new LevelObject(behaviourmodel, ro, material, raycastaspect);
                 description.Enginereadedobject.Add(createdobject1);
+                createdobject1.bmDescription = desc;
                 return createdobject1;
             }
         }

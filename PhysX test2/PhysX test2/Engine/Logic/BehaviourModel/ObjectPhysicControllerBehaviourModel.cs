@@ -51,7 +51,17 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             _actor.GlobalOrientation *= Matrix.CreateRotationY(angle).toPhysicM();
         }
 
+        public override void Disable()
+        {
+            _actor.ActorFlags.DisableCollision = true;
+            _actor.Sleep();
+        }
 
+        public override void Enable()
+        {
+            _actor.ActorFlags.DisableCollision = false;
+            _actor.WakeUp();
+        }
 
         public override void DoFrame(GameTime gametime)
         {

@@ -5,6 +5,19 @@ using System.Text;
 using Microsoft.Xna.Framework;
 namespace PhysX_test2.Engine.Logic.BehaviourModel
 {
+    public class BehaviourModelDescription
+    {
+        public int BehaviourType;
+        public bool IsStatic;
+        public Vector3 CenterOfMass;
+        public Vector3 ShapeSize;
+        public Vector3 ShapeRotationAxis;
+        public int ShapeType;
+        public int PhysXShapeType;
+        public string RCCMName;
+        public float Mass;
+        public float ShapeRotationAngle;
+    }
     public abstract class ObjectBehaviourModel
     {
         public Matrix PreviousPosition;
@@ -23,6 +36,12 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             PreviousPosition = globalpose;
             moved = false;
         }
+
+        public virtual void Disable()
+        { }
+
+        public virtual void Enable()
+        { }
 
         public virtual void SetPosition(Vector3 newPosition)
         {

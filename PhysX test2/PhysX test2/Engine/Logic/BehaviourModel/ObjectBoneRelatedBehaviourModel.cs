@@ -10,26 +10,35 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
     public class ObjectBoneRelatedBehaviourModel: ObjectStaticBehaviourModel
     {
         public int parentBone;
-        public Engine.Animation.CharacterController parentCharacter;
+        public PivotObject parentCharacter;
+        private Engine.Animation.CharacterController _parentCharacterController;
         public Matrix localMatrix = Matrix.Identity;
-        public ObjectBoneRelatedBehaviourModel(Engine.Animation.CharacterController _parentCharacter, int _parentBone)
+        public ObjectBoneRelatedBehaviourModel(PivotObject __parentCharacter, int _parentBone)
         {
-            parentCharacter = _parentCharacter;
             parentBone = _parentBone;
             CurrentPosition = Matrix.Identity;
+            SetParentCharacter(__parentCharacter);
+        }
+
+        public void SetParentCharacter(PivotObject __parent)
+        {
+            parentCharacter = __parent;
+            LevelObject lo = __parent as LevelObject;
+            Engine.Render.AnimRenderObject ro = lo.renderaspect as Engine.Render.AnimRenderObject;
+            _parentCharacterController = ro.character;
         }
 
         public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
         {
             localMatrix = GlobalPoseMatrix;
-            Matrix resultMatrix = localMatrix * parentCharacter._currentFames[parentBone] * parentCharacter.Position; ;
+            Matrix resultMatrix = localMatrix * _parentCharacterController._currentFames[parentBone] * _parentCharacterController.Position;
             mov = CurrentPosition != resultMatrix;
             CurrentPosition = resultMatrix;
         }
 
         public override void DoFrame(GameTime gametime)
         {
-            Matrix newpos = localMatrix * parentCharacter._currentFames[parentBone] * parentCharacter.Position; ;
+            Matrix newpos = localMatrix * _parentCharacterController._currentFames[parentBone] * _parentCharacterController.Position;
             moved = newpos!=CurrentPosition|| mov;
             CurrentPosition = newpos;
             mov = false;
@@ -38,7 +47,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         public override void Move(Vector3 displacement)
         {
             localMatrix = localMatrix * Matrix.CreateTranslation(displacement);
-            Matrix resultMatrix = localMatrix * parentCharacter._currentFames[parentBone] * parentCharacter.Position;
+            Matrix resultMatrix = localMatrix * _parentCharacterController._currentFames[parentBone] * _parentCharacterController.Position;
             mov = CurrentPosition != resultMatrix;
             CurrentPosition = resultMatrix;
         }

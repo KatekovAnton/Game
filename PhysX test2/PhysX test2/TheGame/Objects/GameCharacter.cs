@@ -39,7 +39,7 @@ namespace PhysX_test2.TheGame.Objects
             //method
         }
 
-        public void setDead()
+        public void SetDead()
         {
             //method
             _deadObject.SetGlobalPose(_aliveObject.transform);
@@ -47,7 +47,7 @@ namespace PhysX_test2.TheGame.Objects
             
         }
 
-        public void setAlive()
+        public void SetAlive()
         {
             //method
             _aliveObject.SetPosition(_hisLevel.GetSpawnPlace());
@@ -58,13 +58,13 @@ namespace PhysX_test2.TheGame.Objects
         public static void edgeDeadToAlive(GameCharacter __object)
         {
             //method
-            __object.setAlive();
+            __object.SetAlive();
         }
 
         public static void edgeAliveToDead(GameCharacter __object)
         {
             //method
-            __object.setDead();
+            __object.SetDead();
         }
     }
 
