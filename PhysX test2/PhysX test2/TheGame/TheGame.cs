@@ -10,8 +10,11 @@ namespace PhysX_test2.TheGame
 {
     public class TheGame
     {
-        public LogicCharacter _player;
-        public LogicWeapon _playerWeapon;
+        public const string _playerKey = "player";
+        public const string _playerweaponKet = "playerWeapon";
+
+        public Dictionary<string, LogicCharacter> _characters;
+        public Dictionary<string, LogicWeapon> _weapons;
 
         public GameLevel _level;
 
