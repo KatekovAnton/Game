@@ -12,6 +12,13 @@ using PhysX_test2.Engine.Render;
 
 namespace PhysX_test2.Engine.Logic
 {
+    public enum PivotObjectDependType
+    {
+        Weapon,
+        Head,
+        Body
+    }
+
     public abstract class PivotObject
     {
         /// <summary>
@@ -48,6 +55,7 @@ namespace PhysX_test2.Engine.Logic
         /// for one механика поведения объекта с физ точки зрения
         /// </summary>
         public BehaviourModel.ObjectBehaviourModel behaviourmodel;
+        public BehaviourModel.BehaviourModelDescription bmDescription;
 
         /// <summary>
         /// associated game object

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using StillDesign.PhysX;
+
 namespace PhysX_test2.Engine.Logic
 {
     public class EngineScene
@@ -14,12 +16,37 @@ namespace PhysX_test2.Engine.Logic
         public SceneGraph.SceneGraph _sceneGraph;
 
 
+         public Scene Scene;
+         public Core Core;
+
         public EngineScene()
         {
+            //инит ФизиХ-а
+            var coreDesc = new CoreDescription();
+            var output = new UserOutput();
+
+            Core = new Core(coreDesc, output);
+            Core.SetParameter(PhysicsParameter.ContinuousCollisionDetection, false);
+            Core.SetParameter(PhysicsParameter.ContinuousCollisionDetectionEpsilon, 0.01f);
+
+            var sceneDesc = new SceneDescription
+            {
+                SimulationType = SimulationType.Software, //Hardware,
+                MaximumBounds = new Bounds3(-1000, -1000, -1000, 1000, 1000, 1000),
+                UpAxis = 2,
+                Gravity = new StillDesign.PhysX.MathPrimitives.Vector3(0.0f, -9.81f * 1.7f, 0.0f),
+                GroundPlaneEnabled = false
+            };
+            Scene = Core.CreateScene(sceneDesc);
+            //для обработки столкновений
+            Scene.UserContactReport = new ContactReport(MyGame.Instance);
+
+
             _objects = new MyContainer<PivotObject>(100, 10);
             _visibleObjects = new MyContainer<PivotObject>(100, 2);
             _shadowObjects = new MyContainer<PivotObject>(100, 2);
             _sceneGraph = new SceneGraph.SceneGraph(this);
+
         }
 
         public EngineScene(EngineScene s)
@@ -95,6 +122,7 @@ namespace PhysX_test2.Engine.Logic
         public void AddObject(PivotObject newObject)
         {
             newObject.Update();
+            newObject.behaviourmodel.Enable();
             _objects.Add(newObject);
             _sceneGraph.AddObject(newObject);
         }
@@ -117,7 +145,7 @@ namespace PhysX_test2.Engine.Logic
         {
             _objects.Remove(deletingobjects);
             _sceneGraph.RemoveObject(deletingobjects);
-
+            deletingobjects.behaviourmodel.Disable();
             // счетчик идов будет начинать все делать с 0
             if (_objects.Count == 0)
             {

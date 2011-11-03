@@ -41,7 +41,7 @@ namespace PhysX_test2.Engine {
 
 
         //physx
-        public Core Core;
+  //      public Core Core;
         public Scene Scene;
 
 
@@ -70,7 +70,8 @@ namespace PhysX_test2.Engine {
         public Vector3 lightDir = new Vector3(-1, -1, -1);
        
 
-        public GameEngine(MyGame game) {
+        public GameEngine(MyGame game)
+        {
             packs = new PackList();
             Instance = this;
             lightDir.Normalize();
@@ -85,27 +86,13 @@ namespace PhysX_test2.Engine {
         }
 
 
-        public void Initalize() {
+        public void Initalize() 
+        {
             FPSCounter = new FpsCounter();
             Camera = new Camera(this);
             spriteBatch = new SpriteBatch(DeviceManager.GraphicsDevice);
 
-            //инит ФизиХ-а
-            var coreDesc = new CoreDescription();
-            var output = new UserOutput();
-
-            Core = new Core(coreDesc, output);
-            Core.SetParameter(PhysicsParameter.ContinuousCollisionDetection, false);
-            Core.SetParameter(PhysicsParameter.ContinuousCollisionDetectionEpsilon, 0.01f);
-
-            var sceneDesc = new SceneDescription {SimulationType = SimulationType.Software, //Hardware,
-                                                  MaximumBounds = new Bounds3(-1000, -1000, -1000, 1000, 1000, 1000), 
-                                                  UpAxis = 2,
-                                                  Gravity = new StillDesign.PhysX.MathPrimitives.Vector3(0.0f, -9.81f * 1.7f, 0.0f), 
-                                                  GroundPlaneEnabled = false};
-            Scene = Core.CreateScene(sceneDesc);
-            //для обработки столкновений
-            Scene.UserContactReport = new ContactReport(MyGame.Instance);
+            
             //аниматор
             animationManager = AnimationManager.AnimationManager.Manager;
             //шойдер
@@ -120,15 +107,75 @@ namespace PhysX_test2.Engine {
             Loaddata();
         }
 
+        public static PivotObject loadObject(string __name, Matrix? __deltaMatrix, bool __needMouseCast, PivotObject __parentObject = null, PivotObjectDependType __dependType = PivotObjectDependType.Body)
+        {
+            var boxcharacterdescription = new LevelObjectDescription();
+            boxcharacterdescription = PackList.Instance .GetObject(__name, boxcharacterdescription) as LevelObjectDescription;
+
+            if (__parentObject != null)
+            {
+                //we need to create dependeces
+                switch (boxcharacterdescription.BehaviourType)
+                {
+                    case LevelObjectDescription.objectBonerelatedbehaviourmodel:
+                        {
+                            LevelObject lo = __parentObject as LevelObject;
+                            if (lo == null)
+                                throw new Exception();
+                            Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
+                            if (ro == null)
+                                throw new Exception();
+                            
+                            ContentLoader.ContentLoader.currentCharacter = ro.character;
+
+                            //TODO
+                            //все сломается когда заменится объект при смерте
+                            //будет депедндится на живой объект
+                            //надо катко тут все поменять
+                            switch (__dependType)
+                            {
+                                case PivotObjectDependType.Head:
+                                    ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.HeadIndex; break;
+                                case PivotObjectDependType.Weapon:
+                                    ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.WeaponIndex; break;
+                                default: break;
+                            }
+                        } break;
+                    case LevelObjectDescription.objectrelatedbehaviourmodel:
+                        { 
+                            if(__dependType != PivotObjectDependType.Body)
+                                throw new Exception();
+                        }break;
+                    default: break;
+                }
+            }
+            LevelObject loNew = ContentLoader.ContentLoader.LevelObjectFromDescription(boxcharacterdescription, PackList.Instance, GameEngine.Instance.Scene);
+            GameEngine.Instance.GraphicPipeleine.ProceedObject(loNew.renderaspect);
+
+            loNew.useDeltaMatrix = __deltaMatrix != null && __deltaMatrix.HasValue;
+            if (loNew.useDeltaMatrix)
+                loNew.deltaMatrix = __deltaMatrix.Value;
+            loNew._needMouseCast = __needMouseCast;
+
+            //хз как сделоать поудобнее TODO
+            if (loNew.renderaspect.isanimated)
+            {
+                Render.AnimRenderObject ro = loNew.renderaspect as Render.AnimRenderObject;
+                AnimationManager.AnimationManager.Manager.AddAnimationUserEnd(ro.Update, ro.character);
+            }
+
+            return loNew;
+        }
+
         private void Loaddata()
         {
+            //уровень
+            gameScene = new EngineScene();
+            Scene = gameScene.Scene;
             //если ты с горы упал - ты ешё не экстримал
             //чтоб далеко не падать
             groundplane = CreateGroundPlane();
             
-
-            //уровень
-            gameScene = new EngineScene();
 
             ///box 
             {
@@ -136,12 +183,11 @@ namespace PhysX_test2.Engine {
                 boxrdescription = packs.GetObject("WoodenCrate10WorldObject\0", boxrdescription) as LevelObjectDescription;
 
                 LevelObject lo = ContentLoader.ContentLoader.LevelObjectFromDescription(boxrdescription, packs, Scene);
-                lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 20, 0));
+                lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 25, 0));
                 GraphicPipeleine.ProceedObject(lo.renderaspect);
                 gameScene.AddObject(lo);
                 lo._needMouseCast = true;
                 LevelObjectBox = lo;
-
             }
 
             float delta = 4;
@@ -291,9 +337,27 @@ namespace PhysX_test2.Engine {
 
 
 
-
+        bool frst = false;
+        bool enabeld = true;
         public void Update(GameTime gameTime)
         {
+            MouseState stet = Mouse.GetState();
+            if (stet.LeftButton == ButtonState.Pressed)
+            {
+                if (!frst)
+                {
+                    frst = true;
+                    if (enabeld)
+                        LevelObjectBox.behaviourmodel.Disable();
+                    else
+                        LevelObjectBox.behaviourmodel.Enable();
+
+                    enabeld = !enabeld;
+                }
+            }
+            else if (stet.LeftButton == ButtonState.Released)
+                frst = false;
+
             //updatelogic
             animationManager.UpdateStart(gameTime);
 
@@ -401,8 +465,8 @@ namespace PhysX_test2.Engine {
 
 
         public void UnLoad() {
-            Core.Dispose();
-            Scene.Dispose();
+            gameScene.Core.Dispose();
+            gameScene.Scene.Dispose();
             //  BoxActor.Dispose();
             groundplane.Dispose();
         }

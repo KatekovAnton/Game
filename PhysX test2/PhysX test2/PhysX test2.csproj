@@ -157,10 +157,10 @@
     <Compile Include="Engine\InputControllers\InputControllerSuperClass.cs" />
     <Compile Include="Engine\ContentLoader\ContentLoader.cs" />
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
-    <Compile Include="Engine\InputManagers\InputManagerAI.cs" />
-    <Compile Include="Engine\InputManagers\InputManagerNetwork.cs" />
-    <Compile Include="Engine\InputManagers\InputManagerPlayer.cs" />
-    <Compile Include="Engine\InputManagers\InputManagerSuperClass.cs" />
+    <Compile Include="TheGame\InputManagers\InputProviderAI.cs" />
+    <Compile Include="TheGame\InputManagers\InputProviderNetwork.cs" />
+    <Compile Include="TheGame\InputManagers\InputProviderPlayer.cs" />
+    <Compile Include="TheGame\InputManagers\InputProviderSuperClass.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectBoneRelatedBehaviourModel.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectRelatedBehaviourModel.cs" />
     <Compile Include="Engine\Logic\ObjectContainer.cs" />
