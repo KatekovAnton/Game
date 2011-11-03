@@ -48,6 +48,7 @@ namespace PhysX_test2.Engine.Logic
         /// for one механика поведения объекта с физ точки зрения
         /// </summary>
         public BehaviourModel.ObjectBehaviourModel behaviourmodel;
+        public BehaviourModel.BehaviourModelDescription bmDescription;
 
         /// <summary>
         /// associated game object

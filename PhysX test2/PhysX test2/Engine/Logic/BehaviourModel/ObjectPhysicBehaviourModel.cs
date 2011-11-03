@@ -50,9 +50,20 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
                 actor.AngularVelocity = pd.AngularVelocity.toPhysicV3();
                 actor.AngularMomentum = pd.AngularMomentum.toPhysicV3();
             }
-           
-
         }
+
+        public override void Disable()
+        {
+            actor.ActorFlags.DisableCollision = true;
+            actor.Sleep();
+        }
+
+        public override void Enable()
+        {
+            actor.ActorFlags.DisableCollision = false;
+            actor.WakeUp();
+        }
+
         public override void DoFrame(GameTime gametime)
         {
             moved = CurrentPosition.Translation != new Vector3( actor.GlobalPose.M41,actor.GlobalPose.M42,actor.GlobalPose.M43);
