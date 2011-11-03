@@ -12,6 +12,13 @@ using PhysX_test2.Engine.Render;
 
 namespace PhysX_test2.Engine.Logic
 {
+    public enum PivotObjectDependType
+    {
+        Weapon,
+        Head,
+        Body
+    }
+
     public abstract class PivotObject
     {
         /// <summary>

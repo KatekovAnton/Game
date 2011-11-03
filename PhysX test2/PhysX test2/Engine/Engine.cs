@@ -107,7 +107,65 @@ namespace PhysX_test2.Engine {
             Loaddata();
         }
 
-        
+        public static PivotObject loadObject(string __name, Matrix? __deltaMatrix, bool __needMouseCast, PivotObject __parentObject = null, PivotObjectDependType __dependType = PivotObjectDependType.Body)
+        {
+            var boxcharacterdescription = new LevelObjectDescription();
+            boxcharacterdescription = PackList.Instance .GetObject(__name, boxcharacterdescription) as LevelObjectDescription;
+
+            if (__parentObject != null)
+            {
+                //we need to create dependeces
+                switch (boxcharacterdescription.BehaviourType)
+                {
+                    case LevelObjectDescription.objectBonerelatedbehaviourmodel:
+                        {
+                            LevelObject lo = __parentObject as LevelObject;
+                            if (lo == null)
+                                throw new Exception();
+                            Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
+                            if (ro == null)
+                                throw new Exception();
+                            
+                            ContentLoader.ContentLoader.currentCharacter = ro.character;
+
+                            //TODO
+                            //все сломается когда заменится объект при смерте
+                            //будет депедндится на живой объект
+                            //надо катко тут все поменять
+                            switch (__dependType)
+                            {
+                                case PivotObjectDependType.Head:
+                                    ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.HeadIndex; break;
+                                case PivotObjectDependType.Weapon:
+                                    ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.WeaponIndex; break;
+                                default: break;
+                            }
+                        } break;
+                    case LevelObjectDescription.objectrelatedbehaviourmodel:
+                        { 
+                            if(__dependType != PivotObjectDependType.Body)
+                                throw new Exception();
+                        }break;
+                    default: break;
+                }
+            }
+            LevelObject loNew = ContentLoader.ContentLoader.LevelObjectFromDescription(boxcharacterdescription, PackList.Instance, GameEngine.Instance.Scene);
+            GameEngine.Instance.GraphicPipeleine.ProceedObject(loNew.renderaspect);
+
+            loNew.useDeltaMatrix = __deltaMatrix != null && __deltaMatrix.HasValue;
+            if (loNew.useDeltaMatrix)
+                loNew.deltaMatrix = __deltaMatrix.Value;
+            loNew._needMouseCast = __needMouseCast;
+
+            //хз как сделоать поудобнее TODO
+            if (loNew.renderaspect.isanimated)
+            {
+                Render.AnimRenderObject ro = loNew.renderaspect as Render.AnimRenderObject;
+                AnimationManager.AnimationManager.Manager.AddAnimationUserEnd(ro.Update, ro.character);
+            }
+
+            return loNew;
+        }
 
         private void Loaddata()
         {
