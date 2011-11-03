@@ -96,8 +96,76 @@ namespace PhysX_test2
         private void HandleKeyboard(KeyboardState keyboardState)
         {
             ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), _engine.Camera.View, _engine.Camera.Projection);
+            _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.Identity,null);
+            System.Collections.Generic.List<Vector3?> VectorList=new System.Collections.Generic.List<Vector3?>();
+            Vector3? point=new Vector3?();
+            int CrossCount = 0;
+           // VectorList.Add(_engine.LevelObjectTestSide.raycastaspect.IntersectionClosest(ray,_engine.LevelObjectTestSide.transform));
+            foreach (Engine.Logic.PivotObject Object in _engine.gameScene._visibleObjects)
+            {
+                
+                if (Object._needMouseCast)
+                {
+                    if(Object.raycastaspect.IntersectionClosest(ray, Object.transform)!=null)
+                    {
+                    VectorList.Add( Object.raycastaspect.IntersectionClosest(ray, Object.transform));
+                    }
+                }
 
-            Vector3? point = _engine.LevelObjectTestSide.raycastaspect.IntersectionClosest(ray, _engine.LevelObjectTestSide.transform);
+            }
+            foreach (Vector3? Vec in VectorList)
+            {
+                if (Vec != null)
+                {
+                    CrossCount++;
+                }
+            }
+            bool CrossedWithLevel = false;
+            if (CrossCount == 1)
+            {
+
+                if (_engine.LevelObjectTestSide.raycastaspect.IntersectionClosest(ray, _engine.LevelObjectTestSide.transform) != null)
+                {
+                    CrossedWithLevel = true;
+                    point = _engine.LevelObjectTestSide.raycastaspect.IntersectionClosest(ray, _engine.LevelObjectTestSide.transform);
+                }
+            }
+            if (!CrossedWithLevel)
+            {
+                {
+                    bool IsPointed = true;
+                    foreach (Vector3? point1 in VectorList)
+                    {
+
+
+                        Vector3? Vec1 = point1 + _engine.Camera.View.Translation;
+
+
+                        foreach (Vector3? point2 in VectorList)
+                        {
+                            if (point1 == null | point2 == null) break;
+                            
+                            Vector3? Vec2 = point2 + _engine.Camera.View.Translation;
+                            if (Vec1.Value.LengthSquared() > Vec2.Value.LengthSquared())
+                            {
+
+                                IsPointed = false;
+                                break;
+                            }
+                        }
+                        if (IsPointed)
+                        {
+                            if (point1 != null)
+                            {
+                                point = point1;
+                                break;
+                            }
+                        }
+                        IsPointed = true;
+                    }
+                }
+            }
+
             if (point != null)
             {
                 _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.CreateTranslation(point.Value), null);

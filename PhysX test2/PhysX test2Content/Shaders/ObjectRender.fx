@@ -292,7 +292,7 @@ float4 SolidTextureSMR(PS_INPUT f) : COLOR0
 	}
 	lambertfactor*=1.1;
 	float3 color = tex2D(TextureSampler, f.TextureCoordinate).rgb* lambertfactor;
-	return float4(color,1);
+	return 1;
 }
 
 
@@ -345,7 +345,7 @@ float4 SolidTextureSMSmooth(PS_INPUT f) : COLOR0
 
 	lambertfactor*=1.1;
 
-	float3 color = tex2D(TextureSampler, f.TextureCoordinate).rgb* lambertfactor;
+	float3 color = tex2D(TextureSampler, f.TextureCoordinate).rgb* lambertfactor+9*dot(SunDirection,f.Normal);
 	return float4(color,1);
 }
 //=================================================================================
