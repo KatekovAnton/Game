@@ -216,7 +216,7 @@ namespace PhysX_test2.Engine
 
             ////our character
             {
-                LevelObjectCharacterBox = loadObject("MyNewCharacter\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), true) as LevelObject;
+                LevelObjectCharacterBox = loadObject("MyNewCharacter\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), false) as LevelObject;
                 LevelObjectCharacterBox.SetPosition(new Vector3(0, 16.0f, 0));
                 gameScene.AddObject(LevelObjectCharacterBox);
 
