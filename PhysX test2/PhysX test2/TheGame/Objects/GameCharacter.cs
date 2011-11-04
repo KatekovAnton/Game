@@ -19,26 +19,19 @@ namespace PhysX_test2.TheGame.Objects
     public class GameCharacter : GameObject, IGraphUser
     {
 
+        public LevelObject _deadObject;
+        public LevelObject _aliveObject;
 
-        public PivotObject _deadObject;
-        public PivotObject _aliveObject;
 
         public ObjectGraphController _characterStateController;
 
-        public GameCharacter(PivotObject __aliveObject, PivotObject __deadObject, GameLevel __level)
-            : base(__level, true, true)
-        {
-            _deadObject = __deadObject;
-            _aliveObject = __aliveObject;
-
-            _characterStateController = new ObjectGraphController(StaticObjects.Instance()._graphCharacter, this);
-        }
+        
 
         public GameCharacter(string __aliveName, Matrix __aliveMatrix, string __deadName, Matrix __deadMatrix, GameLevel __level)
             : base(__level, true, true)
         {
-            _aliveObject = Engine.GameEngine.loadObject(__aliveName, __aliveMatrix, true);
-            _deadObject = Engine.GameEngine.loadObject(__deadName, __deadMatrix, true);
+            _aliveObject = Engine.GameEngine.loadObject(__aliveName, __aliveMatrix, true) as LevelObject;
+            _deadObject = Engine.GameEngine.loadObject(__deadName, __deadMatrix, true) as LevelObject;
         }
 
         public void dropParameters()
@@ -52,6 +45,17 @@ namespace PhysX_test2.TheGame.Objects
             _deadObject.SetGlobalPose(_aliveObject.transform);
             _hisLevel._scene.SwapObjects(_aliveObject, _deadObject, false);
 
+            Engine.Animation.CharacterController controllerAlive = (_aliveObject.renderaspect as Engine.Render.AnimRenderObject).character;
+            if (controllerAlive == null)
+                return;
+
+            Engine.Animation.CharacterController controllerDead = (_deadObject.renderaspect as Engine.Render.AnimRenderObject).character;
+            if (controllerDead == null)
+                return;
+
+            controllerAlive._currentFames.CopyTo(controllerDead._currentFames, 0);
+            controllerDead.MakeUnconditionalTransition("dead\0", true);
+
         }
 
         public void SetAlive()
@@ -60,6 +64,10 @@ namespace PhysX_test2.TheGame.Objects
             _aliveObject.SetPosition(_hisLevel.GetSpawnPlace());
             _hisLevel._scene.SwapObjects(_deadObject, _aliveObject, false);
 
+            Engine.Animation.CharacterController controllerAlive = (_aliveObject.renderaspect as Engine.Render.AnimRenderObject).character;
+            if (controllerAlive == null)
+                return;
+            controllerAlive.MakeUnconditionalTransition("stay01\0", false);
         }
 
         public static void edgeDeadToAlive(GameCharacter __object)

@@ -228,9 +228,9 @@ namespace PhysX_test2
             }
         }
 
-        public MyContainer<MyContainerRule> FindAllRulesForObject(T neededObject)//TODO TEST
+        public List<MyContainerRule> FindAllRulesForObject(T neededObject)//TODO TEST
         {
-            MyContainer<MyContainerRule> rulesResult = new MyContainer<MyContainerRule>(10, 1);
+            List<MyContainerRule> rulesResult = new List<MyContainerRule>();
             foreach (MyContainerRule rule in rules)
                 if (rule.firstObject == neededObject || rule.secondObject == neededObject)
                     rulesResult.Add(rule);

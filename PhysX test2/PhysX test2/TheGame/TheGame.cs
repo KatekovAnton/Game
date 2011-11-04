@@ -29,7 +29,7 @@ namespace PhysX_test2.TheGame
 
 
             GameCharacter myCharacter = new GameCharacter("MyNewCharacter\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), null, Matrix.Identity, _level);
-            GameObject myHead = new GameSimpleObject("Head01\0", null, Engine.Logic.PivotObjectDependType.Head, _level, false, false);
+            GameSimpleObject myHead = new GameSimpleObject("Head01\0", null, Engine.Logic.PivotObjectDependType.Head, _level, false, false);
 
 
             LogicCharacter me = new LogicCharacter(myCharacter, myHead);

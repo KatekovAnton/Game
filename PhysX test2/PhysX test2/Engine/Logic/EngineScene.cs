@@ -81,7 +81,7 @@ namespace PhysX_test2.Engine.Logic
                 return false;
             }
 
-            MyContainer<MyContainer<PivotObject>.MyContainerRule> rules = _objects.FindAllRulesForObject(__oldObject);
+            List<MyContainer<PivotObject>.MyContainerRule> rules = _objects.FindAllRulesForObject(__oldObject);
             foreach (MyContainer<PivotObject>.MyContainerRule rule in rules)
             {
                 if (rule.firstObject == __oldObject)

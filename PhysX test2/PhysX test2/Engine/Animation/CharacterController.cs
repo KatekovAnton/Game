@@ -95,14 +95,47 @@ namespace PhysX_test2.Engine.Animation
                 }
                 else
                 {
-                    if (_currentAnimTime[i] > _currentNodes[i].animTime)
+                    while (_currentAnimTime[i] > _currentNodes[i].animTime)
                         _currentAnimTime[i] -= _currentNodes[i].animTime;
                 }
 
             }
         }
 
-        
+        public void MakeUnconditionalTransition(string[] nodeNames, bool __smoothly)
+        {
+            for (int i = 0; i < _currentNodes.Length; i++)
+            {
+                AnimationNode node = _baseCharacter.parts[i].NodeWithName(nodeNames[i]);
+                if (node != null)
+                {
+                    _currentNodes[i] = node;
+                    while (_currentAnimTime[i] > _currentNodes[i].animTime)
+                        _currentAnimTime[i] -= _currentNodes[i].animTime;
+                }
+            }
+            if (__smoothly)
+                return;
+        }
+
+        public void MakeUnconditionalTransition(string __nodeName, bool __smoothly)
+        {
+
+            for (int i = 0; i < _currentNodes.Length; i++)
+            {
+                AnimationNode node = _baseCharacter.parts[i].NodeWithName(__nodeName);
+                if (node != null)
+                {
+                    _currentNodes[i] = node;
+                    while (_currentAnimTime[i] > _currentNodes[i].animTime)
+                        _currentAnimTime[i] -= _currentNodes[i].animTime;
+                }
+            }
+            if (__smoothly)
+                return;
+
+
+        }
         
 
         /// <summary>

@@ -16,10 +16,13 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2.TheGame.Objects
 {
+    
     public class GameSimpleObject : GameObject
     {
-        public PivotObject _object;
-        public GameSimpleObject(PivotObject __object, GameLevel __level, bool __mouseRC, bool __bulletRC)
+        public bool _onLevel;
+        public LevelObject _object;
+
+        public GameSimpleObject(LevelObject __object, GameLevel __level, bool __mouseRC, bool __bulletRC)
             : base(__level, __mouseRC, __bulletRC)
         {
             _object = __object;
@@ -29,6 +32,22 @@ namespace PhysX_test2.TheGame.Objects
             :base(__level, __mouseRC, __bulletRC)
         {
             Engine.GameEngine.loadObject(__objectName, null, __mouseRC, __parentObject, __dependType); 
+        }
+
+        public void LocateToLevel(LevelObject __parentObject)
+        {
+            _hisLevel.AddObject(_object);
+
+            if (__parentObject != null)
+                _hisLevel.AddObjectSequence(__parentObject, _object);
+
+            _onLevel = true;
+        }
+
+        public void RemoveFromLevel()
+        {
+            _hisLevel.RemoveObject(_object);
+            _onLevel = false;
         }
     }
 }

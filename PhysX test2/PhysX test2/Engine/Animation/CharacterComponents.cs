@@ -63,5 +63,11 @@ namespace PhysX_test2.Engine.Animation
         {
             animGraph = _baseGraph;
         }
+
+        public AnimationNode NodeWithName(string __node)
+        {
+            return animGraph.FindNodeWithName(__node);
+        }
+       
     }
 }
