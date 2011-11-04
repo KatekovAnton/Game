@@ -16,5 +16,7 @@ namespace PhysX_test2.TheGame.ObjectLogic
             _weaponObject = __weaponObject;
         }
 
+        
+
     }
 }

@@ -38,6 +38,11 @@ namespace PhysX_test2.TheGame.Level
             _scene.AddObject(theObjecr);
         }
 
+        public void AddObjectSequence(Engine.Logic.PivotObject __firstObject, Engine.Logic.PivotObject __secondObjcect)
+        {
+            _scene._objects.AddRule(__firstObject, __secondObjcect);
+        }
+
         public void RemoveObject(Engine.Logic.PivotObject theObjecr)
         {
             _scene.RemoveObject(theObjecr);

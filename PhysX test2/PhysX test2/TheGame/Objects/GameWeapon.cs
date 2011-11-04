@@ -14,29 +14,88 @@ using PhysX_test2.TheGame.Objects.StateGraphs;
 
 namespace PhysX_test2.TheGame.Objects
 {
+    public enum GameWeaponState
+    {
+        None,
+        OnFloor,
+        InHand
+    };
     public class GameWeapon : GameObject, IGraphUser
     {
+        public GameWeaponState _state;
         public PivotObject _inHandObject;
         public PivotObject _onFloorObject;
 
         public PivotObject _addonObject;
 
-        public GameWeapon(PivotObject __inHandObject, PivotObject __onFloorObject, PivotObject __addonObject, GameLevel __level)
+        public GameWeapon(string __inHandObject, string __onFloorObject, string __addonObject, GameLevel __level)
             : base(__level, true, false)
         {
-            _inHandObject = __inHandObject;
-            _onFloorObject = __onFloorObject;
-            _addonObject = __addonObject;
+            _inHandObject = Engine.GameEngine.loadObject(__inHandObject, null, false, null, PivotObjectDependType.Weapon);
+            _onFloorObject = Engine.GameEngine.loadObject(__onFloorObject, null, true);
+            _addonObject = Engine.GameEngine.loadObject(__addonObject, null, false,  null, PivotObjectDependType.Weapon);
+
+            _state = GameWeaponState.None;
         }
 
         public void DropOnFloor()
         {
-
+            switch (_state)
+            {
+                case GameWeaponState.None:
+                    {
+                        _hisLevel.AddObject(_onFloorObject);
+                        _hisLevel.AddObject(_addonObject);
+                        _hisLevel.AddObjectSequence(_onFloorObject, _addonObject);
+                    } break;
+                case GameWeaponState.InHand:
+                    {
+                        _hisLevel._scene.SwapObjects(_inHandObject, _onFloorObject, false);
+                    } break;
+                default: break;
+            }
         }
 
-        public void TakeInHand(PivotObject __character)
+        public void TakeInHand(GameCharacter __character)
         {
-            
+            switch (_state)
+            {
+                case GameWeaponState.None:
+                    {
+                        _inHandObject.behaviourmodel.SetParentObject(__character._aliveObject);
+                        _addonObject.behaviourmodel.SetParentObject(__character._aliveObject);
+                        _hisLevel.AddObject(_inHandObject);
+                        _hisLevel.AddObject(_addonObject);
+                        _hisLevel.AddObjectSequence(__character._aliveObject, _inHandObject);
+                        _hisLevel.AddObjectSequence(_inHandObject, _addonObject);
+                        
+                    } break;
+                case GameWeaponState.OnFloor:
+                    {
+                        _hisLevel._scene.SwapObjects(_onFloorObject, _inHandObject, false);
+                    } break;
+                default: break;
+            }
+
+            _state = GameWeaponState.InHand;
+        }
+
+        public void RemoveFromScene()
+        {
+            switch (_state)
+            {
+                case GameWeaponState.OnFloor:
+                    {
+                        _hisLevel.RemoveObject(_addonObject);
+                        _hisLevel.RemoveObject(_onFloorObject);
+                    } break;
+                case GameWeaponState.InHand:
+                    {
+                        _hisLevel.RemoveObject(_addonObject);
+                        _hisLevel.RemoveObject(_inHandObject);
+                    } break;
+                default: break;
+            }
         }
     }
 }

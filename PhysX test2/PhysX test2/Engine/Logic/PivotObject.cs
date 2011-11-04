@@ -108,14 +108,14 @@ namespace PhysX_test2.Engine.Logic
             BehaviourModel.ObjectBoneRelatedBehaviourModel model = behaviourmodel as BehaviourModel.ObjectBoneRelatedBehaviourModel;
             if (model != null)
             {
-                model.SetParentCharacter(__object);
+                model.SetParentObject(__object);
                 return;
             }
 
             BehaviourModel.ObjectRelatedBehaviourModel model1 = behaviourmodel as BehaviourModel.ObjectRelatedBehaviourModel;
             if (model1 != null)
             {
-                model1.SetParentCharacter(__object);
+                model1.SetParentObject(__object);
                 return;
             }
         }

@@ -153,6 +153,10 @@ namespace PhysX_test2.Engine.ContentLoader
                     {
                         behaviourmodel = new Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel(currentParentObject, boneToAdd);
                     } break;
+                case LevelObjectDescription.objectRelatedBehaviourModel:
+                    {
+                        behaviourmodel = new Engine.Logic.BehaviourModel.ObjectRelatedBehaviourModel(currentParentObject);
+                    } break;
                 default:
                     {
                         throw new Exception("Unsupported behaviour model!");

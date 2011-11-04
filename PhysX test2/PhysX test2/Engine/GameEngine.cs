@@ -157,10 +157,14 @@ namespace PhysX_test2.Engine
                                 default: break;
                             }
                         } break;
-                    case LevelObjectDescription.objectrelatedbehaviourmodel:
-                        { 
+                    case LevelObjectDescription.objectRelatedBehaviourModel:
+                        {
+                            ContentLoader.ContentLoader.currentParentObject = __parentObject;
                             if(__dependType != PivotObjectDependType.Body)
                                 throw new Exception();
+                            needSetPosition = true;
+                            position = __parentObject.transform;
+                           
                         }break;
                     default: break;
                 }
@@ -252,7 +256,7 @@ namespace PhysX_test2.Engine
 
             //gun addon
             {
-                LevelObject SCGunLO = loadObject("SСGunAddon\0", null, false, LevelObjectCharacterBox, PivotObjectDependType.Weapon) as LevelObject;
+                LevelObject SCGunLO = loadObject("SСGunAddon\0", null, false, LevelObjectSCGunLO, PivotObjectDependType.Body) as LevelObject;
                 gameScene.AddObject(SCGunLO);
                 //должен быть после чара
                 gameScene._objects.AddRule(LevelObjectSCGunLO, SCGunLO);

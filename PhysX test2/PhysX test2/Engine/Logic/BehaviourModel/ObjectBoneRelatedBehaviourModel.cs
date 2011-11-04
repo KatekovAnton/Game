@@ -11,19 +11,22 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
     {
         public int parentBone;
         public PivotObject parentCharacter;
-        private Engine.Animation.CharacterController _parentCharacterController;
         public Matrix localMatrix = Matrix.Identity;
+
+        private Engine.Animation.CharacterController _parentCharacterController;
+
         public ObjectBoneRelatedBehaviourModel(PivotObject __parentCharacter, int _parentBone)
         {
             parentBone = _parentBone;
             CurrentPosition = Matrix.Identity;
-            SetParentCharacter(__parentCharacter);
+            if (__parentCharacter != null)
+                SetParentObject(__parentCharacter);
         }
 
-        public void SetParentCharacter(PivotObject __parent)
+        public override void SetParentObject(PivotObject __object)
         {
-            parentCharacter = __parent;
-            LevelObject lo = __parent as LevelObject;
+            parentCharacter = __object;
+            LevelObject lo = __object as LevelObject;
             Engine.Render.AnimRenderObject ro = lo.renderaspect as Engine.Render.AnimRenderObject;
             _parentCharacterController = ro.character;
         }

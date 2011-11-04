@@ -12,15 +12,15 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
 
         public PivotObject _parentCharacter;
         public Matrix localMatrix = Matrix.Identity;
-        public ObjectRelatedBehaviourModel(PivotObject __parentCharacter, int _parentBone)
+        public ObjectRelatedBehaviourModel(PivotObject __parentCharacter)
         {
             CurrentPosition = Matrix.Identity;
-            SetParentCharacter(__parentCharacter);
+            SetParentObject(__parentCharacter);
         }
 
-        public void SetParentCharacter(PivotObject __parent)
+        public override void SetParentObject(PivotObject __object)
         {
-            _parentCharacter = __parent;
+            _parentCharacter = __object;
         }
 
         public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
@@ -33,7 +33,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
 
         public override void DoFrame(GameTime gametime)
         {
-            Matrix newpos = localMatrix * _parentCharacter.transform;
+            Matrix newpos = localMatrix * _parentCharacter.behaviourmodel.CurrentPosition;
             moved = newpos!=CurrentPosition|| mov;
             CurrentPosition = newpos;
             mov = false;

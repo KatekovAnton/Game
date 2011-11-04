@@ -204,7 +204,7 @@
     <Compile Include="Engine\Render\UnAnimRenderObject.cs" />
     <Compile Include="BaseExtensions\Extensions.cs" />
     <Compile Include="Engine\Camera.cs" />
-    <Compile Include="Engine\Engine.cs" />
+    <Compile Include="Engine\GameEngine.cs" />
     <Compile Include="Engine\Render\DebugRender\DebugRenderMesh.cs" />
     <Compile Include="Engine\Logic\PivotObject.cs" />
     <Compile Include="BaseExtensions\Graph\GraphStatic.cs" />

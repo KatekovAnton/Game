@@ -18,6 +18,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         public float Mass;
         public float ShapeRotationAngle;
     }
+
     public abstract class ObjectBehaviourModel
     {
         public Matrix PreviousPosition;
@@ -36,6 +37,9 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             PreviousPosition = globalpose;
             moved = false;
         }
+
+        public virtual void SetParentObject(PivotObject __object)
+        { }
 
         public virtual void Disable()
         { }
