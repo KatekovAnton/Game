@@ -29,7 +29,7 @@ namespace PhysX_test2
 
     }
 
-    public class DecomposedMatrix
+    public struct DecomposedMatrix
     {
         public Quaternion rotation;
         public Vector3 translation;
@@ -40,9 +40,7 @@ namespace PhysX_test2
             _matrix.Decompose(out scale, out rotation, out translation);
         }
 
-        public DecomposedMatrix()
-        {
-        }
+       
 
         public Matrix GetMartix()
         {

@@ -40,12 +40,12 @@ namespace PhysX_test2.TheGame.Objects
         public LigthSource _lightSource;
         
 
-        public GameWeapon(string __inHandObject, string __onFloorObject, string __addonObject, GameLevel __level)
+        public GameWeapon(string __inHandObject, string __onFloorObject, string __addonObject, LevelObject __parentObject, GameLevel __level)
             : base(__level, true, false)
         {
-            _inHandObject = Engine.GameEngine.loadObject(__inHandObject, null, false, null, PivotObjectDependType.Weapon) as LevelObject;
+            _inHandObject = Engine.GameEngine.loadObject(__inHandObject, null, false, __parentObject, PivotObjectDependType.Weapon) as LevelObject;
             _onFloorObject = Engine.GameEngine.loadObject(__onFloorObject, null, true) as LevelObject;
-            _addonObject = Engine.GameEngine.loadObject(__addonObject, null, false,  null, PivotObjectDependType.Weapon) as LevelObject;
+            _addonObject = Engine.GameEngine.loadObject(__addonObject, null, false, _inHandObject, PivotObjectDependType.Body) as LevelObject;
 
             _state = GameWeaponState.None;
         }
@@ -57,8 +57,7 @@ namespace PhysX_test2.TheGame.Objects
                 case GameWeaponState.None:
                     {
                         _hisLevel.AddObject(_onFloorObject);
-                        _hisLevel.AddObject(_addonObject);
-                        _hisLevel.AddObjectSequence(_onFloorObject, _addonObject);
+                        _hisLevel.AddObject(_addonObject, _onFloorObject);
                     } break;
                 case GameWeaponState.InHand:
                     {
@@ -75,13 +74,8 @@ namespace PhysX_test2.TheGame.Objects
             {
                 case GameWeaponState.None:
                     {
-                        _inHandObject.behaviourmodel.SetParentObject(__character._aliveObject);
-                        _addonObject.behaviourmodel.SetParentObject(__character._aliveObject);
-                        _hisLevel.AddObject(_inHandObject);
-                        _hisLevel.AddObject(_addonObject);
-                        _hisLevel.AddObjectSequence(__character._aliveObject, _inHandObject);
-                        _hisLevel.AddObjectSequence(_inHandObject, _addonObject);
-                        
+                        _hisLevel.AddObject(_inHandObject, __character._aliveObject);
+                        _hisLevel.AddObject(_addonObject, _inHandObject);
                     } break;
                 case GameWeaponState.OnFloor:
                     {

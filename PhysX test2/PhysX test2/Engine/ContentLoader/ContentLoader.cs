@@ -324,7 +324,19 @@ namespace PhysX_test2.Engine.ContentLoader
             }
             else
             {
-                RenderObject result = rod.Enginereadedobject[0] as RenderObject;
+                RenderObject result;
+                if (description.IsAnimated)
+                {
+                    AnimRenderObject res = rod.Enginereadedobject[0] as AnimRenderObject;
+                    CharacterContent characterContent = null; ;
+                    Engine.Animation.CharacterController character = createCharacter(packs, description.CharacterName, out characterContent);
+                    result = new AnimRenderObject(character, res.LODs, rod.IsShadowCaster, rod.IsShadowReceiver);
+                }
+                else
+                {
+                    UnAnimRenderObject res = rod.Enginereadedobject[0] as UnAnimRenderObject;
+                    result = new UnAnimRenderObject(res.LODs, rod.IsShadowCaster, rod.IsShadowReceiver);
+                }
                 if (result.isanimated != description.IsAnimated)
                     throw new Exception("wrong object animation flag!!!");
                 rod.Enginereadedobject.Add(result);

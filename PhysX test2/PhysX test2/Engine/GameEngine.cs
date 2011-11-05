@@ -178,14 +178,15 @@ namespace PhysX_test2.Engine
                 loNew.deltaMatrix = __deltaMatrix.Value;
             loNew._needMouseCast = __needMouseCast;
 
-            //хз как сделоать поудобнее TODO
+          /*  //хз как сделоать поудобнее TODO
             if (loNew.renderaspect.isanimated)
             {
                 Render.AnimRenderObject ro = loNew.renderaspect as Render.AnimRenderObject;
                 AnimationManager.AnimationManager.Manager.AddAnimationUserEnd(ro.Update, ro.character);
-            }
+            }*/
             if (needSetPosition)
                 loNew.SetGlobalPose(position);
+            loNew.Update();
             return loNew;
         }
 
@@ -201,7 +202,7 @@ namespace PhysX_test2.Engine
             {
                 LevelObjectBox = loadObject("WoodenCrate10WorldObject\0", null, true) as LevelObject;
                 LevelObjectBox.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 25, 0));
-                gameScene.AddObject(LevelObjectBox);
+                AddObjectToScene(LevelObjectBox);
             }
 
             float delta = 4;
@@ -213,74 +214,95 @@ namespace PhysX_test2.Engine
                 {
                     LevelObject lo = loadObject("WoodenCrate10WorldObject\0", null, true) as LevelObject;
                     lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(i * delta, 25, j * delta));
-                    gameScene.AddObject(lo);
+                    AddObjectToScene(lo);
                 }
-
+           
 
             ////our character
             {
-                LevelObjectCharacterBox = loadObject("MyNewCharacter\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), false) as LevelObject;
+                LevelObjectCharacterBox = loadObject("SCMarineAlive\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), false) as LevelObject;
                 LevelObjectCharacterBox.SetPosition(new Vector3(0, 16.0f, 0));
-                gameScene.AddObject(LevelObjectCharacterBox);
-
-                //хз как сделоать поудобнее TODO
-                //if (lo.renderaspect.isanimated)
-                {
-                    Render.AnimRenderObject ro = LevelObjectCharacterBox.renderaspect as Render.AnimRenderObject;
-                    ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.WeaponIndex;
-                    ContentLoader.ContentLoader.currentParentObject = LevelObjectCharacterBox;
-                }
+                AddObjectToScene(LevelObjectCharacterBox);
             }
 
             ////test side
             {
                 LevelObjectTestSide = loadObject("TestSideWorldObject\0", null, true) as LevelObject;
                 LevelObjectTestSide.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(0, 15, 0));
-                gameScene.AddObject(LevelObjectTestSide);
+                AddObjectToScene(LevelObjectTestSide);
             }
 
             /////sphere
             {
                 LevelObjectCursorSphere = loadObject("Cursor\0", null, false) as LevelObject;
-                gameScene.AddObject(LevelObjectCursorSphere);
+                AddObjectToScene(LevelObjectCursorSphere);
             }
 
             //gun
             {
-                LevelObjectSCGunLO = loadObject("SCGunLO\0", null, false, LevelObjectCharacterBox, PivotObjectDependType.Weapon) as LevelObject;
-                gameScene.AddObject(LevelObjectSCGunLO);
-                //должен быть после чара
-                gameScene._objects.AddRule(LevelObjectCharacterBox, LevelObjectSCGunLO);
+                LevelObjectSCGunLO = loadObject("SCGunHandLO\0", null, false, LevelObjectCharacterBox, PivotObjectDependType.Weapon) as LevelObject;
+                AddObjectToScene(LevelObjectSCGunLO, LevelObjectCharacterBox);
             }
 
             //gun addon
             {
                 LevelObject SCGunLO = loadObject("SСGunAddon\0", null, false, LevelObjectSCGunLO, PivotObjectDependType.Body) as LevelObject;
-                gameScene.AddObject(SCGunLO);
-                //должен быть после чара
-                gameScene._objects.AddRule(LevelObjectSCGunLO, SCGunLO);
+                AddObjectToScene(SCGunLO, LevelObjectSCGunLO);
             }
 
             //head
             {
                 LevelObject head = loadObject("Head01\0", null, false, LevelObjectCharacterBox, PivotObjectDependType.Head) as LevelObject;
-                gameScene.AddObject(head);
-                //должен быть после чара
-                gameScene._objects.AddRule(LevelObjectSCGunLO, head);
+                AddObjectToScene(head, LevelObjectCharacterBox);
             }
 
             //чистим временные какахи
             //это стоит делать елси объекты больше не будут подгружаться
             //тоесть если игра по уровням скажем
-            packs.Unload();
+           // packs.Unload();
 
             //подключаем камеру и управление от клавы/мыши к челобарику
-            CreateCharCameraController();
+           // CreateCharCameraController();
 
         }
 
+        private void AddObjectToScene(PivotObject __object, PivotObject __parentObject = null)
+        {
+            LevelObject loNew = __object as LevelObject;
+            if (loNew == null)
+                return;
 
-        private void CreateCharCameraController()
+            if (loNew.renderaspect.isanimated)
+            {
+                Render.AnimRenderObject ro = loNew.renderaspect as Render.AnimRenderObject;
+                AnimationManager.AnimationManager.Manager.AddAnimationUserEnd(ro.Update, ro.character);
+            }
+
+            gameScene.AddObject(__object);
+
+            if (__parentObject != null)
+            {
+                __object.behaviourmodel.SetParentObject(__parentObject);
+                gameScene._objects.AddRule(__parentObject, __object);
+            }
+        }
+
+        public void RemoveObjectFromScene(PivotObject __object)
+        {
+            LevelObject loNew = __object as LevelObject;
+            if (loNew == null)
+                return;
+
+            if (loNew.renderaspect.isanimated)
+            {
+                Render.AnimRenderObject ro = loNew.renderaspect as Render.AnimRenderObject;
+                AnimationManager.AnimationManager.Manager.RemoveUser(ro.character);
+            }
+
+            gameScene.RemoveObject(__object);
+        }
+
+        public void CreateCharCameraController()
         {
             _cameraController = new CameraControllerPerson(Camera, LevelObjectCharacterBox, new Vector3(-10, 10, 0));
             _charcterController = new InputControllers.InputControllerPerson(LevelObjectCharacterBox);
@@ -290,34 +312,49 @@ namespace PhysX_test2.Engine
 
 
         bool frst = false;
+        bool frst1 = false;
         bool enabeld = true;
         public void Update(GameTime gameTime)
         {
-            MouseState stet = Mouse.GetState();
-            if (stet.LeftButton == ButtonState.Pressed)
             {
-                if (!frst)
+                KeyboardState statek = Keyboard.GetState();
+
+                if (statek.IsKeyDown(Keys.P))
                 {
-                    frst = true;
-                    if (enabeld)
-                        LevelObjectBox.behaviourmodel.Disable();
-                    else
-                        LevelObjectBox.behaviourmodel.Enable();
+                    if (!frst)
+                    {
+                        frst = true;
+                        if (enabeld)
+                            LevelObjectBox.behaviourmodel.Disable();
+                        else
+                            LevelObjectBox.behaviourmodel.Enable();
 
-                    enabeld = !enabeld;
+                        enabeld = !enabeld;
+                    }
                 }
-            }
-            else if (stet.LeftButton == ButtonState.Released)
-                frst = false;
+                else if (statek.IsKeyUp(Keys.O))
+                    frst = false;
 
+                
+                if (statek.IsKeyDown(Keys.O))
+                {
+                    if (!frst1)
+                    {
+                        frst1 = true;
+                        RenderPipeline.EnableDebugRender = !RenderPipeline.EnableDebugRender;
+                    }
+                }
+                else if (statek.IsKeyUp(Keys.O))
+                    frst1 = false;
+            }
             //updatelogic
             animationManager.UpdateStart(gameTime);
 
             //Begin update of level objects
             foreach (PivotObject lo in gameScene._objects)
                 lo.BeginDoFrame();
-           
-            
+
+
             foreach (PivotObject lo in gameScene._objects)
                 lo.DoFrame(gameTime);
 
@@ -342,7 +379,7 @@ namespace PhysX_test2.Engine
 
             //Update world(calc ray trace, deleting bullets, applying forces and other)
             //------
-            
+
 
             //Udating data for scenegraph
             gameScene.UpdateScene();

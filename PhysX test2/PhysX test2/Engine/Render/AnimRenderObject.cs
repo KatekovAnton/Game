@@ -98,7 +98,7 @@ namespace PhysX_test2.Engine.Render
         public override void SelfRender(int lod, Engine.Render.Materials.Material mat = null)
         {
             Microsoft.Xna.Framework.Graphics.Effect currentEffect = PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect;
-            currentEffect.Parameters["Frame"].SetValue(character._currentFames);
+            currentEffect.Parameters["Frame"].SetValue(character._currentFrames);
             if (mat != null)
             {
                 for (int i = 0; i < LODs[lod].subsets.Length; i++)

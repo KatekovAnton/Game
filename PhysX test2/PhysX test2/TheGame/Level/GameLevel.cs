@@ -17,30 +17,32 @@ namespace PhysX_test2.TheGame.Level
         {
             _scene = __scene;
         }
-
+        public float times = 0;
         public Vector3 GetSpawnPlace()
         {
-            return new Vector3(0, 16.0f, 0);
+            times += 1;
+            return new Vector3(0 + times*2.0f, 16.0f, 0);
         }
-
-        public void AddLight(Engine.Logic.LigthSource theLight)
+      
+        public void AddObject(Engine.Logic.PivotObject __object, Engine.Logic.PivotObject __parentObject = null)
         {
-            _scene.AddObject(theLight);
-        }
+            LevelObject loNew = __object as LevelObject;
+            if (loNew == null)
+                return;
 
-        public void RemoveLight(Engine.Logic.LigthSource theLight)
-        {
-            _scene.RemoveObject(theLight);
-        }
+            if (loNew.renderaspect.isanimated)
+            {
+                Engine.Render.AnimRenderObject ro = loNew.renderaspect as Engine.Render.AnimRenderObject;
+                Engine.AnimationManager.AnimationManager.Manager.AddAnimationUserEnd(ro.Update, ro.character);
+            }
 
-        public void AddObject(Engine.Logic.PivotObject theObjecr)
-        {
-            _scene.AddObject(theObjecr);
-        }
+            _scene.AddObject(__object);
 
-        public void AddObjectSequence(Engine.Logic.PivotObject __firstObject, Engine.Logic.PivotObject __secondObjcect)
-        {
-            _scene._objects.AddRule(__firstObject, __secondObjcect);
+            if (__parentObject != null)
+            {
+                __object.behaviourmodel.SetParentObject(__parentObject);
+                _scene._objects.AddRule(__parentObject, __object);
+            }
         }
 
         public void RemoveObject(Engine.Logic.PivotObject theObjecr)

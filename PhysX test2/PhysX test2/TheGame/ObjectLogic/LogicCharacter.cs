@@ -9,6 +9,11 @@ namespace PhysX_test2.TheGame.ObjectLogic
 {
     public class LogicCharacter
     {
+        public static float _marineGun01FireTime = 1.0f;
+        public static float _marineGun01FireRestartTime = 1.0f;
+        public static float _marineGun01ReloadTime = 1.0f;
+        public static float _marineActionTime = 1.0f;
+
         public bool _isAlive;
 
         GameCharacter _hisObject;
@@ -34,6 +39,7 @@ namespace PhysX_test2.TheGame.ObjectLogic
             else
                 _hisObject.SetDead();
 
+            _hisHead.LocateToLevel(_hisObject._currentObject);
             _isAlive = __liveState;
         }
     }
