@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,9 +15,11 @@ using PhysX_test2.Engine.Render;
 using StillDesign.PhysX;
 
 
+
+
 namespace PhysX_test2.Engine 
 {
-    public class GameEngine
+    public class GameEngine : IKeyboardUser
     {
 
         //static variables for enviroment
@@ -42,7 +46,6 @@ namespace PhysX_test2.Engine
 
 
         //physx
-  //      public Core Core;
         public Scene Scene;
 
 
@@ -69,10 +72,19 @@ namespace PhysX_test2.Engine
         public int visibleobjectscount;
         public Vector3 BoxScreenPosition;
         public Vector3 lightDir = new Vector3(-1, -1, -1);
+
+
+        private List<HotKey> _hotkeys;
        
 
         public GameEngine(MyGame game)
         {
+            _hotkeys = new List<HotKey>();
+            _hotkeys.Add(new HotKey(new Keys[] { Keys.O }, SwichDebugRender));
+            _hotkeys.Add(new HotKey(new Keys[] { Keys.P }, SwichBehaviourModel));
+
+            KeyboardManager.Manager.AddKeyboardUser(this);
+
             game._engine = this;
             packs = new PackList();
             Instance = this;
@@ -87,6 +99,15 @@ namespace PhysX_test2.Engine
             MyGame.DeviceManager.PreferredBackBufferHeight = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.8);
         }
 
+        public bool IsKeyboardCaptured()
+        {
+            return false; 
+        }
+
+        public List<HotKey> hotkeys() 
+        { 
+            return _hotkeys;
+        }
 
         public void Initalize() 
         {
@@ -309,44 +330,25 @@ namespace PhysX_test2.Engine
         }
 
 
+        public void SwichBehaviourModel()
+        {
+            if (enabeld)
+                LevelObjectBox.behaviourmodel.Disable();
+            else
+                LevelObjectBox.behaviourmodel.Enable();
+            enabeld = !enabeld;
+        }
 
+        public void SwichDebugRender()
+        {
+            RenderPipeline.EnableDebugRender = !RenderPipeline.EnableDebugRender;
+        }
 
-        bool frst = false;
-        bool frst1 = false;
+        
         bool enabeld = true;
         public void Update(GameTime gameTime)
         {
-            {
-                KeyboardState statek = Keyboard.GetState();
-
-                if (statek.IsKeyDown(Keys.P))
-                {
-                    if (!frst)
-                    {
-                        frst = true;
-                        if (enabeld)
-                            LevelObjectBox.behaviourmodel.Disable();
-                        else
-                            LevelObjectBox.behaviourmodel.Enable();
-
-                        enabeld = !enabeld;
-                    }
-                }
-                else if (statek.IsKeyUp(Keys.O))
-                    frst = false;
-
-                
-                if (statek.IsKeyDown(Keys.O))
-                {
-                    if (!frst1)
-                    {
-                        frst1 = true;
-                        RenderPipeline.EnableDebugRender = !RenderPipeline.EnableDebugRender;
-                    }
-                }
-                else if (statek.IsKeyUp(Keys.O))
-                    frst1 = false;
-            }
+            
             //updatelogic
             animationManager.UpdateStart(gameTime);
 

@@ -128,6 +128,9 @@
     <Compile Include="BaseExtensions\Graph\GraphController.cs" />
     <Compile Include="BaseExtensions\Graph\GraphNodeInctance.cs" />
     <Compile Include="BaseExtensions\Graph\IGraphUser.cs" />
+    <Compile Include="BaseExtensions\KeyboardManager\IKeyboardUser.cs" />
+    <Compile Include="BaseExtensions\KeyboardManager\KeyboardManager.cs" />
+    <Compile Include="BaseExtensions\KeyboardManager\KeyScan.cs" />
     <Compile Include="BaseExtensions\SQliteShell\SQliteConnector.cs" />
     <Compile Include="BaseExtensions\SQliteShell\SQliteResultSet.cs" />
     <Compile Include="Content\CollisionMesh.cs" />
