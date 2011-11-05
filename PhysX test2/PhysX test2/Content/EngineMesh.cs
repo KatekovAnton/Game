@@ -16,10 +16,10 @@ namespace PhysX_test2.Content
 
         public EngineMesh(Vertex[] vertices, ushort[] indices)
         {
-            vertexBuffer = new VertexBuffer(GameEngine.Device, typeof(Vertex), vertices.Length, BufferUsage.None);
+            vertexBuffer = new VertexBuffer(MyGame.Device, typeof(Vertex), vertices.Length, BufferUsage.None);
             vertexBuffer.SetData<Vertex>(vertices);
 
-            indexBuffer = new IndexBuffer(GameEngine.Device, IndexElementSize.SixteenBits, indices.Length, BufferUsage.None);
+            indexBuffer = new IndexBuffer(MyGame.Device, IndexElementSize.SixteenBits, indices.Length, BufferUsage.None);
             indexBuffer.SetData<ushort>(indices);
         }
         
@@ -39,9 +39,9 @@ namespace PhysX_test2.Content
 
         public void Render()
         {
-            GameEngine.Device.SetVertexBuffer(vertexBuffer);
-            GameEngine.Device.Indices = indexBuffer;
-            GameEngine.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
+            MyGame.Device.SetVertexBuffer(vertexBuffer);
+            MyGame.Device.Indices = indexBuffer;
+            MyGame.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexBuffer.VertexCount, 0, indexBuffer.IndexCount / 3);
         }
 
         public static EngineMesh FromContentMeshes(ContentMesh[] buffers)

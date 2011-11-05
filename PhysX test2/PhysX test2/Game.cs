@@ -7,17 +7,32 @@ using PhysX_test2.Engine;
 using StillDesign.PhysX;
 using Ray = Microsoft.Xna.Framework.Ray;
 
+using PhysX_test2.TheGame;
 
 namespace PhysX_test2
 {
+    public enum MyGameState
+    {
+        Game,
+        Menu,
+        Pause,
+        Loading
+    }
+
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
     public class MyGame : Game
     {
+        public static MyGameState _currentState;
 
+        public static GraphicsDeviceManager DeviceManager;
+        public static GraphicsDevice Device;
         public static MyGame Instance;
 
+        public Vector3 _mousepoint = Vector3.Zero;
+        public Ray ray;
 
         //some additional variables
         public Vector3 _boxScreenPosition;
@@ -26,8 +41,9 @@ namespace PhysX_test2
      
         public GameEngine _engine;
         private BasicEffect _lighting;
-      
-        private GraphicsDeviceManager _graphics;
+
+        public TheGame.TheGame _MAINGAME;
+
         private Log _log;
         private string _outputstring = string.Empty;
         private SpriteBatch _spriteBatch;
@@ -37,18 +53,20 @@ namespace PhysX_test2
         {
             Instance = this;
             _log = new Log();
-           
-            _engine = new GameEngine(this);
+            DeviceManager = new GraphicsDeviceManager(this);
+            IsMouseVisible = true;
 
-            _graphics = GameEngine.DeviceManager;
             if (!GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef))
-                _graphics.GraphicsProfile = GraphicsProfile.Reach;
+                DeviceManager.GraphicsProfile = GraphicsProfile.Reach;
             else
-                _graphics.GraphicsProfile = GraphicsProfile.HiDef;
+                DeviceManager.GraphicsProfile = GraphicsProfile.HiDef;
             Content.RootDirectory = "Content";
 
-            _graphics.SynchronizeWithVerticalRetrace = false;
+
+            DeviceManager.SynchronizeWithVerticalRetrace = false;
             IsFixedTimeStep = false;
+
+            _MAINGAME = new TheGame.TheGame(this);
         }
 
 
@@ -56,11 +74,9 @@ namespace PhysX_test2
         {
             base.Initialize();
 
-            _engine.Initalize();
+            _MAINGAME.Initialize();
 
-
-            IsMouseVisible = true;
-
+            _currentState = MyGameState.Game;
         }
 
 
@@ -70,13 +86,13 @@ namespace PhysX_test2
         /// </summary>
         protected override void LoadContent()
         {
-            GameEngine.Device = GraphicsDevice;
+            MyGame.Device = GraphicsDevice;
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _font1 = Content.Load<SpriteFont>("Courier New");
             _fontPos = new Vector2(10.0f, 10.0f);
-            _lighting = new BasicEffect(GameEngine.Device);
+            _lighting = new BasicEffect(MyGame.Device);
 
             _engine.Font1 = _font1;
         }
@@ -91,8 +107,6 @@ namespace PhysX_test2
             _engine.UnLoad();
         }
 
-        public Vector3 _mousepoint = Vector3.Zero;
-        public Ray ray;
         private void HandleKeyboard(KeyboardState keyboardState)
         {
             ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), _engine.Camera.View, _engine.Camera.Projection);
@@ -201,7 +215,6 @@ namespace PhysX_test2
             _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.CreateTranslation(newpoint), null);
         }
 
-
         protected override void Update(GameTime gameTime)
         {
             HandleKeyboard(Keyboard.GetState());
@@ -210,7 +223,6 @@ namespace PhysX_test2
             base.Update(gameTime);
         }
 
-
         protected override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
@@ -218,7 +230,6 @@ namespace PhysX_test2
 
             drawstring();
         }
-
 
         public void drawstring()
         {
@@ -237,7 +248,6 @@ namespace PhysX_test2
             _spriteBatch.End();
         }
     }
-
 
     public class UserOutput : UserOutputStream
     {

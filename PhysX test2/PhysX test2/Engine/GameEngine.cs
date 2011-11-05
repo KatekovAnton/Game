@@ -20,8 +20,7 @@ namespace PhysX_test2.Engine
 
         //static variables for enviroment
         public static GameEngine Instance;
-        public static GraphicsDeviceManager DeviceManager;
-        public static GraphicsDevice Device;
+        
 
 
         //engine camera and engine render
@@ -74,17 +73,18 @@ namespace PhysX_test2.Engine
 
         public GameEngine(MyGame game)
         {
+            game._engine = this;
             packs = new PackList();
             Instance = this;
             lightDir.Normalize();
 
-            DeviceManager = new GraphicsDeviceManager(game);
-
+            gameScene = new EngineScene();
+            Scene = gameScene.Scene;
             
 
             //разме рэкрана
-            DeviceManager.PreferredBackBufferWidth = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.8);
-            DeviceManager.PreferredBackBufferHeight = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.8);
+            MyGame.DeviceManager.PreferredBackBufferWidth = (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.8);
+            MyGame.DeviceManager.PreferredBackBufferHeight = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.8);
         }
 
 
@@ -92,21 +92,22 @@ namespace PhysX_test2.Engine
         {
             FPSCounter = new FpsCounter();
             Camera = new Camera(this);
-            spriteBatch = new SpriteBatch(DeviceManager.GraphicsDevice);
-
+            spriteBatch = new SpriteBatch(MyGame.DeviceManager.GraphicsDevice);
             
             //аниматор
             animationManager = AnimationManager.AnimationManager.Manager;
+
             //шойдер
             /*using (var stream = new FileStream(@"Content\Shaders\ObjectRender.fx", FileMode.Open))
             {
                 PFromStream(stream, Device);
             }*/
             PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect = Shader.Load(MyGame.Instance.Content);
+
             //рендерщик
-            GraphicPipeleine = new RenderPipeline(DeviceManager.GraphicsDevice, Camera);
-            //загрузка всего
-            Loaddata();
+            GraphicPipeleine = new RenderPipeline(MyGame.DeviceManager.GraphicsDevice, Camera);
+
+            
         }
 
         public static PivotObject loadObject(string __name,
@@ -188,10 +189,8 @@ namespace PhysX_test2.Engine
             return loNew;
         }
 
-        private void Loaddata()
+        public void Loaddata()
         {
-            //уровень
-            gameScene = new EngineScene();
             Scene = gameScene.Scene;
             //если ты с горы упал - ты ешё не экстримал
             //чтоб далеко не падать
@@ -360,7 +359,7 @@ namespace PhysX_test2.Engine
             GraphicPipeleine.NewFrame(lightDir);
 
             gameScene.CalculateVisibleObjects();
-            Vector3 v1 = DeviceManager.GraphicsDevice.Viewport.Project(LevelObjectBox.transform.Translation, Camera.Projection, Camera.View, Matrix.Identity);
+            Vector3 v1 = MyGame.DeviceManager.GraphicsDevice.Viewport.Project(LevelObjectBox.transform.Translation, Camera.Projection, Camera.View, Matrix.Identity);
             BoxScreenPosition = new Vector3(Convert.ToSingle(Convert.ToInt32(v1.X)), Convert.ToSingle(Convert.ToInt32(v1.Y)), v1.Z);
 
             //добавляем все нобходимые объекты на отрисовку

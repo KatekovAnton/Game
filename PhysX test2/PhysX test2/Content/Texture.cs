@@ -18,7 +18,7 @@ namespace PhysX_test2.Content
 
         public override void loadbody(byte[] array)
         {
-            texture = Texture2D.FromStream(Engine.GameEngine.Device, new System.IO.MemoryStream(array));
+            texture = Texture2D.FromStream(MyGame.Device, new System.IO.MemoryStream(array));
         }
     }
 }
