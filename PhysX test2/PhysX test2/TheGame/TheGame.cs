@@ -50,13 +50,7 @@ namespace PhysX_test2.TheGame
 
         public void SwichGunState()
         {
-            LogicWeapon mygun = _weapons[_playerweaponKet];
-            if (mygun._weaponObject._state == GameWeaponState.InHand)
-            {
-                mygun._weaponObject.DropOnFloor();
-            }
-            else
-                mygun._weaponObject.TakeInHand(_characters[_playerKey]._hisObject);
+            _characters[_playerKey].SwitchGun();
         }
 
         public List<HotKey> hotkeys()
@@ -90,8 +84,9 @@ namespace PhysX_test2.TheGame
             GameWeapon myWeapon = new GameWeapon("SCGunHandLO\0", "SCGunFloorLO\0", "SСGunAddon\0", myCharacter._aliveObject, _level);
             LogicWeapon myGun = new LogicWeapon(myWeapon);
             _weapons.Add(_playerweaponKet, myGun);
-            myGun._weaponObject.TakeInHand(myCharacter);
-          //  myGun._weaponObject.DropOnFloor();
+
+
+            me.SetGun(myGun);
             _engine.CreateCharCameraController();
         }
 
