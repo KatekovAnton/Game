@@ -224,6 +224,9 @@ namespace PhysX_test2
             HandleKeyboard(Keyboard.GetState());
             _engine.Update(gameTime);
             SearchClickedObject();
+
+            _MAINGAME.Update(gameTime);
+
             base.Update(gameTime);
         }
 

@@ -9,7 +9,7 @@ using PhysX_test2.Engine.Logic;
 
 
 
-namespace PhysX_test2.TheGame.ObjectControllers.ControlActions
+namespace PhysX_test2.TheGame.LogicControllers.ControlActions
 {
     public abstract class ControlAction
     {

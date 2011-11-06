@@ -5,14 +5,13 @@ using System.Text;
 
 using PhysX_test2.TheGame.Objects;
 
-namespace PhysX_test2.TheGame.ObjectLogic
+namespace PhysX_test2.TheGame.LogicControllers
 {
-    public class LogicCharacter
+    public class CharacterLogicController:BaseLogicController 
     {
-        public static float _marineGun01FireTime = 1.0f;
-        public static float _marineGun01FireRestartTime = 1.0f;
-        public static float _marineGun01ReloadTime = 1.0f;
-        public static float _marineActionTime = 1.0f;
+        public Parameters.CharacterParameters _baseParameters;
+        public Parameters.CharacterParameters _instanceParameters;
+
 
         public bool _isAlive;
         public bool _isMe;
@@ -20,9 +19,9 @@ namespace PhysX_test2.TheGame.ObjectLogic
         public GameCharacter _hisObject;
         public GameSimpleObject _hisHead;
 
-        public LogicWeapon _hisWeapon;
+        public WeaponLogicController _hisWeapon;
 
-        public LogicCharacter(GameCharacter __hisObject, GameSimpleObject __hisHead, bool __isMe = false)
+        public CharacterLogicController(GameCharacter __hisObject, GameSimpleObject __hisHead, bool __isMe = false)
         {
             _hisHead = __hisHead;
             _hisObject = __hisObject;
@@ -34,7 +33,7 @@ namespace PhysX_test2.TheGame.ObjectLogic
             _hisHead._object._needMouseCast = _hisHead._object._needMouseCast && !_isMe;
         }
 
-        public void SetGun(LogicWeapon __newWeapon)
+        public void SetGun(WeaponLogicController __newWeapon)
         {
             if (_hisWeapon != null)
             {
@@ -80,6 +79,21 @@ namespace PhysX_test2.TheGame.ObjectLogic
 
             _hisHead.LocateToLevel(_hisObject._aliveObject);
             _isAlive = __liveState;
+        }
+
+        public override void Update(float __elapsedTime)
+        {
+
+        }
+
+        public override void TakeHit(Parameters.BulletParameters __bulletParameters)
+        {
+
+        }
+
+        public override Parameters.InteractiveObjectParameters GetParameters()
+        {
+            return _instanceParameters;
         }
     }
 }

@@ -6,8 +6,9 @@ using System.Text;
 using PhysX_test2.Engine;
 
 using PhysX_test2.TheGame.Objects;
-using PhysX_test2.TheGame.ObjectLogic;
 using PhysX_test2.TheGame.Level;
+
+using PhysX_test2.TheGame.LogicControllers;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -21,11 +22,11 @@ namespace PhysX_test2.TheGame
         public const string _playerCharacterKey = "player";
         public const string _playerWeaponKey = "playerWeapon";
 
-        public Dictionary<string, LogicCharacter> _characters;
-        public Dictionary<string, LogicWeapon> _weapons;
+        public Dictionary<string, CharacterLogicController> _characters;
+        public Dictionary<string, WeaponLogicController> _weapons;
         
-        LogicCharacter _anotherChar;
-        LogicWeapon _anotherWeapon;
+        CharacterLogicController _anotherChar;
+        WeaponLogicController _anotherWeapon;
 
         public Dictionary<string, GameObject> _objects;
 
@@ -37,8 +38,8 @@ namespace PhysX_test2.TheGame
             _engine = new GameEngine(__game);
             _level = new GameLevel(_engine.gameScene);
 
-            _characters = new Dictionary<string, LogicCharacter>();
-            _weapons = new Dictionary<string, LogicWeapon>();
+            _characters = new Dictionary<string, CharacterLogicController>();
+            _weapons = new Dictionary<string, WeaponLogicController>();
 
             _hotkeys = new List<HotKey>();
             _hotkeys.Add(new HotKey(new Keys[] { Keys.I }, SwichGunState));
@@ -79,13 +80,13 @@ namespace PhysX_test2.TheGame
 
 
 
-            LogicCharacter me = new LogicCharacter(myCharacter, myHead,true);
+            CharacterLogicController me = new CharacterLogicController(myCharacter, myHead,true);
             _characters.Add(_playerCharacterKey, me);
             me.SetAlive(true);
 
 
             GameWeapon myWeapon = new GameWeapon("SCGunHandLO\0", "SCGunFloorLO\0", "SСGunAddon\0", myCharacter._aliveObject, _level);
-            LogicWeapon myGun = new LogicWeapon(myWeapon);
+            WeaponLogicController myGun = new WeaponLogicController(myWeapon);
             _weapons.Add(_playerWeaponKey, myGun);
 
 
@@ -96,14 +97,17 @@ namespace PhysX_test2.TheGame
 
             GameCharacter myCharacter1 = new GameCharacter("SCMarineAlive\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), _level);
             GameSimpleObject myHead1 = new GameSimpleObject("Head01\0", myCharacter1._aliveObject, Engine.Logic.PivotObjectDependType.Head, _level, false, false);
-            _anotherChar = new LogicCharacter(myCharacter1, myHead1, false);
+            _anotherChar = new CharacterLogicController(myCharacter1, myHead1, false);
             _anotherChar.SetAlive(true);
             GameWeapon myWeapon1 = new GameWeapon("SCGunHandLO\0", "SCGunFloorLO\0", "SСGunAddon\0", myCharacter1._aliveObject, _level);
-            _anotherWeapon = new LogicWeapon(myWeapon1);
+            _anotherWeapon = new WeaponLogicController(myWeapon1);
             _anotherChar.SetGun(_anotherWeapon);
 
 
         }
+
+        public void Update(GameTime __gametime)
+        { }
 
     }
 }
