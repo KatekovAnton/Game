@@ -10,11 +10,14 @@ using PhysX_test2.TheGame.ObjectLogic;
 using PhysX_test2.TheGame.Level;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace PhysX_test2.TheGame
 {
-    public class TheGame
+    public class TheGame:IKeyboardUser
     {
+        private List<HotKey> _hotkeys;
+
         public const string _playerKey = "player";
         public const string _playerweaponKet = "playerWeapon";
 
@@ -33,7 +36,34 @@ namespace PhysX_test2.TheGame
 
             _characters = new Dictionary<string, LogicCharacter>();
             _weapons = new Dictionary<string, LogicWeapon>();
+
+            _hotkeys = new List<HotKey>();
+            _hotkeys.Add(new HotKey(new Keys[] { Keys.I }, SwichGunState));
+
+            KeyboardManager.Manager.AddKeyboardUser(this);
         }
+
+        public bool IsKeyboardCaptured()
+        {
+            return false;
+        }
+
+        public void SwichGunState()
+        {
+            LogicWeapon mygun = _weapons[_playerweaponKet];
+            if (mygun._weaponObject._state == GameWeaponState.InHand)
+            {
+                mygun._weaponObject.DropOnFloor();
+            }
+            else
+                mygun._weaponObject.TakeInHand(_characters[_playerKey]._hisObject);
+        }
+
+        public List<HotKey> hotkeys()
+        {
+            return _hotkeys;
+        }
+
 
         public void Initialize()
         {
@@ -59,7 +89,9 @@ namespace PhysX_test2.TheGame
 
             GameWeapon myWeapon = new GameWeapon("SCGunHandLO\0", "SCGunFloorLO\0", "SСGunAddon\0", myCharacter._aliveObject, _level);
             LogicWeapon myGun = new LogicWeapon(myWeapon);
+            _weapons.Add(_playerweaponKet, myGun);
             myGun._weaponObject.TakeInHand(myCharacter);
+          //  myGun._weaponObject.DropOnFloor();
             _engine.CreateCharCameraController();
         }
 

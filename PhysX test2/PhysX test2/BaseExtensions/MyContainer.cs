@@ -294,7 +294,10 @@ namespace PhysX_test2
 
             for (int i = 0; i < Count; i++)
                 if (array[i] == __oldobject)
+                {
                     array[i] = __newobject;
+                    break;
+                }
         }
     }
 }

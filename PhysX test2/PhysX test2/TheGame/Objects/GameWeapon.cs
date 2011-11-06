@@ -62,6 +62,7 @@ namespace PhysX_test2.TheGame.Objects
                 case GameWeaponState.InHand:
                     {
                         _hisLevel._scene.SwapObjects(_inHandObject, _onFloorObject, false);
+                        _onFloorObject.SetGlobalPose(_inHandObject.transform);
                     } break;
                 default: break;
             }

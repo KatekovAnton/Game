@@ -75,7 +75,7 @@ namespace PhysX_test2.Engine.Logic
 
             if (!finded)
             {
-                __newObject.Update();
+                __newObject.behaviourmodel.Enable();
                 _objects.Add(__newObject);
                 _sceneGraph.AddObject(__newObject);
                 return false;
@@ -85,13 +85,18 @@ namespace PhysX_test2.Engine.Logic
             foreach (MyContainer<PivotObject>.MyContainerRule rule in rules)
             {
                 if (rule.firstObject == __oldObject)
+                {
                     rule.firstObject = __newObject;
+                    rule.secondObject.behaviourmodel.SetParentObject(__newObject);
+                }
                 else if (rule.secondObject == __oldObject)
                     rule.secondObject = __newObject;
             }
+            __newObject.behaviourmodel.Enable();
+            __oldObject.behaviourmodel.Disable();
             _objects.Swap(__oldObject, __newObject, false);
             _sceneGraph.SwapObjects(__oldObject, __newObject, __recalculate);
-
+           
             return true;
         }
 

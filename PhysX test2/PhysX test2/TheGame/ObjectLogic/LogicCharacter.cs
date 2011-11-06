@@ -16,8 +16,8 @@ namespace PhysX_test2.TheGame.ObjectLogic
 
         public bool _isAlive;
 
-        GameCharacter _hisObject;
-        GameSimpleObject _hisHead;
+        public GameCharacter _hisObject;
+        public GameSimpleObject _hisHead;
 
 
         public LogicCharacter(GameCharacter __hisObject, GameSimpleObject __hisHead)
