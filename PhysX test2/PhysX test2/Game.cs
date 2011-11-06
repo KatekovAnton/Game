@@ -48,7 +48,7 @@ namespace PhysX_test2
         private string _outputstring = string.Empty;
         private SpriteBatch _spriteBatch;
 
-        private string _helpHint = "Press \'O\' to swich debug render\nPress \'P\' to toggle physic model of box";
+        private string _helpHint = "Press \'O\' to swich debug render\nPress \'P\' to toggle physic model of box\nPress \'I\' to force marine to drop gun";
 
         public MyGame()
         {
@@ -248,7 +248,7 @@ namespace PhysX_test2
 
             _spriteBatch.DrawString(_font1, "Character angle: " + _engine._charcterController.movestate.ToString() , new Vector2(0, 45), Color.White);
 
-            _spriteBatch.DrawString(_font1, _helpHint, new Vector2(0, 60), Color.White);
+            _spriteBatch.DrawString(_font1, _helpHint, new Vector2(0, 60), Color.Black);
 
             _spriteBatch.End();
         }

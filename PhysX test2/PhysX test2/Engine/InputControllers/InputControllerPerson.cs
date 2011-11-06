@@ -17,16 +17,10 @@ namespace PhysX_test2.Engine.InputControllers
         WalkBackward,
         WalkLeft,
         WalkRight,
-        WalkFL,
-        WalkFR,
-        WalkBL,
-        WalkBR,
-        Action
-    };
-
-    public enum ActionKeyState
-    {
-        W,S,A,D,E
+        WalkForwardLeft,
+        WalkForwardRight,
+        WalkBackwardLeft,
+        WalkBackwardRight
     };
 
     class CharacterParameters
