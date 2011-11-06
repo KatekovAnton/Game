@@ -52,10 +52,8 @@ namespace PhysX_test2.Engine
         //scene and its objects
         public EngineScene gameScene;
         public LevelObject LevelObjectBox;
-        public LevelObject LevelObjectCharacterBox;
         public LevelObject LevelObjectCursorSphere;
         public LevelObject LevelObjectTestSide;
-        public LevelObject LevelObjectSCGunLO;
         public Actor groundplane;
 
 
@@ -237,14 +235,6 @@ namespace PhysX_test2.Engine
                     lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(i * delta, 25, j * delta));
                     AddObjectToScene(lo);
                 }
-           
-
-            ////our character
-            {
-                LevelObjectCharacterBox = loadObject("SCMarineAlive\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), false) as LevelObject;
-                LevelObjectCharacterBox.SetPosition(new Vector3(0, 16.0f, 0));
-                AddObjectToScene(LevelObjectCharacterBox);
-            }
 
             ////test side
             {
@@ -257,24 +247,6 @@ namespace PhysX_test2.Engine
             {
                 LevelObjectCursorSphere = loadObject("Cursor\0", null, false) as LevelObject;
                 AddObjectToScene(LevelObjectCursorSphere);
-            }
-
-            //gun
-            {
-                LevelObjectSCGunLO = loadObject("SCGunHandLO\0", null, false, LevelObjectCharacterBox, PivotObjectDependType.Weapon) as LevelObject;
-                AddObjectToScene(LevelObjectSCGunLO, LevelObjectCharacterBox);
-            }
-
-            //gun addon
-            {
-                LevelObject SCGunLO = loadObject("SСGunAddon\0", null, false, LevelObjectSCGunLO, PivotObjectDependType.Body) as LevelObject;
-                AddObjectToScene(SCGunLO, LevelObjectSCGunLO);
-            }
-
-            //head
-            {
-                LevelObject head = loadObject("Head01\0", null, false, LevelObjectCharacterBox, PivotObjectDependType.Head) as LevelObject;
-                AddObjectToScene(head, LevelObjectCharacterBox);
             }
 
             //чистим временные какахи
@@ -323,10 +295,10 @@ namespace PhysX_test2.Engine
             gameScene.RemoveObject(__object);
         }
 
-        public void CreateCharCameraController()
+        public void CreateCharCameraController(LevelObject __targetCharacter)
         {
-            _cameraController = new CameraControllerPerson(Camera, LevelObjectCharacterBox, new Vector3(-10, 10, 0));
-            _charcterController = new InputControllers.InputControllerPerson(LevelObjectCharacterBox);
+            _cameraController = new CameraControllerPerson(Camera, __targetCharacter, new Vector3(-10, 10, 0));
+            _charcterController = new InputControllers.InputControllerPerson(__targetCharacter);
         }
 
 
@@ -389,9 +361,7 @@ namespace PhysX_test2.Engine
             {
                 // обработка камеры
                 _cameraController.UpdateCamerafromUser(MyGame.Instance._mousepoint);
-
-                if (LevelObjectCharacterBox.behaviourmodel.moved)
-                    _cameraController.UpdateCamera();
+                _cameraController.UpdateCamera();
             }
 
             //очищаем конвейер

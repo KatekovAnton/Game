@@ -76,7 +76,7 @@ namespace PhysX_test2.TheGame
 
 
 
-            LogicCharacter me = new LogicCharacter(myCharacter, myHead);
+            LogicCharacter me = new LogicCharacter(myCharacter, myHead,true);
             _characters.Add(_playerKey, me);
             me.SetAlive(true);
 
@@ -87,7 +87,8 @@ namespace PhysX_test2.TheGame
 
 
             me.SetGun(myGun);
-            _engine.CreateCharCameraController();
+            
+            _engine.CreateCharCameraController(me._hisObject._aliveObject);
         }
 
     }

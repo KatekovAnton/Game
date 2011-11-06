@@ -15,18 +15,23 @@ namespace PhysX_test2.TheGame.ObjectLogic
         public static float _marineActionTime = 1.0f;
 
         public bool _isAlive;
+        public bool _isMe;
 
         public GameCharacter _hisObject;
         public GameSimpleObject _hisHead;
 
         public LogicWeapon _hisWeapon;
 
-        public LogicCharacter(GameCharacter __hisObject, GameSimpleObject __hisHead)
+        public LogicCharacter(GameCharacter __hisObject, GameSimpleObject __hisHead, bool __isMe = false)
         {
             _hisHead = __hisHead;
             _hisObject = __hisObject;
 
             _isAlive = false;
+            _isMe = __isMe;
+
+            _hisObject._aliveObject._needMouseCast = _hisObject._aliveObject._needMouseCast && !_isMe;
+            _hisHead._object._needMouseCast = _hisHead._object._needMouseCast && !_isMe;
         }
 
         public void SetGun(LogicWeapon __newWeapon)

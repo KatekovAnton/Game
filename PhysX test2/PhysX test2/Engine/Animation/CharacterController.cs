@@ -101,6 +101,7 @@ namespace PhysX_test2.Engine.Animation
 
             }
         }
+
         public void CompyPoseFromAnother(CharacterController __anotherController)
         {
             if (__anotherController._baseCharacter != _baseCharacter)

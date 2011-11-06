@@ -116,6 +116,8 @@ namespace PhysX_test2.Engine.CameraControllers
 
         public override void UpdateCamera()
         {
+            if (!_character.behaviourmodel.moved)
+                return;
             _currentTarget = _character.transform.Translation;
             _currendPosition = _currentTarget + _offset;
 

@@ -52,7 +52,7 @@ namespace PhysX_test2
 
         public MyGame()
         {
-
+            PhysX_test2.MouseManager.Manager = new MouseManager();
             Instance = this;
             _log = new Log();
             DeviceManager = new GraphicsDeviceManager(this);
@@ -220,6 +220,7 @@ namespace PhysX_test2
         protected override void Update(GameTime gameTime)
         {
             KeyboardManager.Manager.Update();
+            MouseManager.Manager.Update();
             HandleKeyboard(Keyboard.GetState());
             _engine.Update(gameTime);
             SearchClickedObject();
