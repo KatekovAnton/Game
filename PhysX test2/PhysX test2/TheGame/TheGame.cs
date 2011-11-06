@@ -47,7 +47,7 @@ namespace PhysX_test2.TheGame
             _engine.Loaddata();
 
 
-            GameCharacter myCharacter = new GameCharacter("SCMarineAlive\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), "SCMarineDead\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), _level);
+            GameCharacter myCharacter = new GameCharacter("SCMarineAlive\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), _level);
             GameSimpleObject myHead = new GameSimpleObject("Head01\0", myCharacter._aliveObject, Engine.Logic.PivotObjectDependType.Head, _level, false, false);
 
 

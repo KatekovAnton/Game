@@ -20,26 +20,20 @@ namespace PhysX_test2.TheGame.Objects
     {
         public bool _onLevel;
         public bool _isAlive;
-        public LevelObject _deadObject;
         public LevelObject _aliveObject;
 
-        public LevelObject _currentObject;
-
         public Engine.Animation.CharacterController _controllerAlive;
-        public Engine.Animation.CharacterController _controllerDead; 
 
         public ObjectGraphController _characterStateController;
 
         
 
-        public GameCharacter(string __aliveName, Matrix __aliveMatrix, string __deadName, Matrix __deadMatrix, GameLevel __level)
+        public GameCharacter(string __aliveName, Matrix __aliveMatrix, GameLevel __level)
             : base(__level, true, true)
         {
             _aliveObject = Engine.GameEngine.loadObject(__aliveName, __aliveMatrix, true) as LevelObject;
-            _deadObject = Engine.GameEngine.loadObject(__deadName, __deadMatrix, true) as LevelObject;
 
             _controllerAlive = (_aliveObject.renderaspect as Engine.Render.AnimRenderObject).character;
-            _controllerDead = (_deadObject.renderaspect as Engine.Render.AnimRenderObject).character;
 
             _isAlive = false;
             _onLevel = false;
@@ -56,25 +50,20 @@ namespace PhysX_test2.TheGame.Objects
                 throw new Exception();
             _isAlive = false;
             //method
-            _deadObject.SetGlobalPose(_aliveObject.transform);
             if (_onLevel)
-                _hisLevel._scene.SwapObjects(_aliveObject, _deadObject, false);
+                _aliveObject.behaviourmodel.Disable();
             else
             {
-                _hisLevel.AddObject(_deadObject);
+                _hisLevel.AddObject(_aliveObject);
                 _onLevel = true;
+                _aliveObject.behaviourmodel.Disable();
             }
 
             if (_controllerAlive == null)
                 return;
 
-            if (_controllerDead == null)
-                return;
-
-            _controllerDead.CompyPoseFromAnother(_controllerAlive);
-            _controllerDead.MakeUnconditionalTransition("dead01\0", true);
-
-            _currentObject = _deadObject;
+         
+            _controllerAlive.MakeUnconditionalTransition("dead01\0", true);
         }
 
         public void Fire()
@@ -94,7 +83,7 @@ namespace PhysX_test2.TheGame.Objects
             _aliveObject.SetPosition(_hisLevel.GetSpawnPlace());
             if (_onLevel)
             {
-                _hisLevel._scene.SwapObjects(_deadObject, _aliveObject, false);
+                _aliveObject.behaviourmodel.Enable();
             }
             else
             {
@@ -106,7 +95,6 @@ namespace PhysX_test2.TheGame.Objects
                 return;
 
             _controllerAlive.MakeUnconditionalTransition("stay1\0", false);
-            _currentObject = _aliveObject;
         }
 
         public static void edgeDeadToAlive(GameCharacter __object)

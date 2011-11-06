@@ -39,7 +39,7 @@ namespace PhysX_test2.TheGame.ObjectLogic
             else
                 _hisObject.SetDead();
 
-            _hisHead.LocateToLevel(_hisObject._currentObject);
+            _hisHead.LocateToLevel(_hisObject._aliveObject);
             _isAlive = __liveState;
         }
     }
