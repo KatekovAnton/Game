@@ -18,11 +18,14 @@ namespace PhysX_test2.TheGame
     {
         private List<HotKey> _hotkeys;
 
-        public const string _playerKey = "player";
-        public const string _playerweaponKet = "playerWeapon";
+        public const string _playerCharacterKey = "player";
+        public const string _playerWeaponKey = "playerWeapon";
 
         public Dictionary<string, LogicCharacter> _characters;
         public Dictionary<string, LogicWeapon> _weapons;
+        
+        LogicCharacter _anotherChar;
+        LogicWeapon _anotherWeapon;
 
         public Dictionary<string, GameObject> _objects;
 
@@ -50,7 +53,7 @@ namespace PhysX_test2.TheGame
 
         public void SwichGunState()
         {
-            _characters[_playerKey].SwitchGun();
+            _characters[_playerCharacterKey].SwitchGun();
         }
 
         public List<HotKey> hotkeys()
@@ -77,18 +80,29 @@ namespace PhysX_test2.TheGame
 
 
             LogicCharacter me = new LogicCharacter(myCharacter, myHead,true);
-            _characters.Add(_playerKey, me);
+            _characters.Add(_playerCharacterKey, me);
             me.SetAlive(true);
 
 
             GameWeapon myWeapon = new GameWeapon("SCGunHandLO\0", "SCGunFloorLO\0", "SСGunAddon\0", myCharacter._aliveObject, _level);
             LogicWeapon myGun = new LogicWeapon(myWeapon);
-            _weapons.Add(_playerweaponKet, myGun);
+            _weapons.Add(_playerWeaponKey, myGun);
 
 
             me.SetGun(myGun);
             
             _engine.CreateCharCameraController(me._hisObject._aliveObject);
+
+
+            GameCharacter myCharacter1 = new GameCharacter("SCMarineAlive\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), _level);
+            GameSimpleObject myHead1 = new GameSimpleObject("Head01\0", myCharacter1._aliveObject, Engine.Logic.PivotObjectDependType.Head, _level, false, false);
+            _anotherChar = new LogicCharacter(myCharacter1, myHead1, false);
+            _anotherChar.SetAlive(true);
+            GameWeapon myWeapon1 = new GameWeapon("SCGunHandLO\0", "SCGunFloorLO\0", "SСGunAddon\0", myCharacter1._aliveObject, _level);
+            _anotherWeapon = new LogicWeapon(myWeapon1);
+            _anotherChar.SetGun(_anotherWeapon);
+
+
         }
 
     }
