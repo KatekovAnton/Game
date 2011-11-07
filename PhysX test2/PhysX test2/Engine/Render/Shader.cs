@@ -35,7 +35,7 @@ namespace PhysX_test2.Engine.Render
         //ОТДЕЛЬНЫЕ ТЕХНИКИ НА ТРАВУ И ПУЛИ СО ВЗРЫВАМИ
 
 
-       /* protected class LoggerTrick : ContentBuildLogger
+       protected class LoggerTrick : ContentBuildLogger
         {
             public override void LogMessage(string message, params object[] messageArgs)
             {
@@ -84,7 +84,7 @@ namespace PhysX_test2.Engine.Render
             {
                 throw new NotImplementedException();
             }
-        }*/
+        }
 
         protected Shader(GraphicsDevice device, byte[] effecCode)
             : base(device, effecCode)
@@ -92,7 +92,7 @@ namespace PhysX_test2.Engine.Render
             
         }
 
-        public static Effect Load(Microsoft.Xna.Framework.Content.ContentManager content)
+        /*public static Effect Load(Microsoft.Xna.Framework.Content.ContentManager content)
         {
             Effect e = content.Load<Effect>("Shaders\\ObjectRender");
             if (MyGame.Instance.GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)
@@ -107,8 +107,8 @@ namespace PhysX_test2.Engine.Render
                 CreateAnimShadowMap = "CreateAnimShadowMapR";
             }
             return e;
-        }
-        /*
+        }*/
+        
         public static Effect FromStream(Stream stream, GraphicsDevice device)
         {
             var content = new EffectContent();
@@ -117,14 +117,24 @@ namespace PhysX_test2.Engine.Render
             byte[] ec = (new EffectProcessor()).Process(content, new ContextTrick()).GetEffectCode();
 
 
-            BinaryWriter bw = new BinaryWriter(new FileStream("Effect.shader", FileMode.Create));
+          /*  BinaryWriter bw = new BinaryWriter(new FileStream("Content\\Shaders\\ObjectRender.fx", FileMode.Create));
             bw.Write(ec);
             bw.Flush();
-            bw.Close();
+            bw.Close();*/
+            if (MyGame.Instance.GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)
+            {
+                AnimRenderSM = "AnimRenderSMR";
+                NotAnimRenderSM = "NotAnimRenderSMR";
 
+                AnimRenderSMSmooth = AnimRenderSM;
+                NotAnimRenderSMSmooth = NotAnimRenderSM;
+
+                CreateStaticShadowMap = "CreateStaticShadowMapR";
+                CreateAnimShadowMap = "CreateAnimShadowMapR";
+            }
 
             return new Shader(device, ec);
-        }*/
+        }
     }
 
     

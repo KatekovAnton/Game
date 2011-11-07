@@ -1,4 +1,4 @@
-/* hello */
+О╩©/* hello */
 uniform extern float4x4 World;
 
 uniform extern float4x4 View;
@@ -28,7 +28,7 @@ inline float Float4ToFloat( float4 rgba )
     return dot( rgba, decode_mask );
 }
 
-//ремх
+//п╒п∙п²п≤
 float4x4 LightViewProj;
 float3 LightDirection = float3(-1, -1, -1);
 float4 AmbientColor = float4(0.15, 0.15, 0.15, 0);
@@ -292,7 +292,7 @@ float4 SolidTextureSMR(PS_INPUT f) : COLOR0
 	}
 	lambertfactor*=1.1;
 	float3 color = tex2D(TextureSampler, f.TextureCoordinate).rgb* lambertfactor;
-	return 1;
+	return float4(color,1);
 }
 
 
@@ -345,7 +345,7 @@ float4 SolidTextureSMSmooth(PS_INPUT f) : COLOR0
 
 	lambertfactor*=1.1;
 
-	float3 color = tex2D(TextureSampler, f.TextureCoordinate).rgb* lambertfactor+9*dot(SunDirection,f.Normal);
+	float3 color = tex2D(TextureSampler, f.TextureCoordinate).rgb* lambertfactor;
 	return float4(color,1);
 }
 //=================================================================================
@@ -372,7 +372,7 @@ float DotProduct(float3 lightPos, float3 pos3D, float3 normal)
 
 
 
-//пемдеп аег ьюднблюош
+//п═п∙п²п■п∙п═ п▒п∙п≈ п╗п░п■п·п▓п°п░п÷п╚
 technique AnimRenderNoSM
 {
   pass P0
@@ -392,7 +392,7 @@ technique NotAnimRenderNoSM
 }
 
 
-//пемдеп ян яцкюфеммни ьюднблюони
+//п═п∙п²п■п∙п═ п║п· п║п⌠п⌡п░п√п∙п²п²п·п≥ п╗п░п■п·п▓п°п░п÷п·п≥
 technique AnimRenderSMSmooth
 {
   pass P0
@@ -410,7 +410,7 @@ technique NotAnimRenderSMSmooth
     PixelShader = compile ps_2_0 SolidTextureSMSmooth();
   }
 }
-//пемдеп я меяцкюфеммни ьюднблюони
+//п═п∙п²п■п∙п═ п║ п²п∙п║п⌠п⌡п░п√п∙п²п²п·п≥ п╗п░п■п·п▓п°п░п÷п·п≥
 //HiDef
 technique AnimRenderSM
 {
@@ -429,7 +429,7 @@ technique NotAnimRenderSM
     PixelShader = compile ps_2_0 SolidTextureSM();
   }
 }
-//пемдеп я меяцкюфеммни ьюднблюони
+//п═п∙п²п■п∙п═ п║ п²п∙п║п⌠п⌡п░п√п∙п²п²п·п≥ п╗п░п■п·п▓п°п░п÷п·п≥
 //Reach
 technique AnimRenderSMR
 {
@@ -449,7 +449,7 @@ technique NotAnimRenderSMR
   }
 }
 
-////янгдюмхе ьюднблюош
+////п║п·п≈п■п░п²п≤п∙ п╗п░п■п·п▓п°п░п÷п╚
 //HiDef
 technique CreateStaticShadowMap
 {
@@ -484,4 +484,4 @@ technique CreateAnimShadowMapR
         PixelShader = compile ps_2_0 CreateShadowMap_PixelShaderR();
     }
 }
-//нрдекэмше реумхйх мю рпюбс х оскх ян бгпшбюлх
+//п·п╒п■п∙п⌡п╛п²п╚п∙ п╒п∙п╔п²п≤п п≤ п²п░ п╒п═п░п▓пё п≤ п÷пёп⌡п≤ п║п· п▓п≈п═п╚п▓п░п°п≤

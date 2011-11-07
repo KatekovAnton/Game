@@ -117,11 +117,11 @@ namespace PhysX_test2.Engine
             animationManager = AnimationManager.AnimationManager.Manager;
 
             //шойдер
-            /*using (var stream = new FileStream(@"Content\Shaders\ObjectRender.fx", FileMode.Open))
+            using (var stream = new FileStream(@"Content\Shaders\ObjectRender.fx", FileMode.Open))
             {
-                PFromStream(stream, Device);
-            }*/
-            PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect = Shader.Load(MyGame.Instance.Content);
+                PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect = Shader.FromStream(stream, MyGame.Device);
+            }
+            //PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect = Shader.Load(MyGame.Instance.Content);
 
             //рендерщик
             GraphicPipeleine = new RenderPipeline(MyGame.DeviceManager.GraphicsDevice, Camera);
