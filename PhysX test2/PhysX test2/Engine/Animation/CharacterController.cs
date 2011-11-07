@@ -83,9 +83,8 @@ namespace PhysX_test2.Engine.Animation
                 AnimationNode newnode = _currentNodes[i].Advance(_event);
                 _currentNodes[i] = newnode;
 
-                if (newnode.isOneTime)
+                if (newnode.isOneTime && !lastnode.isOneTime)
                     _forDropNodes[i] = lastnode;
-                
 
                 if (zerodrames)
                 {
@@ -99,6 +98,8 @@ namespace PhysX_test2.Engine.Animation
                 }
 
             }
+
+            CheckNodes();
         }
 
         public void CompyPoseFromAnother(CharacterController __anotherController)
@@ -136,8 +137,8 @@ namespace PhysX_test2.Engine.Animation
                     _currentAnimTime[i] = 0;
                     if (node == _currentNodes[i])
                         continue;
-                    
-                    if (node.isOneTime)
+
+                    if (node.isOneTime && !_currentNodes[i].isOneTime)
                         _forDropNodes[i] = _currentNodes[i];
                     _currentNodes[i] = node;
                     while (_currentAnimTime[i] > _currentNodes[i].animTime)
@@ -145,10 +146,28 @@ namespace PhysX_test2.Engine.Animation
                 }
             }
 
+            CheckNodes();
+
             if (__smoothly)
                 return;
 
+        }
 
+        public void CheckNodes()
+        {
+            for (int i = 0; i < _currentNodes.Length; i++)
+            {
+                if (_currentNodes[i].isOneTime && _forDropNodes[i] == null)
+                {
+                    int a = 0;
+                    a++;
+                }
+                if (_currentNodes[i].isOneTime && _forDropNodes[i].isOneTime)
+                {
+                    int a = 0;
+                    a++;
+                }
+            }
         }
 
         /// <summary>
@@ -167,6 +186,11 @@ namespace PhysX_test2.Engine.Animation
                 {
                     if (_currentNodes[i].isOneTime)
                     {
+                        if (_forDropNodes[i] == null)
+                        {
+                            int a = 0;
+                            a++;
+                        }
                         //go to previous animnode
                         _currentNodes[i] = _forDropNodes[i];
                         _forDropNodes[i] = null;
