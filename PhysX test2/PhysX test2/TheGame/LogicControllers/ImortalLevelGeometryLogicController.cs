@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Xna.Framework;
+
 namespace PhysX_test2.TheGame.LogicControllers
 {
     public class ImortalLevelGeometryLogicController:BaseLogicController
@@ -19,7 +21,7 @@ namespace PhysX_test2.TheGame.LogicControllers
             
         }
 
-        public override void Update(float __elapsedTime)
+        public override void Update(GameTime __gameTime)
         {
             
         }

@@ -11,5 +11,10 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
         public float _speed;
 
         public float _carryingMass;
+        public CharacterParameters(int __dbID, string __displayName)
+            : base(__dbID, __displayName)
+        {
+
+        }
     }
 }

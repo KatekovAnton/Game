@@ -5,6 +5,8 @@ using System.Text;
 
 using PhysX_test2.TheGame.Objects;
 
+using Microsoft.Xna.Framework;
+
 namespace PhysX_test2.TheGame.LogicControllers
 {
     public class CharacterLogicController:BaseLogicController 
@@ -53,6 +55,7 @@ namespace PhysX_test2.TheGame.LogicControllers
             __newWeapon.SetState(GameWeaponState.None);
 
             _hisWeapon = __newWeapon;
+       
             SwitchGun();
         }
 
@@ -78,9 +81,13 @@ namespace PhysX_test2.TheGame.LogicControllers
             _isAlive = __liveState;
         }
 
-        public override void Update(float __elapsedTime)
+        public override void Update(GameTime __gameTime)
         {
-
+            if (MouseManager.Manager.lmbState == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            {
+                if (_hisWeapon.BeginFire(__gameTime))
+                    _hisObject.Fire();
+            }
         }
 
         public override void TakeHit(Parameters.BulletParameters __bulletParameters)

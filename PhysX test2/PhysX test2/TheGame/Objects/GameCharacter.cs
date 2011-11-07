@@ -71,7 +71,9 @@ namespace PhysX_test2.TheGame.Objects
             if (!_isAlive)
                 return;
 
-            _controllerAlive.ReceiveEvent("fire01\0", true);
+            
+
+            _controllerAlive.MakeUnconditionalTransition("fire01\0", false);
         }
 
         public void SetAlive()

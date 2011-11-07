@@ -14,6 +14,6 @@ namespace PhysX_test2.TheGame.LogicControllers
         public GameTime _createdTime;
         public abstract Parameters.InteractiveObjectParameters GetParameters();
         public abstract void TakeHit(Parameters.BulletParameters __bulletParameters);
-        public abstract void Update(float __elapsedTime);
+        public abstract void Update(GameTime __gameTime);
     }
 }

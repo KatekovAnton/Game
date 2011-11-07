@@ -29,6 +29,7 @@ namespace PhysX_test2.TheGame
         WeaponLogicController _anotherWeapon;
 
         public Dictionary<string, GameObject> _objects;
+        public MyContainer<BaseLogicController> _allLogicObjects;
 
         public GameLevel _level;
         public GameEngine _engine;
@@ -40,11 +41,13 @@ namespace PhysX_test2.TheGame
 
             _characters = new Dictionary<string, CharacterLogicController>();
             _weapons = new Dictionary<string, WeaponLogicController>();
-
+            _allLogicObjects = new MyContainer<BaseLogicController>();
             _hotkeys = new List<HotKey>();
             _hotkeys.Add(new HotKey(new Keys[] { Keys.I }, SwichGunState));
 
             KeyboardManager.Manager.AddKeyboardUser(this);
+
+            
         }
 
         public bool IsKeyboardCaptured()
@@ -78,8 +81,6 @@ namespace PhysX_test2.TheGame
             GameCharacter myCharacter = new GameCharacter("SCMarineAlive\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), _level);
             GameSimpleObject myHead = new GameSimpleObject("Head01\0", myCharacter._aliveObject, Engine.Logic.PivotObjectDependType.Head, _level, false, false);
 
-
-
             CharacterLogicController me = new CharacterLogicController(myCharacter, myHead,true);
             _characters.Add(_playerCharacterKey, me);
             me.SetAlive(true);
@@ -88,12 +89,12 @@ namespace PhysX_test2.TheGame
             GameWeapon myWeapon = new GameWeapon("SCGunHandLO\0", "SCGunFloorLO\0", "SСGunAddon\0", myCharacter._aliveObject, _level);
             WeaponLogicController myGun = new WeaponLogicController(myWeapon);
             _weapons.Add(_playerWeaponKey, myGun);
-
-
             me.SetGun(myGun);
             
             _engine.CreateCharCameraController(me._hisObject._aliveObject);
 
+            _allLogicObjects.Add(me);
+            _allLogicObjects.Add(myGun);
 
             GameCharacter myCharacter1 = new GameCharacter("SCMarineAlive\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), _level);
             GameSimpleObject myHead1 = new GameSimpleObject("Head01\0", myCharacter1._aliveObject, Engine.Logic.PivotObjectDependType.Head, _level, false, false);
@@ -103,11 +104,22 @@ namespace PhysX_test2.TheGame
             _anotherWeapon = new WeaponLogicController(myWeapon1);
             _anotherChar.SetGun(_anotherWeapon);
 
+            LogicControllers.Parameters.WeaponParameters weaponStaticParams = new LogicControllers.Parameters.WeaponParameters(0, "Gauss rifle", 10, null);
+            weaponStaticParams._fireRestartTime = 100.0f;
 
+            LogicControllers.Parameters.WeaponParameters weaponParams = new LogicControllers.Parameters.WeaponParameters(weaponStaticParams, null);
+            weaponParams._fireRestartTime = 100.0f;
+
+            LogicControllers.Parameters.WeaponParameters.allItems.Add(weaponStaticParams._displayName, weaponStaticParams);
+            myGun._baseParameters = weaponStaticParams;
+            myGun._instanceParameters = weaponParams;
         }
 
-        public void Update(GameTime __gametime)
-        { }
+        public void Update(GameTime __gameTime)
+        {
+            foreach (BaseLogicController controller in _allLogicObjects)
+                controller.Update(__gameTime);
+        }
 
     }
 }

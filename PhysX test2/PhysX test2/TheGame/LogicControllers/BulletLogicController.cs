@@ -15,7 +15,7 @@ namespace PhysX_test2.TheGame.LogicControllers
         public Vector3 _moveVector;
         public float _moveSpeed;
 
-        public override void Update(float __elapsedTime)
+        public override void Update(GameTime __gameTime)
         {
             //throw new NotImplementedException();
         }

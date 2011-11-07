@@ -16,5 +16,9 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
 
         public float _resistancePenetrating;
         public float _resistanceChemical;
+
+        public MotralParameters(int __dbID, string __displayName)
+            : base(__dbID, __displayName)
+        { }
     }
 }

@@ -23,7 +23,7 @@ namespace PhysX_test2.Engine.Animation
         /// для одноразовых и переходных анимаций - для одноразовых тут пердыдущая,
         /// для переходных (интрполяция между анимациями) - следующая
         /// </summary>
-        private AnimationNode[] _lastNodes;
+        private AnimationNode[] _forDropNodes;
 
         /// <summary>
         /// итоговые матрицы для шейдера
@@ -45,7 +45,7 @@ namespace PhysX_test2.Engine.Animation
 
             _currentNodes = new AnimationNode[characterBase.parts.Length];
             _currentAnimTime = new float[characterBase.parts.Length];
-            _lastNodes = new AnimationNode[characterBase.parts.Length];
+            _forDropNodes = new AnimationNode[characterBase.parts.Length];
             _currentFrames = new Matrix[_baseCharacter.skeleton.baseskelet.bones.Length];
 
             for (int i = 0; i < _currentFrames.Length; i++)
@@ -84,9 +84,8 @@ namespace PhysX_test2.Engine.Animation
                 _currentNodes[i] = newnode;
 
                 if (newnode.isOneTime)
-                {
-                    _lastNodes[i] = lastnode;
-                }
+                    _forDropNodes[i] = lastnode;
+                
 
                 if (zerodrames)
                 {
@@ -134,6 +133,12 @@ namespace PhysX_test2.Engine.Animation
                 AnimationNode node = _baseCharacter.parts[i].NodeWithName(__nodeName);
                 if (node != null)
                 {
+                    _currentAnimTime[i] = 0;
+                    if (node == _currentNodes[i])
+                        continue;
+                    
+                    if (node.isOneTime)
+                        _forDropNodes[i] = _currentNodes[i];
                     _currentNodes[i] = node;
                     while (_currentAnimTime[i] > _currentNodes[i].animTime)
                         _currentAnimTime[i] -= _currentNodes[i].animTime;
@@ -163,8 +168,8 @@ namespace PhysX_test2.Engine.Animation
                     if (_currentNodes[i].isOneTime)
                     {
                         //go to previous animnode
-                        _currentNodes[i] = _lastNodes[i];
-                        _lastNodes[i] = null;
+                        _currentNodes[i] = _forDropNodes[i];
+                        _forDropNodes[i] = null;
                     }
                     else
                     {

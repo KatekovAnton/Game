@@ -14,12 +14,13 @@ namespace PhysX_test2.TheGame.LogicControllers
         public Parameters.WeaponParameters _instanceParameters;
         public GameWeapon _weaponObject;
 
-        public GameTime _lastfiretime;
+        public TimeSpan _lastfiretime;
+        public bool _isFiring;
 
         public WeaponLogicController(GameWeapon __weaponObject)
         {
             _weaponObject = __weaponObject;
-            _lastfiretime = new GameTime();
+            _isFiring = false;
         }
 
         public void SetState(GameWeaponState __newState, CharacterLogicController __owner = null)
@@ -40,9 +41,25 @@ namespace PhysX_test2.TheGame.LogicControllers
                     break;
                 default: break;
             }
+            _isFiring = false;
         }
 
-        public override void  Update(float __elapsedTime)
+        private bool CanFire(GameTime __gametime)
+        {
+            return (__gametime.TotalGameTime.TotalMilliseconds - _lastfiretime.TotalMilliseconds) > _instanceParameters._fireRestartTime;
+        }
+
+        public bool BeginFire(GameTime __gameTime)
+        {
+            if (!CanFire(__gameTime))
+                return false;
+
+            _lastfiretime = __gameTime.TotalGameTime;
+
+            return true;
+        }
+
+        public override void  Update(GameTime __gametime)
         {
  	       // throw new NotImplementedException();
         }
@@ -60,3 +77,4 @@ namespace PhysX_test2.TheGame.LogicControllers
 
     }
 }
+ 
