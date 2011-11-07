@@ -22,6 +22,26 @@ namespace PhysX_test2.TheGame.LogicControllers
             _lastfiretime = new GameTime();
         }
 
+        public void SetState(GameWeaponState __newState, CharacterLogicController __owner = null)
+        {
+            if (__newState == _weaponObject._state)
+                return;
+
+            switch (__newState)
+            {
+                case GameWeaponState.None:
+                    _weaponObject.RemoveFromScene();
+                    break;
+                case GameWeaponState.InHand:
+                    _weaponObject.TakeInHand(__owner._hisObject);
+                    break;
+                case GameWeaponState.OnFloor:
+                    _weaponObject.DropOnFloor();
+                    break;
+                default: break;
+            }
+        }
+
         public override void  Update(float __elapsedTime)
         {
  	       // throw new NotImplementedException();

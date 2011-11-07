@@ -42,16 +42,15 @@ namespace PhysX_test2.TheGame.LogicControllers
                     case GameWeaponState.InHand:
                     case GameWeaponState.OnFloor:
                         {
-                            _hisWeapon._weaponObject.RemoveFromScene();
-                        }break;
+                            _hisWeapon.SetState(GameWeaponState.None);
+                        } break;
                     default: break;
                 }
 
                 _hisWeapon = null;
             }
 
-            if(__newWeapon._weaponObject._state!= GameWeaponState.None)
-                __newWeapon._weaponObject.RemoveFromScene();
+            __newWeapon.SetState(GameWeaponState.None);
 
             _hisWeapon = __newWeapon;
             SwitchGun();
@@ -60,11 +59,9 @@ namespace PhysX_test2.TheGame.LogicControllers
         public void SwitchGun()
         {
             if (_hisWeapon._weaponObject._state == GameWeaponState.InHand)
-            {
-                _hisWeapon._weaponObject.DropOnFloor();
-            }
+                _hisWeapon.SetState(GameWeaponState.OnFloor);
             else
-                _hisWeapon._weaponObject.TakeInHand(_hisObject);
+                _hisWeapon.SetState(GameWeaponState.InHand, this);
         }
 
         public void SetAlive(bool __liveState)
