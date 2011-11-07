@@ -7,6 +7,8 @@ using PhysX_test2.TheGame.Objects;
 
 using Microsoft.Xna.Framework;
 
+using PhysX_test2.TheGame.InputManagers;
+
 namespace PhysX_test2.TheGame.LogicControllers
 {
     public class CharacterLogicController:BaseLogicController 
@@ -22,6 +24,9 @@ namespace PhysX_test2.TheGame.LogicControllers
         public GameSimpleObject _hisHead;
 
         public WeaponLogicController _hisWeapon;
+
+        public InputProviderSuperClass _hisInput;
+        public CharacterMoveState _moveState;
 
         public CharacterLogicController(GameCharacter __hisObject, GameSimpleObject __hisHead, bool __isMe = false)
         {
@@ -83,10 +88,40 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public override void Update(GameTime __gameTime)
         {
+            CalculateInput();
+
             if (MouseManager.Manager.lmbState == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
                 if (_hisWeapon.BeginFire(__gameTime))
                     _hisObject.Fire();
+            }
+        }
+
+        public void CalculateInput()
+        {
+            CharacterMoveState oldstate = _hisInput._newInputState;
+            _hisInput.Update(_hisObject._aliveObject.behaviourmodel.CurrentPosition.Translation);
+            
+            _hisObject.Rotate(_hisInput._angle);
+            _hisObject._aliveObject.Move(_hisInput._moveVector);
+            if (oldstate != _hisInput._newInputState)
+            {
+                Engine.Render.AnimRenderObject ro = _hisObject._aliveObject.renderaspect as Engine.Render.AnimRenderObject;
+                ro.ReceiveEvent(GetEventName(_hisInput._newInputState), oldstate == CharacterMoveState.Stay);
+            }
+        }
+
+        private string GetEventName(CharacterMoveState newstate)
+        {
+            switch (newstate)
+            {
+                case CharacterMoveState.Stay:
+                    return "stopMove\0";
+                case CharacterMoveState.WalkBackward:
+                    return "beginWalkBack\0";
+                case CharacterMoveState.WalkForward:
+                    return "beginWalk\0";
+                default: return "stopMove\0";
             }
         }
 

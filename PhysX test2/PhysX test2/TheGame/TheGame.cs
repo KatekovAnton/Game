@@ -84,7 +84,7 @@ namespace PhysX_test2.TheGame
             CharacterLogicController me = new CharacterLogicController(myCharacter, myHead,true);
             _characters.Add(_playerCharacterKey, me);
             me.SetAlive(true);
-
+            me._hisInput = new InputManagers.InputProviderPlayer();
 
             GameWeapon myWeapon = new GameWeapon("SCGunHandLO\0", "SCGunFloorLO\0", "SСGunAddon\0", myCharacter._aliveObject, _level);
             WeaponLogicController myGun = new WeaponLogicController(myWeapon);

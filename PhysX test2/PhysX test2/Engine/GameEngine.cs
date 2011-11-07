@@ -59,7 +59,6 @@ namespace PhysX_test2.Engine
 
         //controllers for camera and character (objects between user and game)
         public CameraControllers.CameraControllerPerson _cameraController;
-        public InputControllers.InputControllerPerson _charcterController;
 
 
         //animation
@@ -197,12 +196,7 @@ namespace PhysX_test2.Engine
                 loNew.deltaMatrix = __deltaMatrix.Value;
             loNew._needMouseCast = __needMouseCast;
 
-          /*  //хз как сделоать поудобнее TODO
-            if (loNew.renderaspect.isanimated)
-            {
-                Render.AnimRenderObject ro = loNew.renderaspect as Render.AnimRenderObject;
-                AnimationManager.AnimationManager.Manager.AddAnimationUserEnd(ro.Update, ro.character);
-            }*/
+         
             if (needSetPosition)
                 loNew.SetGlobalPose(position);
             loNew.Update();
@@ -253,10 +247,6 @@ namespace PhysX_test2.Engine
             //это стоит делать елси объекты больше не будут подгружаться
             //тоесть если игра по уровням скажем
            // packs.Unload();
-
-            //подключаем камеру и управление от клавы/мыши к челобарику
-           // CreateCharCameraController();
-
         }
 
         private void AddObjectToScene(PivotObject __object, PivotObject __parentObject = null)
@@ -298,7 +288,6 @@ namespace PhysX_test2.Engine
         public void CreateCharCameraController(LevelObject __targetCharacter)
         {
             _cameraController = new CameraControllerPerson(Camera, __targetCharacter, new Vector3(-10, 10, 0));
-            _charcterController = new InputControllers.InputControllerPerson(__targetCharacter);
         }
 
 
@@ -340,10 +329,6 @@ namespace PhysX_test2.Engine
             //update world objects
             Scene.FlushStream();
             Scene.FetchResults(SimulationStatus.RigidBodyFinished, true);
-
-
-            //calculatin info from controllers
-            _charcterController.Update(LevelObjectCursorSphere.transform.Translation, _cameraController._yAngle);
 
 
             //End updating world objects

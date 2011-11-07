@@ -34,5 +34,10 @@ namespace PhysX_test2.TheGame.Objects
             _bulletRayCasted = __bulletRC;
             _mouseRayCasted = __mouseRC;
         }
+
+        public virtual void Rotate(float __angle)
+        {
+ 
+        }
     }
 }

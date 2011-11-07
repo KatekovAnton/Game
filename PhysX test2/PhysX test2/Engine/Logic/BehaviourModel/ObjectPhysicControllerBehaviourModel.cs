@@ -45,7 +45,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         }
 
 
-        public void Rotate( float angle) 
+        public override void Rotate( float angle) 
         {
             _angle += angle;
             _actor.GlobalOrientation *= Matrix.CreateRotationY(angle).toPhysicM();

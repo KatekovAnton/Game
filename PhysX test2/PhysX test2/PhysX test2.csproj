@@ -157,8 +157,6 @@
     <Compile Include="Engine\Animation\Skeleton.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerPerson.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerSuperClass.cs" />
-    <Compile Include="Engine\InputControllers\InputControllerPerson.cs" />
-    <Compile Include="Engine\InputControllers\InputControllerSuperClass.cs" />
     <Compile Include="Engine\ContentLoader\ContentLoader.cs" />
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
     <Compile Include="TheGame\InputManagers\InputProviderAI.cs" />
@@ -216,6 +214,7 @@
     <Compile Include="BaseExtensions\Graph\GraphNode.cs" />
     <Compile Include="TheGame\Level\GameLevel.cs" />
     <Compile Include="TheGame\LogicControllers\BulletLogicController.cs" />
+    <Compile Include="TheGame\LogicControllers\CameraController.cs" />
     <Compile Include="TheGame\LogicControllers\ControlActions\ControlAction.cs" />
     <Compile Include="TheGame\LogicControllers\BaseLogicController.cs" />
     <Compile Include="TheGame\LogicControllers\CharacterLogicController.cs" />

@@ -110,6 +110,11 @@ namespace PhysX_test2.TheGame.Objects
             //method
             __object.SetDead();
         }
+
+        public override void Rotate(float __angle)
+        {
+            _aliveObject.behaviourmodel.Rotate(__angle);
+        }
     }
 
 }

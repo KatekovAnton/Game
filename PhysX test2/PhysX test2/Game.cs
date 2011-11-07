@@ -250,7 +250,7 @@ namespace PhysX_test2
             _spriteBatch.DrawString(_font1, "Visible objects count: " + _engine.visibleobjectscount.ToString(), new Vector2(0, 15), Color.White);
             _spriteBatch.DrawString(_font1, "Recalulcalated objects count: " + _engine.gameScene._sceneGraph.recalulcalated().ToString(), new Vector2(0, 30), Color.White);
 
-            _spriteBatch.DrawString(_font1, "Character angle: " + _engine._charcterController.movestate.ToString() , new Vector2(0, 45), Color.White);
+            _spriteBatch.DrawString(_font1, "Character angle: " /*+ _engine._charcterController.movestate.ToString()*/ , new Vector2(0, 45), Color.White);
 
             _spriteBatch.DrawString(_font1, _helpHint, new Vector2(0, 60), Color.Black);
 

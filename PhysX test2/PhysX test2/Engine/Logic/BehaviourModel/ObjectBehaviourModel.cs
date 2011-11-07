@@ -47,6 +47,9 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         public virtual void Enable()
         { }
 
+        public virtual void Rotate(float __angle)
+        { }
+
         public virtual void SetPosition(Vector3 newPosition)
         {
             SetGlobalPose(Matrix.CreateTranslation(newPosition), null);
