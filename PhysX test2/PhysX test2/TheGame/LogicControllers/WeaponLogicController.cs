@@ -18,9 +18,10 @@ namespace PhysX_test2.TheGame.LogicControllers
         public TimeSpan _lastfiretime;
         public bool _isFiring;
 
-        public WeaponLogicController(GameWeapon __weaponObject)
+        public WeaponLogicController(GameWeapon __weaponObject, GameSimpleObject __weaponFire)
         {
             _weaponObject = __weaponObject;
+            _weaponFire = __weaponFire;
             _isFiring = false;
         }
 
@@ -28,7 +29,7 @@ namespace PhysX_test2.TheGame.LogicControllers
         {
             if (__newState == _weaponObject._state)
                 return;
-
+            _weaponFire.RemoveFromLevel();
             switch (__newState)
             {
                 case GameWeaponState.None:
@@ -42,12 +43,13 @@ namespace PhysX_test2.TheGame.LogicControllers
                     break;
                 default: break;
             }
+
             _isFiring = false;
         }
 
         private bool CanFire(GameTime __gametime)
         {
-            return (__gametime.TotalGameTime.TotalMilliseconds - _lastfiretime.TotalMilliseconds) > _instanceParameters._fireRestartTime;
+            return _weaponObject._state == GameWeaponState.InHand && (__gametime.TotalGameTime.TotalMilliseconds - _lastfiretime.TotalMilliseconds) > _instanceParameters._fireRestartTime;
         }
 
         public bool BeginFire(GameTime __gameTime)
@@ -56,12 +58,14 @@ namespace PhysX_test2.TheGame.LogicControllers
                 return false;
 
             _lastfiretime = __gameTime.TotalGameTime;
-
+            _weaponFire.LocateToLevel(_weaponObject._inHandObject);
             return true;
         }
 
         public override void  Update(GameTime __gametime)
         {
+            if (_weaponFire._onLevel && (__gametime.TotalGameTime.TotalMilliseconds - _lastfiretime.TotalMilliseconds) > _instanceParameters._fireTime)
+                _weaponFire.RemoveFromLevel();
  	       // throw new NotImplementedException();
         }
 

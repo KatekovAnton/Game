@@ -63,8 +63,8 @@ namespace PhysX_test2.Engine.Render
             frustumForShadow = new BoundingFrustum(Matrix.Identity);
             debugRenderer = new DebugRender.DebugRenderer(Device, _visualizationEffect);
             debugRenderArray = new MyContainer<PivotObject>(10, 3);
-            EnableShadows= EnableGrass=SmoothShadows = true;
-           EnableDebugRender = false;
+            EnableShadows = EnableGrass = SmoothShadows = true;
+            EnableDebugRender = false;
             //EnableShadows = false;
             //SmoothShadows = false;
             if (EnableShadows)
@@ -94,12 +94,12 @@ namespace PhysX_test2.Engine.Render
             arrays.Add(Shader.NotAnimRenderNoSM);
             arrays.Add(Shader.AnimRenderSM);
             arrays.Add(Shader.NotAnimRenderSM);
-  
+
             arrays.Add(Shader.CreateStaticShadowMap);
             arrays.Add(Shader.CreateAnimShadowMap);
 
 
-            
+
             ArraysPerTehnique.Add(Shader.AnimRenderNoSM, new RenderArray(Shader.AnimRenderNoSM));
             ArraysPerTehnique.Add(Shader.NotAnimRenderNoSM, new RenderArray(Shader.NotAnimRenderNoSM));
 
@@ -113,11 +113,11 @@ namespace PhysX_test2.Engine.Render
                 arrays.Add(Shader.AnimRenderSMSmooth);
                 arrays.Add(Shader.NotAnimRenderSMSmooth);
             }
-            
+
             ArraysPerTehnique.Add(Shader.CreateStaticShadowMap, new RenderArray(Shader.CreateStaticShadowMap));
             ArraysPerTehnique.Add(Shader.CreateAnimShadowMap, new RenderArray(Shader.CreateAnimShadowMap));
         }
-        int minim=100;
+
         public void NewParameters(bool _EnableShadows, bool _SmoothShadows, bool _EnableGrass)
         {
 
@@ -179,8 +179,6 @@ namespace PhysX_test2.Engine.Render
         }
         public void AddObjectToShadow(MyContainer<PivotObject> AddedObjects)
         {
-            if (AddedObjects.Count < minim)
-                minim = AddedObjects.Count;
             foreach (PivotObject AddedObject in AddedObjects)
             {
                 RenderObject ro = AddedObject.HaveRenderAspect();

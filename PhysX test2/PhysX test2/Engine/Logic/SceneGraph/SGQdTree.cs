@@ -170,8 +170,6 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
 
         public void AddObject(PivotObject entity)
         {
-            //получаем лист, в котором находится объект
-
             SGNode leaf = GetLeaf(entity);
             _nodeStack.Clear();
             _nodeStack.Push(leaf);

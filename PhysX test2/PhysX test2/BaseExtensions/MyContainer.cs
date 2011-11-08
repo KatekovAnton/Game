@@ -200,7 +200,7 @@ namespace PhysX_test2
 
         private int FindRuleForSecondObject(T neededObject, out MyContainerRule rule)
         {
-            for (int i = 0; i < rules.Count; i++)// MyContainerRule rile in rules)
+            for (int i = 0; i < rules.Count; i++)
             {
                 if (rules[i].secondObject == neededObject)
                 {
@@ -220,6 +220,12 @@ namespace PhysX_test2
                 removed = false;
                 foreach (MyContainerRule rule in rules)
                     if (rule.firstObject == neededObject)
+                    {
+                        rules.Remove(rule);
+                        removed = true;
+                        break;
+                    }
+                    else if (rule.secondObject == neededObject)
                     {
                         rules.Remove(rule);
                         removed = true;

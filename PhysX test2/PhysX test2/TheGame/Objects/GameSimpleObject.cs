@@ -32,13 +32,15 @@ namespace PhysX_test2.TheGame.Objects
 
         public void LocateToLevel(LevelObject __parentObject)
         {
-            _hisLevel.AddObject(_object, __parentObject);
+            if(!_onLevel)
+                _hisLevel.AddObject(_object, __parentObject);
             _onLevel = true;
         }
 
         public void RemoveFromLevel()
         {
-            _hisLevel.RemoveObject(_object);
+            if(_onLevel)
+                _hisLevel.RemoveObject(_object);
             _onLevel = false;
         }
     }

@@ -95,6 +95,8 @@ namespace PhysX_test2.TheGame.LogicControllers
                 if (_hisWeapon.BeginFire(__gameTime))
                     _hisObject.Fire();
             }
+
+            
         }
 
         public void CalculateInput()
