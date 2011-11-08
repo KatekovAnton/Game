@@ -23,6 +23,9 @@ namespace PhysX_test2.TheGame.InputManagers
 
     public class InputProviderSuperClass
     {
+        public bool _tryAttackFirst;
+        public bool _tryAttackSecond;
+
         public CharacterMoveState _oldInputState;
         public CharacterMoveState _newInputState;
         public Vector3 _moveVector;

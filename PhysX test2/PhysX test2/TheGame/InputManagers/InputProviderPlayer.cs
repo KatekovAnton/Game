@@ -45,6 +45,7 @@ namespace PhysX_test2.TheGame.InputManagers
 
         public override void Update(Vector3 __position)
         {
+            _tryAttackFirst = MouseManager.Manager.lmbState == Microsoft.Xna.Framework.Input.ButtonState.Pressed;
             _target = MyGame.Instance._mousepoint;
             _angle = CreateAngleForCharacter(_target, __position);
             float yaang = MyGame.Instance._engine._cameraController._yAngle;
