@@ -218,7 +218,7 @@ namespace PhysX_test2.Engine
                 AddObjectToScene(LevelObjectBox);
             }
 
-           /* float delta = 4;
+            float delta = 4;
             int x = 5;
             int y = 5;
 
@@ -229,7 +229,7 @@ namespace PhysX_test2.Engine
                     lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(i * delta, 25, j * delta));
                     AddObjectToScene(lo);
                 }
-            */
+            
             ////test side
             {
                 LevelObjectTestSide = loadObject("TestSideWorldObject\0", null, true) as LevelObject;
