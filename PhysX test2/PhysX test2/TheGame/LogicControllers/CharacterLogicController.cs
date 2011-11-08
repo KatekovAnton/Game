@@ -90,7 +90,7 @@ namespace PhysX_test2.TheGame.LogicControllers
         {
             CalculateInput();
 
-            if (MouseManager.Manager.lmbState == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            if (_hisInput._tryAttackFirst)
             {
                 if (_hisWeapon.BeginFire(__gameTime))
                     _hisObject.Fire();
