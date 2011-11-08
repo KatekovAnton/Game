@@ -13,6 +13,7 @@ namespace PhysX_test2.TheGame.LogicControllers
         public Parameters.WeaponParameters _baseParameters;
         public Parameters.WeaponParameters _instanceParameters;
         public GameWeapon _weaponObject;
+        public GameSimpleObject _weaponFire;
 
         public TimeSpan _lastfiretime;
         public bool _isFiring;

@@ -13,7 +13,9 @@ namespace PhysX_test2.TheGame.LogicControllers
         public Parameters.BulletParameters _instanceParameters;
         public Vector3 _startPosition;
         public Vector3 _moveVector;
+        
         public float _moveSpeed;
+
 
         public override void Update(GameTime __gameTime)
         {

@@ -60,7 +60,6 @@ namespace PhysX_test2.Engine.ContentLoader
                             ObjectActorDescription.Shapes.Add(physicCM.CreatreConvexShape(scene.Core));
                         }
 
-
                         ObjectActorDescription.BodyDescription = new StillDesign.PhysX.BodyDescription(description.Mass);
                         Microsoft.Xna.Framework.Matrix MassCenterMatrix;
                         Microsoft.Xna.Framework.Matrix.CreateTranslation(ref description.CenterOfMass, out MassCenterMatrix);
@@ -68,12 +67,11 @@ namespace PhysX_test2.Engine.ContentLoader
                         ObjectActorDescription.Shapes[0].Material = characterMaterial;
                         ObjectActor = scene.CreateActor(ObjectActorDescription);
 
-
                         ObjectActor.RaiseBodyFlag(StillDesign.PhysX.BodyFlag.FrozenRotation);
-                        foreach (var c in ObjectActor.Shapes)
+                      /*  foreach (var c in ObjectActor.Shapes)
                         {
                             c.Group = 31;
-                        }
+                        }*/
                         behaviourmodel = new Logic.BehaviourModel.ObjectPhysicControllerBehaviourModel(ObjectActor);
                     } break;
                 case LevelObjectDescription.objectstaticbehaviourmodel:
@@ -131,7 +129,7 @@ namespace PhysX_test2.Engine.ContentLoader
                             ObjectActorDescription.BodyDescription.MassLocalPose = MassCenterMatrix.toPhysicM();
                         }
                         ObjectActor = scene.CreateActor(ObjectActorDescription);
-                        if (description.IsStatic)
+                       /* if (description.IsStatic)
                         {
                             foreach (var c in ObjectActor.Shapes)
                             {
@@ -144,7 +142,7 @@ namespace PhysX_test2.Engine.ContentLoader
                             {
                                 c.Group = 31;
                             }
-                        }
+                        }*/
                         behaviourmodel = new Logic.BehaviourModel.ObjectPhysicBehaviourModel(ObjectActor);
                         //CONTACT REPORT DISABLED TEMPORARY
                         //ObjectActor.ContactReportFlags = StillDesign.PhysX.ContactPairFlag.All;
@@ -170,7 +168,7 @@ namespace PhysX_test2.Engine.ContentLoader
         {
             PhysX_test2.Content.MaterialDescription mat = new MaterialDescription();
             mat = packs.GetObject(name , mat) as  MaterialDescription;
-            if (mat.Enginereadedobject.Count == 0)
+            if (mat._userCount == 0)
             {
                 TextureMaterial.Lod[] lods = new TextureMaterial.Lod[mat.lodMats.Length];
                 for (int i = 0; i < mat.lodMats.Length; i++)
@@ -184,21 +182,21 @@ namespace PhysX_test2.Engine.ContentLoader
 
 
 
-                        inage.Enginereadedobject.Add(inage.texture);
+                        inage.Retain(inage.texture);
                         mats[j].diffuseTexture = inage.texture;
                     }
                     lods[i] = new TextureMaterial.Lod(mats);
                     
                 }
                 TextureMaterial result = new TextureMaterial(lods);
-                mat.Enginereadedobject.Add(result);
+                mat.Retain(result);
 
                 return new TextureMaterial(lods);
             }
             else
             {
-                TextureMaterial result = mat.Enginereadedobject[0] as TextureMaterial;
-                mat.Enginereadedobject.Add(result);
+                TextureMaterial result = mat._engineSampleObject as TextureMaterial;
+                mat.Retain();
 
                 for (int i = 0; i < mat.lodMats.Length; i++)
                 {
@@ -206,11 +204,9 @@ namespace PhysX_test2.Engine.ContentLoader
                     {
                         Content.Texture inage = new Content.Texture();
                         inage = packs.GetObject(mat.lodMats[i].mats[j].DiffuseTextureName, inage) as Content.Texture;
-                        inage.Enginereadedobject.Add(inage.Enginereadedobject[0]);
+                        inage.Retain();
                     }
                 }
-
-
                 return result;
             }
         }
@@ -243,7 +239,7 @@ namespace PhysX_test2.Engine.ContentLoader
             characterContent = new Content.CharacterContent();
             characterContent = packs.GetObject(name, characterContent) as Content.CharacterContent;
             CharacterStatic characterResult = null;
-            if (characterContent.Enginereadedobject.Count == 0)
+            if (characterContent._userCount == 0)
             {
                 characterResult = new CharacterStatic();
                 characterResult.skeleton = new SkeletonExtended();
@@ -260,12 +256,12 @@ namespace PhysX_test2.Engine.ContentLoader
                     parts.Add(new CharacterPart(AnimationGraph.AnimationGraphFromStream(br)));
 
                 characterResult.parts = parts.ToArray();
-                characterContent.Enginereadedobject.Add(characterResult);
+                characterContent.Retain( characterResult);
             }
             else
             {
-                characterResult = characterContent.Enginereadedobject[0] as CharacterStatic;
-                characterContent.Enginereadedobject.Add(characterResult);
+                characterResult = characterContent._engineSampleObject as CharacterStatic;
+                characterContent.Retain();
             }
             CharacterController result = new CharacterController(characterResult, new string[] { "stay1\0", "stay1\0" });
             return result;
@@ -278,7 +274,7 @@ namespace PhysX_test2.Engine.ContentLoader
 
             rod = packs.GetObject(description.RODName, rod) as Content.RenderObjectDescription;
             description.ROD = rod;
-            if (rod.Enginereadedobject.Count == 0)
+            if (rod._userCount == 0)
             {
                 if (description.IsAnimated)
                 {
@@ -299,7 +295,7 @@ namespace PhysX_test2.Engine.ContentLoader
                         models[i] = new AnimRenderObject.Model(modelsubsets);
                     }
                     RenderObject result = new AnimRenderObject(character, models, rod.IsShadowCaster, rod.IsShadowReceiver);
-                    rod.Enginereadedobject.Add(result);
+                    rod.Retain(result);
                     return result;
                 }
                 else
@@ -318,7 +314,7 @@ namespace PhysX_test2.Engine.ContentLoader
                         models[i] = new UnAnimRenderObject.Model(modelsubsets);
                     }
                     RenderObject result = new UnAnimRenderObject(models, rod.IsShadowCaster, rod.IsShadowReceiver);
-                    rod.Enginereadedobject.Add(result);
+                    rod.Retain(result);
                     return result;
                 }
             }
@@ -327,22 +323,21 @@ namespace PhysX_test2.Engine.ContentLoader
                 RenderObject result;
                 if (description.IsAnimated)
                 {
-                    AnimRenderObject res = rod.Enginereadedobject[0] as AnimRenderObject;
+                    AnimRenderObject res = rod._engineSampleObject as AnimRenderObject;
                     CharacterContent characterContent = null; ;
                     Engine.Animation.CharacterController character = createCharacter(packs, description.CharacterName, out characterContent);
                     result = new AnimRenderObject(character, res.LODs, rod.IsShadowCaster, rod.IsShadowReceiver);
                 }
                 else
                 {
-                    UnAnimRenderObject res = rod.Enginereadedobject[0] as UnAnimRenderObject;
+                    UnAnimRenderObject res = rod._engineSampleObject as UnAnimRenderObject;
                     result = new UnAnimRenderObject(res.LODs, rod.IsShadowCaster, rod.IsShadowReceiver);
                 }
                 if (result.isanimated != description.IsAnimated)
                     throw new Exception("wrong object animation flag!!!");
-                rod.Enginereadedobject.Add(result);
+                rod.Retain();
                 return result;
             }
-
         }
 
         private static RaycastBoundObject loadrcbo(Content.LevelObjectDescription description,
@@ -356,12 +351,12 @@ namespace PhysX_test2.Engine.ContentLoader
             {
                 Content.CollisionMesh cm = new CollisionMesh();
                 cm = packs.GetObject(description.RCCMName, cm) as CollisionMesh;
-                if (cm.Enginereadedobject.Count == 0)
+                if (cm._userCount == 0)
                     ObjectRCCM = EngineCollisionMesh.FromcontentCollisionMesh(cm as CollisionMesh);
                 else
-                    ObjectRCCM = cm.Enginereadedobject[0] as EngineCollisionMesh;
+                    ObjectRCCM = cm._engineSampleObject as EngineCollisionMesh;
 
-                cm.Enginereadedobject.Add(ObjectRCCM);
+                cm.Retain(ObjectRCCM);
 
                 bs = new Logic.SceneGraph.OTBoundingShape(ObjectRCCM);
             }
@@ -385,10 +380,9 @@ namespace PhysX_test2.Engine.ContentLoader
                 md.Restitution = 0.05f;
                 characterMaterial = scene.CreateMaterial(md);
             }
-            if (description.Enginereadedobject.Count == 0)
+
+            if (description._userCount == 0)
             {
-
-
                 //рендераспект - мб один на несколько объектов
                 RenderObject renderaspect = loadro(description, packs);
                 Material material = loadMaterial(description.matname, packs);
@@ -412,28 +406,23 @@ namespace PhysX_test2.Engine.ContentLoader
                 //её гк удалит
                 LevelObject createdobject = new LevelObject(behaviourmodel, renderaspect, material, raycastaspect);
                 createdobject.bmDescription = desc;
-                description.Enginereadedobject.Add(createdobject);
+                description.Retain(createdobject);
                 return createdobject;
             }
             else
             {
-                LevelObject createdobject = description.Enginereadedobject[0] as LevelObject;
+                LevelObject createdobject = description._engineSampleObject as LevelObject;
                 
                 RenderObject ro = loadro(description, packs);
                 Material material = loadMaterial(description.matname, packs);
 
-
-
                 Logic.BehaviourModel.BehaviourModelDescription desc = createdobject.bmDescription;
-
-
                 Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel = createBehaviourModel(desc, scene); 
                 
-
                 RaycastBoundObject raycastaspect = loadrcbo(description, packs);
 
                 LevelObject createdobject1 = new LevelObject(behaviourmodel, ro, material, raycastaspect);
-                description.Enginereadedobject.Add(createdobject1);
+                description.Retain();
                 createdobject1.bmDescription = desc;
                 return createdobject1;
             }
@@ -452,40 +441,29 @@ namespace PhysX_test2.Engine.ContentLoader
 
             if (description != null)
             {
-                description.Enginereadedobject.RemoveAt(description.Enginereadedobject.Count - 1);
+                description.Release();
 
                 //unload ro
                 Content.RenderObjectDescription rod = PackList.Instance.FindObject(description.RODName, ref p) as Content.RenderObjectDescription;
-                RenderObject obj = rod.Enginereadedobject[rod.Enginereadedobject.Count - 1] as RenderObject;
-                rod.Enginereadedobject.RemoveAt(rod.Enginereadedobject.Count - 1);
-                if (rod.Enginereadedobject.Count == 0)
-                {
-                    IDisposable i = obj;
-                    i.Dispose();
-                }
+                RenderObject obj = rod._engineSampleObject as RenderObject;
+                rod.Release();
                 if (description.IsAnimated)
                 {
                     Content.CharacterContent characterContent = PackList.Instance.FindObject(description.CharacterName, ref p) as Content.CharacterContent;
-                    characterContent.Enginereadedobject.RemoveAt(characterContent.Enginereadedobject.Count - 1);
+                    characterContent.Release();
                 }
-
 
                 //unload material
                 Content.MaterialDescription matd = PackList.Instance.FindObject(description.matname, ref p) as Content.MaterialDescription;
-
-                matd.Enginereadedobject.RemoveAt(matd.Enginereadedobject.Count - 1);
+                matd.Release();
 
                 for (int i = 0; i < matd.lodMats.Length; i++)
                 {
                     for (int j = 0; j < matd.lodMats[i].mats.Length; j++)
                     {
                         Content.Texture inage = PackList.Instance.FindObject(matd.lodMats[i].mats[j].DiffuseTextureName, ref p) as Content.Texture;
-                        Texture2D tex = inage.Enginereadedobject[inage.Enginereadedobject.Count - 1] as Texture2D;
-                        inage.Enginereadedobject.RemoveAt(inage.Enginereadedobject.Count - 1);
-                        if (inage.Enginereadedobject.Count == 0)
-                        {
-                            tex.Dispose();
-                        }
+                        Texture2D tex = inage._engineSampleObject as Texture2D;
+                        inage.Release();
                     }
                 }
 
@@ -493,7 +471,7 @@ namespace PhysX_test2.Engine.ContentLoader
                 {
                     //unload raycast
                     Content.CollisionMesh cm = PackList.Instance.FindObject(description.RCCMName, ref p) as Content.CollisionMesh;
-                    cm.Enginereadedobject.RemoveAt(cm.Enginereadedobject.Count - 1);
+                    cm.Release();
                 }
             }
         }

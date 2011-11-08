@@ -131,7 +131,7 @@
     <Compile Include="BaseExtensions\KeyboardManager\IKeyboardUser.cs" />
     <Compile Include="BaseExtensions\KeyboardManager\KeyboardManager.cs" />
     <Compile Include="BaseExtensions\KeyboardManager\KeyScan.cs" />
-    <Compile Include="BaseExtensions\MoiseManager\MouseManager.cs" />
+    <Compile Include="BaseExtensions\MouseManager\MouseManager.cs" />
     <Compile Include="BaseExtensions\SQliteShell\SQliteConnector.cs" />
     <Compile Include="BaseExtensions\SQliteShell\SQliteResultSet.cs" />
     <Compile Include="Content\CollisionMesh.cs" />

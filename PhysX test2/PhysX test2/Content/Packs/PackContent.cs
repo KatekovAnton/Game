@@ -169,7 +169,8 @@ namespace PhysX_test2.Content
    
     public class PackContent
     {
-        public List<object> Enginereadedobject;
+        public int _userCount;
+        public object _engineSampleObject;
         public PackContent ReadedContentObject; 
 
 
@@ -183,7 +184,8 @@ namespace PhysX_test2.Content
         public MeshContentadditionalheader mh = null;
         public PackContent()
         {
-            Enginereadedobject = new List<object>();
+            //Enginereadedobject = new List<object>();
+            _userCount = 0;
         }
         public PackContent(System.IO.BinaryReader br, int _number)//16+имя
         {
@@ -203,8 +205,33 @@ namespace PhysX_test2.Content
             {
                 size = br.ReadInt32();
             }
-            Enginereadedobject = new List<object>();
+            //Enginereadedobject = new List<object>();
         }
+
+        public void Retain(object __newObject = null)
+        {
+            _userCount++;
+            if (__newObject == null && _engineSampleObject == null)
+                throw new Exception();
+            if (__newObject == null)
+                return;
+            if (_engineSampleObject == null)
+                _engineSampleObject = __newObject;
+        }
+
+        public void Release()
+        {
+            _userCount--;
+            if (_userCount == 0)
+            {
+                IDisposable obj = _engineSampleObject as IDisposable;
+                if (obj != null)
+                    obj.Dispose();
+
+                _engineSampleObject = null;
+            }
+        }
+
         public virtual void loadbody(byte[] array)
         {}
         public virtual void Unload()
