@@ -49,6 +49,10 @@ namespace PhysX_test2.Engine
         public Scene Scene;
 
 
+        //cashe for small objects
+        public ObjectCashe _cashe;
+
+
         //scene and its objects
         public EngineScene gameScene;
         public LevelObject LevelObjectBox;
@@ -94,6 +98,8 @@ namespace PhysX_test2.Engine
             //разме рэкрана
             MyGame.DeviceManager.PreferredBackBufferWidth = (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.8);
             MyGame.DeviceManager.PreferredBackBufferHeight = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.8);
+
+            _cashe = new ObjectCashe();
         }
 
         public bool IsKeyboardCaptured()
@@ -124,11 +130,18 @@ namespace PhysX_test2.Engine
 
             //рендерщик
             GraphicPipeleine = new RenderPipeline(MyGame.DeviceManager.GraphicsDevice, Camera);
-
-            
         }
 
-        public static PivotObject loadObject(string __name,
+        public void CasheObject(string __name,
+            Matrix? __deltaMatrix,
+            bool __needMouseCast, 
+            PivotObject __parentObject = null,
+            PivotObjectDependType __dependType = PivotObjectDependType.Body)
+        {
+            _cashe.CasheObject(__name, __deltaMatrix, __needMouseCast, __parentObject, __dependType);
+        }
+
+        public static PivotObject LoadObject(string __name,
             Matrix? __deltaMatrix,
             bool __needMouseCast, 
             PivotObject __parentObject = null,
@@ -213,7 +226,7 @@ namespace PhysX_test2.Engine
 
             ///box 
             {
-                LevelObjectBox = loadObject("WoodenCrate10WorldObject\0", null, true) as LevelObject;
+                LevelObjectBox = LoadObject("WoodenCrate10WorldObject\0", null, true) as LevelObject;
                 LevelObjectBox.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 25, 0));
                 AddObjectToScene(LevelObjectBox);
             }
@@ -225,21 +238,21 @@ namespace PhysX_test2.Engine
             for (int i = 0; i < x;i++ )
                 for (int j = 0; j < y; j++)
                 {
-                    LevelObject lo = loadObject("WoodenCrate10WorldObject\0", null, true) as LevelObject;
+                    LevelObject lo = LoadObject("WoodenCrate10WorldObject\0", null, true) as LevelObject;
                     lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(i * delta, 25, j * delta));
                     AddObjectToScene(lo);
                 }
             
             ////test side
             {
-                LevelObjectTestSide = loadObject("TestSideWorldObject\0", null, true) as LevelObject;
+                LevelObjectTestSide = LoadObject("TestSideWorldObject\0", null, true) as LevelObject;
                 LevelObjectTestSide.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(0, 15, 0));
                 AddObjectToScene(LevelObjectTestSide);
             }
 
             /////sphere
             {
-                LevelObjectCursorSphere = loadObject("Cursor\0", null, false) as LevelObject;
+                LevelObjectCursorSphere = LoadObject("Cursor\0", null, false) as LevelObject;
                 AddObjectToScene(LevelObjectCursorSphere);
             }
 
@@ -410,7 +423,9 @@ namespace PhysX_test2.Engine
         }
 
 
-        public void UnLoad() {
+        public void UnLoad() 
+        {
+            _cashe.ClearCashe();
             gameScene.Core.Dispose();
             gameScene.Scene.Dispose();
             //  BoxActor.Dispose();

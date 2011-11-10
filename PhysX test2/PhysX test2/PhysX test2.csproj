@@ -159,6 +159,7 @@
     <Compile Include="Engine\CameraControllers\CameraControllerSuperClass.cs" />
     <Compile Include="Engine\ContentLoader\ContentLoader.cs" />
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
+    <Compile Include="Engine\ObjectCashe.cs" />
     <Compile Include="TheGame\InputManagers\InputProviderAI.cs" />
     <Compile Include="TheGame\InputManagers\InputProviderNetwork.cs" />
     <Compile Include="TheGame\InputManagers\InputProviderPlayer.cs" />

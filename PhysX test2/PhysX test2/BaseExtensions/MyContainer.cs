@@ -30,6 +30,7 @@ namespace PhysX_test2
         List<MyContainerRule> rules;
         T[] array;
         int m, n;
+        bool _useRules;
 
         public IEnumerator<T> GetEnumerator()
         {
@@ -45,24 +46,28 @@ namespace PhysX_test2
                     yield return array[iii];
         }
 
-        public MyContainer()
+        public MyContainer(bool __useRules = false)
         {
+            _useRules = __useRules;
             Count = 0;
             IsEmpty = true;
             m = 10;
             n = 1;
             array = new T[m * n];
-            rules = new List<MyContainerRule>();
+            if(__useRules)
+                rules = new List<MyContainerRule>();
         }
 
-        public MyContainer(int _m, int _n)
+        public MyContainer(int _m, int _n, bool __useRules = false)
         {
+            _useRules = __useRules;
             Count = 0;
             IsEmpty = true;
             m = _m;
             n = _n;
             array = new T[m * n];
-            rules = new List<MyContainerRule>();
+            if (__useRules)
+                rules = new List<MyContainerRule>();
         }
 
         public void Clear()
@@ -123,6 +128,8 @@ namespace PhysX_test2
         //TODO - test it!!
         public void AddRule(T firstObject, T secondOnject)
         {
+            if (!_useRules)
+                return;
             int fi = IndexOf(firstObject);
             if (fi == -1)
                 return;
@@ -176,25 +183,24 @@ namespace PhysX_test2
 
         public bool Remove(T element)
         {
-            if (!IsEmpty)
-                for (int index = 0; index < Count; index++)
-                    if (array[index] == element)
-                    {
-                        RemoveAt(index);
-                        return true;
-                    }
+
+            for (int index = 0; index < Count; index++)
+                if (array[index] == element)
+                {
+                    RemoveAt(index);
+                    return true;
+                }
             return false;
         }
 
         public bool Remove(Predicate<T> match)
         {
-            if (!IsEmpty)
-                for (int index = 0; index < Count; index++)
-                    if (match(array[index]))
-                    {
-                        RemoveAt(index);
-                        return true;
-                    }
+            for (int index = 0; index < Count; index++)
+                if (match(array[index]))
+                {
+                    RemoveAt(index);
+                    return true;
+                }
             return false;
         }
 
@@ -246,9 +252,10 @@ namespace PhysX_test2
 
         public void RemoveAt(int index)
         {
-            if (Count != 0)
+
+            if (array[index] != null)
             {
-                if (array[index] != null)
+                if (_useRules)
                 {
                     //удалить все правила, в которых первый объект - тот который мы удаляем
                     RemoveAllRulesForObject(array[index]);
@@ -284,13 +291,21 @@ namespace PhysX_test2
                         array[index] = array[Count - 1];
                         array[Count - 1] = null;
                     }
-                    Count--;
-                    if (Count == 0)
-                    {
-                        IsEmpty = true;
-                    }
+                }
+                else
+                {
+                    //никаких правил - удаляем и всё
+                    array[index] = null;
+                    array[index] = array[Count - 1];
+                    array[Count - 1] = null;
+                }
+                Count--;
+                if (Count == 0)
+                {
+                    IsEmpty = true;
                 }
             }
+
         }
 
         public void Swap(T __oldobject, T __newobject, bool __searchSame = false)

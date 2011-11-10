@@ -42,7 +42,7 @@ namespace PhysX_test2.Engine.Logic
             Scene.UserContactReport = new ContactReport(MyGame.Instance);
 
 
-            _objects = new MyContainer<PivotObject>(100, 10);
+            _objects = new MyContainer<PivotObject>(100, 10, true);
             _visibleObjects = new MyContainer<PivotObject>(100, 2);
             _shadowObjects = new MyContainer<PivotObject>(100, 2);
             _sceneGraph = new SceneGraph.SceneGraph(this);
