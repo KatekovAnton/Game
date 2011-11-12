@@ -29,7 +29,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
 
         public override void Move(Vector3 displacement)
         {
-            Matrix newposition = Matrix.Multiply(globalpose, Matrix.CreateTranslation(displacement));
+            Matrix newposition = globalpose * Matrix.CreateTranslation(displacement);
             mov = CurrentPosition != newposition;
             CurrentPosition = newposition;
         }

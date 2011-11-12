@@ -46,8 +46,8 @@ namespace PhysX_test2.TheGame.LogicControllers
             }
             else
             {
-              /* Matrix newmatrix = _hisObject._object.behaviourmodel.CurrentPosition * Matrix.CreateTranslation(_moveVector * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds/1000.0));
-                _hisObject._object.SetGlobalPose(newmatrix);*/
+               Matrix newmatrix = _hisObject._object.behaviourmodel.CurrentPosition * Matrix.CreateTranslation(_moveVector * _instanceParameters._moveSpeed * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds/1000.0));
+                _hisObject._object.SetGlobalPose(newmatrix);
             }
         }
 

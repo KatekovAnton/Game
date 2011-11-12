@@ -77,17 +77,18 @@ namespace PhysX_test2.TheGame.Level
         {
             Objects.GameBulletSimple bullet = new Objects.GameBulletSimple(this, "SimpleBullet_LO\0");
             LogicControllers.Parameters.BulletParameters parameters = new LogicControllers.Parameters.BulletParameters(0,"bullet",10,null);
-            parameters._lifeTime = 10000;//10 seconds
-            parameters._moveSpeed = 0.001f;
-           
-            Vector3 moveVector = Vector3.Forward;
-            moveVector = Vector3.TransformNormal(moveVector, __weapon._weaponObject._inHandObject.transform);
+            parameters._lifeTime = 50000;//5 seconds
+            parameters._moveSpeed = 250.00f;
+
+            Vector3 moveVector = MyGame.Instance._mousepoint - __weapon._weaponObject._inHandObject.transform.Translation;
+            moveVector.Normalize();
+            Matrix transform = __weapon._weaponObject._inHandObject.transform * Matrix.CreateTranslation(moveVector * 0.3f);
 
             BulletLogicController result = new BulletLogicController(
                 bullet,
                 __nowTime,
                 parameters,
-                __weapon._weaponObject._inHandObject.transform,
+                transform,
                 moveVector);
 
             
