@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2.TheGame.LogicControllers
 {
-    public class ImortalLevelGeometryLogicController:BaseLogicController
+    /*public class ImortalLevelGeometryLogicController:BaseLogicController
     {
         public Parameters.InteractiveObjectParameters _baseParameters;
 
@@ -25,5 +25,5 @@ namespace PhysX_test2.TheGame.LogicControllers
         {
             
         }
-    }
+    }*/
 }

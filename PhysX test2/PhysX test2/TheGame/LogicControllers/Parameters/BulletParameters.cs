@@ -11,8 +11,12 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
         public float _damageEnergy;
 
         public float _damageRadius;
+        public float _moveSpeed;
 
         public int _ammoType;
+
+        public float _lifeTime;
+
         public BulletParameters(int __dbID, string __displayName, float __mass, object __selfObject)
             : base(__dbID, __displayName, __mass, __selfObject)
         { }

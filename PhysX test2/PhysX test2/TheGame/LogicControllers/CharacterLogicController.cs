@@ -90,6 +90,8 @@ namespace PhysX_test2.TheGame.LogicControllers
         {
             CalculateInput();
 
+            if (_hisInput == null)
+                return;
             if (_hisInput._tryAttackFirst)
             {
                 if (_hisWeapon.BeginFire(__gameTime))
@@ -101,6 +103,8 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public void CalculateInput()
         {
+            if (_hisInput == null)
+                return;
             CharacterMoveState oldstate = _hisInput._newInputState;
             _hisInput.Update(_hisObject._aliveObject.behaviourmodel.CurrentPosition.Translation);
             
@@ -110,6 +114,7 @@ namespace PhysX_test2.TheGame.LogicControllers
             {
                 Engine.Render.AnimRenderObject ro = _hisObject._aliveObject.renderaspect as Engine.Render.AnimRenderObject;
                 ro.ReceiveEvent(GetEventName(_hisInput._newInputState), oldstate == CharacterMoveState.Stay);
+                Engine.GameEngine.Instance.playerState = _hisInput._newInputState;
             }
         }
 

@@ -33,7 +33,7 @@ namespace PhysX_test2.TheGame.Objects
         public void LocateToLevel(LevelObject __parentObject)
         {
             if(!_onLevel)
-                _hisLevel.AddObject(_object, __parentObject);
+                _hisLevel.AddEngineObject(_object, __parentObject);
             _onLevel = true;
         }
 
@@ -42,6 +42,12 @@ namespace PhysX_test2.TheGame.Objects
             if(_onLevel)
                 _hisLevel.RemoveObject(_object);
             _onLevel = false;
+        }
+
+        ~GameSimpleObject()
+        {
+            RemoveFromLevel();
+            PhysX_test2.Engine.ContentLoader.ContentLoader.UnloadPivotObject(_object);
         }
     }
 }

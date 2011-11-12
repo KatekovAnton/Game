@@ -407,6 +407,7 @@ namespace PhysX_test2.Engine.ContentLoader
                 LevelObject createdobject = new LevelObject(behaviourmodel, renderaspect, material, raycastaspect);
                 createdobject.bmDescription = desc;
                 description.Retain(createdobject);
+                createdobject.editorAspect = new EditorData(description.name, description.loadedformat);
                 return createdobject;
             }
             else
@@ -424,6 +425,7 @@ namespace PhysX_test2.Engine.ContentLoader
                 LevelObject createdobject1 = new LevelObject(behaviourmodel, ro, material, raycastaspect);
                 description.Retain();
                 createdobject1.bmDescription = desc;
+                createdobject1.editorAspect = new EditorData(description.name, description.loadedformat);
                 return createdobject1;
             }
         }

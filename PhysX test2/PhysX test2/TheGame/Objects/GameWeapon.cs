@@ -57,8 +57,8 @@ namespace PhysX_test2.TheGame.Objects
             {
                 case GameWeaponState.None:
                     {
-                        _hisLevel.AddObject(_onFloorObject);
-                        _hisLevel.AddObject(_addonObject, _onFloorObject);
+                        _hisLevel.AddEngineObject(_onFloorObject);
+                        _hisLevel.AddEngineObject(_addonObject, _onFloorObject);
                     } break;
                 case GameWeaponState.InHand:
                     {
@@ -76,8 +76,8 @@ namespace PhysX_test2.TheGame.Objects
             {
                 case GameWeaponState.None:
                     {
-                        _hisLevel.AddObject(_inHandObject, __character._aliveObject);
-                        _hisLevel.AddObject(_addonObject, _inHandObject);
+                        _hisLevel.AddEngineObject(_inHandObject, __character._aliveObject);
+                        _hisLevel.AddEngineObject(_addonObject, _inHandObject);
                     } break;
                 case GameWeaponState.OnFloor:
                     {

@@ -4,22 +4,43 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using PhysX_test2.TheGame.Objects;
 
 namespace PhysX_test2.TheGame.LogicControllers
 {
     public class BulletLogicController : BaseLogicController
     {
-        public Parameters.BulletParameters _baseParameters;
         public Parameters.BulletParameters _instanceParameters;
         public Vector3 _startPosition;
         public Vector3 _moveVector;
         
-        public float _moveSpeed;
+       
+       
+        public GameBulletSimple _hisObject;
 
+        public BulletLogicController(
+            GameBulletSimple __itsObject, 
+            TimeSpan __nowTime, 
+            Parameters.BulletParameters __itsParameters, 
+            Matrix __startPos, 
+            Vector3 __moveVector)
+        {
+            _hisObject = __itsObject;
+            _createdTime = __nowTime;
+
+            _instanceParameters = __itsParameters;
+            _startPosition = __startPos.Translation;
+            _moveVector = __moveVector;
+            _moveVector.Normalize();
+            _hisObject._object.SetGlobalPose(__startPos);
+        }
 
         public override void Update(GameTime __gameTime)
         {
-            //throw new NotImplementedException();
+            if ((__gameTime.TotalGameTime.TotalMilliseconds - _createdTime.TotalMilliseconds) > _instanceParameters._lifeTime)
+            {
+                _hisObject.RemoveFromLevel();
+            }
         }
 
         public override Parameters.InteractiveObjectParameters GetParameters()

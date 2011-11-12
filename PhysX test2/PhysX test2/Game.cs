@@ -112,81 +112,6 @@ namespace PhysX_test2
         private void HandleKeyboard(KeyboardState keyboardState)
         {
             ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), _engine.Camera.View, _engine.Camera.Projection);
-          /*  _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.Identity,null);
-            System.Collections.Generic.List<Vector3?> VectorList=new System.Collections.Generic.List<Vector3?>();
-            Vector3? point=new Vector3?();
-            int CrossCount = 0;
-           // VectorList.Add(_engine.LevelObjectTestSide.raycastaspect.IntersectionClosest(ray,_engine.LevelObjectTestSide.transform));
-            foreach (Engine.Logic.PivotObject Object in _engine.gameScene._visibleObjects)
-            {
-                
-                if (Object._needMouseCast)
-                {
-                    if(Object.raycastaspect.IntersectionClosest(ray, Object.transform)!=null)
-                    {
-                    VectorList.Add( Object.raycastaspect.IntersectionClosest(ray, Object.transform));
-                    }
-                }
-
-            }
-            foreach (Vector3? Vec in VectorList)
-            {
-                if (Vec != null)
-                {
-                    CrossCount++;
-                }
-            }
-            bool CrossedWithLevel = false;
-            if (CrossCount == 1)
-            {
-
-                if (_engine.LevelObjectTestSide.raycastaspect.IntersectionClosest(ray, _engine.LevelObjectTestSide.transform) != null)
-                {
-                    CrossedWithLevel = true;
-                    point = _engine.LevelObjectTestSide.raycastaspect.IntersectionClosest(ray, _engine.LevelObjectTestSide.transform);
-                }
-            }
-            if (!CrossedWithLevel)
-            {
-                {
-                    bool IsPointed = true;
-                    foreach (Vector3? point1 in VectorList)
-                    {
-
-
-                        Vector3? Vec1 = point1 + _engine.Camera.View.Translation;
-
-
-                        foreach (Vector3? point2 in VectorList)
-                        {
-                            if (point1 == null | point2 == null) break;
-                            
-                            Vector3? Vec2 = point2 + _engine.Camera.View.Translation;
-                            if (Vec1.Value.LengthSquared() > Vec2.Value.LengthSquared())
-                            {
-
-                                IsPointed = false;
-                                break;
-                            }
-                        }
-                        if (IsPointed)
-                        {
-                            if (point1 != null)
-                            {
-                                point = point1;
-                                break;
-                            }
-                        }
-                        IsPointed = true;
-                    }
-                }
-            }
-
-            if (point != null)
-            {
-                _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.CreateTranslation(point.Value), null);
-                _mousepoint = point.Value;
-            }*/
         }
 
         public void SearchClickedObject()
@@ -246,11 +171,11 @@ namespace PhysX_test2
                 _spriteBatch.DrawString(_font1, "Box position = " + _engine.LevelObjectBox.behaviourmodel.GetGlobalPose().Translation.ToString(), new Vector2(_engine.BoxScreenPosition.X, _engine.BoxScreenPosition.Y), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);
             _spriteBatch.DrawString(_font1, DateTime.Now.ToString(), new Vector2(10, 170), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);
 
-            _spriteBatch.DrawString(_font1, string.Format("FPS: {0} Frame time: {1}", _engine.FPSCounter.FramesPerSecond, _engine.FPSCounter.FrameTime), Vector2.Zero, Color.White);
-            _spriteBatch.DrawString(_font1, "Visible objects count: " + _engine.visibleobjectscount.ToString(), new Vector2(0, 15), Color.White);
-            _spriteBatch.DrawString(_font1, "Recalulcalated objects count: " + _engine.gameScene._sceneGraph.recalulcalated().ToString(), new Vector2(0, 30), Color.White);
+            _spriteBatch.DrawString(_font1, string.Format("FPS: {0} Frame time: {1}", _engine.FPSCounter.FramesPerSecond, _engine.FPSCounter.FrameTime), Vector2.Zero, Color.Black);
+            _spriteBatch.DrawString(_font1, "Visible objects count: " + _engine.visibleobjectscount.ToString(), new Vector2(0, 15), Color.Black);
+            _spriteBatch.DrawString(_font1, "Recalulcalated objects count: " + _engine.gameScene._sceneGraph.recalulcalated().ToString(), new Vector2(0, 30), Color.Black);
 
-            _spriteBatch.DrawString(_font1, "Character angle: " /*+ _engine._charcterController.movestate.ToString()*/ , new Vector2(0, 45), Color.White);
+            _spriteBatch.DrawString(_font1, "Character angle: " + _engine.playerState.ToString(), new Vector2(0, 45), Color.Black);
 
             _spriteBatch.DrawString(_font1, _helpHint, new Vector2(0, 60), Color.Black);
 

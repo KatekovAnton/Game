@@ -102,6 +102,8 @@ namespace PhysX_test2.Engine
             _cashe = new ObjectCashe();
         }
 
+        public PhysX_test2.TheGame.InputManagers.CharacterMoveState playerState = TheGame.InputManagers.CharacterMoveState.Stay;
+
         public bool IsKeyboardCaptured()
         {
             return false; 

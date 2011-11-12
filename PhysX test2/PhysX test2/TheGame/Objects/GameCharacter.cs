@@ -54,7 +54,7 @@ namespace PhysX_test2.TheGame.Objects
                 _aliveObject.behaviourmodel.Disable();
             else
             {
-                _hisLevel.AddObject(_aliveObject);
+                _hisLevel.AddEngineObject(_aliveObject);
                 _onLevel = true;
                 _aliveObject.behaviourmodel.Disable();
             }
@@ -89,7 +89,7 @@ namespace PhysX_test2.TheGame.Objects
             }
             else
             {
-                _hisLevel.AddObject(_aliveObject);
+                _hisLevel.AddEngineObject(_aliveObject);
                 _onLevel = true;
             }
             

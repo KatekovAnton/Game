@@ -33,10 +33,10 @@ namespace PhysX_test2.Engine.Logic
         public uint id = IdGenerator.NewId();
         public uint group_id = 0;
         public bool isActive;
-        public uint objtype;
+        public int objtype;
 
         public EditorData(string name,
-                          uint type)
+                          int type)
         {
             objtype = type;
             DescriptionName = name;
