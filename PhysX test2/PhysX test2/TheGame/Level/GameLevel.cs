@@ -32,6 +32,13 @@ namespace PhysX_test2.TheGame.Level
         public void AddController(BaseLogicController __object)
         {
             _allLogicObjects.Add(__object);
+            __object._itsLevel = this;
+        }
+
+        public void RemoveController(BaseLogicController __object)
+        {
+            _allLogicObjects.Remove(__object);
+            __object._itsLevel = null;
         }
       
         public void AddEngineObject(Engine.Logic.PivotObject __object, Engine.Logic.PivotObject __parentObject = null)
@@ -66,14 +73,15 @@ namespace PhysX_test2.TheGame.Level
                 controller.Update(__gameTime);
         }
 
-        public BulletLogicController CreateBullet(WeaponLogicController __weapon, TimeSpan __nowTime)
+        public void CreateBullet(WeaponLogicController __weapon, TimeSpan __nowTime)
         {
             Objects.GameBulletSimple bullet = new Objects.GameBulletSimple(this, "SimpleBullet_LO\0");
             LogicControllers.Parameters.BulletParameters parameters = new LogicControllers.Parameters.BulletParameters(0,"bullet",10,null);
             parameters._lifeTime = 10000;//10 seconds
             parameters._moveSpeed = 0.001f;
            
-            Vector3 moveVector = Vector3.Right;
+            Vector3 moveVector = Vector3.Forward;
+            moveVector = Vector3.TransformNormal(moveVector, __weapon._weaponObject._inHandObject.transform);
 
             BulletLogicController result = new BulletLogicController(
                 bullet,
@@ -83,8 +91,8 @@ namespace PhysX_test2.TheGame.Level
                 moveVector);
 
             
-
-            return result;
+            AddController(result);
+            result.LocateToLevel();
         }
     }
 }

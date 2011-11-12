@@ -39,8 +39,21 @@ namespace PhysX_test2.TheGame.LogicControllers
         {
             if ((__gameTime.TotalGameTime.TotalMilliseconds - _createdTime.TotalMilliseconds) > _instanceParameters._lifeTime)
             {
+                //remove visible object
                 _hisObject.RemoveFromLevel();
+                //stop the update
+                _itsLevel.RemoveController(this);
             }
+            else
+            {
+              /* Matrix newmatrix = _hisObject._object.behaviourmodel.CurrentPosition * Matrix.CreateTranslation(_moveVector * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds/1000.0));
+                _hisObject._object.SetGlobalPose(newmatrix);*/
+            }
+        }
+
+        public void LocateToLevel()
+        {
+            _hisObject.LocateToLevel();
         }
 
         public override Parameters.InteractiveObjectParameters GetParameters()

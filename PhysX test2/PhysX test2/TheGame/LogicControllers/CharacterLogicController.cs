@@ -95,7 +95,13 @@ namespace PhysX_test2.TheGame.LogicControllers
             if (_hisInput._tryAttackFirst)
             {
                 if (_hisWeapon.BeginFire(__gameTime))
+                {
+                    //start fire animation and other
                     _hisObject.Fire();
+                    _hisWeapon._itsLevel.CreateBullet(_hisWeapon, __gameTime.TotalGameTime);
+                    
+                }
+
             }
 
             
