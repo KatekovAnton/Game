@@ -81,6 +81,7 @@ namespace PhysX_test2.TheGame.Level
             parameters._moveSpeed = 250.00f;
 
             Vector3 moveVector = MyGame.Instance._mousepoint - __weapon._weaponObject._inHandObject.transform.Translation;
+
             moveVector.Normalize();
             Matrix transform = __weapon._weaponObject._inHandObject.transform * Matrix.CreateTranslation(moveVector * 0.3f);
 
