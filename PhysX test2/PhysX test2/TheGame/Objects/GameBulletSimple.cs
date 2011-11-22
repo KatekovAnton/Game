@@ -39,6 +39,7 @@ namespace PhysX_test2.TheGame.Objects
         {
             if (_onLevel)
                 _hisLevel.RemoveObject(_object);
+            _object._gameObject = null;
             _onLevel = false;
         }
 

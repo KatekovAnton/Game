@@ -437,34 +437,37 @@ namespace PhysX_test2.Engine.ContentLoader
             if (gobject == null)
                 return;
             Pack p = null;
-           PackContent pc = PackList.Instance.FindObject(theobject.editorAspect.DescriptionName, ref p);
+            PackContent pc = PackList.Instance.FindObject(theobject.editorAspect.DescriptionName, ref p);
 
-            Content.LevelObjectDescription description = pc as Content.LevelObjectDescription;
+            Content.LevelObjectDescription description = pc.ReadedContentObject as Content.LevelObjectDescription;
 
             if (description != null)
             {
                 description.Release();
 
                 //unload ro
-                Content.RenderObjectDescription rod = PackList.Instance.FindObject(description.RODName, ref p) as Content.RenderObjectDescription;
+                PackContent pc_rod = PackList.Instance.FindObject(description.RODName, ref p);
+                Content.RenderObjectDescription rod = pc_rod.ReadedContentObject as Content.RenderObjectDescription;
                 RenderObject obj = rod._engineSampleObject as RenderObject;
                 rod.Release();
                 if (description.IsAnimated)
                 {
-                    Content.CharacterContent characterContent = PackList.Instance.FindObject(description.CharacterName, ref p) as Content.CharacterContent;
+                    PackContent pc_characterContent = PackList.Instance.FindObject(description.CharacterName, ref p);
+                    Content.CharacterContent characterContent = pc_characterContent.ReadedContentObject as Content.CharacterContent;
                     characterContent.Release();
                 }
 
                 //unload material
-                Content.MaterialDescription matd = PackList.Instance.FindObject(description.matname, ref p) as Content.MaterialDescription;
+                PackContent pc_mat = PackList.Instance.FindObject(description.matname, ref p);
+                Content.MaterialDescription matd = pc_mat.ReadedContentObject as Content.MaterialDescription;
                 matd.Release();
 
                 for (int i = 0; i < matd.lodMats.Length; i++)
                 {
                     for (int j = 0; j < matd.lodMats[i].mats.Length; j++)
                     {
-                        Content.Texture inage = PackList.Instance.FindObject(matd.lodMats[i].mats[j].DiffuseTextureName, ref p) as Content.Texture;
-                        Texture2D tex = inage._engineSampleObject as Texture2D;
+                        PackContent pc_image =  PackList.Instance.FindObject(matd.lodMats[i].mats[j].DiffuseTextureName, ref p);
+                        Content.Texture inage = pc_image.ReadedContentObject as Content.Texture;
                         inage.Release();
                     }
                 }
@@ -472,7 +475,8 @@ namespace PhysX_test2.Engine.ContentLoader
                 if (description.IsRCCMEnabled)
                 {
                     //unload raycast
-                    Content.CollisionMesh cm = PackList.Instance.FindObject(description.RCCMName, ref p) as Content.CollisionMesh;
+                    PackContent pc_cm = PackList.Instance.FindObject(description.RCCMName, ref p);
+                    Content.CollisionMesh cm = pc_cm.ReadedContentObject as Content.CollisionMesh;
                     cm.Release();
                 }
             }

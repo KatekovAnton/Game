@@ -232,7 +232,60 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
         /// <param name="box"></param>
         /// <param name="intersectedEntities"></param>
         public void Query(BoundingBox box, MyContainer<PivotObject> intersectedEntities)
-        { }
+        {
+           
+
+            ContainmentType containmentType = ContainmentType.Disjoint;
+
+            _nodeStack.Clear();
+            _nodeStack.Push(this.baseNode);
+
+            while (_nodeStack.Count > 0)
+            {
+                SGNode node = _nodeStack.Pop();
+                _nodeTestCount++;
+                box.Contains(ref node.boundingBox, out containmentType);
+
+                switch (containmentType)
+                {
+                    //если узел полностью входит в пирамиду,
+                    //то заносим все поддерево в список видимых сущностей
+                    case ContainmentType.Contains:
+                        {
+                            GetSubtree(node, intersectedEntities);
+                        } break;
+
+                    //case ContainmentType.Disjoint:
+                    // ничего не делаем
+                    //    break;
+
+                    //если узел пересекается с пирамидой, то проверяе видимость всех его объектов
+                    //а вложенные узлы добавляем в стэк для дальнейшей проверки
+                    case ContainmentType.Intersects:
+                        {
+                            ContainmentType entContType = ContainmentType.Disjoint;
+                            for (int i = 0; i < node.Entities.Count; i++)
+                            {
+                                PivotObject wo = node.Entities[i];
+                                _entityTestCount++;
+                                entContType = ContainmentType.Disjoint;
+                                box.Contains(ref wo.raycastaspect.boundingShape.aabb.XNAbb, out entContType);
+                                if (entContType != ContainmentType.Disjoint)
+                                {
+                                    intersectedEntities.Add(wo);
+                                    wo.SetVisible(true);
+                                }
+                            }
+                            if (node.nestingLevel != _maxNestingLevel)
+                                for (int i = 0; i < node.Children.Length; i++)
+                                {
+                                    _nodeStack.Push(node.Children[i]);
+                                }
+                        } break;
+                    default: break;
+                }
+            }
+        }
 
         /// <summary>
         /// for explosions

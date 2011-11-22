@@ -20,7 +20,7 @@ namespace PhysX_test2.TheGame.Objects
     {
         public bool _onLevel;
         public bool _isAlive;
-        public LevelObject _aliveObject;
+        public LevelObject _levelObject;
 
         public Engine.Animation.CharacterController _controllerAlive;
 
@@ -31,9 +31,9 @@ namespace PhysX_test2.TheGame.Objects
         public GameCharacter(string __aliveName, Matrix __aliveMatrix, GameLevel __level)
             : base(__level, true, true)
         {
-            _aliveObject = Engine.GameEngine.LoadObject(__aliveName, __aliveMatrix, true) as LevelObject;
+            _levelObject = Engine.GameEngine.LoadObject(__aliveName, __aliveMatrix, true) as LevelObject;
 
-            _controllerAlive = (_aliveObject.renderaspect as Engine.Render.AnimRenderObject).character;
+            _controllerAlive = (_levelObject.renderaspect as Engine.Render.AnimRenderObject).character;
 
             _isAlive = false;
             _onLevel = false;
@@ -51,12 +51,12 @@ namespace PhysX_test2.TheGame.Objects
             _isAlive = false;
             //method
             if (_onLevel)
-                _aliveObject.behaviourmodel.Disable();
+                _levelObject.behaviourmodel.Disable();
             else
             {
-                _hisLevel.AddEngineObject(_aliveObject);
+                _hisLevel.AddEngineObject(_levelObject);
                 _onLevel = true;
-                _aliveObject.behaviourmodel.Disable();
+                _levelObject.behaviourmodel.Disable();
             }
 
             if (_controllerAlive == null)
@@ -82,14 +82,14 @@ namespace PhysX_test2.TheGame.Objects
                 throw new Exception();
             _isAlive = true;
             //method
-            _aliveObject.SetPosition(_hisLevel.GetSpawnPlace());
+            _levelObject.SetPosition(_hisLevel.GetSpawnPlace());
             if (_onLevel)
             {
-                _aliveObject.behaviourmodel.Enable();
+                _levelObject.behaviourmodel.Enable();
             }
             else
             {
-                _hisLevel.AddEngineObject(_aliveObject);
+                _hisLevel.AddEngineObject(_levelObject);
                 _onLevel = true;
             }
             
@@ -113,7 +113,7 @@ namespace PhysX_test2.TheGame.Objects
 
         public override void Rotate(float __angle)
         {
-            _aliveObject.behaviourmodel.Rotate(__angle);
+            _levelObject.behaviourmodel.Rotate(__angle);
         }
     }
 

@@ -46,7 +46,23 @@ namespace PhysX_test2.TheGame.LogicControllers
             }
             else
             {
-               Matrix newmatrix = _hisObject._object.behaviourmodel.CurrentPosition * Matrix.CreateTranslation(_moveVector * _instanceParameters._moveSpeed * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds/1000.0));
+                Vector3 startPosition = _hisObject._object.behaviourmodel.CurrentPosition.Translation;
+                Vector3 delta= _moveVector * _instanceParameters._moveSpeed * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds/1000.0);
+                Vector3 endPosition = startPosition + delta;
+
+                BaseLogicController ooo = _itsLevel.SearchBulletIntersection(startPosition, endPosition);
+                if (ooo != null)
+                {
+                    CharacterLogicController clc = ooo as CharacterLogicController;
+                    if (clc != null && !clc._isMe)
+                    {
+                        int a = 0;
+                        a++;
+                    }
+                }
+
+
+                Matrix newmatrix = _hisObject._object.behaviourmodel.CurrentPosition * Matrix.CreateTranslation(delta);
                 _hisObject._object.SetGlobalPose(newmatrix);
             }
         }
@@ -54,6 +70,7 @@ namespace PhysX_test2.TheGame.LogicControllers
         public void LocateToLevel()
         {
             _hisObject.LocateToLevel();
+            _hisObject._object._gameObject = this;
         }
 
         public override Parameters.InteractiveObjectParameters GetParameters()
@@ -64,6 +81,11 @@ namespace PhysX_test2.TheGame.LogicControllers
         public override void TakeHit(Parameters.BulletParameters __bulletParameters)
         {
             return;
+        }
+
+        ~BulletLogicController()
+        {
+ 
         }
     }
 }

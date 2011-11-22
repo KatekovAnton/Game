@@ -57,6 +57,8 @@ namespace PhysX_test2.Content
                 pch.objectReaded = true;
                 pch.ReadedContentObject = pc;
             }
+            pch.ReadedContentObject.name = objectname;
+
             return pch.ReadedContentObject;
         }
         

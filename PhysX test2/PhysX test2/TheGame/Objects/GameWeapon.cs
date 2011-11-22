@@ -76,7 +76,7 @@ namespace PhysX_test2.TheGame.Objects
             {
                 case GameWeaponState.None:
                     {
-                        _hisLevel.AddEngineObject(_inHandObject, __character._aliveObject);
+                        _hisLevel.AddEngineObject(_inHandObject, __character._levelObject);
                         _hisLevel.AddEngineObject(_addonObject, _inHandObject);
                     } break;
                 case GameWeaponState.OnFloor:
