@@ -60,7 +60,7 @@ namespace PhysX_test2.Engine.Logic
         /// <summary>
         /// associated game object
         /// </summary>
-        public object _upperObject;
+        public object _gameObject;
 
         /// <summary>
         /// calc or not cast with mouse ray for searching target point

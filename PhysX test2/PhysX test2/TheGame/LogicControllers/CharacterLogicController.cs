@@ -36,8 +36,9 @@ namespace PhysX_test2.TheGame.LogicControllers
             _isAlive = false;
             _isMe = __isMe;
 
-            _hisObject._aliveObject._needMouseCast = _hisObject._aliveObject._needMouseCast && !_isMe;
+            _hisObject._levelObject._needMouseCast = _hisObject._levelObject._needMouseCast && !_isMe;
             _hisHead._object._needMouseCast = _hisHead._object._needMouseCast && !_isMe;
+            _hisObject._levelObject._gameObject = this;
         }
 
         public void SetGun(WeaponLogicController __newWeapon)
@@ -78,11 +79,14 @@ namespace PhysX_test2.TheGame.LogicControllers
                 return;
 
             if (__liveState)
+            {
                 _hisObject.SetAlive();
+                _hisObject._levelObject._gameObject = this;
+            }
             else
                 _hisObject.SetDead();
 
-            _hisHead.LocateToLevel(_hisObject._aliveObject);
+            _hisHead.LocateToLevel(_hisObject._levelObject);
             _isAlive = __liveState;
         }
 
@@ -112,13 +116,13 @@ namespace PhysX_test2.TheGame.LogicControllers
             if (_hisInput == null)
                 return;
             CharacterMoveState oldstate = _hisInput._newInputState;
-            _hisInput.Update(_hisObject._aliveObject.behaviourmodel.CurrentPosition.Translation);
+            _hisInput.Update(_hisObject._levelObject.behaviourmodel.CurrentPosition.Translation);
             
             _hisObject.Rotate(_hisInput._angle);
-            _hisObject._aliveObject.Move(_hisInput._moveVector);
+            _hisObject._levelObject.Move(_hisInput._moveVector);
             if (oldstate != _hisInput._newInputState)
             {
-                Engine.Render.AnimRenderObject ro = _hisObject._aliveObject.renderaspect as Engine.Render.AnimRenderObject;
+                Engine.Render.AnimRenderObject ro = _hisObject._levelObject.renderaspect as Engine.Render.AnimRenderObject;
                 ro.ReceiveEvent(GetEventName(_hisInput._newInputState), oldstate == CharacterMoveState.Stay);
                 Engine.GameEngine.Instance.playerState = _hisInput._newInputState;
             }

@@ -77,8 +77,10 @@ namespace PhysX_test2.TheGame.Level
         {
             Objects.GameBulletSimple bullet = new Objects.GameBulletSimple(this, "SimpleBullet_LO\0");
             LogicControllers.Parameters.BulletParameters parameters = new LogicControllers.Parameters.BulletParameters(0,"bullet",10,null);
-            parameters._lifeTime = 20000;//5 seconds
-            parameters._moveSpeed = 50.00f;
+
+            parameters._lifeTime = 1000;//1 second
+            parameters._moveSpeed = 10.00f;
+
 
             Vector3 moveVector = MyGame.Instance._mousepoint - __weapon._weaponObject._inHandObject.transform.Translation;
 
@@ -95,6 +97,18 @@ namespace PhysX_test2.TheGame.Level
             
             AddController(result);
             result.LocateToLevel();
+        }
+
+        public BaseLogicController SearchBulletIntersection(Vector3 __start, Vector3 __end)
+        {
+            PivotObject result = _scene.SearchBulletIntersection(__start, __end);
+
+            if (result._gameObject != null)
+                return result._gameObject as BaseLogicController;
+
+
+
+            return null;
         }
     }
 }

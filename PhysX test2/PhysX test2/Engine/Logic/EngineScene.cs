@@ -5,6 +5,8 @@ using System.Text;
 
 using StillDesign.PhysX;
 
+using Microsoft.Xna.Framework;
+
 namespace PhysX_test2.Engine.Logic
 {
     public class EngineScene
@@ -182,5 +184,24 @@ namespace PhysX_test2.Engine.Logic
             _sceneGraph.calculateVisibleObjects(GameEngine.Instance.Camera.cameraFrustum, _visibleObjects);
             _sceneGraph.calculateShadowVisibleObjects(GameEngine.Instance.GraphicPipeleine.frustumForShadow, _shadowObjects);
         }
+        private MyContainer<PivotObject> _intersectedObjects = new MyContainer<PivotObject>();
+        public PivotObject SearchBulletIntersection(Vector3 __start, Vector3 __end)
+        {
+           /* 
+            Vector3 min = new Vector3(__start.X < __end.X ? __start.X : __end.X,
+                __start.Y < __end.Y ? __start.Y : __end.Y,
+                __start.Z < __end.Z ? __start.Z : __end.Z);
+            Vector3 max = new Vector3(__start.X > __end.X ? __start.X : __end.X,
+                __start.Y > __end.Y ? __start.Y : __end.Y,
+                __start.Z > __end.Z ? __start.Z : __end.Z);
+           */
+            Microsoft.Xna.Framework.BoundingBox bb = new BoundingBox(__start, __end);
+
+            _sceneGraph.calculateBoxIntersectedObjects(bb, _intersectedObjects);
+
+            return _intersectedObjects.Count != 0 ? _intersectedObjects[0] : null;
+
+        }
+
     }
 }

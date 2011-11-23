@@ -17,28 +17,40 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
             _octree = new SGQdTree();
             _scene = __scene;
         }
+
         public void AddObject(PivotObject __wo)
         {
             _octree.AddObject(__wo);
         }
+
         public void RemoveObject(PivotObject __wo)
         {
             _octree.RemoveObject(__wo);
         }
+
         public void NewFrame()
         {
             _octree.Update(_scene._objects);
         }
+
         public void calculateVisibleObjects(BoundingFrustum __viewFrustum, MyContainer<PivotObject> __container)
         {
             __container.Clear();
             _octree.Query(__viewFrustum, __container);
         }
+
         public void calculateShadowVisibleObjects(BoundingFrustum __lightViewFrustum, MyContainer<PivotObject> __container)
         {
             __container.Clear();
             _octree.Query(__lightViewFrustum, __container);
         }
+
+        public void calculateBoxIntersectedObjects(BoundingBox __objectBox, MyContainer<PivotObject> __container)
+        {
+            __container.Clear();
+            _octree.Query(__objectBox, __container);
+        }
+
         public void Clear()
         {
             foreach (PivotObject lo in _scene._objects)
@@ -47,6 +59,7 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
             }
             //objects.Clear();
         }
+
         public int recalulcalated()
         {
             return _octree._entityRecalculateCount;
