@@ -60,7 +60,9 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
 
         public override void MakeJolt(Vector3 __point, Vector3 __direction, float __mass)
         {
-            
+            __direction.Normalize();
+            __direction *= __mass * 10;
+            actor.AddForceAtPosition(__direction.toPhysicV3(), __point.toPhysicV3(), ForceMode.Impulse);
         }
 
         public override void Enable()

@@ -51,11 +51,6 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             _actor.GlobalOrientation *= Matrix.CreateRotationY(angle).toPhysicM();
         }
 
-        public override void MakeJolt(Vector3 __point, Vector3 __direction, float __mass)
-        {
-            
-        }
-
         public override void Disable()
         {
             _actor.ActorFlags.DisableCollision = true;

@@ -79,7 +79,7 @@ namespace PhysX_test2.TheGame.Level
             LogicControllers.Parameters.BulletParameters parameters = new LogicControllers.Parameters.BulletParameters(0,"bullet",10,null);
 
             parameters._lifeTime = 1000;//1 second
-            parameters._moveSpeed = 10.00f;
+            parameters._moveSpeed = 100.00f;
 
 
             Vector3 moveVector = MyGame.Instance._mousepoint - __weapon._weaponObject._inHandObject.transform.Translation;

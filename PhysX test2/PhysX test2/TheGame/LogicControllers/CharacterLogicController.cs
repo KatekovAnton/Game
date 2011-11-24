@@ -103,12 +103,8 @@ namespace PhysX_test2.TheGame.LogicControllers
                     //start fire animation and other
                     _hisObject.Fire();
                     _hisWeapon._itsLevel.CreateBullet(_hisWeapon, __gameTime.TotalGameTime);
-                    
                 }
-
             }
-
-            
         }
 
         public void CalculateInput()
