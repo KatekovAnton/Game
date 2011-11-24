@@ -44,9 +44,9 @@ namespace PhysX_test2.TheGame.Objects
         public GameWeapon(string __inHandObject, string __onFloorObject, string __addonObject, LevelObject __parentObject, GameLevel __level)
             : base(__level, true, false)
         {
-            _inHandObject = Engine.GameEngine.LoadObject(__inHandObject, null, false, __parentObject, PivotObjectDependType.Weapon) as LevelObject;
-            _onFloorObject = Engine.GameEngine.LoadObject(__onFloorObject, null, true) as LevelObject;
-            _addonObject = Engine.GameEngine.LoadObject(__addonObject, null, false, _inHandObject, PivotObjectDependType.Body) as LevelObject;
+            _inHandObject = Engine.GameEngine.LoadObject(__inHandObject, null, false, false, __parentObject, PivotObjectDependType.Weapon) as LevelObject;
+            _onFloorObject = Engine.GameEngine.LoadObject(__onFloorObject, null, true, false) as LevelObject;
+            _addonObject = Engine.GameEngine.LoadObject(__addonObject, null, false, false, _inHandObject, PivotObjectDependType.Body) as LevelObject;
 
             _state = GameWeaponState.None;
         }

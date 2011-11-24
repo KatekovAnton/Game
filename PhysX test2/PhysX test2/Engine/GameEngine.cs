@@ -136,16 +136,18 @@ namespace PhysX_test2.Engine
 
         public void CasheObject(string __name,
             Matrix? __deltaMatrix,
-            bool __needMouseCast, 
+            bool __needMouseCast,
+            bool __needBulletCast, 
             PivotObject __parentObject = null,
             PivotObjectDependType __dependType = PivotObjectDependType.Body)
         {
-            _cashe.CasheObject(__name, __deltaMatrix, __needMouseCast, __parentObject, __dependType);
+            _cashe.CasheObject(__name, __deltaMatrix, __needMouseCast, __needBulletCast, __parentObject, __dependType);
         }
 
         public static PivotObject LoadObject(string __name,
             Matrix? __deltaMatrix,
-            bool __needMouseCast, 
+            bool __needMouseCast,
+            bool __needBulletCast,
             PivotObject __parentObject = null,
             PivotObjectDependType __dependType = PivotObjectDependType.Body)
         {
@@ -210,7 +212,7 @@ namespace PhysX_test2.Engine
             if (loNew.useDeltaMatrix)
                 loNew.deltaMatrix = __deltaMatrix.Value;
             loNew._needMouseCast = __needMouseCast;
-
+            loNew._needBulletCast = __needBulletCast;
          
             if (needSetPosition)
                 loNew.SetGlobalPose(position);
@@ -228,7 +230,7 @@ namespace PhysX_test2.Engine
 
             ///box 
             {
-                LevelObjectBox = LoadObject("WoodenCrate10WorldObject\0", null, true) as LevelObject;
+                LevelObjectBox = LoadObject("WoodenCrate10WorldObject\0", null, true, true) as LevelObject;
                 LevelObjectBox.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 25, 0));
                 AddObjectToScene(LevelObjectBox);
             }
@@ -240,21 +242,21 @@ namespace PhysX_test2.Engine
             for (int i = 0; i < x;i++ )
                 for (int j = 0; j < y; j++)
                 {
-                    LevelObject lo = LoadObject("WoodenCrate10WorldObject\0", null, true) as LevelObject;
+                    LevelObject lo = LoadObject("WoodenCrate10WorldObject\0", null, true, true) as LevelObject;
                     lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(i * delta, 25, j * delta));
                     AddObjectToScene(lo);
                 }
             
             ////test side
             {
-                LevelObjectTestSide = LoadObject("TestSideWorldObject\0", null, true) as LevelObject;
+                LevelObjectTestSide = LoadObject("TestSideWorldObject\0", null, true, true) as LevelObject;
                 LevelObjectTestSide.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(0, 15, 0));
                 AddObjectToScene(LevelObjectTestSide);
             }
 
             /////sphere
             {
-                LevelObjectCursorSphere = LoadObject("Cursor\0", null, false) as LevelObject;
+                LevelObjectCursorSphere = LoadObject("Cursor\0", null, false, false) as LevelObject;
                 AddObjectToScene(LevelObjectCursorSphere);
             }
 

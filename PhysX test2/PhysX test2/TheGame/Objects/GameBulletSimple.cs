@@ -24,7 +24,7 @@ namespace PhysX_test2.TheGame.Objects
             : base(__level)
         {
             _name = __name;
-            _object = Engine.GameEngine.LoadObject(__name, null, false) as LevelObject; 
+            _object = Engine.GameEngine.LoadObject(__name, null, false, false) as LevelObject; 
         }
 
 

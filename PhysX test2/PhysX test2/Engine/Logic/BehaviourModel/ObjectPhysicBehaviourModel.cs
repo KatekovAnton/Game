@@ -58,6 +58,11 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             actor.Sleep();
         }
 
+        public override void MakeJolt(Vector3 __point, Vector3 __direction, float __mass)
+        {
+            
+        }
+
         public override void Enable()
         {
             actor.ActorFlags.DisableCollision = false;

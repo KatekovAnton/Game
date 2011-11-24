@@ -85,7 +85,7 @@ namespace PhysX_test2.TheGame.Level
             Vector3 moveVector = MyGame.Instance._mousepoint - __weapon._weaponObject._inHandObject.transform.Translation;
 
             moveVector.Normalize();
-            Matrix transform = __weapon._weaponObject._inHandObject.transform * Matrix.CreateTranslation(moveVector * 0.3f);
+            Matrix transform = __weapon._weaponObject._inHandObject.transform * Matrix.CreateTranslation(moveVector);
 
             BulletLogicController result = new BulletLogicController(
                 bullet,
@@ -99,16 +99,26 @@ namespace PhysX_test2.TheGame.Level
             result.LocateToLevel();
         }
 
-        public BaseLogicController SearchBulletIntersection(Vector3 __start, Vector3 __end)
+        public bool SearchBulletIntersection(BulletLogicController __bullet, Vector3 __moveVector)
         {
-            PivotObject result = _scene.SearchBulletIntersection(__start, __end);
+            Vector3 startPosition = __bullet._hisObject._object.behaviourmodel.CurrentPosition.Translation;
+            Vector3 endPosition = startPosition + __moveVector;
 
-            if (result._gameObject != null)
-                return result._gameObject as BaseLogicController;
+            Vector3 intersectionPoint = new Vector3();
 
+            PivotObject intersectedObject = _scene.SearchBulletIntersection(startPosition, endPosition, out intersectionPoint);
 
+            if (intersectedObject != null)
+            {
+                intersectedObject.behaviourmodel.MakeJolt(intersectionPoint, __moveVector, __bullet._instanceParameters._mass);
 
-            return null;
+                BaseLogicController blc = intersectedObject._gameObject as BaseLogicController;
+                if (blc != null)
+                    blc.TakeHit(__bullet._instanceParameters);
+                return true;
+            }
+
+            return false;            
         }
     }
 }

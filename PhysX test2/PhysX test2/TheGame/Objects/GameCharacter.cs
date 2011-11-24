@@ -31,7 +31,7 @@ namespace PhysX_test2.TheGame.Objects
         public GameCharacter(string __aliveName, Matrix __aliveMatrix, GameLevel __level)
             : base(__level, true, true)
         {
-            _levelObject = Engine.GameEngine.LoadObject(__aliveName, __aliveMatrix, true) as LevelObject;
+            _levelObject = Engine.GameEngine.LoadObject(__aliveName, __aliveMatrix, true, true) as LevelObject;
 
             _controllerAlive = (_levelObject.renderaspect as Engine.Render.AnimRenderObject).character;
 

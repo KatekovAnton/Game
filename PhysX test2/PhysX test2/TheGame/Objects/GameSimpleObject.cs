@@ -27,7 +27,7 @@ namespace PhysX_test2.TheGame.Objects
         public GameSimpleObject(string __objectName, PivotObject __parentObject, Engine.Logic.PivotObjectDependType __dependType, GameLevel __level, bool __mouseRC, bool __bulletRC)
             :base(__level, __mouseRC, __bulletRC)
         {
-            _object = Engine.GameEngine.LoadObject(__objectName, null, __mouseRC, __parentObject, __dependType) as LevelObject; 
+            _object = Engine.GameEngine.LoadObject(__objectName, null, __mouseRC, __bulletRC, __parentObject, __dependType) as LevelObject; 
         }
 
         public void LocateToLevel(LevelObject __parentObject)

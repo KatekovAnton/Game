@@ -46,24 +46,21 @@ namespace PhysX_test2.TheGame.LogicControllers
             }
             else
             {
-                Vector3 startPosition = _hisObject._object.behaviourmodel.CurrentPosition.Translation;
-                Vector3 delta= _moveVector * _instanceParameters._moveSpeed * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds/1000.0);
-                Vector3 endPosition = startPosition + delta;
-
-                BaseLogicController ooo = _itsLevel.SearchBulletIntersection(startPosition, endPosition);
-                if (ooo != null)
+                Vector3 delta = _moveVector * _instanceParameters._moveSpeed * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
+                if (!_itsLevel.SearchBulletIntersection(this, delta))
                 {
-                    CharacterLogicController clc = ooo as CharacterLogicController;
-                    if (clc != null && !clc._isMe)
-                    {
-                        int a = 0;
-                        a++;
-                    }
+                    Matrix newmatrix = _hisObject._object.behaviourmodel.CurrentPosition * Matrix.CreateTranslation(delta);
+                    _hisObject._object.SetGlobalPose(newmatrix);
                 }
+                else
+                {
+                    //remove visible object
+                    _hisObject.RemoveFromLevel();
+                    //stop the update
+                    _itsLevel.RemoveController(this);
 
-
-                Matrix newmatrix = _hisObject._object.behaviourmodel.CurrentPosition * Matrix.CreateTranslation(delta);
-                _hisObject._object.SetGlobalPose(newmatrix);
+                    //TODO ADD EFFECT!!!!!
+                }
             }
         }
 

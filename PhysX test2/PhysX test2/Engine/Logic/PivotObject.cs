@@ -66,6 +66,7 @@ namespace PhysX_test2.Engine.Logic
         /// calc or not cast with mouse ray for searching target point
         /// </summary>
         public bool _needMouseCast;
+        public bool _needBulletCast;
 
         protected bool _visible;
 

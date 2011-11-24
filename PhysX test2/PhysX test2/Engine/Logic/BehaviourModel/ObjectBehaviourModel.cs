@@ -50,6 +50,9 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         public virtual void Rotate(float __angle)
         { }
 
+        public virtual void MakeJolt(Vector3 __point, Vector3 __direction, float __mass)
+        { }
+
         public virtual void SetPosition(Vector3 newPosition)
         {
             SetGlobalPose(Matrix.CreateTranslation(newPosition), null);
