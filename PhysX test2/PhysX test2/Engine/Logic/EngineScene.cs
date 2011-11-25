@@ -217,7 +217,14 @@ namespace PhysX_test2.Engine.Logic
         }
         public PivotObject SearchBulletIntersection(Vector3 __start, Vector3 __end, out Vector3 __intersectionPoint)
         {
-            Microsoft.Xna.Framework.BoundingBox bb = new BoundingBox(__start, __end);
+            Vector3 min = new Vector3(__start.X < __end.X ? __start.X : __end.X,
+               __start.Y < __end.Y ? __start.Y : __end.Y,
+               __start.Z < __end.Z ? __start.Z : __end.Z);
+            Vector3 max = new Vector3(__start.X > __end.X ? __start.X : __end.X,
+                __start.Y > __end.Y ? __start.Y : __end.Y,
+                __start.Z > __end.Z ? __start.Z : __end.Z);
+
+            Microsoft.Xna.Framework.BoundingBox bb = new BoundingBox(min, max);
             __intersectionPoint = new Vector3();
             _sceneGraph.calculateBoxIntersectedObjects(bb, _intersectedObjects);
             Vector3 raydir = __end - __start;

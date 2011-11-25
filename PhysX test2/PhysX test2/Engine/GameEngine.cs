@@ -307,7 +307,6 @@ namespace PhysX_test2.Engine
             _cameraController = new CameraControllerPerson(Camera, __targetCharacter, new Vector3(-10, 10, 0));
         }
 
-
         public void SwichBehaviourModel()
         {
             if (enabeld)
@@ -321,7 +320,6 @@ namespace PhysX_test2.Engine
         {
             RenderPipeline.EnableDebugRender = !RenderPipeline.EnableDebugRender;
         }
-
         
         bool enabeld = true;
         public void Update(GameTime gameTime)
