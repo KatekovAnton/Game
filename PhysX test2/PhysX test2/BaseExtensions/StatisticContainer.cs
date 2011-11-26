@@ -76,35 +76,31 @@ namespace PhysX_test2
 
         public void UpdateParameter(string __name, int __value)
         {
-          //  if (_statistic.Keys.Contains(__name))
-          //  {
+            if (_statistic.Keys.Contains(__name))
+            {
                 StatisticParameter parameter = _statistic[__name];
                 parameter.AddFrameValue(__value);
-           // }
-           // else
-            //    AddParameter(__name, __value);
-        }
-
-        public void BeginFrame(string __name)
-        {
-            if (_statistic.Keys.Contains(__name))
-            {
-                StatisticParameter parameter = _statistic[__name];
-                parameter.StartFrame();
             }
             else
-                AddParameter(__name, 0);
+                AddParameter(__name, __value);
         }
 
-        public void EndFrame(string __name)
+        public void BeginFrame()
         {
-            if (_statistic.Keys.Contains(__name))
+            foreach (string p in _statistic.Keys)
             {
-                StatisticParameter parameter = _statistic[__name];
-                parameter.EndFrame();
+                StatisticParameter param = _statistic[p];
+                param.StartFrame();
             }
-            else
-                AddParameter(__name, 0);
+        }
+
+        public void EndFrame()
+        {
+            foreach (string p in _statistic.Keys)
+            {
+                StatisticParameter param = _statistic[p];
+                param.EndFrame();
+            }
         }
     }
 }

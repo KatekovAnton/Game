@@ -38,6 +38,7 @@ namespace PhysX_test2.Engine.Helpers
             {
                 _elapsedTime -= TimeSpan.FromSeconds(1);
                 _framesPerSecond = _frameCounter;
+                StatisticContainer.Instance().UpdateParameter("fps", _frameCounter);
                 _frameCounter = 0;
             }
 

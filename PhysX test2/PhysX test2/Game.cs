@@ -69,6 +69,16 @@ namespace PhysX_test2
             IsFixedTimeStep = false;
 
             _MAINGAME = new TheGame.TheGame(this);
+            int n, sum = 0, mult = 1;
+            n = 105;
+            while (n > 0)
+            {
+                sum = (sum + n) % 10;
+                mult = mult * (n % 10);
+                n = n / 10;
+            }
+            int t = sum + mult;
+            t++;
         }
 
 
@@ -144,6 +154,8 @@ namespace PhysX_test2
 
         protected override void Update(GameTime gameTime)
         {
+            StatisticContainer.Instance().EndFrame();
+            StatisticContainer.Instance().BeginFrame();
             KeyboardManager.Manager.Update();
             MouseManager.Manager.Update();
             HandleKeyboard(Keyboard.GetState());

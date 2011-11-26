@@ -69,17 +69,10 @@ namespace PhysX_test2.TheGame.Level
 
         public void Update(GameTime __gameTime)
         {
-            StatisticContainer.Instance().BeginFrame("totalBullets");
-            StatisticContainer.Instance().BeginFrame("totalBulletFaces");
-            StatisticContainer.Instance().BeginFrame("totalBulletObjects");
 
             foreach (BaseLogicController controller in _allLogicObjects)
                 controller.Update(__gameTime);
 
-
-            StatisticContainer.Instance().EndFrame("totalBullets");
-            StatisticContainer.Instance().EndFrame("totalBulletFaces");
-            StatisticContainer.Instance().EndFrame("totalBulletObjects");
         }
 
         public void CreateBullet(WeaponLogicController __weapon, TimeSpan __nowTime)
@@ -88,7 +81,7 @@ namespace PhysX_test2.TheGame.Level
             LogicControllers.Parameters.BulletParameters parameters = new LogicControllers.Parameters.BulletParameters(0,"bullet",10,null);
 
             parameters._lifeTime = 1000;//1 second
-            parameters._moveSpeed = 100.00f;
+            parameters._moveSpeed = 200.00f;
 
 
             Vector3 moveVector = MyGame.Instance._mousepoint - __weapon._weaponObject._inHandObject.transform.Translation;
