@@ -9,17 +9,34 @@ namespace PhysX_test2
     {
         class StatisticParameter
         {
-            public float _lastValue;
+            public int _lastValue;
             //public float _averageValue;
-            public float _minValue;
-            public float _maxValue;
+            public int _minValue;
+            public int _maxValue;
+
+            public int _currentValue;
 
             public StatisticParameter()
             {
  
             }
 
-            public void UpdateParameter(float _newValue)
+            public void StartFrame()
+            {
+                _currentValue = 0;
+            }
+
+            public void EndFrame()
+            {
+                UpdateParameter(_currentValue);
+            }
+
+            public void AddFrameValue(int __value)
+            {
+                _currentValue += __value;
+            }
+
+            public void UpdateParameter(int _newValue)
             {
                 _lastValue = _newValue;
                 _minValue = _minValue > _newValue ? _newValue : _newValue;
@@ -52,26 +69,47 @@ namespace PhysX_test2
         }
 
 
-        public void AddParameter(string __name, float __value)
+        public void AddParameter(string __name, int __value)
         {
             if (!_statistic.Keys.Contains(__name))
             {
                 StatisticParameter parameter = new StatisticParameter();
-                parameter._lastValue = parameter._maxValue = parameter._minValue = __value;
+                parameter._lastValue = parameter._maxValue = parameter._minValue = parameter._currentValue = __value ;
                 _statistic.Add(__name, parameter);
             }
         }
 
-        public void UpdateParameter(string __name, float __value)
+        public void UpdateParameter(string __name, int __value)
         {
             if (_statistic.Keys.Contains(__name))
             {
                 StatisticParameter parameter = _statistic[__name];
-                parameter.UpdateParameter(__value);
+                parameter.AddFrameValue(__value);
             }
             else
                 AddParameter(__name, __value);
-            
+        }
+
+        public void BeginFrame(string __name)
+        {
+            if (_statistic.Keys.Contains(__name))
+            {
+                StatisticParameter parameter = _statistic[__name];
+                parameter.StartFrame();
+            }
+            else
+                AddParameter(__name, 0);
+        }
+
+        public void EndFrame(string __name)
+        {
+            if (_statistic.Keys.Contains(__name))
+            {
+                StatisticParameter parameter = _statistic[__name];
+                parameter.EndFrame();
+            }
+            else
+                AddParameter(__name, 0);
         }
     }
 }

@@ -69,8 +69,17 @@ namespace PhysX_test2.TheGame.Level
 
         public void Update(GameTime __gameTime)
         {
+            StatisticContainer.Instance().BeginFrame("totalBullets");
+            StatisticContainer.Instance().BeginFrame("totalBulletFaces");
+            StatisticContainer.Instance().BeginFrame("totalBulletObjects");
+
             foreach (BaseLogicController controller in _allLogicObjects)
                 controller.Update(__gameTime);
+
+
+            StatisticContainer.Instance().EndFrame("totalBullets");
+            StatisticContainer.Instance().EndFrame("totalBulletFaces");
+            StatisticContainer.Instance().EndFrame("totalBulletObjects");
         }
 
         public void CreateBullet(WeaponLogicController __weapon, TimeSpan __nowTime)
@@ -106,6 +115,7 @@ namespace PhysX_test2.TheGame.Level
 
             Vector3 intersectionPoint = new Vector3();
 
+         
             PivotObject intersectedObject = _scene.SearchBulletIntersection(startPosition, endPosition, out intersectionPoint);
 
             if (intersectedObject != null)

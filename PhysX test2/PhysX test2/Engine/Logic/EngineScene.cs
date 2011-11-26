@@ -227,6 +227,7 @@ namespace PhysX_test2.Engine.Logic
             Microsoft.Xna.Framework.BoundingBox bb = new BoundingBox(min, max);
             __intersectionPoint = new Vector3();
             _sceneGraph.calculateBoxIntersectedObjects(bb, _intersectedObjects);
+            StatisticContainer.Instance().UpdateParameter("totalBulletObjects", _intersectedObjects.Count);
             Vector3 raydir = __end - __start;
             float length = raydir.Length();
             raydir.Normalize();
