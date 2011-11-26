@@ -134,6 +134,7 @@
     <Compile Include="BaseExtensions\MouseManager\MouseManager.cs" />
     <Compile Include="BaseExtensions\SQliteShell\SQliteConnector.cs" />
     <Compile Include="BaseExtensions\SQliteShell\SQliteResultSet.cs" />
+    <Compile Include="BaseExtensions\StatisticContainer.cs" />
     <Compile Include="Content\CollisionMesh.cs" />
     <Compile Include="ContactCallback.cs" />
     <Compile Include="Content\ContentMesh.cs" />
