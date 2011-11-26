@@ -28,20 +28,15 @@ namespace PhysX_test2
 
             public void EndFrame()
             {
-                UpdateParameter(_currentValue);
+                _lastValue = _currentValue;
+                _minValue = _minValue > _currentValue ? _currentValue : _minValue;
+                _maxValue = _maxValue > _currentValue ? _maxValue : _currentValue;
             }
 
             public void AddFrameValue(int __value)
             {
                 _currentValue += __value;
-            }
-
-            public void UpdateParameter(int _newValue)
-            {
-                _lastValue = _newValue;
-                _minValue = _minValue > _newValue ? _newValue : _newValue;
-                _maxValue = _maxValue > _newValue ? _maxValue : _newValue;
-            }
+            }     
         }
 
         Dictionary<string, StatisticParameter> _statistic;
@@ -69,7 +64,7 @@ namespace PhysX_test2
         }
 
 
-        public void AddParameter(string __name, int __value)
+        void AddParameter(string __name, int __value)
         {
             if (!_statistic.Keys.Contains(__name))
             {
@@ -81,13 +76,13 @@ namespace PhysX_test2
 
         public void UpdateParameter(string __name, int __value)
         {
-            if (_statistic.Keys.Contains(__name))
-            {
+          //  if (_statistic.Keys.Contains(__name))
+          //  {
                 StatisticParameter parameter = _statistic[__name];
                 parameter.AddFrameValue(__value);
-            }
-            else
-                AddParameter(__name, __value);
+           // }
+           // else
+            //    AddParameter(__name, __value);
         }
 
         public void BeginFrame(string __name)

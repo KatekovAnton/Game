@@ -199,6 +199,7 @@ namespace PhysX_test2.Engine.Logic
                 Vector3? point = lo.raycastaspect.IntersectionClosest(__ray, lo.transform);
                 if (point != null)
                 {
+                    StatisticContainer.Instance().UpdateParameter("totalBulletFaces", lo.raycastaspect.RCCM.Indices.Length / 3);
                     float range = (point.Value - __ray.Position).Length();
                     if (range < distance)
                     {
