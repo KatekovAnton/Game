@@ -203,11 +203,11 @@ namespace PhysX_test2.Engine.Animation
                 }
             }
             if(__visible)
-                GetFrameMatrix(_currentNodes, _baseCharacter.skeleton.baseskelet, frameNambers, Matrix.Identity);
+                GetFrameMatrix(_currentNodes, _baseCharacter.skeleton, frameNambers, Matrix.Identity);
 
         }
 
-        public void GetFrameMatrix(AnimationNode[] ans, Skeleton skeleton, int[] frameNamber, Matrix chahgeRoot)
+        public void GetFrameMatrix(AnimationNode[] ans, SkeletonExtended skeleton, int[] frameNamber, Matrix chahgeRoot)
         {
             int a = 0;
             for (int i = 0; i < ans.Length; i++)
@@ -224,8 +224,8 @@ namespace PhysX_test2.Engine.Animation
             if (a != frameNamber.Length) // если a == frameNamber.Length значит матрицы вообще не надо перерасчитывать
             {
                 Matrix[] res = DecomposedMatrix.ConvertToMartixArray(_sourceFrames);
-                res[skeleton.RootIndex] = res[skeleton.RootIndex] * chahgeRoot;
-                _currentFrames = Animation.GetIndependentMatrices(skeleton, res);
+                res[skeleton.TopRootIndex] = res[skeleton.TopRootIndex] * chahgeRoot;
+                _currentFrames = Animation.GetIndependentMatrices(skeleton.baseskelet, res);
                 _currentFramesInt = frameNamber;
             }
         }
