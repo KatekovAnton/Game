@@ -76,7 +76,7 @@ namespace PhysX_test2.TheGame
             _engine.Loaddata();
 
 
-            GameCharacter myCharacter = new GameCharacter("SCMarineAlive\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), _level);
+            GameCharacter myCharacter = new GameCharacter("SCMarineAlive\0", Matrix.Identity, _level);
             GameSimpleObject myHead = new GameSimpleObject("Head01\0", myCharacter._levelObject, Engine.Logic.PivotObjectDependType.Head, _level, false, false);
 
             CharacterLogicController me = new CharacterLogicController(myCharacter, myHead,true);
@@ -91,9 +91,9 @@ namespace PhysX_test2.TheGame
             _level.AddController(myGun);
             _characters.Add(_playerCharacterKey, me);
             _engine.CreateCharCameraController(me._hisObject._levelObject);
-            
 
-            GameCharacter myCharacter1 = new GameCharacter("SCMarineAlive\0", Matrix.CreateTranslation(new Vector3(0, 0, 0.1f)), _level);
+
+            GameCharacter myCharacter1 = new GameCharacter("SCMarineAlive\0", Matrix.Identity, _level);
             GameSimpleObject myHead1 = new GameSimpleObject("Head01\0", myCharacter1._levelObject, Engine.Logic.PivotObjectDependType.Head, _level, false, false);
             CharacterLogicController _anotherChar = new CharacterLogicController(myCharacter1, myHead1, false);
             _anotherChar.SetAlive(true);

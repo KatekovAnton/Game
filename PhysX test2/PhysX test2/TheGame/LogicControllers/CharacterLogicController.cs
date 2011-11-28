@@ -109,18 +109,23 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public void CalculateInput()
         {
+            //TODO assert
             if (_hisInput == null)
                 return;
             CharacterMoveState oldstate = _hisInput._newInputState;
+           
             _hisInput.Update(_hisObject._levelObject.behaviourmodel.CurrentPosition.Translation);
             
             _hisObject.Rotate(_hisInput._angle);
             _hisObject._levelObject.Move(_hisInput._moveVector);
+            Engine.Render.AnimRenderObject ro = _hisObject._levelObject.renderaspect as Engine.Render.AnimRenderObject;
+            ro.character.SetTopAngle(_hisInput._bodyRotation);
             if (oldstate != _hisInput._newInputState)
             {
-                Engine.Render.AnimRenderObject ro = _hisObject._levelObject.renderaspect as Engine.Render.AnimRenderObject;
+                
                 ro.ReceiveEvent(GetEventName(_hisInput._newInputState), oldstate == CharacterMoveState.Stay);
                 Engine.GameEngine.Instance.playerState = _hisInput._newInputState;
+                
             }
         }
 

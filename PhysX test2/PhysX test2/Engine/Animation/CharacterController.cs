@@ -36,8 +36,18 @@ namespace PhysX_test2.Engine.Animation
         /// </summary>
         public float[] _currentAnimTime;
         private int[] _currentFramesInt;
-
+        private float  _topAngle;
+        private bool _changetTopAngle;
         public Matrix Position;
+
+        public void SetTopAngle(float angle)
+        {
+            if (Math.Abs(angle - _topAngle) > 0.001f)
+            {
+                _changetTopAngle = true;
+                _topAngle = angle;
+            }
+        }
 
         public CharacterController(CharacterStatic characterBase, string[] startNodes)
         {
@@ -203,7 +213,7 @@ namespace PhysX_test2.Engine.Animation
                 }
             }
             if(__visible)
-                GetFrameMatrix(_currentNodes, _baseCharacter.skeleton, frameNambers, Matrix.Identity);
+                GetFrameMatrix(_currentNodes, _baseCharacter.skeleton, frameNambers, Matrix.CreateRotationX(_topAngle));
 
         }
 
@@ -221,8 +231,9 @@ namespace PhysX_test2.Engine.Animation
                     a++;
             }
 
-            if (a != frameNamber.Length) // если a == frameNamber.Length значит матрицы вообще не надо перерасчитывать
+            if (a != frameNamber.Length || _changetTopAngle) // если a == frameNamber.Length значит матрицы вообще не надо перерасчитывать
             {
+                _changetTopAngle = false;
                 Matrix[] res = DecomposedMatrix.ConvertToMartixArray(_sourceFrames);
                 res[skeleton.TopRootIndex] = res[skeleton.TopRootIndex] * chahgeRoot;
                 _currentFrames = Animation.GetIndependentMatrices(skeleton.baseskelet, res);

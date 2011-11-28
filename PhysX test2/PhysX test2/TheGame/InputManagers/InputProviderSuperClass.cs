@@ -33,6 +33,8 @@ namespace PhysX_test2.TheGame.InputManagers
         public Vector3 _target;
         public float _angle;
 
+        public float _bodyRotation = 0.0f;
+
         public virtual void Update(Vector3 __position)
         {
  

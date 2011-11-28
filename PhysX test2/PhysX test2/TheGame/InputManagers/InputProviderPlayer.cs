@@ -11,7 +11,7 @@ namespace PhysX_test2.TheGame.InputManagers
     {
         public float cospi18 = (float)Math.Cos(Math.PI * 1.0 / 8.0);
         public float _oldRotation = -MathHelper.PiOver2;
-
+       
         private float CreateAngleForCharacter(Microsoft.Xna.Framework.Vector3 __target, Vector3 __position)
         {
             double buffer = 0;
@@ -52,6 +52,13 @@ namespace PhysX_test2.TheGame.InputManagers
             _moveVector = Vector3.Zero;
             _viewVector = __position - _target;
 
+            float ydiff = _viewVector.Y;
+            Vector3 middlePoint = new Vector3(_target.X, __position.Y, _target.Z);
+            float sin = (middlePoint - __position).Length() / _viewVector.Length();
+            _bodyRotation = Convert.ToSingle(Math.Acos((double)sin));
+            if (ydiff < 0)
+                _bodyRotation *= -1;
+            _bodyRotation += 0.05f;
             // обработка нажатий клавы
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.W))

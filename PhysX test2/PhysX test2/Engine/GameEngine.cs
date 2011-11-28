@@ -152,7 +152,7 @@ namespace PhysX_test2.Engine
             PivotObjectDependType __dependType = PivotObjectDependType.Body)
         {
             var boxcharacterdescription = new LevelObjectDescription();
-            boxcharacterdescription = PackList.Instance .GetObject(__name, boxcharacterdescription) as LevelObjectDescription;
+            boxcharacterdescription = PackList.Instance.GetObject(__name, boxcharacterdescription) as LevelObjectDescription;
             Matrix position = Matrix.Identity;
             bool needSetPosition = false;
             if (__parentObject != null)
