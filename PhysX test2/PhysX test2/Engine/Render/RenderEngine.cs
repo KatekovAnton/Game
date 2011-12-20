@@ -404,10 +404,10 @@ namespace PhysX_test2.Engine.Render
             BlendState oldstate = Device.BlendState;
             BlendState newstate = new BlendState();
             newstate.AlphaBlendFunction = BlendFunction.Add;
-            newstate.AlphaDestinationBlend = Blend.DestinationColor;
-            newstate.AlphaSourceBlend = Blend.SourceAlpha;
+            newstate.AlphaDestinationBlend = Blend.One;
+           newstate.AlphaSourceBlend = Blend.SourceAlpha;
             newstate.ColorBlendFunction = BlendFunction.Add;
-            newstate.ColorDestinationBlend = Blend.DestinationColor;
+            newstate.ColorDestinationBlend = Blend.One;
             newstate.ColorSourceBlend = Blend.SourceColor;
             Device.BlendState = newstate;
             RenderArrayWithTehnique(name);

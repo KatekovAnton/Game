@@ -236,7 +236,7 @@ lambertfactor*=1.1;
 float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
 {
 	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
-	color.a = 01.0;
+	color *=color.a;
 	
 	return color;
 }
