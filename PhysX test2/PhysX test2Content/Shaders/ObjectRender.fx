@@ -449,6 +449,44 @@ technique NotAnimRenderSMR
   }
 }
 
+//РЕНДЕР ПРОЗРАЧНЫХ ОБЪЕКТОВ
+//не самосвет
+technique TransparentNoSM
+{
+  pass Pass1
+  {
+    VertexShader = compile vs_2_0 StaticVertexShaderSM();
+    PixelShader = compile ps_2_0 SolidTextureSM();
+  }
+}
+
+technique TransparentSM
+{
+  pass Pass1
+  {
+    VertexShader = compile vs_2_0 StaticVertexShaderSM();
+    PixelShader = compile ps_2_0 SolidTextureSM();
+  }
+}
+
+technique TransparentSMSmooth
+{
+  pass Pass1
+  {
+    VertexShader = compile vs_2_0 StaticVertexShaderSM();
+    PixelShader = compile ps_2_0 SolidTextureSMSmooth();
+  }
+}
+//саомсвет
+technique TransparentSelfIlmnNoSM
+{
+  pass Pass1
+  {
+    VertexShader = compile vs_2_0 StaticVertexShaderSM();
+    PixelShader = compile ps_2_0 SolidTextureSM();
+  }
+}
+
 ////СОЗДАНИЕ ШАДОВМАПЫ
 //HiDef
 technique CreateStaticShadowMap
@@ -484,4 +522,6 @@ technique CreateAnimShadowMapR
         PixelShader = compile ps_2_0 CreateShadowMap_PixelShaderR();
     }
 }
+
+
 //ОТДЕЛЬНЫЕ ТЕХНИКИ НА ТРАВУ И ПУЛИ СО ВЗРЫВАМИ

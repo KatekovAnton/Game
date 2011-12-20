@@ -149,6 +149,7 @@ namespace PhysX_test2
                 }
             }
             _mousepoint = newpoint;
+            _mousepoint.Y -= 0.1f;
             _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.CreateTranslation(newpoint), null);
         }
 

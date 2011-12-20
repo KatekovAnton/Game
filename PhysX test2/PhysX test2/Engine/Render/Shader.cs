@@ -32,7 +32,15 @@ namespace PhysX_test2.Engine.Render
         public static string CreateStaticShadowMap = "CreateStaticShadowMap";
         public static string CreateAnimShadowMap = "CreateAnimShadowMap";
 
-        //ОТДЕЛЬНЫЕ ТЕХНИКИ НА ТРАВУ И ПУЛИ СО ВЗРЫВАМИ
+        public static string TransparentNoSM = "TransparentNoSM";
+        public static string TransparentSM = "TransparentSM";
+        public static string TransparentSMSmooth = "TransparentSMSmooth";
+
+        public static string TransparentSelfIlmnNoSM = "TransparentSelfIlmnNoSM";
+
+        
+
+        //ОТДЕЛЬНЫЕ ТЕХНИКИ НА ТРАВУ
 
 
        protected class LoggerTrick : ContentBuildLogger
@@ -131,6 +139,9 @@ namespace PhysX_test2.Engine.Render
 
                 CreateStaticShadowMap = "CreateStaticShadowMapR";
                 CreateAnimShadowMap = "CreateAnimShadowMapR";
+
+             
+                TransparentSMSmooth = TransparentSM;
             }
 
             return new Shader(device, ec);

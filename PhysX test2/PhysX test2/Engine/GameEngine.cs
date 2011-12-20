@@ -128,6 +128,7 @@ namespace PhysX_test2.Engine
             {
                 PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect = Shader.FromStream(stream, MyGame.Device);
             }
+
             //PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect = Shader.Load(MyGame.Instance.Content);
 
             //рендерщик
