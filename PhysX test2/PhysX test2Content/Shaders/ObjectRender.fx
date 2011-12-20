@@ -233,6 +233,13 @@ lambertfactor*=1.1;
     return float4(color,1);
 
 }
+float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
+{
+	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
+	color.a = 01.0;
+	
+	return color;
+}
 
 float4 SolidTextureSM(PS_INPUT f) : COLOR0
 {
@@ -449,6 +456,44 @@ technique NotAnimRenderSMR
   }
 }
 
+//РЕНДЕР ПРОЗРАЧНЫХ ОБЪЕКТОВ
+//не самосвет
+technique TransparentNoSM
+{
+  pass Pass1
+  {
+    VertexShader = compile vs_2_0 StaticVertexShaderSM();
+    PixelShader = compile ps_2_0 SolidTextureSM();
+  }
+}
+
+technique TransparentSM
+{
+  pass Pass1
+  {
+    VertexShader = compile vs_2_0 StaticVertexShaderSM();
+    PixelShader = compile ps_2_0 SolidTextureSM();
+  }
+}
+
+technique TransparentSMSmooth
+{
+  pass Pass1
+  {
+    VertexShader = compile vs_2_0 StaticVertexShaderSM();
+    PixelShader = compile ps_2_0 SolidTextureSMSmooth();
+  }
+}
+//саомсвет
+technique TransparentSelfIlmnNoSM
+{
+  pass Pass1
+  {
+    VertexShader = compile vs_2_0 StaticVertexShaderSM();
+    PixelShader = compile ps_2_0 SolidTextureSelfIll();
+  }
+}
+
 ////СОЗДАНИЕ ШАДОВМАПЫ
 //HiDef
 technique CreateStaticShadowMap
@@ -484,4 +529,6 @@ technique CreateAnimShadowMapR
         PixelShader = compile ps_2_0 CreateShadowMap_PixelShaderR();
     }
 }
+
+
 //ОТДЕЛЬНЫЕ ТЕХНИКИ НА ТРАВУ И ПУЛИ СО ВЗРЫВАМИ

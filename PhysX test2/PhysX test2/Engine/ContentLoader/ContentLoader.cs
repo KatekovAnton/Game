@@ -315,6 +315,8 @@ namespace PhysX_test2.Engine.ContentLoader
                     }
                     RenderObject result = new UnAnimRenderObject(models, rod.IsShadowCaster, rod.IsShadowReceiver);
                     rod.Retain(result);
+                    result.isSelfIllumination = rod.isSelfIllumination;
+                    result.isTransparent = rod.isTransparent;
                     return result;
                 }
             }
@@ -332,6 +334,8 @@ namespace PhysX_test2.Engine.ContentLoader
                 {
                     UnAnimRenderObject res = rod._engineSampleObject as UnAnimRenderObject;
                     result = new UnAnimRenderObject(res.LODs, rod.IsShadowCaster, rod.IsShadowReceiver);
+                    result.isSelfIllumination = rod.isSelfIllumination;
+                    result.isTransparent = rod.isTransparent;
                 }
                 if (result.isanimated != description.IsAnimated)
                     throw new Exception("wrong object animation flag!!!");

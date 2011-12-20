@@ -15,7 +15,10 @@ namespace PhysX_test2.Engine.Render
         public bool isshadowreceiver;
         public bool isshadowcaster;
 
+
         public bool visible;
+        public bool isTransparent;
+        public bool isSelfIllumination;
 
         public bool Disposed = false;
        
