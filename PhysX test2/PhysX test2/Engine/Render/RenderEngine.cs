@@ -396,13 +396,18 @@ namespace PhysX_test2.Engine.Render
         }
         public void RenderBlendArrayWithTehnique(string name)
         {
+            MyContainer<PivotObject> Objects = ArraysPerTehnique[name].Objects;
+            if (Objects.IsEmpty)
+                return;
+
+          //  (source × Blend.SourceAlpha) + (destination × Blend.InvSourceAlpha)
             BlendState oldstate = Device.BlendState;
             BlendState newstate = new BlendState();
             newstate.AlphaBlendFunction = BlendFunction.Add;
-            newstate.AlphaDestinationBlend = Blend.SourceColor;
-            newstate.AlphaSourceBlend = Blend.SourceColor;
+            newstate.AlphaDestinationBlend = Blend.DestinationColor;
+            newstate.AlphaSourceBlend = Blend.SourceAlpha;
             newstate.ColorBlendFunction = BlendFunction.Add;
-            newstate.ColorDestinationBlend = Blend.SourceColor;
+            newstate.ColorDestinationBlend = Blend.DestinationColor;
             newstate.ColorSourceBlend = Blend.SourceColor;
             Device.BlendState = newstate;
             RenderArrayWithTehnique(name);

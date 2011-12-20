@@ -233,6 +233,13 @@ lambertfactor*=1.1;
     return float4(color,1);
 
 }
+float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
+{
+	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
+	color.a = 01.0;
+	
+	return color;
+}
 
 float4 SolidTextureSM(PS_INPUT f) : COLOR0
 {
@@ -483,7 +490,7 @@ technique TransparentSelfIlmnNoSM
   pass Pass1
   {
     VertexShader = compile vs_2_0 StaticVertexShaderSM();
-    PixelShader = compile ps_2_0 SolidTextureSM();
+    PixelShader = compile ps_2_0 SolidTextureSelfIll();
   }
 }
 

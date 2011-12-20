@@ -145,11 +145,12 @@ namespace PhysX_test2
                         clickedlo = lo;
                         distance = range;
                         newpoint = point.Value;
+                        newpoint.Y -= 0.1f;
                     }
                 }
             }
             _mousepoint = newpoint;
-            _mousepoint.Y -= 0.1f;
+            
             _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.CreateTranslation(newpoint), null);
         }
 

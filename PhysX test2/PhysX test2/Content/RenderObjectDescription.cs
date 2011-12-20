@@ -20,7 +20,8 @@ namespace PhysX_test2.Content
         public bool IsShadowReceiver = false;
 
         public bool NeedRotate;
-
+        public bool isTransparent ;
+        public bool isSelfIllumination;
 
         public void addlod()
         {
@@ -107,6 +108,9 @@ namespace PhysX_test2.Content
             IsShadowCaster = br.ReadBoolean();
             IsShadowReceiver = br.ReadBoolean();
             NeedRotate = br.ReadBoolean();
+            isTransparent = br.ReadBoolean();
+            isSelfIllumination = br.ReadBoolean();
+
         }
     }
 }
