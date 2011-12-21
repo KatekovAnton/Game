@@ -158,7 +158,6 @@ namespace PhysX_test2.Engine.Render
                     if (AddedObject.isshadowcaster && EnableShadows)
                         AddedObject.ShadowTehnique = Shader.CreateAnimShadowMap;
 
-
                     if (AddedObject.isshadowreceiver)
                         if (EnableShadows)
                             if (SmoothShadows)
@@ -184,10 +183,8 @@ namespace PhysX_test2.Engine.Render
                             AddedObject.PictureTehnique = Shader.NotAnimRenderNoSM;
                     else
                         AddedObject.PictureTehnique = Shader.NotAnimRenderNoSM;
-
                 }
             }
-
         }
 
         public void NewFrame(Vector3 lightDir)
@@ -400,7 +397,7 @@ namespace PhysX_test2.Engine.Render
             if (Objects.IsEmpty)
                 return;
 
-          //  (source × Blend.SourceAlpha) + (destination × Blend.InvSourceAlpha)
+            //  (source × Blend.One) + (destination × Blend.One)
             BlendState oldstate = Device.BlendState;
             BlendState newstate = new BlendState();
             newstate.AlphaBlendFunction = BlendFunction.Add;
