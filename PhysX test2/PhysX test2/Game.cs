@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -24,8 +25,10 @@ namespace PhysX_test2
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class MyGame : Game
+    public class MyGame : Game, IKeyboardUser
     {
+        private List<HotKey> _hotkeys;
+
         public static MyGameState _currentState;
 
         public static GraphicsDeviceManager DeviceManager;
@@ -45,14 +48,21 @@ namespace PhysX_test2
 
         public TheGame.TheGame _MAINGAME;
 
-      
+
+        private bool showConsole = true;
         private string _outputstring = string.Empty;
         private SpriteBatch _spriteBatch;
 
-        private string _helpHint = "Press \'O\' to swich debug render\nPress \'P\' to toggle physic model of box\nPress \'I\' to force marine to drop gun";
+        private string _helpHint = "Press \'O\' to swich debug render\nPress \'P\' to toggle physic model of box\nPress \'I\' to force marine to drop gun\nPress \'Left Ctrl + C\' to toggle event console";
 
+        
         public MyGame()
         {
+            _hotkeys = new List<HotKey>();
+            _hotkeys.Add(new HotKey(new Keys[] {Keys.LeftControl, Keys.C }, SwitchConsole));
+            KeyboardManager.Manager.AddKeyboardUser(this);
+
+
             PhysX_test2.MouseManager.Manager = new MouseManager();
             Instance = this;
             DeviceManager = new GraphicsDeviceManager(this);
@@ -90,7 +100,6 @@ namespace PhysX_test2
 
             _currentState = MyGameState.Game;
         }
-
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -198,12 +207,14 @@ namespace PhysX_test2
             _spriteBatch.DrawString(_font1, _helpHint, new Vector2(0, 60), Color.Black);
 
 
-
-            for (int i = 0; i < ScreenLog.Messages.Count; i++)
+            if (showConsole)
             {
-                _spriteBatch.DrawString(_font1, ScreenLog.Messages[i], new Vector2(0, GameConfiguration.ScreenResolution.Y - i * 10 - 30),  ScreenLog.MessageColors[i]);
+                for (int i = 0; i < ScreenLog.Messages.Count; i++)
+                {
+                    _spriteBatch.DrawString(_font1, ScreenLog.Messages[i], new Vector2(0, GameConfiguration.ScreenResolution.Y - i * 10 - 15), ScreenLog.MessageColors[i]);
+                }
+
             }
-        
 
             _spriteBatch.End();
         }
@@ -214,6 +225,21 @@ namespace PhysX_test2
             Color c =  color == null? Color.Black:color.Value;
 
             ScreenLog.TraceMessage(__message, c);
+        }
+
+        public void SwitchConsole()
+        {
+            showConsole = !showConsole;
+        }
+
+        public bool IsKeyboardCaptured()
+        {
+            return false;
+        }
+
+        public List<HotKey> hotkeys()
+        {
+            return _hotkeys;
         }
     }
     
