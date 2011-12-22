@@ -8,7 +8,7 @@ using Community.CsharpSqlite;
 namespace PhysX_test2.SQliteShell
 {
     public delegate void ActionForError(string errorName);
-    class SQliteConnector
+    public class SQliteConnector
     {
         Sqlite3.sqlite3 dbconnector;
         public SQliteConnector(string dbname)
@@ -64,7 +64,7 @@ namespace PhysX_test2.SQliteShell
             }
             return null;
         }
-        public void close()
+        public void Close()
         {
             Sqlite3.sqlite3_close(dbconnector);
         }

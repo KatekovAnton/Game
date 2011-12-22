@@ -67,6 +67,7 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public void SwitchGun()
         {
+            MyGame.ScreenLogMessage("switching my gun");
             if (_hisWeapon._weaponObject._state == GameWeaponState.InHand)
                 _hisWeapon.SetState(GameWeaponState.OnFloor);
             else
@@ -80,11 +81,15 @@ namespace PhysX_test2.TheGame.LogicControllers
 
             if (__liveState)
             {
+                MyGame.ScreenLogMessage("character alive");
                 _hisObject.SetAlive();
                 _hisObject._levelObject._gameObject = this;
             }
             else
+            {
+                MyGame.ScreenLogMessage("character dead");
                 _hisObject.SetDead();
+            }
 
             _hisHead.LocateToLevel(_hisObject._levelObject);
             _isAlive = __liveState;
@@ -145,7 +150,7 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public override void TakeHit(Parameters.BulletParameters __bulletParameters)
         {
-
+            MyGame.ScreenLogMessage("character taking hit", Color.Red);
         }
 
         public override Parameters.InteractiveObjectParameters GetParameters()

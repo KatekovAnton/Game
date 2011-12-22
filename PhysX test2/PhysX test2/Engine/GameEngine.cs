@@ -36,6 +36,9 @@ namespace PhysX_test2.Engine
         public FpsCounter FPSCounter;
 
 
+        //screen log
+        public ScreenLog screenLog;
+
         //for text rendering
         public SpriteFont Font1;
         public SpriteBatch spriteBatch;
@@ -80,6 +83,7 @@ namespace PhysX_test2.Engine
 
         public GameEngine(MyGame game)
         {
+            screenLog = new ScreenLog();
             _hotkeys = new List<HotKey>();
             _hotkeys.Add(new HotKey(new Keys[] { Keys.O }, SwichDebugRender));
             _hotkeys.Add(new HotKey(new Keys[] { Keys.P }, SwichBehaviourModel));
@@ -98,7 +102,7 @@ namespace PhysX_test2.Engine
             //разме рэкрана
             MyGame.DeviceManager.PreferredBackBufferWidth = (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.8);
             MyGame.DeviceManager.PreferredBackBufferHeight = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.8);
-
+            GameConfiguration.ScreenResolution = new Vector2(MyGame.DeviceManager.PreferredBackBufferWidth, MyGame.DeviceManager.PreferredBackBufferHeight);
             _cashe = new ObjectCashe();
         }
 
@@ -390,6 +394,8 @@ namespace PhysX_test2.Engine
 
             //потом ещё чонить
         }
+
+      
 
 
         public static Color Int32ToColor(int color) {

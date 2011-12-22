@@ -7,7 +7,7 @@ using System.Text;
 using PhysX_test2.TheGame.Level;
 using PhysX_test2.TheGame.Objects;
 using PhysX_test2.TheGame.Objects.StateGraphs;
-
+using PhysX_test2.SQliteShell;
 
 namespace PhysX_test2.TheGame
 {
@@ -36,13 +36,54 @@ namespace PhysX_test2.TheGame
         public const string _levelgeometryNodeIdle = "idle";
 
 
-        public ObjectGraphStatic _graphCharacter;
+        public const int EngLanguageID = 1;
+        public const int RusLanguageID = 2;
+        
 
+        public ObjectGraphStatic GraphCharacter
+        {
+            get;
+            private set;
+        }
+        public SQliteConnector Database
+        {
+            get;
+            private set;
+        }
+        private Dictionary<string, string> _localizations;
 
         private StaticObjects()
         { 
             //init all static objects here
             InitCharacterGraph();
+            ConnectToDatabase("Data\\Data.sqlite");
+            LoadLocalizations(EngLanguageID);
+        }
+
+        private void ConnectToDatabase(string __databaseName)
+        {
+            Database = new SQliteConnector(__databaseName);
+        }
+
+        private void LoadLocalizations(int __targetLanguage)
+        {
+            if (Database == null)
+                return;
+            _localizations = new Dictionary<string,string>();
+            SQliteResultSet result = Database.executeSelect("select textKey, textValue from lang_text where langKey = " + __targetLanguage.ToString(), null);
+            foreach(object[] arr in result.result)
+            {
+                _localizations.Add(arr[0].ToString(), arr[1].ToString());
+            }
+        }
+
+        public string localization(string __key)
+        {
+            if (_localizations.Keys.Contains(__key))
+                return _localizations[__key];
+
+            LogProvider.logMessage("text not found: " + __key);
+            return __key;
         }
 
         private void InitCharacterGraph()
@@ -95,10 +136,15 @@ namespace PhysX_test2.TheGame
             deadToAlive.SetNodeFrom(nodeIdle);
             deadToAlive._nodeTo = nodeDead;
 
-            _graphCharacter = new ObjectGraphStatic(
+            GraphCharacter = new ObjectGraphStatic(
                 new ObjectGraphNode[] { nodeIdle, nodeDead,nodeAction }, 
                 new ObjectGraphEdge[] { deadToAlive, aliveToDead, aliveToAction,actionToAlive,actionToDead}
                 );
+        }
+
+        ~StaticObjects()
+        {
+            Database.Close();
         }
     }
 }

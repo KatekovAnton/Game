@@ -77,6 +77,7 @@ namespace PhysX_test2.TheGame.Level
 
         public void CreateBullet(WeaponLogicController __weapon, TimeSpan __nowTime)
         {
+            MyGame.ScreenLogMessage("create bullet");
             Objects.GameBulletSimple bullet = new Objects.GameBulletSimple(this, "SimpleBullet_LO\0");
             LogicControllers.Parameters.BulletParameters parameters = new LogicControllers.Parameters.BulletParameters(0,"bullet",10,null);
 

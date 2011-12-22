@@ -8,6 +8,7 @@ using StillDesign.PhysX;
 using Ray = Microsoft.Xna.Framework.Ray;
 
 using PhysX_test2.TheGame;
+using PhysX_test2.Engine.Helpers;
 
 namespace PhysX_test2
 {
@@ -44,7 +45,7 @@ namespace PhysX_test2
 
         public TheGame.TheGame _MAINGAME;
 
-        private Log _log;
+      
         private string _outputstring = string.Empty;
         private SpriteBatch _spriteBatch;
 
@@ -54,7 +55,6 @@ namespace PhysX_test2
         {
             PhysX_test2.MouseManager.Manager = new MouseManager();
             Instance = this;
-            _log = new Log();
             DeviceManager = new GraphicsDeviceManager(this);
             IsMouseVisible = true;
 
@@ -117,6 +117,10 @@ namespace PhysX_test2
         protected override void UnloadContent()
         {
             _engine.UnLoad();
+            LogProvider.logMessage("Closing application");
+            LogProvider.SaveLog();
+            LogProvider.Close();
+           
         }
 
         private void HandleKeyboard(KeyboardState keyboardState)
@@ -183,7 +187,7 @@ namespace PhysX_test2
             _spriteBatch.Begin();
             if (_engine.BoxScreenPosition.Z < 1.0)
                 _spriteBatch.DrawString(_font1, "Box position = " + _engine.LevelObjectBox.behaviourmodel.GetGlobalPose().Translation.ToString(), new Vector2(_engine.BoxScreenPosition.X, _engine.BoxScreenPosition.Y), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);
-            _spriteBatch.DrawString(_font1, DateTime.Now.ToString(), new Vector2(10, 170), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);
+          //  _spriteBatch.DrawString(_font1, DateTime.Now.ToString(), new Vector2(10, 170), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);
 
             _spriteBatch.DrawString(_font1, string.Format("FPS: {0} Frame time: {1}", _engine.FPSCounter.FramesPerSecond, _engine.FPSCounter.FrameTime), Vector2.Zero, Color.Black);
             _spriteBatch.DrawString(_font1, "Visible objects count: " + _engine.visibleobjectscount.ToString(), new Vector2(0, 15), Color.Black);
@@ -193,23 +197,40 @@ namespace PhysX_test2
 
             _spriteBatch.DrawString(_font1, _helpHint, new Vector2(0, 60), Color.Black);
 
+
+
+            for (int i = 0; i < ScreenLog.Messages.Count; i++)
+            {
+                _spriteBatch.DrawString(_font1, ScreenLog.Messages[i], new Vector2(0, GameConfiguration.ScreenResolution.Y - i * 10 - 30),  ScreenLog.MessageColors[i]);
+            }
+        
+
             _spriteBatch.End();
         }
+
+        public static void ScreenLogMessage(string __message, Color? color = null)
+        {
+            //VOVA - так выводятся сообщения на экран
+            Color c =  color == null? Color.Black:color.Value;
+
+            ScreenLog.TraceMessage(__message, c);
+        }
     }
+    
 
     public class UserOutput : UserOutputStream
     {
         public override void Print(string message)
         {
             if (LogProvider.NeedTracePhysXMessages)
-                LogProvider.TraceMessage("PhysX: " + message);
+                LogProvider.logMessage("PhysX: " + message);
         }
 
 
         public override AssertResponse ReportAssertionViolation(string message, string file, int lineNumber)
         {
             if (LogProvider.NeedTracePhysXMessages)
-                LogProvider.TraceMessage("PhysX: " + message);
+                LogProvider.logMessage("PhysX: " + message);
 
             return AssertResponse.Continue;
         }
@@ -218,7 +239,7 @@ namespace PhysX_test2
         public override void ReportError(ErrorCode errorCode, string message, string file, int lineNumber)
         {
             if (LogProvider.NeedTracePhysXMessages)
-                LogProvider.TraceMessage("PhysX: " + message);
+                LogProvider.logMessage("PhysX: " + message);
         }
     }
 }

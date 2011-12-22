@@ -124,7 +124,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseExtensions\DatabaseManager.cs" />
+    <Compile Include="BaseExtensions\ExcLog.cs" />
+    <Compile Include="BaseExtensions\GameConfiguration.cs" />
     <Compile Include="BaseExtensions\Graph\GraphController.cs" />
     <Compile Include="BaseExtensions\Graph\GraphNodeInctance.cs" />
     <Compile Include="BaseExtensions\Graph\IGraphUser.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="Engine\CameraControllers\CameraControllerSuperClass.cs" />
     <Compile Include="Engine\ContentLoader\ContentLoader.cs" />
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
+    <Compile Include="Engine\Helpers\ScreenLog.cs" />
     <Compile Include="Engine\ObjectCashe.cs" />
     <Compile Include="TheGame\InputManagers\InputProviderAI.cs" />
     <Compile Include="TheGame\InputManagers\InputProviderNetwork.cs" />
@@ -196,7 +198,7 @@
     <Compile Include="Content\Texture.cs" />
     <Compile Include="Content\TextureList.cs" />
     <Compile Include="Content\Vertex.cs" />
-    <Compile Include="Engine\Log.cs" />
+    <Compile Include="BaseExtensions\Log.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectBehaviourModel.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectMovingBehaviourModel.cs" />
     <Compile Include="Engine\Logic\BehaviourModel\ObjectPhysicBehaviourModel.cs" />

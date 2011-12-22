@@ -83,12 +83,12 @@ namespace PhysX_test2
             {
                 float ffl = FrictionForce.Length();
                 float nfl = NormalForce.Length();
-                if(Engine.LogProvider.NeedTraceContactReportMessages)
-                    Engine.LogProvider.TraceMessage("Contact BoxActor/GroundPlane: Contact type:" + events.ToString() + ";\t---> Contact friction force=" + FrictionForce.ToString() + "; module=" + ffl.ToString() + ";\tContact normal force:" + NormalForce.ToString() + "; module =" + nfl.ToString() + ";");
+                if(LogProvider.NeedTraceContactReportMessages)
+                    LogProvider.logMessage("Contact BoxActor/GroundPlane: Contact type:" + events.ToString() + ";\t---> Contact friction force=" + FrictionForce.ToString() + "; module=" + ffl.ToString() + ";\tContact normal force:" + NormalForce.ToString() + "; module =" + nfl.ToString() + ";");
             }
             else
-                if (Engine.LogProvider.NeedTraceContactReportMessages)
-                    Engine.LogProvider.TraceMessage("Contact BoxActor/GroundPlane: Contact type:" + events.ToString() + ";\tContact forces - ZERO.   (FrFL = " + FrictionForce.Length().ToString() + ",\tNormFL = " + NormalForce.Length().ToString()+ ");");
+                if (LogProvider.NeedTraceContactReportMessages)
+                    LogProvider.logMessage("Contact BoxActor/GroundPlane: Contact type:" + events.ToString() + ";\tContact forces - ZERO.   (FrFL = " + FrictionForce.Length().ToString() + ",\tNormFL = " + NormalForce.Length().ToString()+ ");");
         }
     }
     public class ContactReportPair

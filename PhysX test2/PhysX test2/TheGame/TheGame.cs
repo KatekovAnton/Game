@@ -24,16 +24,16 @@ namespace PhysX_test2.TheGame
 
         public Dictionary<string, CharacterLogicController> _characters;
         //public Dictionary<string, WeaponLogicController> _weapons;
-        
-        
 
+
+        public StaticObjects _staticData;
         public GameLevel _level;
         public GameEngine _engine;
 
         public TheGame(MyGame __game)
         {
             _engine = new GameEngine(__game);
-            
+            _staticData = StaticObjects.Instance();
             _level = new GameLevel(_engine.gameScene);
 
             _characters = new Dictionary<string, CharacterLogicController>();
