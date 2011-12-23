@@ -75,19 +75,43 @@ namespace PhysX_test2.TheGame.Level
 
         }
 
+        public Vector3 CreateRandomizedPoint(Vector3 StartPoint, float accuracy)
+        {
+            float dispersion = (1.0f - accuracy) * 0.5f;
+
+            float multx = MyRandom.Instance.Next(0, 10) > 5 ? 1 : -1;
+            float multy = MyRandom.Instance.Next(0, 10) > 5 ? 1 : -1;
+            float multz = MyRandom.Instance.Next(0, 10) > 5 ? 1 : -1;
+
+            Vector3 deltaRadius = new Vector3(dispersion * multx, dispersion * multy, dispersion * multz);
+            Vector3 result = StartPoint + deltaRadius;
+            
+            return result;
+        }
+
         public void CreateBullet(WeaponLogicController __weapon, TimeSpan __nowTime)
         {
             //VOVA 
             //тут создается пуля, __weapon - из какой пушки выпущена
+            //тут тебе ненадо ничего менять имхо
             MyGame.ScreenLogMessage("create bullet");
             
             LogicControllers.Parameters.BulletParameters parameters = __weapon._chargedBullets;
             Objects.GameBulletSimple bullet = new Objects.GameBulletSimple(this, parameters._levelObjectName);
 
             Vector3 moveVector;
-            moveVector = MyGame.Instance._mousepoint - __weapon._weaponObject._inHandObject.transform.Translation;
-           // moveVector = Vector3.TransformNormal(new Vector3(0, -1, 0), __weapon._weaponObject._inHandObject.transform);
+            Vector3 targetpoint = MyGame.Instance._mousepoint;
+            Vector3 startpoint = __weapon._weaponObject._inHandObject.transform.Translation;
+
+            moveVector = targetpoint - startpoint;
             moveVector.Normalize();
+
+            targetpoint = startpoint + moveVector*10;
+            targetpoint = CreateRandomizedPoint(targetpoint, parameters._accuracy);
+
+            moveVector = targetpoint - startpoint;
+            moveVector.Normalize();
+
             Matrix transform = __weapon._weaponObject._inHandObject.transform * Matrix.CreateTranslation(moveVector);
 
             BulletLogicController result = new BulletLogicController(
