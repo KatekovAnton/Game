@@ -31,6 +31,8 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
             _accuracy = __accuracy;
 
             _levelObjectName = __levelObjectName;
+            if (!_levelObjectName.EndsWith("\0"))
+                _levelObjectName += "\0";
             _bulletMass = __bulletMass;
         }
         

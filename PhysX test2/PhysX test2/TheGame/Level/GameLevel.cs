@@ -80,9 +80,9 @@ namespace PhysX_test2.TheGame.Level
             //VOVA 
             //тут создается пуля, __weapon - из какой пушки выпущена
             MyGame.ScreenLogMessage("create bullet");
-            Objects.GameBulletSimple bullet = new Objects.GameBulletSimple(this, "SimpleBullet_LO\0");
+            
             LogicControllers.Parameters.BulletParameters parameters = __weapon._chargedBullets;
-
+            Objects.GameBulletSimple bullet = new Objects.GameBulletSimple(this, parameters._levelObjectName);
 
             Vector3 moveVector;
             moveVector = MyGame.Instance._mousepoint - __weapon._weaponObject._inHandObject.transform.Translation;
