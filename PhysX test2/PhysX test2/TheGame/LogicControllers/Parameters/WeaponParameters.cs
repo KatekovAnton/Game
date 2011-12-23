@@ -18,20 +18,20 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
 
         public int _suitableAmmoType;
 
-        public WeaponParameters(int __dbID, string __displayName, float __mass, object __selfObject)
-            : base(__dbID, __displayName, __mass, __selfObject)
+        public WeaponParameters(int __dbID, string __displayName, float __mass)
+            : base(__dbID, __displayName, __mass)
         { }
 
-        public WeaponParameters(WeaponParameters _another, object __selfObject)
-            : base(_another._dbID, _another._displayName, _another._mass, __selfObject)
+        public WeaponParameters(WeaponParameters _another)
+            : base(_another._dbID, _another._name, _another._mass)
         {
-            _fireTime = _another._fireTime;
-            _fireRestartTime = _another._fireRestartTime;
-            _hitBallisticMod = _another._hitBallisticMod;
-            _hitEnergyMod = _another._hitEnergyMod;
-            _magazineCapacity = _another._magazineCapacity;
-            _reloadTime = _another._reloadTime;
-            _suitableAmmoType = _another._suitableAmmoType;
+            _fireTime           =  _another._fireTime;
+            _fireRestartTime    = _another._fireRestartTime;
+            _hitBallisticMod    = _another._hitBallisticMod;
+            _hitEnergyMod       = _another._hitEnergyMod;
+            _magazineCapacity   = _another._magazineCapacity;
+            _reloadTime         = _another._reloadTime;
+            _suitableAmmoType   = _another._suitableAmmoType;
 
         }
     }

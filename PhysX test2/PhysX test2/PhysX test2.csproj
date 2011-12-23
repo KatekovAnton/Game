@@ -224,6 +224,7 @@
     <Compile Include="TheGame\LogicControllers\CharacterLogicController.cs" />
     <Compile Include="TheGame\LogicControllers\ImortalLevelGeometryLogicController.cs" />
     <Compile Include="TheGame\LogicControllers\MortalLevelGeometryLogicController.cs" />
+    <Compile Include="TheGame\LogicControllers\Parameters\BulletBox.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\BulletParameters.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\CharacterParameters.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\InteractiveObjectParameters.cs" />

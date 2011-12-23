@@ -105,15 +105,15 @@ namespace PhysX_test2.TheGame
             _level.AddController(_anotherWeapon);
 
 
-            LogicControllers.Parameters.WeaponParameters weaponStaticParams = new LogicControllers.Parameters.WeaponParameters(0, "Gauss rifle", 10, null);
+            LogicControllers.Parameters.WeaponParameters weaponStaticParams = new LogicControllers.Parameters.WeaponParameters(0, "Gauss rifle", 10);
             weaponStaticParams._fireRestartTime = 150.0f;
             weaponStaticParams._fireTime = 55.0f;
 
-            LogicControllers.Parameters.WeaponParameters weaponParams = new LogicControllers.Parameters.WeaponParameters(weaponStaticParams, null);
+            LogicControllers.Parameters.WeaponParameters weaponParams = new LogicControllers.Parameters.WeaponParameters(weaponStaticParams);
             weaponParams._fireRestartTime = 150.0f;
             weaponParams._fireTime = 55.0f;
 
-            LogicControllers.Parameters.WeaponParameters.allItems.Add(weaponStaticParams._displayName, weaponStaticParams);
+      //      LogicControllers.Parameters.WeaponParameters.allItems.Add(weaponStaticParams._name, weaponStaticParams);
             myGun._baseParameters = weaponStaticParams;
             myGun._instanceParameters = weaponParams;
         }

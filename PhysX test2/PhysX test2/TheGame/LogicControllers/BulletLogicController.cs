@@ -53,7 +53,7 @@ namespace PhysX_test2.TheGame.LogicControllers
                  * */
 
                 StatisticContainer.Instance().UpdateParameter("totalBullets", 1);
-                Vector3 delta = _moveVector * _instanceParameters._moveSpeed * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
+                Vector3 delta = _moveVector * _instanceParameters._speed * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
                 if (!_itsLevel.SearchBulletIntersection(this, delta))
                 {
                     Matrix newmatrix = _hisObject._object.behaviourmodel.CurrentPosition * Matrix.CreateTranslation(delta);

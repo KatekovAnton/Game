@@ -12,6 +12,9 @@ namespace PhysX_test2.TheGame.LogicControllers
     {
         public Parameters.WeaponParameters _baseParameters;
         public Parameters.WeaponParameters _instanceParameters;
+
+        public Parameters.BulletParameters _chargedBullets;
+
         public GameWeapon _weaponObject;
         public GameSimpleObject _weaponFire;
 
@@ -23,6 +26,7 @@ namespace PhysX_test2.TheGame.LogicControllers
             _weaponObject = __weaponObject;
             _weaponFire = __weaponFire;
             _isFiring = false;
+            _chargedBullets = StaticObjects.BulletParameters["1"];
         }
 
         public void SetState(GameWeaponState __newState, CharacterLogicController __owner = null)

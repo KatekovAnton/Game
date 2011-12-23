@@ -150,6 +150,7 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public override void TakeHit(Parameters.BulletParameters __bulletParameters)
         {
+            //VOVA
             MyGame.ScreenLogMessage("character taking hit", Color.Red);
         }
 
