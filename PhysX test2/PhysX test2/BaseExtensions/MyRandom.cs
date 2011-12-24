@@ -13,7 +13,7 @@ namespace PhysX_test2
             get
             {
                 if (_randomze == null)
-                    _randomze = new Random();
+                    _randomze = new Random(DateTime.Now.Millisecond);
                 return _randomze;
             }
         }

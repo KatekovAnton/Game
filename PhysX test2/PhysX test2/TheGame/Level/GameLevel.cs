@@ -77,7 +77,7 @@ namespace PhysX_test2.TheGame.Level
 
         public Vector3 CreateRandomizedPoint(Vector3 StartPoint, float accuracy)
         {
-            float dispersion = (1.0f - accuracy);
+            float dispersion = (1.0f - accuracy) * 0.5f;
 
             float module = (float)MyRandom.Instance.NextDouble();
             dispersion *= module;
@@ -133,7 +133,6 @@ namespace PhysX_test2.TheGame.Level
         {
             Vector3 startPosition = __bullet._hisObject._object.behaviourmodel.CurrentPosition.Translation;
             Vector3 endPosition = startPosition + __moveVector;
-
             Vector3 intersectionPoint = new Vector3();
 
          
