@@ -112,7 +112,8 @@ namespace PhysX_test2.TheGame.Level
             moveVector = targetpoint - startpoint;
             moveVector.Normalize();
 
-            Matrix transform = __weapon._weaponObject._inHandObject.transform * Matrix.CreateTranslation(moveVector);
+           // Matrix transform = __weapon._weaponObject._inHandObject.transform * Matrix.CreateTranslation(moveVector);
+            Matrix transform = Matrix.CreateTranslation(0, -0.5f, 0.08f) * __weapon._weaponObject._inHandObject.transform;
 
             BulletLogicController result = new BulletLogicController(
                 bullet,

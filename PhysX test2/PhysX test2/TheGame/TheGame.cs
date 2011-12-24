@@ -67,6 +67,7 @@ namespace PhysX_test2.TheGame
         {
             _engine.Initalize();
             LoadSampleData();
+            _engine.AfterLoading();
         }
 
         public void LoadSampleData()

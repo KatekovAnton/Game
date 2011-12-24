@@ -8,11 +8,12 @@ namespace PhysX_test2.Engine.CameraControllers
         public Vector3 _currendPosition;
         public Vector3 _currentTarget;
 
-       
+        public float _speedLimit = 0.0f;
         protected Vector3 _delta = Vector3.Zero;
 
         protected CameraControllerSuperClass(Camera cam, Vector3 currentPos, Vector3 targetPosition)
         {
+            _speedLimit = 50.0f;
             _camera = cam;
             _currendPosition = currentPos;
             _currentTarget = targetPosition;

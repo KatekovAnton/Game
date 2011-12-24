@@ -36,7 +36,8 @@ namespace PhysX_test2.Engine.Animation
         /// </summary>
         public float[] _currentAnimTime;
         private int[] _currentFramesInt;
-        private float  _topAngle;
+        private float _topAngle;
+        private float _topAngleSpeedLimit = 4;
         private bool _changetTopAngle;
         public Matrix Position;
 
@@ -44,8 +45,18 @@ namespace PhysX_test2.Engine.Animation
         {
             if (Math.Abs(angle - _topAngle) > 0.001f)
             {
+                float delta = angle - _topAngle;
+                float newangle = angle;
+                float limit = _topAngleSpeedLimit * (float)(MyGame.UpdateTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
+                if (Math.Abs(delta) > limit)
+                {
+                    delta = (delta / Math.Abs(delta)) * limit;
+                    newangle = _topAngle + delta;
+                }
+                else
+                    newangle = angle;
                 _changetTopAngle = true;
-                _topAngle = angle;
+                _topAngle = newangle;
             }
         }
 

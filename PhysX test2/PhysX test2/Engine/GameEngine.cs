@@ -137,6 +137,15 @@ namespace PhysX_test2.Engine
 
             //рендерщик
             GraphicPipeleine = new RenderPipeline(MyGame.DeviceManager.GraphicsDevice, Camera);
+
+
+        }
+
+        public void AfterLoading()
+        {
+            // обработка камеры
+            _cameraController.UpdateCamerafromUser(MyGame.Instance._mousepoint);
+            _cameraController.UpdateCamera();
         }
 
         public void CasheObject(string __name,

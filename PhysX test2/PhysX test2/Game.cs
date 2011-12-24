@@ -35,6 +35,11 @@ namespace PhysX_test2
         public static GraphicsDevice Device;
         public static MyGame Instance;
 
+        /// <summary>
+        /// last received gameTime of updating
+        /// </summary>
+        public static GameTime UpdateTime = new GameTime();
+
         public Vector3 _mousepoint = Vector3.Zero;
         public Ray ray;
 
@@ -169,6 +174,7 @@ namespace PhysX_test2
 
         protected override void Update(GameTime gameTime)
         {
+            UpdateTime = gameTime;
             StatisticContainer.Instance().EndFrame();
             StatisticContainer.Instance().BeginFrame();
             KeyboardManager.Manager.Update();

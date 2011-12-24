@@ -27,7 +27,6 @@ namespace PhysX_test2.Engine.CameraControllers
             _character = character;
         }
 
-
         public void RotateCameraAroundChar(float angle)
         {
             if (angle == 0)
@@ -45,14 +44,14 @@ namespace PhysX_test2.Engine.CameraControllers
             UpdateCamera();
         }
 
-
         public void UpDownCamera(float angle)
         {
             if (angle == 0)
-            {
                 return;
-            }
-
+            if (_zAngle + angle > 0.7f)
+                return;
+            if (_zAngle + angle < -0.7f)
+                return;
             _zAngle += angle;
 
             Matrix resMatr;
@@ -66,13 +65,14 @@ namespace PhysX_test2.Engine.CameraControllers
             UpdateCamera();
         }
 
-
         public void ZoomCameraFromCha(float value)
         {
             if (value == 1.0)
-            {
                 return;
-            }
+            if (_cameraDelta * value < 0.46f)
+                return;
+            if (_cameraDelta * value > 3.8f)
+                return;
             _offset.X *= value;
             _offset.Y *= value;
             _offset.Z *= value;
@@ -83,8 +83,24 @@ namespace PhysX_test2.Engine.CameraControllers
         }
 
 
+        public Vector3 _lastTargetPoint;
         public void UpdateCamerafromUser(Vector3 _targetPoint)
         {
+
+            Vector3 delta = _lastTargetPoint - _targetPoint;
+            float maxl = _speedLimit * (float)(MyGame.UpdateTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
+            Vector3 newtarget = new Vector3();
+            if (delta.LengthSquared() > maxl * maxl)
+            {
+                delta.Normalize();
+                newtarget = _lastTargetPoint - delta * maxl;
+            }
+            else
+            {
+                newtarget = _targetPoint;
+            }
+            _lastTargetPoint = newtarget;
+
             float cursorPositionX = Mouse.GetState().X;
             float deltaX = cursorPositionX - _lastMousePosX;
             float cursorPositionY = Mouse.GetState().Y;
@@ -108,7 +124,7 @@ namespace PhysX_test2.Engine.CameraControllers
 
             _mouseWheelOld = mouseState.ScrollWheelValue;
 
-            _delta = _targetPoint - _currentTarget;
+            _delta = newtarget - _currentTarget;
             _delta.Y = 0;
             _delta.Normalize();
             _delta *= _cameraDelta;
@@ -116,15 +132,9 @@ namespace PhysX_test2.Engine.CameraControllers
 
         public override void UpdateCamera()
         {
-         //   if (!_character.behaviourmodel.moved)
-           //     return;
+
             _currentTarget = _character.transform.Translation;
             _currendPosition = _currentTarget + _offset;
-
-         /*   Matrix resMatr;
-            Vector3 vect = Vector3.Forward;
-            Matrix.CreateFromAxisAngle(ref vect, angle, out resMatr);*/
-
             base.UpdateCamera();
         }
     }
