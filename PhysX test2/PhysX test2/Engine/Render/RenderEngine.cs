@@ -213,6 +213,8 @@ namespace PhysX_test2.Engine.Render
         }
         private Matrix CreateLightViewProjectionMatrix(Vector3 lightDir)
         {
+            
+
             // Matrix with that will rotate in points the direction of the light
             Matrix lightRotation = Matrix.CreateLookAt(Vector3.Zero,
                                                        -lightDir,
@@ -255,6 +257,23 @@ namespace PhysX_test2.Engine.Render
             Matrix final = lightView * lightProjection;
             frustumForShadow = new BoundingFrustum(final);
             return final;
+        }
+
+        Matrix CreateLookAt(Vector3 cameraPos, Vector3 target, Vector3 up)
+        {
+            Vector3 zaxis = (cameraPos - target);
+            zaxis.Normalize();
+            Vector3 xaxis = Vector3.Cross(up, zaxis);
+            xaxis.Normalize();
+            Vector3 yaxis = Vector3.Cross(zaxis, xaxis);
+
+            Matrix view = new Matrix(xaxis.X, yaxis.X, zaxis.X, 0,
+                                    xaxis.Y, yaxis.Y, zaxis.Y, 0,
+                                    xaxis.Z, yaxis.Z, zaxis.Z, 0,
+                                    -Vector3.Dot(xaxis, cameraPos), -Vector3.Dot(yaxis, cameraPos),
+                                    -Vector3.Dot(zaxis, cameraPos), 1);
+
+            return view;
         }
 
         private void RenderToShadowMap(Matrix lightViewProjection, Vector3 lightDir)

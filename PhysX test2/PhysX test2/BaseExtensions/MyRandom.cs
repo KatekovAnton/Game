@@ -7,15 +7,16 @@ namespace PhysX_test2
 {
     public class MyRandom
     {
-        private static Random _generator;
 
+        private static Random _randomze;
         public static Random Instance
         {
             get
             {
-                if (_generator == null)
-                    _generator = new Random((int)DateTime.Now.Ticks);
-                return _generator;
+                
+                if (_randomze == null)
+                    _randomze = new Random(DateTime.Now.Millisecond);
+                return _randomze;
             }
         }
     }

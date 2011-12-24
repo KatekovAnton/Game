@@ -79,6 +79,9 @@ namespace PhysX_test2.TheGame.Level
         {
             float dispersion = (1.0f - accuracy) * 0.5f;
 
+            float module = (float)MyRandom.Instance.NextDouble();
+            dispersion *= module;
+
             float multx = MyRandom.Instance.Next(0, 10) > 5 ? 1 : -1;
             float multy = MyRandom.Instance.Next(0, 10) > 5 ? 1 : -1;
             float multz = MyRandom.Instance.Next(0, 10) > 5 ? 1 : -1;
@@ -131,7 +134,6 @@ namespace PhysX_test2.TheGame.Level
         {
             Vector3 startPosition = __bullet._hisObject._object.behaviourmodel.CurrentPosition.Translation;
             Vector3 endPosition = startPosition + __moveVector;
-
             Vector3 intersectionPoint = new Vector3();
 
          
