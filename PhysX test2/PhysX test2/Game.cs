@@ -202,14 +202,12 @@ namespace PhysX_test2
             _spriteBatch.Begin();
             if (_engine.BoxScreenPosition.Z < 1.0)
                 _spriteBatch.DrawString(_font1, "Box position = " + _engine.LevelObjectBox.behaviourmodel.GetGlobalPose().Translation.ToString(), new Vector2(_engine.BoxScreenPosition.X, _engine.BoxScreenPosition.Y), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);
-          //  _spriteBatch.DrawString(_font1, DateTime.Now.ToString(), new Vector2(10, 170), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);
+
 
             _spriteBatch.DrawString(_font1, string.Format("FPS: {0} Frame time: {1}", _engine.FPSCounter.FramesPerSecond, _engine.FPSCounter.FrameTime), Vector2.Zero, Color.Black);
             _spriteBatch.DrawString(_font1, "Visible objects count: " + _engine.visibleobjectscount.ToString(), new Vector2(0, 15), Color.Black);
             _spriteBatch.DrawString(_font1, "Recalulcalated objects count: " + _engine.gameScene._sceneGraph.recalulcalated().ToString(), new Vector2(0, 30), Color.Black);
-
             _spriteBatch.DrawString(_font1, "Character angle: " + _engine.playerState.ToString(), new Vector2(0, 45), Color.Black);
-
             _spriteBatch.DrawString(_font1, _helpHint, new Vector2(0, 60), Color.Black);
 
 
@@ -219,7 +217,6 @@ namespace PhysX_test2
                 {
                     _spriteBatch.DrawString(_font1, ScreenLog.Messages[i], new Vector2(0, GameConfiguration.ScreenResolution.Y - i * 10 - 15), ScreenLog.MessageColors[i]);
                 }
-
             }
 
             _spriteBatch.End();

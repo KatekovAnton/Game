@@ -343,7 +343,6 @@ namespace PhysX_test2.Engine.Render
                     AnimTeh = Shader.AnimRenderSMSmooth;
                     NotAnimTeh = Shader.NotAnimRenderSMSmooth;
                     BlendTeh = Shader.TransparentSMSmooth;
-
                 }
                 else
                 {
@@ -391,9 +390,11 @@ namespace PhysX_test2.Engine.Render
                     debugRenderer.RenderAABB(wo.raycastaspect.boundingShape);
                 }
 
-                /*sprite.Begin( SpriteSortMode.FrontToBack, new BlendState());
+                /*
+                sprite.Begin( SpriteSortMode.FrontToBack, new BlendState());
                 sprite.Draw(shadowRenderTarget, new Rectangle(0, 0, 128, 128), Color.Wheat);
-                sprite.End();*/
+                sprite.End();
+                */
             }
         }
 
@@ -421,7 +422,7 @@ namespace PhysX_test2.Engine.Render
             BlendState newstate = new BlendState();
             newstate.AlphaBlendFunction = BlendFunction.Add;
             newstate.AlphaDestinationBlend = Blend.One;
-           newstate.AlphaSourceBlend = Blend.SourceAlpha;
+            newstate.AlphaSourceBlend = Blend.SourceAlpha;
             newstate.ColorBlendFunction = BlendFunction.Add;
             newstate.ColorDestinationBlend = Blend.One;
             newstate.ColorSourceBlend = Blend.SourceColor;

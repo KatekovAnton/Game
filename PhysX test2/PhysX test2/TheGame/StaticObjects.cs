@@ -63,6 +63,15 @@ namespace PhysX_test2.TheGame
             }
         }
 
+        private static Dictionary<string, CharacterParameters> _characterParameters;
+        public static Dictionary<string, CharacterParameters> CharacterParameters
+        {
+            get
+            {
+                return _characterParameters;
+            }
+        }
+
         private StaticObjects()
         { 
             //init all static objects here
@@ -70,6 +79,7 @@ namespace PhysX_test2.TheGame
             ConnectToDatabase("Data\\Data.sqlite");
             LoadLocalizations(EngLanguageID);
             LoadBulletInformation();
+            LoadCharacterInformation();
         }
 
         private void ConnectToDatabase(string __databaseName)
@@ -120,6 +130,33 @@ namespace PhysX_test2.TheGame
                 string id_ = id.ToString();
                 BulletParameters parameters = new BulletParameters(id, name, boxMass, caliber, damage, pierce, speed, lifeTime, accuracy, levelObjectName, bulletMass);
                 _bulletParameters.Add(id_, parameters);
+            }
+        }
+
+
+        public void LoadCharacterInformation()
+        {
+            if (_characterParameters != null)
+                return;
+
+            _characterParameters = new Dictionary<string, CharacterParameters>();
+            SQliteResultSet result = Database.executeSelect("select NPC.id, characters.levelObject, characters.defaultDeadStartAnim, characters.defaultDeadIdleAnim, characters.defaultAliveAnim, characters.waklSpeed, NPC.headObject, NPC.humanName, NPC.isUniq from NPC inner join characters on NPC.character = characters.id", null);
+            foreach (object[] arr in result.result)
+            {
+                int id = Convert.ToInt32(arr[0]);
+                string loname = arr[1].ToString();
+                string ddsa = arr[2].ToString();
+                string ddia = arr[3].ToString();
+                string daa = arr[4].ToString();
+                float speed = Convert.ToSingle((arr[5] as string).Replace('.', ','));
+
+                string honame = arr[6].ToString();
+                string numanname = arr[7].ToString();
+
+                bool uniq = arr[8].ToString().Equals("1");
+                string id_ = id.ToString();
+                CharacterParameters parameters = new CharacterParameters(id, numanname, loname, ddsa, ddia, daa, honame, uniq, speed);
+                _characterParameters.Add(id_, parameters);
             }
         }
 
