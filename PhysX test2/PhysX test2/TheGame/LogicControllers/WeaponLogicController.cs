@@ -22,7 +22,8 @@ namespace PhysX_test2.TheGame.LogicControllers
         public TimeSpan _lastfiretime;
         public bool _isFiring;
 
-        public WeaponLogicController(GameWeapon __weaponObject, GameSimpleObject __weaponFire)
+        public WeaponLogicController(GameLevel __level, GameWeapon __weaponObject, GameSimpleObject __weaponFire)
+            :base(__level)
         {
             _weaponObject = __weaponObject;
             _weaponFire = __weaponFire;
@@ -48,7 +49,6 @@ namespace PhysX_test2.TheGame.LogicControllers
                     break;
                 default: break;
             }
-
             _isFiring = false;
         }
 
@@ -67,11 +67,10 @@ namespace PhysX_test2.TheGame.LogicControllers
             return true;
         }
 
-        public override void  Update(GameTime __gametime)
+        public override void Update(GameTime __gametime)
         {
             if (_weaponFire._onLevel && (__gametime.TotalGameTime.TotalMilliseconds - _lastfiretime.TotalMilliseconds) > _instanceParameters._fireTime)
                 _weaponFire.RemoveFromLevel();
- 	       // throw new NotImplementedException();
         }
 
         public override Parameters.InteractiveObjectParameters GetParameters()
@@ -81,6 +80,7 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public override void TakeHit(Parameters.BulletParameters __bulletParameters)
         {
+            //newer for weapons
             return;
         }
 
@@ -89,13 +89,11 @@ namespace PhysX_test2.TheGame.LogicControllers
             WeaponParameters parameters = StaticObjects.WeaponParameters[__nameAsId];
             GameWeapon myWeapon = new GameWeapon(parameters._inhandObject, parameters._onfloorObject, parameters._addonObject, __level);
             GameSimpleObject weaponFire = new GameSimpleObject(parameters._fireObject, Engine.Logic.PivotObjectDependType.Body, __level, false, false);
-            WeaponLogicController myGun = new WeaponLogicController(myWeapon, weaponFire);
-            myGun._baseParameters = parameters;
-            myGun._instanceParameters = parameters;
-            return myGun;
+            WeaponLogicController newGun = new WeaponLogicController(__level, myWeapon, weaponFire);
+            newGun._baseParameters = parameters;
+            newGun._instanceParameters = parameters;
+            return newGun;
         }
-        
-
     }
 }
  

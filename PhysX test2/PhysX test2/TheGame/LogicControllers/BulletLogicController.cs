@@ -5,7 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using PhysX_test2.TheGame.Objects;
-
+using PhysX_test2.TheGame.Level;
 namespace PhysX_test2.TheGame.LogicControllers
 {
     public class BulletLogicController : BaseLogicController
@@ -19,11 +19,13 @@ namespace PhysX_test2.TheGame.LogicControllers
         public GameBulletSimple _hisObject;
 
         public BulletLogicController(
+            GameLevel __level,
             GameBulletSimple __itsObject, 
             TimeSpan __nowTime, 
             Parameters.BulletParameters __itsParameters, 
             Matrix __startPos, 
             Vector3 __moveVector)
+            :base(__level)
         {
             _hisObject = __itsObject;
             _createdTime = __nowTime;

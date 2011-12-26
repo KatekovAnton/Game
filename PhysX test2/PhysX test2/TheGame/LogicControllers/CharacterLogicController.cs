@@ -30,7 +30,8 @@ namespace PhysX_test2.TheGame.LogicControllers
         public InputProviderSuperClass _hisInput;
         public CharacterMoveState _moveState;
 
-        public CharacterLogicController(GameCharacter __hisObject, GameSimpleObject __hisHead, bool __isMe = false)
+        public CharacterLogicController(GameLevel __level, GameCharacter __hisObject, GameSimpleObject __hisHead, bool __isMe = false)
+            :base(__level)
         {
             _hisHead = __hisHead;
             _hisObject = __hisObject;
@@ -109,7 +110,7 @@ namespace PhysX_test2.TheGame.LogicControllers
                 {
                     //start fire animation and other
                     _hisObject.Fire();
-                    _hisWeapon._itsLevel.CreateBullet(_hisWeapon, __gameTime.TotalGameTime);
+                    _itsLevel.CreateBullet(_hisWeapon, __gameTime.TotalGameTime);
                 }
             }
         }
@@ -168,7 +169,7 @@ namespace PhysX_test2.TheGame.LogicControllers
 
             GameCharacter myCharacter = new GameCharacter(parameters._levelObjectName, Matrix.Identity, __level);
             GameSimpleObject myHead = new GameSimpleObject(parameters._headObjectName, Engine.Logic.PivotObjectDependType.Head, __level, false, false);
-            CharacterLogicController result = new CharacterLogicController(myCharacter, myHead, !_needMC);
+            CharacterLogicController result = new CharacterLogicController(__level, myCharacter, myHead, !_needMC);
 
             return result;
         }

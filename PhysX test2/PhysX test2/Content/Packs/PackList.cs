@@ -14,7 +14,7 @@ namespace PhysX_test2.Content
         {
             Instance = this;
             string path = System.IO.Path.GetDirectoryName(
-      System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(6)+"\\Data";
+                    System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(6)+"\\Data";
            
             string[] filenames = System.IO.Directory.GetFiles(path,@"*.pack");
             packs = new Pack[filenames.Length]; 
@@ -64,6 +64,7 @@ namespace PhysX_test2.Content
         
         public void Unload()
         {
+            throw new Exception("IN-GAME OBJECT CREATION WILL BE UNAVAILABLE!!!");
             for (int j = 0; j < packs.Length; j++)
                 if (packs[j].Objects != null)
                     for (int i = 0; i < packs[j].Objects.Length; i++)

@@ -84,8 +84,7 @@ namespace PhysX_test2.TheGame
 
             WeaponLogicController myGun = WeaponLogicController.CreateWeapon("1",_level);
             me.SetGun(myGun);
-            _level.AddController(me);
-            _level.AddController(myGun);
+            
             _characters.Add(_playerCharacterKey, me);
             _engine.CreateCharCameraController(me._hisObject._levelObject);
 
@@ -94,8 +93,6 @@ namespace PhysX_test2.TheGame
             _anotherChar.SetAlive(true);
             WeaponLogicController _anotherWeapon = WeaponLogicController.CreateWeapon("1", _level);
             _anotherChar.SetGun(_anotherWeapon);
-            _level.AddController(_anotherChar);
-            _level.AddController(_anotherWeapon);
         }
 
         public void Update(GameTime __gameTime)

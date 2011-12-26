@@ -182,11 +182,12 @@ namespace PhysX_test2.Content
         public int loadedformat;
         public string name;
         public MeshContentadditionalheader mh = null;
+
         public PackContent()
         {
-            //Enginereadedobject = new List<object>();
             _userCount = 0;
         }
+
         public PackContent(System.IO.BinaryReader br, int _number)//16+имя
         {
             this.number = _number;
@@ -196,6 +197,7 @@ namespace PhysX_test2.Content
             loadedformat = br.ReadInt32();
             headersize = br.ReadInt32();
             
+            //когдато я бы л молодой и глупый и теперь пишу этот кастыль
             if (loadedformat == ElementType.MeshOptimazedForStore || loadedformat == ElementType.MeshOptimazedForLoading)
             {
                 mh = new MeshContentadditionalheader();
@@ -205,11 +207,11 @@ namespace PhysX_test2.Content
             {
                 size = br.ReadInt32();
             }
-            //Enginereadedobject = new List<object>();
         }
 
         public void Retain(object __newObject = null)
         {
+            //TODO - check logic
             _userCount++;
             if (__newObject == null && _engineSampleObject == null)
                 throw new Exception();
@@ -234,6 +236,7 @@ namespace PhysX_test2.Content
 
         public virtual void loadbody(byte[] array)
         {}
+
         public virtual void Unload()
         {
             objectReaded = false;

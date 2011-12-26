@@ -14,7 +14,7 @@ namespace PhysX_test2.TheGame.Objects
     /// </summary>
     public abstract class GameObject
     {
-        public GameLevel _hisLevel;
+        protected GameLevel _hisLevel;
         protected bool _bulletRayCasted;
         protected bool _mouseRayCasted;
 

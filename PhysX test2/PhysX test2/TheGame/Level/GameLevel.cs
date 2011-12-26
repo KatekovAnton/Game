@@ -32,13 +32,11 @@ namespace PhysX_test2.TheGame.Level
         public void AddController(BaseLogicController __object)
         {
             _allLogicObjects.Add(__object);
-            __object._itsLevel = this;
         }
 
         public void RemoveController(BaseLogicController __object)
         {
             _allLogicObjects.Remove(__object);
-            __object._itsLevel = null;
         }
       
         public void AddEngineObject(Engine.Logic.PivotObject __object, Engine.Logic.PivotObject __parentObject = null)
@@ -119,6 +117,7 @@ namespace PhysX_test2.TheGame.Level
             Matrix transform = Matrix.CreateTranslation(0, -0.5f, 0.08f) * __weapon._weaponObject._inHandObject.transform;
 
             BulletLogicController result = new BulletLogicController(
+                this,
                 bullet,
                 __nowTime,
                 parameters,

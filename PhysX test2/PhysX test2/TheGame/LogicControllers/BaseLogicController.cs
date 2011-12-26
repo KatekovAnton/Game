@@ -18,11 +18,16 @@ namespace PhysX_test2.TheGame.LogicControllers
         public abstract Parameters.InteractiveObjectParameters GetParameters();
         public abstract void TakeHit(Parameters.BulletParameters __bulletParameters);
         public abstract void Update(GameTime __gameTime);
-        public GameLevel _itsLevel;
+        protected GameLevel _itsLevel;
 
-        public BaseLogicController()
+        public BaseLogicController(GameLevel __level)
         {
+            _itsLevel = __level;
+            _itsLevel.AddController(this);
             _id = IdGenerator.StaticGenerator.NewId();
         }
+
+        ~BaseLogicController()
+        { }
     }
 }
