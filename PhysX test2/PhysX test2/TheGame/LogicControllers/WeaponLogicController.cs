@@ -5,7 +5,8 @@ using System.Text;
 
 using PhysX_test2.TheGame.Objects;
 using Microsoft.Xna.Framework;
-
+using PhysX_test2.TheGame.Level;
+using PhysX_test2.TheGame.LogicControllers.Parameters;
 namespace PhysX_test2.TheGame.LogicControllers
 {
     public class WeaponLogicController : BaseLogicController
@@ -81,6 +82,17 @@ namespace PhysX_test2.TheGame.LogicControllers
         public override void TakeHit(Parameters.BulletParameters __bulletParameters)
         {
             return;
+        }
+
+        public static WeaponLogicController CreateWeapon(string __nameAsId, CharacterLogicController __parentCharacterExample, GameLevel __level)
+        {
+            WeaponParameters parameters = StaticObjects.WeaponParameters[__nameAsId];
+            GameWeapon myWeapon = new GameWeapon(parameters._inhandObject, parameters._onfloorObject, parameters._addonObject, __parentCharacterExample._hisObject._levelObject, __level);
+            GameSimpleObject weaponFire = new GameSimpleObject(parameters._fireObject, myWeapon._inHandObject, Engine.Logic.PivotObjectDependType.Body, __level, false, false);
+            WeaponLogicController myGun = new WeaponLogicController(myWeapon, weaponFire);
+            myGun._baseParameters = parameters;
+            myGun._instanceParameters = parameters;
+            return myGun;
         }
         
 

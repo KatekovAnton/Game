@@ -7,11 +7,8 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
 {
     public class ItemParameters : InteractiveObjectParameters
     {
-
-        
         public float _mass;
         public string _inventoryImage;
-       
         public string _description;
 
         public ItemParameters(int __dbID, string __displayName, float __mass)

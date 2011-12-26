@@ -77,16 +77,12 @@ namespace PhysX_test2.TheGame
             _engine.Loaddata();
 
 
-            GameCharacter myCharacter = new GameCharacter("SCMarineAlive\0", Matrix.Identity, _level);
-            GameSimpleObject myHead = new GameSimpleObject("Head01\0", myCharacter._levelObject, Engine.Logic.PivotObjectDependType.Head, _level, false, false);
 
-            CharacterLogicController me = new CharacterLogicController(myCharacter, myHead,true);
+            CharacterLogicController me = CharacterLogicController.CreateCharacter("1", _level);
             me.SetAlive(true);
             me._hisInput = new InputManagers.InputProviderPlayer();
 
-            GameWeapon myWeapon = new GameWeapon("SCGunHandLO\0", "SCGunFloorLO\0", "SСGunAddon\0", myCharacter._levelObject, _level);
-            GameSimpleObject weaponFire = new GameSimpleObject("Fire01LO\0", myWeapon._inHandObject, Engine.Logic.PivotObjectDependType.Body, _level, false, false);
-            WeaponLogicController myGun = new WeaponLogicController(myWeapon, weaponFire);
+            WeaponLogicController myGun = WeaponLogicController.CreateWeapon("1",me,_level);
             me.SetGun(myGun);
             _level.AddController(me);
             _level.AddController(myGun);
@@ -104,19 +100,6 @@ namespace PhysX_test2.TheGame
             _anotherChar.SetGun(_anotherWeapon);
             _level.AddController(_anotherChar);
             _level.AddController(_anotherWeapon);
-
-
-            LogicControllers.Parameters.WeaponParameters weaponStaticParams = new LogicControllers.Parameters.WeaponParameters(0, "Gauss rifle", 10);
-            weaponStaticParams._fireRestartTime = 150.0f;
-            weaponStaticParams._fireTime = 55.0f;
-
-            LogicControllers.Parameters.WeaponParameters weaponParams = new LogicControllers.Parameters.WeaponParameters(weaponStaticParams);
-            weaponParams._fireRestartTime = 150.0f;
-            weaponParams._fireTime = 55.0f;
-
-      //      LogicControllers.Parameters.WeaponParameters.allItems.Add(weaponStaticParams._name, weaponStaticParams);
-            myGun._baseParameters = weaponStaticParams;
-            myGun._instanceParameters = weaponParams;
         }
 
         public void Update(GameTime __gameTime)

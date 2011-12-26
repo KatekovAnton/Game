@@ -72,6 +72,15 @@ namespace PhysX_test2.TheGame
             }
         }
 
+        private static Dictionary<string, WeaponParameters> _weaponParameters;
+        public static Dictionary<string, WeaponParameters> WeaponParameters
+        {
+            get
+            {
+                return _weaponParameters;
+            }
+        }
+
         private StaticObjects()
         { 
             //init all static objects here
@@ -80,6 +89,7 @@ namespace PhysX_test2.TheGame
             LoadLocalizations(EngLanguageID);
             LoadBulletInformation();
             LoadCharacterInformation();
+            LoadWeaponInformation();
         }
 
         private void ConnectToDatabase(string __databaseName)
@@ -157,6 +167,45 @@ namespace PhysX_test2.TheGame
                 string id_ = id.ToString();
                 CharacterParameters parameters = new CharacterParameters(id, numanname, loname, ddsa, ddia, daa, honame, uniq, speed);
                 _characterParameters.Add(id_, parameters);
+            }
+        }
+
+        public void LoadWeaponInformation()
+        {
+            if (_weaponParameters != null)
+                return;
+
+            _weaponParameters = new Dictionary<string, WeaponParameters>();
+            SQliteResultSet result = Database.executeSelect("SELECT weapons.*, calibers.caliberName FROM weapons inner join calibers on weapons.caliber = calibers.id", null);
+            foreach (object[] arr in result.result)
+            {
+                int id = Convert.ToInt32(arr[0]);
+                string id_ = id.ToString();
+                string displayName = arr[15].ToString();
+                float mass = Convert.ToSingle((arr[17] as string).Replace('.', ','));
+                string shortName = arr[1].ToString();
+                int caliber = Convert.ToInt32(arr[2]);
+                string inhandObject = arr[3].ToString();
+                string onfloorObject = arr[4].ToString();
+                string addonObject = arr[5].ToString();
+                float reloadTime = Convert.ToSingle((arr[6] as string).Replace('.', ','));
+                float fireTime = Convert.ToSingle((arr[7] as string).Replace('.', ','));
+                float fireRestartTime = Convert.ToSingle((arr[8] as string).Replace('.', ','));
+                string fireObject = arr[9].ToString();
+                float damageBallMod = Convert.ToSingle((arr[10] as string).Replace('.', ','));
+                float damageEnMod = Convert.ToSingle((arr[11] as string).Replace('.', ','));
+                int magazineCapacity = Convert.ToInt32(arr[12]);
+                int oneShootCount = Convert.ToInt32(arr[13]);
+                float accuracy = Convert.ToSingle((arr[14] as string).Replace('.', ','));
+                string description = arr[16].ToString();
+                string caliberName = arr[18].ToString();
+
+                WeaponParameters parameters = new WeaponParameters(id, displayName, mass,
+                    shortName, caliber, inhandObject, onfloorObject,
+                    addonObject, reloadTime, fireTime, fireRestartTime,
+                    fireObject, damageBallMod, damageEnMod, magazineCapacity,
+                    oneShootCount, accuracy, description, caliberName);
+                _weaponParameters.Add(id_, parameters);
             }
         }
 

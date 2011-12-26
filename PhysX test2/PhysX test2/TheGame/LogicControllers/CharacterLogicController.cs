@@ -7,6 +7,8 @@ using PhysX_test2.TheGame.Objects;
 
 using Microsoft.Xna.Framework;
 
+using PhysX_test2.TheGame.Level;
+using PhysX_test2.TheGame.LogicControllers.Parameters;
 using PhysX_test2.TheGame.InputManagers;
 
 namespace PhysX_test2.TheGame.LogicControllers
@@ -157,6 +159,18 @@ namespace PhysX_test2.TheGame.LogicControllers
         public override Parameters.InteractiveObjectParameters GetParameters()
         {
             return _instanceParameters;
+        }
+
+        public static CharacterLogicController CreateCharacter(string __nameIsId, GameLevel __level)
+        {
+            CharacterParameters parameters = StaticObjects.CharacterParameters[__nameIsId];
+
+
+            GameCharacter myCharacter = new GameCharacter(parameters._levelObjectName, Matrix.Identity, __level);
+            GameSimpleObject myHead = new GameSimpleObject(parameters._headObjectName, myCharacter._levelObject, Engine.Logic.PivotObjectDependType.Head, __level, false, false);
+            CharacterLogicController result = new CharacterLogicController(myCharacter, myHead, true);
+
+            return result;
         }
     }
 }
