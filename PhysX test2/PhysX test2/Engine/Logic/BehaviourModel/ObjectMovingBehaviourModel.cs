@@ -13,7 +13,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
     class ObjectMovingBehaviourModel:ObjectBehaviourModel
     {
 
-        public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
+        public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata, PivotObject __parent)
         {
             this.globalpose = GlobalPoseMatrix;
         }

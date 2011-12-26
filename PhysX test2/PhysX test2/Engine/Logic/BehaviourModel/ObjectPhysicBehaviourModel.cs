@@ -35,9 +35,9 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         }
         public override void Move(Vector3 displacement)
         {
-            SetGlobalPose(Matrix.Multiply(actor.GlobalPose.toXNAM(), Matrix.CreateTranslation(displacement)), null);
+            SetGlobalPose(Matrix.Multiply(actor.GlobalPose.toXNAM(), Matrix.CreateTranslation(displacement)), null,null);
         }
-        public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
+        public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata, PivotObject __parent)
         {
             this.globalpose = GlobalPoseMatrix;
             actor.GlobalPose = GlobalPoseMatrix.toPhysicM();

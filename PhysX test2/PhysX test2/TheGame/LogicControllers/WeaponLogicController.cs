@@ -84,11 +84,11 @@ namespace PhysX_test2.TheGame.LogicControllers
             return;
         }
 
-        public static WeaponLogicController CreateWeapon(string __nameAsId, CharacterLogicController __parentCharacterExample, GameLevel __level)
+        public static WeaponLogicController CreateWeapon(string __nameAsId, GameLevel __level)
         {
             WeaponParameters parameters = StaticObjects.WeaponParameters[__nameAsId];
-            GameWeapon myWeapon = new GameWeapon(parameters._inhandObject, parameters._onfloorObject, parameters._addonObject, __parentCharacterExample._hisObject._levelObject, __level);
-            GameSimpleObject weaponFire = new GameSimpleObject(parameters._fireObject, myWeapon._inHandObject, Engine.Logic.PivotObjectDependType.Body, __level, false, false);
+            GameWeapon myWeapon = new GameWeapon(parameters._inhandObject, parameters._onfloorObject, parameters._addonObject, __level);
+            GameSimpleObject weaponFire = new GameSimpleObject(parameters._fireObject, Engine.Logic.PivotObjectDependType.Body, __level, false, false);
             WeaponLogicController myGun = new WeaponLogicController(myWeapon, weaponFire);
             myGun._baseParameters = parameters;
             myGun._instanceParameters = parameters;

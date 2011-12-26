@@ -44,7 +44,7 @@ namespace PhysX_test2.Engine
             PivotObject __parentObject = null,
             PivotObjectDependType __dependType = PivotObjectDependType.Body)
         {
-            PivotObject newObject = GameEngine.LoadObject(__name, __deltaMatrix, __needMouseCast, __needBulletCast, __parentObject, __dependType);
+            PivotObject newObject = GameEngine.LoadObject(__name, __deltaMatrix, __needMouseCast, __needBulletCast, __dependType);
             _cashedObjects.Add(__name, newObject);
         }
     }

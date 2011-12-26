@@ -129,6 +129,7 @@
     <Compile Include="BaseExtensions\Graph\GraphController.cs" />
     <Compile Include="BaseExtensions\Graph\GraphNodeInctance.cs" />
     <Compile Include="BaseExtensions\Graph\IGraphUser.cs" />
+    <Compile Include="BaseExtensions\IdGenerator.cs" />
     <Compile Include="BaseExtensions\KeyboardManager\IKeyboardUser.cs" />
     <Compile Include="BaseExtensions\KeyboardManager\KeyboardManager.cs" />
     <Compile Include="BaseExtensions\KeyboardManager\KeyScan.cs" />

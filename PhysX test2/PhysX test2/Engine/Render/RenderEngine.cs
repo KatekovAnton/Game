@@ -332,9 +332,12 @@ namespace PhysX_test2.Engine.Render
             Device.DepthStencilState = DepthStencilState.Default;
             Device.BlendState = BlendState.Opaque;
 
+            
             Device.SamplerStates[0] = SamplerState.LinearWrap;
-            Device.SamplerStates[1] = SamplerState.PointClamp;
-
+            if (Device.GraphicsProfile == GraphicsProfile.Reach)
+                Device.SamplerStates[1] = SamplerState.PointClamp;
+            else
+                Device.SamplerStates[1] = SamplerState.PointWrap;
             if (EnableShadows)
             {
                 RenderToShadowMap(lightViewProjection, lightDir);
@@ -402,11 +405,14 @@ namespace PhysX_test2.Engine.Render
                    // debugRenderer.RenderAABR(wo.boundingShape);
                     debugRenderer.RenderAABB(wo.raycastaspect.boundingShape);
                 }
-
                 
-                sprite.Begin( SpriteSortMode.FrontToBack, new BlendState());
+               /* sprite.Begin(SpriteSortMode.FrontToBack, new BlendState());
+
+                SamplerState ss = createNewState(SamplerState.PointClamp);
+                ss.Filter = TextureFilter.Point;
+                Device.SamplerStates[1] = ss;
                 sprite.Draw(shadowRenderTarget, new Rectangle(0, 0, 128, 128), Color.Wheat);
-                sprite.End();
+                sprite.End();*/
                 
             }
         }
@@ -453,6 +459,22 @@ namespace PhysX_test2.Engine.Render
             res.MultiSampleAntiAlias = aotherstate.MultiSampleAntiAlias;
             res.ScissorTestEnable = aotherstate.ScissorTestEnable;
             res.SlopeScaleDepthBias = aotherstate.SlopeScaleDepthBias;
+
+            return res;
+        }
+
+        public SamplerState createNewState(SamplerState aotherstate)
+        {
+            SamplerState res = new SamplerState();
+            res.AddressU = aotherstate.AddressU;
+            res.AddressV = aotherstate.AddressV;
+            res.AddressW = aotherstate.AddressW;
+            res.Filter = aotherstate.Filter;
+
+            res.MaxAnisotropy = aotherstate.MaxAnisotropy;
+            res.MaxMipLevel = aotherstate.MaxMipLevel;
+            res.MipMapLevelOfDetailBias = aotherstate.MipMapLevelOfDetailBias;
+            
 
             return res;
         }

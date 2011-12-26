@@ -100,8 +100,8 @@ namespace PhysX_test2.Engine
             
 
             //разме рэкрана
-            MyGame.DeviceManager.PreferredBackBufferWidth = (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width *0.8 );
-            MyGame.DeviceManager.PreferredBackBufferHeight = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height*0.8);
+            MyGame.DeviceManager.PreferredBackBufferWidth = (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width *0.5 );
+            MyGame.DeviceManager.PreferredBackBufferHeight = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height*0.5);
             GameConfiguration.ScreenResolution = new Vector2(MyGame.DeviceManager.PreferredBackBufferWidth, MyGame.DeviceManager.PreferredBackBufferHeight);
 
             MyGame.DeviceManager.IsFullScreen = false;
@@ -165,64 +165,12 @@ namespace PhysX_test2.Engine
             Matrix? __deltaMatrix,
             bool __needMouseCast,
             bool __needBulletCast,
-            PivotObject __parentObject = null,
             PivotObjectDependType __dependType = PivotObjectDependType.Body)
         {
-            var boxcharacterdescription = new LevelObjectDescription();
-            boxcharacterdescription = PackList.Instance.GetObject(__name, boxcharacterdescription) as LevelObjectDescription;
-            Matrix position = Matrix.Identity;
-            bool needSetPosition = false;
-            if (__parentObject != null)
-            {
-                //we need to create dependeces
-                switch (boxcharacterdescription.BehaviourType)
-                {
-                    case LevelObjectDescription.objectBonerelatedbehaviourmodel:
-                        {
-                            LevelObject lo = __parentObject as LevelObject;
-                            if (lo == null)
-                                throw new Exception();
-                            Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
-                            if (ro == null)
-                                throw new Exception();
+            var description = new LevelObjectDescription();
+            description = PackList.Instance.GetObject(__name, description) as LevelObjectDescription;
 
-                            //TODO
-                            //все сломается когда заменится объект при смерте
-                            //будет депедндится на живой объект
-                            //надо катко тут все поменять
-                            ContentLoader.ContentLoader.currentParentObject = __parentObject;
-
-                            
-                            switch (__dependType)
-                            {
-                                case PivotObjectDependType.Head:
-                                    {
-                                        needSetPosition = true;
-                                        position = ro.character._baseCharacter.skeleton.HeadMatrix;
-                                        ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.HeadIndex;
-                                    } break;
-                                case PivotObjectDependType.Weapon:
-                                    {
-                                        needSetPosition = true;
-                                        position = ro.character._baseCharacter.skeleton.WeaponMatrix;
-                                        ContentLoader.ContentLoader.boneToAdd = ro.character._baseCharacter.skeleton.WeaponIndex;
-                                    } break;
-                                default: break;
-                            }
-                        } break;
-                    case LevelObjectDescription.objectRelatedBehaviourModel:
-                        {
-                            ContentLoader.ContentLoader.currentParentObject = __parentObject;
-                            if(__dependType != PivotObjectDependType.Body)
-                                throw new Exception();
-                            needSetPosition = true;
-                            position = __parentObject.transform;
-                           
-                        }break;
-                    default: break;
-                }
-            }
-            LevelObject loNew = ContentLoader.ContentLoader.LevelObjectFromDescription(boxcharacterdescription, PackList.Instance, GameEngine.Instance.Scene);
+            LevelObject loNew = ContentLoader.ContentLoader.LevelObjectFromDescription(description, PackList.Instance, GameEngine.Instance.Scene, __dependType);
             GameEngine.Instance.GraphicPipeleine.ProceedObject(loNew.renderaspect);
 
             loNew.useDeltaMatrix = __deltaMatrix != null && __deltaMatrix.HasValue;
@@ -231,8 +179,6 @@ namespace PhysX_test2.Engine
             loNew._needMouseCast = __needMouseCast;
             loNew._needBulletCast = __needBulletCast;
          
-            if (needSetPosition)
-                loNew.SetGlobalPose(position);
             loNew.Update();
             return loNew;
         }

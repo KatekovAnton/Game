@@ -27,7 +27,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             _angle = 0;
         }
 
-        public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
+        public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata, PivotObject __parent)
         {
             this.globalpose = GlobalPoseMatrix;
             _actor.GlobalPose = GlobalPoseMatrix.toPhysicM();
@@ -35,7 +35,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
 
         public override void SetPosition(Vector3 newPosition)
         {
-            SetGlobalPose(Matrix.CreateRotationX(-MathHelper.PiOver2) * Matrix.CreateTranslation(newPosition), null);
+            SetGlobalPose(Matrix.CreateRotationX(-MathHelper.PiOver2) * Matrix.CreateTranslation(newPosition), null,null);
         }
 
         public override void Move(Vector3 displacement)

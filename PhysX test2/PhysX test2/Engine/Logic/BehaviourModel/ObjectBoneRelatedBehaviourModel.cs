@@ -12,7 +12,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         public int parentBone;
         public PivotObject parentCharacter;
         public Matrix localMatrix = Matrix.Identity;
-
+        public PivotObjectDependType _dependType;
         private Engine.Animation.CharacterController _parentCharacterController;
 
         public ObjectBoneRelatedBehaviourModel(PivotObject __parentCharacter, int _parentBone)
@@ -23,6 +23,11 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
                 SetParentObject(__parentCharacter);
         }
 
+        public ObjectBoneRelatedBehaviourModel()
+        {
+            
+        }
+
         public override void SetParentObject(PivotObject __object)
         {
             parentCharacter = __object;
@@ -31,9 +36,38 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             _parentCharacterController = ro.character;
         }
 
-        public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
+        public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata, PivotObject __parent)
         {
-            localMatrix = GlobalPoseMatrix;
+            Matrix position = Matrix.Identity;
+            if (__parent != null)
+            {
+                LevelObject lo = __parent as LevelObject;
+                if (lo == null)
+                    throw new Exception();
+                Render.AnimRenderObject ro = lo.renderaspect as Render.AnimRenderObject;
+                if (ro == null)
+                    throw new Exception();
+
+                if (_parentCharacterController == null)
+                    _parentCharacterController = ro.character;
+                
+                switch (_dependType)
+                {
+                    case PivotObjectDependType.Head:
+                        {
+                            position = ro.character._baseCharacter.skeleton.HeadMatrix;
+                            parentBone = ro.character._baseCharacter.skeleton.HeadIndex;
+                        } break;
+                    case PivotObjectDependType.Weapon:
+                        {
+                            position = ro.character._baseCharacter.skeleton.WeaponMatrix;
+                            parentBone = ro.character._baseCharacter.skeleton.WeaponIndex;
+                        } break;
+                    default: break;
+                }
+            }
+
+            localMatrix =  position *GlobalPoseMatrix;
             Matrix resultMatrix = localMatrix * _parentCharacterController._currentFrames[parentBone] * _parentCharacterController.Position;
             mov = CurrentPosition != resultMatrix;
             CurrentPosition = resultMatrix;

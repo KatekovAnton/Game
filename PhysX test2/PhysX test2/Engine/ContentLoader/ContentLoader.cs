@@ -17,12 +17,13 @@ namespace PhysX_test2.Engine.ContentLoader
     public abstract class ContentLoader
     {
         private static StillDesign.PhysX.Material characterMaterial;
-        public static PivotObject currentParentObject;
-        public static int boneToAdd;
+      //  public static PivotObject currentParentObject;
+      //  public static int boneToAdd;
 
         public static Logic.BehaviourModel.ObjectBehaviourModel createBehaviourModel(
             Logic.BehaviourModel.BehaviourModelDescription description,
-            StillDesign.PhysX.Scene scene)
+            StillDesign.PhysX.Scene scene,
+            PivotObjectDependType __dependType)
         {
             Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel;
             StillDesign.PhysX.Actor ObjectActor = null;
@@ -149,11 +150,13 @@ namespace PhysX_test2.Engine.ContentLoader
                     } break;
                 case LevelObjectDescription.objectBonerelatedbehaviourmodel:
                     {
-                        behaviourmodel = new Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel(currentParentObject, boneToAdd);
+                        Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel _behaviourmodel = new Engine.Logic.BehaviourModel.ObjectBoneRelatedBehaviourModel();
+                        _behaviourmodel._dependType = __dependType;
+                        behaviourmodel = _behaviourmodel;
                     } break;
                 case LevelObjectDescription.objectRelatedBehaviourModel:
                     {
-                        behaviourmodel = new Engine.Logic.BehaviourModel.ObjectRelatedBehaviourModel(currentParentObject);
+                        behaviourmodel = new Engine.Logic.BehaviourModel.ObjectRelatedBehaviourModel();
                     } break;
                 default:
                     {
@@ -278,7 +281,7 @@ namespace PhysX_test2.Engine.ContentLoader
             {
                 if (description.IsAnimated)
                 {
-                    CharacterContent characterContent = null; ;
+                    CharacterContent characterContent = null;
                     Engine.Animation.CharacterController character = createCharacter(packs, description.CharacterName, out characterContent);
 
                     AnimRenderObject.Model[] models = new AnimRenderObject.Model[rod.LODs.Count];
@@ -375,7 +378,8 @@ namespace PhysX_test2.Engine.ContentLoader
         public static LevelObject LevelObjectFromDescription(
            Content.LevelObjectDescription description,
            PackList packs,
-            StillDesign.PhysX.Scene scene)
+            StillDesign.PhysX.Scene scene,
+            PivotObjectDependType __dependType)
         {
             if (characterMaterial == null)
             {
@@ -405,7 +409,7 @@ namespace PhysX_test2.Engine.ContentLoader
                 desc.ShapeType = description.ShapeType;
 
 
-                Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel = createBehaviourModel(desc, scene); 
+                Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel = createBehaviourModel(desc, scene,__dependType); 
               
                 //её гк удалит
                 LevelObject createdobject = new LevelObject(behaviourmodel, renderaspect, material, raycastaspect);
@@ -422,7 +426,7 @@ namespace PhysX_test2.Engine.ContentLoader
                 Material material = loadMaterial(description.matname, packs);
 
                 Logic.BehaviourModel.BehaviourModelDescription desc = createdobject.bmDescription;
-                Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel = createBehaviourModel(desc, scene); 
+                Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel = createBehaviourModel(desc, scene,__dependType); 
                 
                 RaycastBoundObject raycastaspect = loadrcbo(description, packs);
 

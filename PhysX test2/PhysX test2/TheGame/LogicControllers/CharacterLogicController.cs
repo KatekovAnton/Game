@@ -167,7 +167,7 @@ namespace PhysX_test2.TheGame.LogicControllers
 
 
             GameCharacter myCharacter = new GameCharacter(parameters._levelObjectName, Matrix.Identity, __level);
-            GameSimpleObject myHead = new GameSimpleObject(parameters._headObjectName, myCharacter._levelObject, Engine.Logic.PivotObjectDependType.Head, __level, false, false);
+            GameSimpleObject myHead = new GameSimpleObject(parameters._headObjectName, Engine.Logic.PivotObjectDependType.Head, __level, false, false);
             CharacterLogicController result = new CharacterLogicController(myCharacter, myHead, !_needMC);
 
             return result;

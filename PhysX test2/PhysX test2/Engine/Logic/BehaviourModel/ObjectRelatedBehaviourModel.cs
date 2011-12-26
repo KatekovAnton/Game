@@ -18,15 +18,22 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             SetParentObject(__parentCharacter);
         }
 
+        public ObjectRelatedBehaviourModel()
+        {
+            CurrentPosition = Matrix.Identity;
+        }
+
         public override void SetParentObject(PivotObject __object)
         {
             _parentCharacter = __object;
         }
 
-        public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
+        public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata, PivotObject __parent)
         {
+            _parentCharacter = __parent;
+
             localMatrix = GlobalPoseMatrix;
-            Matrix resultMatrix = localMatrix *  _parentCharacter.transform;
+            Matrix resultMatrix = localMatrix * __parent.transform;
             mov = CurrentPosition != resultMatrix;
             CurrentPosition = resultMatrix;
         }

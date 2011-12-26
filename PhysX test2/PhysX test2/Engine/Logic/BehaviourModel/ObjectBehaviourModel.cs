@@ -28,7 +28,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         {
             return globalpose;
         }
-        public abstract void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata);
+        public abstract void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata, PivotObject __parent = null);
         /// <summary>
         /// запоминаем что надо
         /// </summary>

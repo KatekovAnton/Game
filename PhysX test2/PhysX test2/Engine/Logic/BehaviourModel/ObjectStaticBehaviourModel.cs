@@ -14,8 +14,8 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             CurrentPosition = globalpose =  Matrix.Identity;
         }
         protected bool mov;
-        
-        public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata)
+
+        public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata, PivotObject __parent)
         {
             mov = CurrentPosition != GlobalPoseMatrix;
             CurrentPosition = GlobalPoseMatrix;
