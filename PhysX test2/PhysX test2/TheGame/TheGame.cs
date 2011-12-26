@@ -78,7 +78,7 @@ namespace PhysX_test2.TheGame
 
 
 
-            CharacterLogicController me = CharacterLogicController.CreateCharacter("1", _level);
+            CharacterLogicController me = CharacterLogicController.CreateCharacter("1", _level, false);
             me.SetAlive(true);
             me._hisInput = new InputManagers.InputProviderPlayer();
 
@@ -90,13 +90,9 @@ namespace PhysX_test2.TheGame
             _engine.CreateCharCameraController(me._hisObject._levelObject);
 
 
-            GameCharacter myCharacter1 = new GameCharacter("SCMarineAlive\0", Matrix.Identity, _level);
-            GameSimpleObject myHead1 = new GameSimpleObject("Head01\0", myCharacter1._levelObject, Engine.Logic.PivotObjectDependType.Head, _level, false, false);
-            CharacterLogicController _anotherChar = new CharacterLogicController(myCharacter1, myHead1, false);
+            CharacterLogicController _anotherChar = CharacterLogicController.CreateCharacter("2", _level, true);
             _anotherChar.SetAlive(true);
-            GameWeapon myWeapon1 = new GameWeapon("SCGunHandLO\0", "SCGunFloorLO\0", "SСGunAddon\0", myCharacter1._levelObject, _level);
-            GameSimpleObject weaponFire1 = new GameSimpleObject("Fire01LO\0", myWeapon1._inHandObject, Engine.Logic.PivotObjectDependType.Body, _level, false, false);
-            WeaponLogicController _anotherWeapon = new WeaponLogicController(myWeapon1, weaponFire1);
+            WeaponLogicController _anotherWeapon = WeaponLogicController.CreateWeapon("1", me, _level);
             _anotherChar.SetGun(_anotherWeapon);
             _level.AddController(_anotherChar);
             _level.AddController(_anotherWeapon);

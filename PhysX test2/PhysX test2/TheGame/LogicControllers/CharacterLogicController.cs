@@ -161,14 +161,14 @@ namespace PhysX_test2.TheGame.LogicControllers
             return _instanceParameters;
         }
 
-        public static CharacterLogicController CreateCharacter(string __nameIsId, GameLevel __level)
+        public static CharacterLogicController CreateCharacter(string __nameIsId, GameLevel __level, bool _needMC)
         {
             CharacterParameters parameters = StaticObjects.CharacterParameters[__nameIsId];
 
 
             GameCharacter myCharacter = new GameCharacter(parameters._levelObjectName, Matrix.Identity, __level);
             GameSimpleObject myHead = new GameSimpleObject(parameters._headObjectName, myCharacter._levelObject, Engine.Logic.PivotObjectDependType.Head, __level, false, false);
-            CharacterLogicController result = new CharacterLogicController(myCharacter, myHead, true);
+            CharacterLogicController result = new CharacterLogicController(myCharacter, myHead, !_needMC);
 
             return result;
         }

@@ -34,7 +34,7 @@ namespace PhysX_test2.Engine
                 determ = 0.001f;
             _cameraYaw = Convert.ToSingle(Math.Atan(Convert.ToSingle((cameratarget.Value.X - cameraposition.Value.X) / determ)));
             View = Matrix.CreateLookAt(cameraposition.Value, cameratarget.Value, new Vector3(0, 1, 0));
-            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, MyGame.Device.Viewport.AspectRatio, 1, 150);
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, MyGame.Device.Viewport.AspectRatio, 1, 100);
             cameraFrustum.Matrix = View * Projection;
         }
 

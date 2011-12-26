@@ -79,7 +79,6 @@ namespace PhysX_test2
                 DeviceManager.GraphicsProfile = GraphicsProfile.HiDef;
             Content.RootDirectory = "Content";
 
-
             DeviceManager.SynchronizeWithVerticalRetrace = false;
             IsFixedTimeStep = false;
 

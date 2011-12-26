@@ -100,9 +100,12 @@ namespace PhysX_test2.Engine
             
 
             //разме рэкрана
-            MyGame.DeviceManager.PreferredBackBufferWidth = (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.8);
-            MyGame.DeviceManager.PreferredBackBufferHeight = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.8);
+            MyGame.DeviceManager.PreferredBackBufferWidth = (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width *0.8 );
+            MyGame.DeviceManager.PreferredBackBufferHeight = (int) (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height*0.8);
             GameConfiguration.ScreenResolution = new Vector2(MyGame.DeviceManager.PreferredBackBufferWidth, MyGame.DeviceManager.PreferredBackBufferHeight);
+
+            MyGame.DeviceManager.IsFullScreen = false;
+            
             _cashe = new ObjectCashe();
         }
 

@@ -12,6 +12,8 @@ uniform extern float4x4 Frame[28];
 const float4 mask = float4(1.0/255.0,1.0/255.0,1.0/255.0,0.0);
 const float4 decode_mask = float4(1.0f, 1.0/255.0, 1.0/65025.0, 1.0/16581375.0);
 
+
+
 inline float4 FloatToFloat4( float v )
 {
     float4 enc = float4(1.0, 255.0, 65025.0, 16581375.0) * v;
@@ -25,37 +27,7 @@ inline float Float4ToFloat( float4 rgba )
     return dot( rgba, decode_mask );
 }
 
-float4x4 CreateLookAt(float3 cameraPos, float3 target, float3 up)
-{
-	float3 zaxis = normalize(cameraPos - target);
-	float3 xaxis = normalize(cross(up, zaxis));
-	float3 yaxis = cross(zaxis, xaxis);
-	
-	float4x4 view = { xaxis.x, yaxis.x, zaxis.x, 0,
-		xaxis.y, yaxis.y, zaxis.y, 0,
-		xaxis.z, yaxis.z, zaxis.z, 0,
-		-dot(xaxis, cameraPos), -dot(yaxis, cameraPos),
-		-dot(zaxis, cameraPos), 1
-	};
 
-	return view;
-}
-
-/*
-inline float4 FloatToFloat4( float v )
-{
-    float4 enc = float4(1.0, 255.0, 65025.0, 16581375.0) * v;
-    enc = frac(enc);
-    enc -= enc.yzww * mask;
-    return enc;
-}
-
-inline float Float4ToFloat( float4 rgba )
-{
-    return dot( rgba, decode_mask );
-}
-
-*/
 /*
 float4 FloatToFloat4(float f)
 {
@@ -137,6 +109,7 @@ sampler ShadowMapSampler = sampler_state
 	magfilter = POINT;
 	minfilter = POINT;
 	mipfilter = POINT;
+
 };
 
 struct CreateShadowMap_VSOut

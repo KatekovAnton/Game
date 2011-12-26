@@ -80,12 +80,25 @@ namespace PhysX_test2.Engine.Render
                 }
                 else
                 {
-                    shadowRenderTarget = new RenderTarget2D(Device,
-                                                           shadowMapWidthHeight,
-                                                           shadowMapWidthHeight,
-                                                           false,
-                                                           SurfaceFormat.Color,
-                                                           DepthFormat.None);
+                    if (GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef))
+                    {
+                        shadowRenderTarget = new RenderTarget2D(Device,
+                                                               shadowMapWidthHeight,
+                                                               shadowMapWidthHeight,
+                                                               false,
+                                                               SurfaceFormat.Color,
+                                                               DepthFormat.None, 0, RenderTargetUsage.DiscardContents);
+                    }
+                    else
+                    {
+                        //TODO to cofig
+                        shadowRenderTarget = new RenderTarget2D(Device,
+                                                                                     dev.PresentationParameters.BackBufferWidth,
+                                                                                      dev.PresentationParameters.BackBufferHeight,
+                                                                                     false,
+                                                                                     SurfaceFormat.Color,
+                                                                                     DepthFormat.None);
+                    }
                     SmoothShadows = false;
                 }
             }
@@ -277,10 +290,11 @@ namespace PhysX_test2.Engine.Render
         }
 
         private void RenderToShadowMap(Matrix lightViewProjection, Vector3 lightDir)
-        {
+        {            
             Device.SetRenderTarget(shadowRenderTarget);
-            Device.Clear(Color.White);
 
+            Device.Clear(Color.White);
+            
 
             Render.Materials.Material.ObjectRenderEffect.Parameters["LightDirection"].SetValue(lightDir);
             Render.Materials.Material.ObjectRenderEffect.Parameters["LightViewProj"].SetValue(lightViewProjection);
@@ -290,9 +304,6 @@ namespace PhysX_test2.Engine.Render
             if (!Objects.IsEmpty)
             {
                 Materials.Material.ObjectRenderEffect.CurrentTechnique = Materials.Material.ObjectRenderEffect.Techniques[Shader.CreateStaticShadowMap];
-                Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(Matrix.Identity);
-                Materials.Material.ObjectRenderEffect.CurrentTechnique.Passes[0].Apply();
-
 
                 foreach (PivotObject wo in Objects)
                 {
@@ -310,7 +321,7 @@ namespace PhysX_test2.Engine.Render
                     wo.HaveRenderAspect().SelfRender(2, wo.HaveMaterial());
                 }
             }
-
+          
             Device.SetRenderTarget(null);
         }
         
@@ -322,11 +333,13 @@ namespace PhysX_test2.Engine.Render
             Device.BlendState = BlendState.Opaque;
 
             Device.SamplerStates[0] = SamplerState.LinearWrap;
-            Device.SamplerStates[1] = SamplerState.PointWrap;
+            Device.SamplerStates[1] = SamplerState.PointClamp;
 
             if (EnableShadows)
             {
                 RenderToShadowMap(lightViewProjection, lightDir);
+                
+               
                 Render.Materials.Material.ObjectRenderEffect.Parameters["ShadowMap"].SetValue(shadowRenderTarget);
             }
 
@@ -390,11 +403,11 @@ namespace PhysX_test2.Engine.Render
                     debugRenderer.RenderAABB(wo.raycastaspect.boundingShape);
                 }
 
-                /*
+                
                 sprite.Begin( SpriteSortMode.FrontToBack, new BlendState());
                 sprite.Draw(shadowRenderTarget, new Rectangle(0, 0, 128, 128), Color.Wheat);
                 sprite.End();
-                */
+                
             }
         }
 
@@ -429,6 +442,19 @@ namespace PhysX_test2.Engine.Render
             Device.BlendState = newstate;
             RenderArrayWithTehnique(name);
             Device.BlendState = oldstate;
+        }
+
+        public RasterizerState createNewState(RasterizerState aotherstate)
+        {
+            RasterizerState res = new RasterizerState();
+            res.CullMode = aotherstate.CullMode;
+            res.DepthBias = aotherstate.DepthBias;
+            res.FillMode = aotherstate.FillMode;
+            res.MultiSampleAntiAlias = aotherstate.MultiSampleAntiAlias;
+            res.ScissorTestEnable = aotherstate.ScissorTestEnable;
+            res.SlopeScaleDepthBias = aotherstate.SlopeScaleDepthBias;
+
+            return res;
         }
     }
 }
