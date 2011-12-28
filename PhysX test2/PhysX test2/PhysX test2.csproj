@@ -229,6 +229,7 @@
     <Compile Include="TheGame\LogicControllers\Parameters\BulletBox.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\BulletParameters.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\CharacterParameters.cs" />
+    <Compile Include="TheGame\LogicControllers\Parameters\DynamicParameters.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\InteractiveObjectParameters.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\ItemParameters.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\MotralParameters.cs" />

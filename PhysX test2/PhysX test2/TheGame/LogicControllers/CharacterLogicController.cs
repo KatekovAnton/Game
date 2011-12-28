@@ -16,7 +16,7 @@ namespace PhysX_test2.TheGame.LogicControllers
     public class CharacterLogicController:BaseLogicController 
     {
         public Parameters.CharacterParameters _baseParameters;
-        public Parameters.CharacterParameters _instanceParameters;
+        public Parameters.CharacterDynamicParameters _instanceParameters;
 
 
         public bool _isAlive;
@@ -151,13 +151,13 @@ namespace PhysX_test2.TheGame.LogicControllers
             }
         }
 
-        public override void TakeHit(Parameters.BulletParameters __bulletParameters)
+        public override void TakeHit(Parameters.BulletDynamicParameters __bulletParameters)
         {
             //VOVA
             MyGame.ScreenLogMessage("character taking hit", Color.Red);
         }
 
-        public override Parameters.InteractiveObjectParameters GetParameters()
+        public override Parameters.DynamicParameters GetParameters()
         {
             return _instanceParameters;
         }

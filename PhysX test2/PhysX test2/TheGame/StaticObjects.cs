@@ -150,7 +150,7 @@ namespace PhysX_test2.TheGame
                 return;
 
             _characterParameters = new Dictionary<string, CharacterParameters>();
-            SQliteResultSet result = Database.executeSelect("select NPC.id, characters.levelObject, characters.defaultDeadStartAnim, characters.defaultDeadIdleAnim, characters.defaultAliveAnim, characters.waklSpeed, NPC.headObject, NPC.humanName, NPC.isUniq from NPC inner join characters on NPC.character = characters.id", null);
+            SQliteResultSet result = Database.executeSelect("select NPC.id, characters.levelObject, characters.defaultDeadStartAnim, characters.defaultDeadIdleAnim, characters.rifleStayAnim, characters.waklSpeed, NPC.headObject, NPC.humanName, NPC.isUniq from NPC inner join characters on NPC.character = characters.id", null);
             foreach (object[] arr in result.result)
             {
                 int id = Convert.ToInt32(arr[0]);

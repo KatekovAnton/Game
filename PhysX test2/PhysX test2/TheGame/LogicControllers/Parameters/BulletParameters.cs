@@ -35,6 +35,19 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
                 _levelObjectName += "\0";
             _bulletMass = __bulletMass;
         }
-        
+    }
+
+    public class BulletDynamicParameters : DynamicParameters
+    {
+        public float _damage;
+        public float _pierce;
+        public float _accuracy;
+
+        public BulletDynamicParameters(BulletParameters __params)
+        {
+            _damage = __params._damage;
+            _pierce = __params._pierce;
+            _accuracy = __params._accuracy;
+        }
     }
 }

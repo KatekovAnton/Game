@@ -92,5 +92,27 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
             _accuracy           = _another._accuracy;
 
         }
+
+    }
+
+    public class WeaponDynamicParameters : DynamicParameters
+    {
+        public float _reloadTime;
+        public float _damageBallMod;
+        public float _damageEnMod;
+        public float _accuracy;
+        public float _fireRestartTime;
+
+        public WeaponDynamicParameters()
+        { }
+
+        public WeaponDynamicParameters(WeaponParameters __base)
+        {
+            _reloadTime = __base._reloadTime;
+            _damageBallMod = __base._damageBallMod;
+            _damageEnMod = __base._damageEnMod;
+            _accuracy = __base._accuracy;
+            _fireRestartTime = __base._fireRestartTime;
+        }
     }
 }

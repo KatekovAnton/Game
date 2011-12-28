@@ -12,7 +12,7 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
         public string _levelObjectName;
         public string _defaultDeadStartAnimName;
         public string _defaultDeadIdleAnimName;
-        public string _defaultAliveAnimName;
+        public string _rifleStayAnimName;
 
         public string _headObjectName;
         public bool _isUniq;
@@ -22,7 +22,7 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
                                     string __levelObjectName,
                                     string __defaultDeadStartAnimName,
                                     string __defaultDeadIdleAnimName,
-                                    string __defaultAliveAnimName,
+                                    string __rifleStayAnimName,
                                     string __headObjectName,
                                     bool __isUniq,
                                     float __speed)
@@ -30,7 +30,7 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
         {
             _walkSpeed = __speed;
             _levelObjectName = __levelObjectName;
-            _defaultAliveAnimName = __defaultAliveAnimName;
+            _rifleStayAnimName = __rifleStayAnimName;
             _defaultDeadIdleAnimName = __defaultDeadIdleAnimName;
             _defaultDeadStartAnimName = __defaultDeadStartAnimName;
 
@@ -40,8 +40,8 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
 
             if (!_levelObjectName.EndsWith("\0"))
                 _levelObjectName += "\0";
-            if (!_defaultAliveAnimName.EndsWith("\0"))
-                _defaultAliveAnimName += "\0";
+            if (!_rifleStayAnimName.EndsWith("\0"))
+                _rifleStayAnimName += "\0";
             if (!_defaultDeadIdleAnimName.EndsWith("\0"))
                 _defaultDeadIdleAnimName += "\0";
             if (!_defaultDeadStartAnimName.EndsWith("\0"))
@@ -50,4 +50,7 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
                 _headObjectName += "\0";
         }
     }
+
+    public class CharacterDynamicParameters : DynamicParameters
+    { }
 }

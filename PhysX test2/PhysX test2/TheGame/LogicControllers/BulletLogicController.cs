@@ -10,7 +10,8 @@ namespace PhysX_test2.TheGame.LogicControllers
 {
     public class BulletLogicController : BaseLogicController
     {
-        public Parameters.BulletParameters _instanceParameters;
+        public Parameters.BulletParameters _baseParameters;
+        public Parameters.BulletDynamicParameters _instanceParameters;
         public Vector3 _startPosition;
         public Vector3 _moveVector;
         
@@ -21,15 +22,16 @@ namespace PhysX_test2.TheGame.LogicControllers
         public BulletLogicController(
             GameLevel __level,
             GameBulletSimple __itsObject, 
-            TimeSpan __nowTime, 
-            Parameters.BulletParameters __itsParameters, 
+            TimeSpan __nowTime,
+            Parameters.BulletParameters __baseParameters,
+            Parameters.BulletDynamicParameters __itsParameters, 
             Matrix __startPos, 
             Vector3 __moveVector)
             :base(__level)
         {
             _hisObject = __itsObject;
             _createdTime = __nowTime;
-
+            _baseParameters = __baseParameters;
             _instanceParameters = __itsParameters;
             _startPosition = __startPos.Translation;
             _moveVector = __moveVector;
@@ -39,7 +41,7 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public override void Update(GameTime __gameTime)
         {
-            if ((__gameTime.TotalGameTime.TotalMilliseconds - _createdTime.TotalMilliseconds) > _instanceParameters._lifeTime)
+            if ((__gameTime.TotalGameTime.TotalMilliseconds - _createdTime.TotalMilliseconds) > _baseParameters._lifeTime)
             {
                 //remove visible object
                 _hisObject.RemoveFromLevel();
@@ -55,7 +57,7 @@ namespace PhysX_test2.TheGame.LogicControllers
                  * */
 
                 StatisticContainer.Instance().UpdateParameter("totalBullets", 1);
-                Vector3 delta = _moveVector * _instanceParameters._speed * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
+                Vector3 delta = _moveVector * _baseParameters._speed * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
                 if (!_itsLevel.SearchBulletIntersection(this, delta))
                 {
                     Matrix newmatrix = _hisObject._object.behaviourmodel.CurrentPosition * Matrix.CreateTranslation(delta);
@@ -79,12 +81,12 @@ namespace PhysX_test2.TheGame.LogicControllers
             _hisObject._object._gameObject = this;
         }
 
-        public override Parameters.InteractiveObjectParameters GetParameters()
+        public override Parameters.DynamicParameters GetParameters()
         {
             return _instanceParameters;
         }
 
-        public override void TakeHit(Parameters.BulletParameters __bulletParameters)
+        public override void TakeHit(Parameters.BulletDynamicParameters __bulletParameters)
         {
             return;
         }

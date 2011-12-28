@@ -75,7 +75,7 @@ namespace PhysX_test2.TheGame.Level
 
         public Vector3 CreateRandomizedPoint(Vector3 StartPoint, float accuracy)
         {
-            float dispersion = (1.0f - accuracy) * 0.5f;
+            float dispersion = (1.0f - accuracy);
             if (dispersion < 0)
                 dispersion = 0;
 
@@ -99,8 +99,8 @@ namespace PhysX_test2.TheGame.Level
             //тут тебе ненадо ничего менять имхо
             MyGame.ScreenLogMessage("create bullet");
             
-            LogicControllers.Parameters.BulletParameters parameters = __weapon._chargedBullets;
-            Objects.GameBulletSimple bullet = new Objects.GameBulletSimple(this, parameters._levelObjectName);
+            LogicControllers.Parameters.BulletDynamicParameters parameters = __weapon._bulletFinalParameters;
+            Objects.GameBulletSimple bullet = new Objects.GameBulletSimple(this, __weapon._chargedBullets._levelObjectName);
 
             Vector3 moveVector;
             Vector3 targetpoint = MyGame.Instance._mousepoint;
@@ -122,6 +122,7 @@ namespace PhysX_test2.TheGame.Level
                 this,
                 bullet,
                 __nowTime,
+                __weapon._chargedBullets,
                 parameters,
                 transform,
                 moveVector);
@@ -142,7 +143,7 @@ namespace PhysX_test2.TheGame.Level
 
             if (intersectedObject != null)
             {
-                intersectedObject.behaviourmodel.MakeJolt(intersectionPoint, __moveVector, __bullet._instanceParameters._bulletMass);
+                intersectedObject.behaviourmodel.MakeJolt(intersectionPoint, __moveVector, __bullet._baseParameters._bulletMass);
 
                 BaseLogicController blc = intersectedObject._gameObject as BaseLogicController;
                 if (blc != null)

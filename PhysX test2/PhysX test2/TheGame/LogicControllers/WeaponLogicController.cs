@@ -12,9 +12,10 @@ namespace PhysX_test2.TheGame.LogicControllers
     public class WeaponLogicController : BaseLogicController
     {
         public Parameters.WeaponParameters _baseParameters;
-        public Parameters.WeaponParameters _instanceParameters;
+        public Parameters.WeaponDynamicParameters _instanceParameters;
 
         public Parameters.BulletParameters _chargedBullets;
+        public Parameters.BulletDynamicParameters _bulletFinalParameters;
 
         public GameWeapon _weaponObject;
         public GameSimpleObject _weaponFire;
@@ -29,6 +30,7 @@ namespace PhysX_test2.TheGame.LogicControllers
             _weaponFire = __weaponFire;
             _isFiring = false;
             _chargedBullets = StaticObjects.BulletParameters["1"];
+            _bulletFinalParameters = new BulletDynamicParameters(_chargedBullets);
         }
 
         public void SetState(GameWeaponState __newState, CharacterLogicController __owner = null)
@@ -69,16 +71,16 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public override void Update(GameTime __gametime)
         {
-            if (_weaponFire._onLevel && (__gametime.TotalGameTime.TotalMilliseconds - _lastfiretime.TotalMilliseconds) > _instanceParameters._fireTime)
+            if (_weaponFire._onLevel && (__gametime.TotalGameTime.TotalMilliseconds - _lastfiretime.TotalMilliseconds) > _baseParameters._fireTime)
                 _weaponFire.RemoveFromLevel();
         }
 
-        public override Parameters.InteractiveObjectParameters GetParameters()
+        public override Parameters.DynamicParameters GetParameters()
         {
             return _instanceParameters;
         }
 
-        public override void TakeHit(Parameters.BulletParameters __bulletParameters)
+        public override void TakeHit(Parameters.BulletDynamicParameters __bulletParameters)
         {
             //newer for weapons
             return;
@@ -91,7 +93,7 @@ namespace PhysX_test2.TheGame.LogicControllers
             GameSimpleObject weaponFire = new GameSimpleObject(parameters._fireObject, Engine.Logic.PivotObjectDependType.Body, __level, false, false);
             WeaponLogicController newGun = new WeaponLogicController(__level, myWeapon, weaponFire);
             newGun._baseParameters = parameters;
-            newGun._instanceParameters = parameters;
+            newGun._instanceParameters = new WeaponDynamicParameters(parameters);
             return newGun;
         }
     }

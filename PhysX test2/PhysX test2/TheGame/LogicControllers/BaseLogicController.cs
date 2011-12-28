@@ -15,8 +15,8 @@ namespace PhysX_test2.TheGame.LogicControllers
     {
         public uint _id;
         public TimeSpan _createdTime;
-        public abstract Parameters.InteractiveObjectParameters GetParameters();
-        public abstract void TakeHit(Parameters.BulletParameters __bulletParameters);
+        public abstract Parameters.DynamicParameters GetParameters();
+        public abstract void TakeHit(Parameters.BulletDynamicParameters __bulletParameters);
         public abstract void Update(GameTime __gameTime);
         protected GameLevel _itsLevel;
 
