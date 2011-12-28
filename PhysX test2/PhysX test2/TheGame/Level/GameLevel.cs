@@ -76,6 +76,8 @@ namespace PhysX_test2.TheGame.Level
         public Vector3 CreateRandomizedPoint(Vector3 StartPoint, float accuracy)
         {
             float dispersion = (1.0f - accuracy) * 0.5f;
+            if (dispersion < 0)
+                dispersion = 0;
 
             float module = (float)MyRandom.Instance.NextDouble();
             dispersion *= module;
