@@ -159,16 +159,18 @@ namespace PhysX_test2
                     float range = (point.Value - camerapos).Length();
                     if (range < distance)
                     {
+                        Vector3 direction = ray.Direction;
+                        direction.Normalize();
                         clickedlo = lo;
                         distance = range;
                         newpoint = point.Value;
-                        newpoint.Y -= 0.1f;
+                        newpoint += (direction*0.3f);
                     }
                 }
             }
             _mousepoint = newpoint;
             
-            _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.CreateTranslation(newpoint), null);
+          //  _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.CreateTranslation(newpoint), null);
         }
 
         protected override void Update(GameTime gameTime)

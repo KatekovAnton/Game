@@ -87,7 +87,10 @@ namespace PhysX_test2.TheGame.InputManagers
 
             _oldInputState = _newInputState;
             if (_moveVector != Vector3.Zero)
+            {
+                MyGame.Instance._engine.cameraneedsupdate = true;
                 _newInputState = calculateCurrentState(_moveVector, _viewVector);
+            }
             else
                 _newInputState = CharacterMoveState.Stay;
         }

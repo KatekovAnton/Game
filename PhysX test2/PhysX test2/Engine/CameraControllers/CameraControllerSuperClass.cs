@@ -13,7 +13,7 @@ namespace PhysX_test2.Engine.CameraControllers
 
         protected CameraControllerSuperClass(Camera cam, Vector3 currentPos, Vector3 targetPosition)
         {
-            _speedLimit = 30.0f;
+            _speedLimit = 50.0f;
             _camera = cam;
             _currendPosition = currentPos;
             _currentTarget = targetPosition;

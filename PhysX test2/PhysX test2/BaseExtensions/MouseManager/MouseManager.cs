@@ -25,6 +25,7 @@ namespace PhysX_test2
         public bool isJustPressed;
         public bool isJustReleased;
 
+        public bool moved;
 
         public MouseManager()
         {
@@ -38,7 +39,10 @@ namespace PhysX_test2
         public void Update()
         {
             MouseState state = Mouse.GetState();
-
+            if (mousePos.X != state.X || mousePos.Y != state.Y)
+                moved = true;
+            else
+                moved = false;
             mousePos.X = state.X;
             mousePos.Y = state.Y;
 
