@@ -8,19 +8,30 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
     public class AnimationInfo
     {
         public int _weaponType;
-        public string _stayAnim;
+        public string _stayTopAnim;
+        public string _stayBotAnim;
         public string _fireAniml;
         public string _actionAnim;
 
         public AnimationInfo(int __type,
-            string __sa,
+            string __sta,
+            string __sba,
             string __fa,
             string __aa)
         {
             _fireAniml = __fa;
-            _stayAnim = __sa;
+            if (!_fireAniml.EndsWith("\0"))
+                _fireAniml += "\0";
+            _stayTopAnim = __sta;
+            if (!_stayTopAnim.EndsWith("\0"))
+                _stayTopAnim += "\0";
+            _stayBotAnim = __sba;
+            if (!_stayBotAnim.EndsWith("\0"))
+                _stayBotAnim += "\0";
             _weaponType = __type;
             _actionAnim = __aa;
+            if (!_actionAnim.EndsWith("\0"))
+                _actionAnim += "\0";
         }
     }
 

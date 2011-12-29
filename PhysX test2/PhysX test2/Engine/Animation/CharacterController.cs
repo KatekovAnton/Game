@@ -131,13 +131,21 @@ namespace PhysX_test2.Engine.Animation
             __anotherController._sourceFrames.CopyTo(_sourceFrames, 0);
         }
 
-        public void MakeUnconditionalTransition(string[] nodeNames, bool __smoothly)
+        public void MakeUnconditionalTransition(string[] nodeNames, bool __smoothly, string __safeDropNode)
         {
             for (int i = 0; i < _currentNodes.Length; i++)
             {
                 AnimationNode node = _baseCharacter.parts[i].NodeWithName(nodeNames[i]);
                 if (node != null)
                 {
+                    if (node == _currentNodes[i])
+                        continue;
+                    if (_currentNodes[i].isOneTime)
+                    {
+                        //go to previous animnode
+                        _currentNodes[i] = _forDropNodes[i];
+                        _forDropNodes[i] = null;
+                    }
                     _currentNodes[i] = node;
                     while (_currentAnimTime[i] > _currentNodes[i].animTime)
                         _currentAnimTime[i] -= _currentNodes[i].animTime;
@@ -148,7 +156,7 @@ namespace PhysX_test2.Engine.Animation
                 return;
         }
 
-        public void MakeUnconditionalTransition(string __nodeName, bool __smoothly)
+        public void MakeUnconditionalTransition(string __nodeName, bool __smoothly, string __safeDropNode)
         {
             for (int i = 0; i < _currentNodes.Length; i++)
             {
@@ -160,18 +168,46 @@ namespace PhysX_test2.Engine.Animation
                         continue;
 
                     if (node.isOneTime && !_currentNodes[i].isOneTime)
-                        _forDropNodes[i] = _currentNodes[i];
+                        _forDropNodes[i] = _currentNodes[i];//иначе для сброса оставляем прежнюю
+                    //тут мб ошибка если мы меняем анимацию на другую ветку
+                    //поэтому скидываем на безопасный нод
+                    if (node.isOneTime && _currentNodes[i].isOneTime)
+                        _forDropNodes[i] = _baseCharacter.parts[i].NodeWithName(__safeDropNode);
+
+
                     _currentNodes[i] = node;
                     while (_currentAnimTime[i] > _currentNodes[i].animTime)
                         _currentAnimTime[i] -= _currentNodes[i].animTime;
                 }
             }
+            if (__smoothly)
+                return;
+        }
 
-            CheckNodes();
+        public void MakeUnconditionalTransition(string __nodeName, int __part, bool __smoothly, string __safeDropNode)
+        {
+            AnimationNode node = _baseCharacter.parts[__part].NodeWithName(__nodeName);
+            if (node != null)
+            {
+                _currentAnimTime[__part] = 0;
+                if (node == _currentNodes[__part])
+                    return;
+
+                if (node.isOneTime && !_currentNodes[__part].isOneTime)
+                    _forDropNodes[__part] = _currentNodes[__part];//иначе для сброса оставляем прежнюю
+                //тут мб ошибка если мы меняем анимацию на другую ветку
+                //поэтому скидываем на безопасный нод
+                if (node.isOneTime && _currentNodes[__part].isOneTime)
+                    _forDropNodes[__part] = _baseCharacter.parts[__part].NodeWithName(__safeDropNode);
+
+
+                _currentNodes[__part] = node;
+                while (_currentAnimTime[__part] > _currentNodes[__part].animTime)
+                    _currentAnimTime[__part] -= _currentNodes[__part].animTime;
+            }
 
             if (__smoothly)
                 return;
-
         }
 
         public void CheckNodes()
@@ -207,11 +243,6 @@ namespace PhysX_test2.Engine.Animation
                 {
                     if (_currentNodes[i].isOneTime)
                     {
-                        if (_forDropNodes[i] == null)
-                        {
-                            int a = 0;
-                            a++;
-                        }
                         //go to previous animnode
                         _currentNodes[i] = _forDropNodes[i];
                         _forDropNodes[i] = null;

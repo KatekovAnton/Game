@@ -64,7 +64,8 @@ namespace PhysX_test2.TheGame.LogicControllers
             __newWeapon.SetState(GameWeaponState.None);
 
             _hisWeapon = __newWeapon;
-       
+            AnimationInfo ai = GetAnimInfo();
+            _hisObject._controllerAlive.MakeUnconditionalTransition(ai._stayTopAnim, 1, false, ai._stayTopAnim);
             SwitchGun();
         }
 
@@ -77,6 +78,16 @@ namespace PhysX_test2.TheGame.LogicControllers
                 _hisWeapon.SetState(GameWeaponState.InHand, this);
         }
 
+        private AnimationInfo GetAnimInfo()
+        {
+            AnimationInfo animinfo = null;
+            if (_hisWeapon == null)
+                animinfo = _baseParameters._animations[0];
+            else
+                animinfo = _baseParameters._animations[_hisWeapon._baseParameters._type];
+            return animinfo;
+        }
+
         public void SetAlive(bool __liveState)
         {
             if (__liveState == _isAlive)
@@ -85,7 +96,8 @@ namespace PhysX_test2.TheGame.LogicControllers
             if (__liveState)
             {
                 MyGame.ScreenLogMessage("character alive");
-                _hisObject.SetAlive();
+                AnimationInfo animinfo = GetAnimInfo();
+                _hisObject.SetAlive(animinfo._stayBotAnim, animinfo._stayTopAnim);
                 _hisObject._levelObject._gameObject = this;
             }
             else
@@ -108,8 +120,9 @@ namespace PhysX_test2.TheGame.LogicControllers
             {
                 if (_hisWeapon.BeginFire(__gameTime))
                 {
+                    AnimationInfo info = GetAnimInfo();
                     //start fire animation and other
-                    _hisObject.Fire();
+                    _hisObject.Fire(info._fireAniml, info._stayTopAnim);
                     _itsLevel.CreateBullet(_hisWeapon, __gameTime.TotalGameTime);
                 }
             }
@@ -170,7 +183,7 @@ namespace PhysX_test2.TheGame.LogicControllers
             GameCharacter myCharacter = new GameCharacter(parameters._levelObjectName, Matrix.Identity, __level);
             GameSimpleObject myHead = new GameSimpleObject(parameters._headObjectName, Engine.Logic.PivotObjectDependType.Head, __level, false, false);
             CharacterLogicController result = new CharacterLogicController(__level, myCharacter, myHead, !_needMC);
-
+            result._baseParameters = parameters;
             return result;
         }
     }

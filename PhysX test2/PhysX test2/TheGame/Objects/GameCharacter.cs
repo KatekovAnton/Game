@@ -62,21 +62,21 @@ namespace PhysX_test2.TheGame.Objects
             if (_controllerAlive == null)
                 return;
 
-         
-            _controllerAlive.MakeUnconditionalTransition("dead01\0", true);
+
+            _controllerAlive.MakeUnconditionalTransition("dead01\0", true, "dead01\0");
         }
 
-        public void Fire()
+        public void Fire(string __animName, string __idleName)
         {
             if (!_isAlive)
                 return;
 
-            
 
-            _controllerAlive.MakeUnconditionalTransition("fire01\0", false);
+
+            _controllerAlive.MakeUnconditionalTransition(__animName, false, __idleName);
         }
 
-        public void SetAlive()
+        public void SetAlive(string __stayBottomName, string __stayTopName)
         {
             if (_isAlive)
                 throw new Exception();
@@ -96,19 +96,20 @@ namespace PhysX_test2.TheGame.Objects
             if (_controllerAlive == null)
                 return;
 
-            _controllerAlive.MakeUnconditionalTransition("stay1\0", false);
+            _controllerAlive.MakeUnconditionalTransition(__stayBottomName, 0, false, __stayBottomName);
+            _controllerAlive.MakeUnconditionalTransition(__stayTopName, 1, false, __stayTopName);
         }
 
         public static void edgeDeadToAlive(GameCharacter __object)
         {
             //method
-            __object.SetAlive();
+          //  __object.SetAlive();
         }
 
         public static void edgeAliveToDead(GameCharacter __object)
         {
             //method
-            __object.SetDead();
+           // __object.SetDead();
         }
 
         public override void Rotate(float __angle)

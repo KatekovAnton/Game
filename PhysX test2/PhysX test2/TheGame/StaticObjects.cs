@@ -134,7 +134,8 @@ namespace PhysX_test2.TheGame
                     string stayAnim = anim[2].ToString();
                     string fireAnim = anim[3].ToString();
                     string actionAnim = anim[4].ToString();
-                    AnimationInfo aa = new AnimationInfo(type, stayAnim, fireAnim, actionAnim);
+                    string staybottomanim = anim[5].ToString();
+                    AnimationInfo aa = new AnimationInfo(type, stayAnim, staybottomanim, fireAnim, actionAnim);
                     animationsresult.Add(type, aa);
                 }
                 _animations.Add(Convert.ToInt32(id_), animationsresult);
