@@ -82,7 +82,7 @@ namespace PhysX_test2.TheGame.LogicControllers
         {
             AnimationInfo animinfo = null;
             if (_hisWeapon == null)
-                animinfo = _baseParameters._animations[0];
+                animinfo = _baseParameters._animations[1];
             else
                 animinfo = _baseParameters._animations[_hisWeapon._baseParameters._type];
             return animinfo;
