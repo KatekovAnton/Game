@@ -288,7 +288,6 @@ namespace PhysX_test2.Engine
         bool enabeld = true;
         public void Update(GameTime gameTime)
         {
-            
             //updatelogic
             animationManager.UpdateStart(gameTime);
 
@@ -315,14 +314,10 @@ namespace PhysX_test2.Engine
                 lo.EndDoFrame();
 
 
-            //Update world(calc ray trace, deleting bullets, applying forces and other)??
-            //------
-
-
             //Udating data for scenegraph
             gameScene.UpdateScene();
 
-            if (MouseManager.Manager.moved || cameraneedsupdate) 
+            if (MouseManager.Manager.moved || cameraneedsupdate || MouseManager.Manager.scrollWheelDelta != 0)
             {
                 cameraneedsupdate = false;
                 // обработка камеры

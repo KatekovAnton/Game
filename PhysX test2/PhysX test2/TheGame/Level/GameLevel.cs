@@ -131,7 +131,7 @@ namespace PhysX_test2.TheGame.Level
             result.LocateToLevel();
         }
 
-        public bool SearchBulletIntersection(BulletLogicController __bullet, Vector3 __moveVector)
+        public bool SearchBulletIntersection(BulletLogicController __bullet, Vector3 __moveVector, ref Vector3 __resultPoint)
         {
             Vector3 startPosition = __bullet._hisObject._object.behaviourmodel.CurrentPosition.Translation;
             Vector3 endPosition = startPosition + __moveVector;
@@ -147,6 +147,8 @@ namespace PhysX_test2.TheGame.Level
                 BaseLogicController blc = intersectedObject._gameObject as BaseLogicController;
                 if (blc != null)
                     blc.TakeHit(__bullet._instanceParameters);
+
+                __resultPoint = intersectionPoint;
                 return true;
             }
 

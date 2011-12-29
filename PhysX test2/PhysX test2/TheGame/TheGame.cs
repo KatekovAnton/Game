@@ -82,7 +82,7 @@ namespace PhysX_test2.TheGame
             me.SetAlive(true);
             me._hisInput = new InputManagers.InputProviderPlayer();
 
-            WeaponLogicController myGun = WeaponLogicController.CreateWeapon("2",_level);
+            WeaponLogicController myGun = WeaponLogicController.CreateWeapon("1",_level);
             me.SetGun(myGun);
             
             _characters.Add(_playerCharacterKey, me);

@@ -58,8 +58,10 @@ namespace PhysX_test2.TheGame.LogicControllers
 
                 StatisticContainer.Instance().UpdateParameter("totalBullets", 1);
                 Vector3 delta = _moveVector * _baseParameters._speed * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
-                if (!_itsLevel.SearchBulletIntersection(this, delta))
+                Vector3 resulpoint = new Vector3();
+                if (!_itsLevel.SearchBulletIntersection(this, delta, ref resulpoint))
                 {
+                    //move forward
                     Matrix newmatrix = _hisObject._object.behaviourmodel.CurrentPosition * Matrix.CreateTranslation(delta);
                     _hisObject._object.SetGlobalPose(newmatrix);
                 }
@@ -70,9 +72,15 @@ namespace PhysX_test2.TheGame.LogicControllers
                     //stop the update
                     _itsLevel.RemoveController(this);
 
-                    //TODO ADD EFFECT!!!!!
+                    
+                    CreateIntersectionEffect(_moveVector, resulpoint);
                 }
             }
+        }
+
+        public void CreateIntersectionEffect(Vector3 __axis, Vector3 __position)
+        {
+            //TODO ADD EFFECT!!!!!
         }
 
         public void LocateToLevel()
