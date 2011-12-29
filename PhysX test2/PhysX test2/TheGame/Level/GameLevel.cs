@@ -67,10 +67,8 @@ namespace PhysX_test2.TheGame.Level
 
         public void Update(GameTime __gameTime)
         {
-
             foreach (BaseLogicController controller in _allLogicObjects)
                 controller.Update(__gameTime);
-
         }
 
         public Vector3 CreateRandomizedPoint(Vector3 StartPoint, float accuracy)
@@ -109,7 +107,7 @@ namespace PhysX_test2.TheGame.Level
             moveVector = targetpoint - startpoint;
             moveVector.Normalize();
 
-            targetpoint = startpoint + moveVector*10;
+            targetpoint = startpoint + moveVector * 5.0f;
             targetpoint = CreateRandomizedPoint(targetpoint, parameters._accuracy);
 
             moveVector = targetpoint - startpoint;

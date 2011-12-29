@@ -5,6 +5,26 @@ using System.Text;
 
 namespace PhysX_test2.TheGame.LogicControllers.Parameters
 {
+    public class AnimationInfo
+    {
+        public int _weaponType;
+        public string _stayAnim;
+        public string _fireAniml;
+        public string _actionAnim;
+
+        public AnimationInfo(int __type,
+            string __sa,
+            string __fa,
+            string __aa)
+        {
+            _fireAniml = __fa;
+            _stayAnim = __sa;
+            _weaponType = __type;
+            _actionAnim = __aa;
+        }
+    }
+
+
     public class CharacterParameters : MotralParameters
     {
         public float _walkSpeed;
@@ -17,6 +37,8 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
         public string _headObjectName;
         public bool _isUniq;
 
+        public Dictionary<int, AnimationInfo> _animations;
+
         public CharacterParameters(int __dbID, 
                                     string __displayName,
                                     string __levelObjectName,
@@ -25,9 +47,11 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
                                     string __rifleStayAnimName,
                                     string __headObjectName,
                                     bool __isUniq,
-                                    float __speed)
+                                    float __speed,
+                                    Dictionary<int, AnimationInfo> __anims)
             : base(__dbID, __displayName)
         {
+            _animations = __anims;
             _walkSpeed = __speed;
             _levelObjectName = __levelObjectName;
             _rifleStayAnimName = __rifleStayAnimName;

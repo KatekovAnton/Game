@@ -23,7 +23,7 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
         public int _oneShootCount;
         public float _accuracy;
         public string _caliberName;
-
+        public int _type;
 
         public WeaponParameters(int __dbID, string __displayName, float __mass,
                              string __shortName,
@@ -41,7 +41,8 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
                              int __oneShootCount,
                              float __accuracy,
                              string __description,
-                             string __caliberName)
+                             string __caliberName,
+                                int __type)
             : base(__dbID, __displayName, __mass)
         {
             _shortName = __shortName;
@@ -70,6 +71,7 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
             if (!_description.EndsWith("\0"))
                 _description += "\0";
             _caliberName = __caliberName;
+            _type = __type;
         }
 
         public WeaponParameters(WeaponParameters _another)

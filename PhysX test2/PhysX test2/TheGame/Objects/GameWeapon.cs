@@ -46,7 +46,8 @@ namespace PhysX_test2.TheGame.Objects
         {
             _inHandObject = Engine.GameEngine.LoadObject(__inHandObject, null, false, false, PivotObjectDependType.Weapon) as LevelObject;
             _onFloorObject = Engine.GameEngine.LoadObject(__onFloorObject, null, true, false) as LevelObject;
-            _addonObject = Engine.GameEngine.LoadObject(__addonObject, null, false, false, PivotObjectDependType.Body) as LevelObject;
+            if(__addonObject.Length>1)
+                _addonObject = Engine.GameEngine.LoadObject(__addonObject, null, false, false, PivotObjectDependType.Body) as LevelObject;
 
             _state = GameWeaponState.None;
         }
@@ -58,7 +59,8 @@ namespace PhysX_test2.TheGame.Objects
                 case GameWeaponState.None:
                     {
                         _hisLevel.AddEngineObject(_onFloorObject);
-                        _hisLevel.AddEngineObject(_addonObject, _onFloorObject);
+                        if(_addonObject!=null)
+                            _hisLevel.AddEngineObject(_addonObject, _onFloorObject);
                     } break;
                 case GameWeaponState.InHand:
                     {
@@ -77,7 +79,8 @@ namespace PhysX_test2.TheGame.Objects
                 case GameWeaponState.None:
                     {
                         _hisLevel.AddEngineObject(_inHandObject, __character._levelObject);
-                        _hisLevel.AddEngineObject(_addonObject, _inHandObject);
+                        if (_addonObject != null)
+                            _hisLevel.AddEngineObject(_addonObject, _inHandObject);
                     } break;
                 case GameWeaponState.OnFloor:
                     {
@@ -95,12 +98,14 @@ namespace PhysX_test2.TheGame.Objects
             {
                 case GameWeaponState.OnFloor:
                     {
-                        _hisLevel.RemoveObject(_addonObject);
+                        if (_addonObject != null)
+                            _hisLevel.RemoveObject(_addonObject);
                         _hisLevel.RemoveObject(_onFloorObject);
                     } break;
                 case GameWeaponState.InHand:
                     {
-                        _hisLevel.RemoveObject(_addonObject);
+                        if (_addonObject != null)
+                            _hisLevel.RemoveObject(_addonObject);
                         _hisLevel.RemoveObject(_inHandObject);
                     } break;
                 default: break;

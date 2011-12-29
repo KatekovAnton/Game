@@ -81,6 +81,15 @@ namespace PhysX_test2.TheGame
             }
         }
 
+        private static Dictionary<int, Dictionary<int, AnimationInfo>> _animations;
+        public static Dictionary<int, Dictionary<int, AnimationInfo>> AnimationsParameters
+        {
+            get
+            {
+                return _animations;
+            }
+        }
+
         private StaticObjects()
         { 
             //init all static objects here
@@ -88,6 +97,7 @@ namespace PhysX_test2.TheGame
             ConnectToDatabase("Data\\Data.sqlite");
             LoadLocalizations(EngLanguageID);
             LoadBulletInformation();
+            LoadAnimations();
             LoadCharacterInformation();
             LoadWeaponInformation();
         }
@@ -106,6 +116,28 @@ namespace PhysX_test2.TheGame
             foreach(object[] arr in result.result)
             {
                 _localizations.Add(arr[0].ToString(), arr[1].ToString());
+            }
+        }
+
+        public void LoadAnimations()
+        {
+            _animations = new Dictionary<int, Dictionary<int, AnimationInfo>>();
+            SQliteResultSet anims = Database.executeSelect("select distinct character from character_animations", null);
+            foreach (object[] charid in anims.result)
+            {
+                string id_ = charid[0].ToString();
+                SQliteResultSet animations = Database.executeSelect("select * from character_animations where character = " + id_, null);
+                Dictionary<int, AnimationInfo> animationsresult = new Dictionary<int, AnimationInfo>();
+                foreach (object[] anim in animations.result)
+                {
+                    int type = Convert.ToInt32(anim[1]);
+                    string stayAnim = anim[2].ToString();
+                    string fireAnim = anim[3].ToString();
+                    string actionAnim = anim[4].ToString();
+                    AnimationInfo aa = new AnimationInfo(type, stayAnim, fireAnim, actionAnim);
+                    animationsresult.Add(type, aa);
+                }
+                _animations.Add(Convert.ToInt32(id_), animationsresult);
             }
         }
 
@@ -150,7 +182,7 @@ namespace PhysX_test2.TheGame
                 return;
 
             _characterParameters = new Dictionary<string, CharacterParameters>();
-            SQliteResultSet result = Database.executeSelect("select NPC.id, characters.levelObject, characters.defaultDeadStartAnim, characters.defaultDeadIdleAnim, characters.rifleStayAnim, characters.waklSpeed, NPC.headObject, NPC.humanName, NPC.isUniq from NPC inner join characters on NPC.character = characters.id", null);
+            SQliteResultSet result = Database.executeSelect("select NPC.id, characters.levelObject, characters.defaultDeadStartAnim, characters.defaultDeadIdleAnim, characters.rifleStayAnim, characters.waklSpeed, NPC.headObject, NPC.humanName, NPC.isUniq, characters.id from NPC inner join characters on NPC.character = characters.id", null);
             foreach (object[] arr in result.result)
             {
                 int id = Convert.ToInt32(arr[0]);
@@ -165,7 +197,13 @@ namespace PhysX_test2.TheGame
 
                 bool uniq = arr[8].ToString().Equals("1");
                 string id_ = id.ToString();
-                CharacterParameters parameters = new CharacterParameters(id, numanname, loname, ddsa, ddia, daa, honame, uniq, speed);
+                int charid = Convert.ToInt32(arr[9]);
+
+               
+                Dictionary<int, AnimationInfo> animinfo = _animations[charid];
+
+                CharacterParameters parameters = new CharacterParameters(id, numanname, loname, ddsa, ddia, daa,
+                    honame, uniq, speed, animinfo);
                 _characterParameters.Add(id_, parameters);
             }
         }
@@ -198,13 +236,14 @@ namespace PhysX_test2.TheGame
                 int oneShootCount = Convert.ToInt32(arr[13]);
                 float accuracy = Convert.ToSingle((arr[14] as string).Replace('.', ','));
                 string description = arr[16].ToString();
-                string caliberName = arr[18].ToString();
+                int type = Convert.ToInt32(arr[18]);
+                string caliberName = arr[19].ToString();
 
                 WeaponParameters parameters = new WeaponParameters(id, displayName, mass,
                     shortName, caliber, inhandObject, onfloorObject,
                     addonObject, reloadTime, fireTime, fireRestartTime,
                     fireObject, damageBallMod, damageEnMod, magazineCapacity,
-                    oneShootCount, accuracy, description, caliberName);
+                    oneShootCount, accuracy, description, caliberName,type);
                 _weaponParameters.Add(id_, parameters);
             }
         }
