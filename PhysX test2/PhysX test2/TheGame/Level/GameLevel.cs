@@ -78,6 +78,7 @@ namespace PhysX_test2.TheGame.Level
                 dispersion = 0;
 
             float module = (float)MyRandom.Instance.NextDouble();
+         
             dispersion *= module;
 
             float multx = MyRandom.Instance.Next(0, 10) > 5 ? 1 : -1;
@@ -108,7 +109,7 @@ namespace PhysX_test2.TheGame.Level
             moveVector.Normalize();
 
             targetpoint = startpoint + moveVector * 5.0f;
-            targetpoint = CreateRandomizedPoint(targetpoint, parameters._accuracy);
+            targetpoint = CreateRandomizedPoint(targetpoint, __weapon._baseParameters._accuracy);
 
             moveVector = targetpoint - startpoint;
             moveVector.Normalize();
