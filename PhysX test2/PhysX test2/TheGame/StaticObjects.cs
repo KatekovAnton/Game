@@ -183,28 +183,24 @@ namespace PhysX_test2.TheGame
                 return;
 
             _characterParameters = new Dictionary<string, CharacterParameters>();
-            SQliteResultSet result = Database.executeSelect("select NPC.id, characters.levelObject, characters.defaultDeadStartAnim, characters.defaultDeadIdleAnim, characters.rifleStayAnim, characters.waklSpeed, NPC.headObject, NPC.humanName, NPC.isUniq, characters.id from NPC inner join characters on NPC.character = characters.id", null);
+            SQliteResultSet result = Database.executeSelect("select NPC.id, characters.levelObject, characters.waklSpeed, characters.actionTime, NPC.headObject, NPC.humanName, NPC.isUniq, characters.id from NPC inner join characters on NPC.character = characters.id", null);
             foreach (object[] arr in result.result)
             {
                 int id = Convert.ToInt32(arr[0]);
                 string loname = arr[1].ToString();
-                string ddsa = arr[2].ToString();
-                string ddia = arr[3].ToString();
-                string daa = arr[4].ToString();
-                float speed = Convert.ToSingle((arr[5] as string).Replace('.', ','));
+                float speed = Convert.ToSingle((arr[2] as string).Replace('.', ','));
+                float actionTime = Convert.ToSingle((arr[3] as string).Replace('.', ','));
+                string honame = arr[4].ToString();
+                string numanname = arr[5].ToString();
 
-                string honame = arr[6].ToString();
-                string numanname = arr[7].ToString();
-
-                bool uniq = arr[8].ToString().Equals("1");
+                bool uniq = arr[6].ToString().Equals("1");
                 string id_ = id.ToString();
-                int charid = Convert.ToInt32(arr[9]);
+                int charid = Convert.ToInt32(arr[7]);
 
                
                 Dictionary<int, AnimationInfo> animinfo = _animations[charid];
 
-                CharacterParameters parameters = new CharacterParameters(id, numanname, loname, ddsa, ddia, daa,
-                    honame, uniq, speed, animinfo);
+                CharacterParameters parameters = new CharacterParameters(id, numanname, loname, honame, uniq, speed,actionTime, animinfo);
                 _characterParameters.Add(id_, parameters);
             }
         }
