@@ -91,6 +91,7 @@ namespace PhysX_test2.TheGame
 
             CharacterLogicController _anotherChar = CharacterLogicController.CreateCharacter("2", _level, true);
             _anotherChar.SetAlive(true);
+            _anotherChar._hisInput = new InputManagers.InputProviderAI();
             WeaponLogicController _anotherWeapon = WeaponLogicController.CreateWeapon("2", _level);
             _anotherChar.SetGun(_anotherWeapon);
         }

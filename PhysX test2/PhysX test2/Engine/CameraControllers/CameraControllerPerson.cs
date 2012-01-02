@@ -94,6 +94,7 @@ namespace PhysX_test2.Engine.CameraControllers
             {
                 delta.Normalize();
                 newtarget = _lastTargetPoint - delta * maxl;
+                MyGame.Instance._engine.cameraneedsupdate = true;
             }
             else
             {
