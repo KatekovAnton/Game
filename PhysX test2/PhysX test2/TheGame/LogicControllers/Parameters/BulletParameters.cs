@@ -29,7 +29,8 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
             _speed = __speed;
             _lifeTime = __lifeTime;
             _accuracy = __accuracy;
-
+            if (_accuracy == 0)
+                _accuracy = 0.1f;
             _levelObjectName = __levelObjectName;
             if (!_levelObjectName.EndsWith("\0"))
                 _levelObjectName += "\0";
