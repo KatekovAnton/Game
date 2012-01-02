@@ -83,6 +83,7 @@ namespace PhysX_test2.TheGame.Objects
             _isAlive = true;
             //method
             _levelObject.SetPosition(_hisLevel.GetSpawnPlace());
+           // _levelObject.behaviourmodel.Rotate(0.9f);
             if (_onLevel)
             {
                 _levelObject.behaviourmodel.Enable();
