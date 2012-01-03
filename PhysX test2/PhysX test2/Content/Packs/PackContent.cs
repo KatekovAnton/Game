@@ -212,9 +212,9 @@ namespace PhysX_test2.Content
         public void Retain(object __newObject = null)
         {
             //TODO - check logic
-            _userCount++;
             if (__newObject == null && _engineSampleObject == null)
                 throw new Exception();
+            _userCount++;
             if (__newObject == null)
                 return;
             if (_engineSampleObject == null)

@@ -10,7 +10,6 @@ namespace PhysX_test2.Engine.Logic
 {
     public class RaycastBoundObject
     {
-        public bool RCAble;
         public EngineCollisionMesh RCCM;
         public SceneGraph.OTBoundingShape boundingShape;
         public float? IntersectionClosestSingle(Ray ray, Matrix transform)
@@ -34,9 +33,7 @@ namespace PhysX_test2.Engine.Logic
         public RaycastBoundObject(SceneGraph.OTBoundingShape bb, EngineCollisionMesh _RCCM)
         {
             boundingShape = bb;
-            RCAble = _RCCM != null;
-            RCCM = RCAble ? _RCCM : bb.cm;
-
+            RCCM = _RCCM != null ? _RCCM : bb.cm;
         }
 
     }

@@ -46,7 +46,7 @@ namespace PhysX_test2.Engine.Logic
         public override void DoFrame(Microsoft.Xna.Framework.GameTime gt)
         {
             behaviourmodel.DoFrame(gt);
-            renderaspect.setPosition(behaviourmodel.CurrentPosition);
+            renderaspect.SetPosition(behaviourmodel.CurrentPosition);
         }
         /*from editor
         public override void SetActive(bool active)

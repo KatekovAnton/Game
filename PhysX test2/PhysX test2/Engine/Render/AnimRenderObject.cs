@@ -136,7 +136,7 @@ namespace PhysX_test2.Engine.Render
             }
         }
 
-        public override void setPosition(Microsoft.Xna.Framework.Matrix m)
+        public override void SetPosition(Microsoft.Xna.Framework.Matrix m)
         {
             character.Position = m;
         }

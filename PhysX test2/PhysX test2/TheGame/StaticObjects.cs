@@ -155,7 +155,7 @@ namespace PhysX_test2.TheGame
                 float damage = Convert.ToSingle((arr[1] as string).Replace('.', ','));
                 float pierce = Convert.ToSingle((arr[2] as string).Replace('.', ','));
                 float speed = Convert.ToSingle((arr[3] as string).Replace('.', ','));
-                float lifeTime = Convert.ToSingle((arr[4] as string).Replace('.', ','));
+                double lifeTime = Convert.ToDouble((arr[4] as string).Replace('.', ','));
                 float accuracy = Convert.ToSingle((arr[5] as string).Replace('.', ','));
 
                 int inboxCount = Convert.ToInt32((arr[6] as string).Replace('.', ','));

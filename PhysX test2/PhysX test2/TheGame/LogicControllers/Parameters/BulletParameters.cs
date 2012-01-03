@@ -12,14 +12,14 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
         public float _damage;
         public float _pierce;
         public float _speed;
-        public float _lifeTime;
+        public double _lifeTime;
         public float _accuracy;
         
         public string _levelObjectName;
         public float _bulletMass;
 
         public BulletParameters(int __dbID, string __displayName, float __boxMass, int __caliber,
-         float __damage,         float __pierce,            float __speed,         float __lifeTime,
+         float __damage, float __pierce, float __speed, double __lifeTime,
          float __accuracy,       string __levelObjectName,  float __bulletMass)
             : base(__dbID, __displayName, __boxMass)
         {
