@@ -25,7 +25,7 @@ namespace PhysX_test2.Engine.Logic
         /// некая инфа о происхождении объекта
         /// </summary>
         public EditorData editorAspect;
-        
+
         /// <summary>
         /// mixed объект для рейкаста- тыкания мышкой и прочих взаимодействием с лучами
         /// </summary>
@@ -87,8 +87,7 @@ namespace PhysX_test2.Engine.Logic
             _isBillboardCostrained = false;
         }
 
-        
-       
+
         public abstract RenderObject HaveRenderAspect();
         public abstract Render.Materials.Material HaveMaterial();
         public abstract void DoFrame(GameTime gt);
@@ -140,34 +139,25 @@ namespace PhysX_test2.Engine.Logic
         public void SetPosition(Vector3 position)
         {
             behaviourmodel.SetPosition(position);
-            transform = behaviourmodel.globalpose ;
+            transform = behaviourmodel.globalpose;
             moved = true;
         }
 
         public void Update()
         {
-            transform = behaviourmodel.globalpose;
-            if (_isBillboard )
-            {
-                Matrix bbmatrix = Matrix.CreateBillboard(transform.Translation, MyGame.Instance._engine.Camera._position, Vector3.Up, MyGame.Instance._engine.Camera._direction);
-                transform = bbmatrix;
-            }
+            if (_isBillboard)
+                transform = Matrix.CreateBillboard(behaviourmodel.globalpose.Translation, MyGame.Instance._engine.Camera._position, Vector3.Up, MyGame.Instance._engine.Camera._direction);
             else if (_isBillboardCostrained)
-            {
-                Matrix bbmatrix = Matrix.CreateConstrainedBillboard(transform.Translation, MyGame.Instance._engine.Camera._position, _objectConstrAxis, MyGame.Instance._engine.Camera._direction, _objectConstrForward);
-                transform = bbmatrix;
-            }
+                transform = Matrix.CreateConstrainedBillboard(behaviourmodel.globalpose.Translation, MyGame.Instance._engine.Camera._position, _objectConstrAxis, MyGame.Instance._engine.Camera._direction, _objectConstrForward);
+            else
+                transform = behaviourmodel.globalpose;
 
             if (moved)
-            {
-                if (_isBillboard || _isBillboardCostrained)
-                    raycastaspect.boundingShape.Update(transform);
-                else
-                    raycastaspect.boundingShape.Update(transform);
-            }
+                raycastaspect.boundingShape.Update(transform);
+
 
             renderMatrix = transform;
-            if(useDeltaMatrix)
+            if (useDeltaMatrix)
                 renderMatrix = deltaMatrix * transform;
             else
                 renderMatrix = transform;

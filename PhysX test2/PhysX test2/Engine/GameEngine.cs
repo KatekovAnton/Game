@@ -270,7 +270,7 @@ namespace PhysX_test2.Engine
 
         public void CreateCharCameraController(LevelObject __targetCharacter)
         {
-            _cameraController = new CameraControllerPerson(Camera, __targetCharacter, new Vector3(-10, 10, 0)/2);
+            _cameraController = new CameraControllerPerson(Camera, __targetCharacter, new Vector3(-10, 10, 0));
         }
 
         public void SwichBehaviourModel()
