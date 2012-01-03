@@ -212,8 +212,8 @@ namespace PhysX_test2.Engine
                 }
 
             {
-                LevelObject lo = LoadObject("testBillboard\0", null, false, false) as LevelObject;
-                lo._isBillboardCostrained = true;
+                LevelObject lo = LoadObject("Fire01LO\0", null, false, false) as LevelObject;
+             //   lo._isBillboardCostrained = true;
                 lo.SetGlobalPose(Matrix.CreateTranslation(0, 17, 10));
                 AddObjectToScene(lo);
             }
@@ -275,7 +275,7 @@ namespace PhysX_test2.Engine
 
         public void CreateCharCameraController(LevelObject __targetCharacter)
         {
-            _cameraController = new CameraControllerPerson(Camera, __targetCharacter, new Vector3(-10, 10, 0));
+            _cameraController = new CameraControllerPerson(Camera, __targetCharacter, new Vector3(-10, 10, 0)/2);
         }
 
         public void SwichBehaviourModel()

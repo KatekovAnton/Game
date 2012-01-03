@@ -33,13 +33,23 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             _parentCharacter = __parent;
 
             localMatrix = GlobalPoseMatrix;
-            Matrix resultMatrix = localMatrix * __parent.transform;
+
+            Matrix resultMatrix;
+            if (__parent != null)
+                resultMatrix = localMatrix * __parent.transform;
+            else
+                resultMatrix = localMatrix;
             CurrentPosition = resultMatrix;
         }
 
         public override void DoFrame(GameTime gametime)
         {
-            Matrix newpos = localMatrix * _parentCharacter.behaviourmodel.CurrentPosition;
+            Matrix newpos;
+            if (_parentCharacter != null)
+                newpos = localMatrix * _parentCharacter.behaviourmodel.CurrentPosition;
+            else
+                newpos = localMatrix;
+           
         
             CurrentPosition = newpos;
             
@@ -48,7 +58,11 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         public override void Move(Vector3 displacement)
         {
             localMatrix = localMatrix * Matrix.CreateTranslation(displacement);
-            Matrix resultMatrix = localMatrix * _parentCharacter.transform;
+            Matrix resultMatrix;
+            if (_parentCharacter != null)
+                resultMatrix = localMatrix * _parentCharacter.transform;
+            else
+                resultMatrix = localMatrix;
             CurrentPosition = resultMatrix;
         }
     }

@@ -45,6 +45,7 @@ namespace PhysX_test2.TheGame.LogicControllers
                     break;
                 case GameWeaponState.InHand:
                     _weaponObject.TakeInHand(__owner._hisObject);
+                    _weaponFire.LocateConstrainedToLevel(_weaponObject._inHandObject);
                     break;
                 case GameWeaponState.OnFloor:
                     _weaponObject.DropOnFloor();
@@ -71,9 +72,9 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public override void Update(GameTime __gametime)
         {
-            if (_weaponFire._onLevel && (__gametime.TotalGameTime.TotalMilliseconds - _lastfiretime.TotalMilliseconds) > _baseParameters._fireTime)
-                _weaponFire.RemoveFromLevel();
-            else
+            if (_weaponFire._onLevel && (__gametime.TotalGameTime.TotalMilliseconds - _lastfiretime.TotalMilliseconds) > _baseParameters._fireTime) ;
+               // _weaponFire.RemoveFromLevel();
+           
                 _weaponFire.CalcParameters();
         }
 

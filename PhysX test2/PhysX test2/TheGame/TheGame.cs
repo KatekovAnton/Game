@@ -82,18 +82,18 @@ namespace PhysX_test2.TheGame
             me.SetAlive(true);
             me._hisInput = new InputManagers.InputProviderPlayer();
 
-            WeaponLogicController myGun = WeaponLogicController.CreateWeapon("2",_level);
+            WeaponLogicController myGun = WeaponLogicController.CreateWeapon("1",_level);
             me.SetGun(myGun);
             
             _characters.Add(_playerCharacterKey, me);
             _engine.CreateCharCameraController(me._hisObject._levelObject);
 
 
-            CharacterLogicController _anotherChar = CharacterLogicController.CreateCharacter("2", _level, true);
+         /*   CharacterLogicController _anotherChar = CharacterLogicController.CreateCharacter("2", _level, true);
             _anotherChar.SetAlive(true);
             _anotherChar._hisInput = new InputManagers.InputProviderAI();
             WeaponLogicController _anotherWeapon = WeaponLogicController.CreateWeapon("2", _level);
-            _anotherChar.SetGun(_anotherWeapon);
+            _anotherChar.SetGun(_anotherWeapon);*/
 
         }
 

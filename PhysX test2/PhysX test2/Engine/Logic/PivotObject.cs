@@ -147,20 +147,25 @@ namespace PhysX_test2.Engine.Logic
         public void Update()
         {
             transform = behaviourmodel.globalpose;
-           /* if (_isBillboard || _isBillboardCostrained)
+            if (_isBillboard || _isBillboardCostrained)
             {
-                Matrix bbmatrix = Matrix.CreateBillboard(behaviourmodel.globalpose.Translation, MyGame.Instance._engine.Camera._position, Vector3.Up, MyGame.Instance._engine.Camera._direction);
+                Matrix bbmatrix = Matrix.CreateBillboard(transform.Translation, MyGame.Instance._engine.Camera._position, Vector3.Up, MyGame.Instance._engine.Camera._direction);
                 transform = bbmatrix;
-            }*/
+            }
             /*  else
               if (_isBillboardCostrained)
               {
                   Matrix bbmatrix = Matrix.CreateConstrainedBillboard(transform.Translation, MyGame.Instance._engine.Camera._position, _objectConstrAxis, MyGame.Instance._engine.Camera._direction, _objectConstrForward);
                   renderMatrix = bbmatrix;
               }*/
-            
+
             if (moved)
-                raycastaspect.boundingShape.Update(transform);
+            {
+                if (_isBillboard || _isBillboardCostrained)
+                    raycastaspect.boundingShape.Update(transform);
+                else
+                    raycastaspect.boundingShape.Update(transform);
+            }
 
             renderMatrix = transform;
             if(useDeltaMatrix)

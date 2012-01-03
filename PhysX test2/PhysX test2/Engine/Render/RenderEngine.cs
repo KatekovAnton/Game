@@ -64,7 +64,7 @@ namespace PhysX_test2.Engine.Render
             debugRenderer = new DebugRender.DebugRenderer(Device, _visualizationEffect);
             debugRenderArray = new MyContainer<PivotObject>(10, 3);
             EnableShadows = EnableGrass = SmoothShadows = true;
-            EnableDebugRender = false;
+            EnableDebugRender = true;
             //EnableShadows = false;
             //SmoothShadows = false;
             if (EnableShadows)
