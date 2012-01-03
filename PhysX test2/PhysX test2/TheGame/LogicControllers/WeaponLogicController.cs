@@ -86,7 +86,7 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public override void TakeHit(Parameters.BulletDynamicParameters __bulletParameters)
         {
-            //newer for weapons
+            //never for weapons
             return;
         }
 

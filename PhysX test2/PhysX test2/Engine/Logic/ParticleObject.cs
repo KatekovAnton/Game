@@ -9,7 +9,9 @@ using Microsoft.Xna.Framework;
 namespace PhysX_test2.Engine.Logic
 {
     /// <summary>
-    /// является системой частиц, renderaspect и material - для рисования одной частицы
+    /// Является системой частиц, тут renderaspect и material - для рисования одной частицы. 
+    /// Объект умеет сам удалять партиклы, но после смерти всех партиклов его вручную нужно 
+    /// удалить из общей кучи объектов чтоб он не апдейтился!!!
     /// </summary>
     public class ParticleObject:PivotObject
     {
@@ -25,6 +27,8 @@ namespace PhysX_test2.Engine.Logic
 
         public int _particlesCount;
         public MyContainer<ParticleData> _particles;
+        private static MyContainer<ParticleData> _particlesForRemove = new MyContainer<ParticleData>();
+
 
         public bool _isBillboards = true;
 
@@ -66,10 +70,26 @@ namespace PhysX_test2.Engine.Logic
         }
 
 
-        private void UpdateParticles(Microsoft.Xna.Framework.GameTime gt)
+        private void UpdateParticles(Microsoft.Xna.Framework.GameTime __gt)
         {
+            _particlesForRemove.Clear();
+
+
             //TODO: calculate data
- 
+            double time = __gt.ElapsedGameTime.TotalMilliseconds/1000.0;
+            foreach (ParticleData pd in _particles)
+            {
+                if ((__gt.TotalGameTime.TotalMilliseconds - pd._createTime) > pd._liveTime)
+                    _particlesForRemove.Add(pd);
+                else
+                    pd.Update(time);            
+            }
+
+
+            //delete partcles
+            foreach (ParticleData pd in _particlesForRemove)
+                _particles.Remove(pd);
+            _particlesForRemove.Clear();
         }
 
         private Matrix[] GetParticleData()
@@ -108,7 +128,7 @@ namespace PhysX_test2.Engine.Logic
             _liveTime = __liveTime;
         }
 
-        public void Update(float __elapsedTime)
+        public void Update(double __elapsedTime)
         {
             
         }
