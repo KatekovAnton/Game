@@ -71,7 +71,7 @@ namespace PhysX_test2.Engine.Logic
         public bool _isBillboardCostrained;
         public bool _isBillboard;
         public Vector3 _objectConstrAxis = Vector3.UnitX;
-        public Vector3 _objectConstrForward = Vector3.UnitY;
+        public Vector3 _objectConstrForward = -Vector3.UnitY;
 
         protected bool _visible;
         public bool moved;
@@ -147,17 +147,16 @@ namespace PhysX_test2.Engine.Logic
         public void Update()
         {
             transform = behaviourmodel.globalpose;
-            if (_isBillboard || _isBillboardCostrained)
+            if (_isBillboard )
             {
                 Matrix bbmatrix = Matrix.CreateBillboard(transform.Translation, MyGame.Instance._engine.Camera._position, Vector3.Up, MyGame.Instance._engine.Camera._direction);
                 transform = bbmatrix;
             }
-            /*  else
-              if (_isBillboardCostrained)
-              {
-                  Matrix bbmatrix = Matrix.CreateConstrainedBillboard(transform.Translation, MyGame.Instance._engine.Camera._position, _objectConstrAxis, MyGame.Instance._engine.Camera._direction, _objectConstrForward);
-                  renderMatrix = bbmatrix;
-              }*/
+            else if (_isBillboardCostrained)
+            {
+                Matrix bbmatrix = Matrix.CreateConstrainedBillboard(transform.Translation, MyGame.Instance._engine.Camera._position, _objectConstrAxis, MyGame.Instance._engine.Camera._direction, _objectConstrForward);
+                transform = bbmatrix;
+            }
 
             if (moved)
             {

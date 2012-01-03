@@ -11,7 +11,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
     {
 
         public PivotObject _parentCharacter;
-        public Matrix localMatrix = Matrix.Identity;
+        private Matrix localMatrix = Matrix.Identity;
         public ObjectRelatedBehaviourModel(PivotObject __parentCharacter)
         {
             CurrentPosition = Matrix.Identity;

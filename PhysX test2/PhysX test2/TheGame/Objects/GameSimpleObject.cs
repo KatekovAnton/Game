@@ -37,7 +37,7 @@ namespace PhysX_test2.TheGame.Objects
 
             if (_object._isBillboardCostrained)
             {
-                Vector3 axis = Vector3.TransformNormal(Vector3.UnitZ, _parent.transform);
+                Vector3 axis = Vector3.TransformNormal(Vector3.UnitY, _parent.transform);
                 _object._objectConstrAxis = axis;
             }
         }
@@ -66,12 +66,12 @@ namespace PhysX_test2.TheGame.Objects
             _onLevel = true;
         }
 
-        public void LocateConstrainedToLevel(LevelObject __parentObject)
+        public void LocateConstrainedToLevel(LevelObject __parentObject, Vector3 __delta)
         {
             if (!_onLevel)
             {
                 _parent = __parentObject;
-                _hisLevel.AddEngineObject(_object, __parentObject);
+                _hisLevel.AddEngineObject(_object,Matrix.CreateTranslation(__delta), __parentObject);
                 _object._isBillboard = false;
                 _object._isBillboardCostrained = true;
             }

@@ -211,12 +211,7 @@ namespace PhysX_test2.Engine
                     AddObjectToScene(lo);
                 }
 
-            {
-                LevelObject lo = LoadObject("Fire01LO\0", null, false, false) as LevelObject;
-             //   lo._isBillboardCostrained = true;
-                lo.SetGlobalPose(Matrix.CreateTranslation(0, 17, 10));
-                AddObjectToScene(lo);
-            }
+           
 
             ////test side
             {

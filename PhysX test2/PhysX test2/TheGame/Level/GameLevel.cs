@@ -61,6 +61,27 @@ namespace PhysX_test2.TheGame.Level
             }
         }
 
+        public void AddEngineObject(Engine.Logic.PivotObject __object, Matrix __position, Engine.Logic.PivotObject __parentObject = null)
+        {
+            LevelObject loNew = __object as LevelObject;
+            if (loNew == null)
+                return;
+
+            if (loNew.renderaspect.isanimated)
+            {
+                Engine.Render.AnimRenderObject ro = loNew.renderaspect as Engine.Render.AnimRenderObject;
+                Engine.AnimationManager.AnimationManager.Manager.AddAnimationUser(ro.Update, ro.character);
+            }
+
+            _scene.AddObject(__object);
+
+            if (__parentObject != null)
+            {
+                __object.SetGlobalPose(__position, __parentObject);
+                _scene._objects.AddRule(__parentObject, __object);
+            }
+        }
+
         public void RemoveObject(Engine.Logic.PivotObject theObjecr)
         {
             _scene.RemoveObject(theObjecr);

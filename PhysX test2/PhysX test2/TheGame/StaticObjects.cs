@@ -234,13 +234,14 @@ namespace PhysX_test2.TheGame
                 float accuracy = Convert.ToSingle((arr[14] as string).Replace('.', ','));
                 string description = arr[16].ToString();
                 int type = Convert.ToInt32(arr[18]);
-                string caliberName = arr[19].ToString();
+                string fireOffset = arr[19].ToString();
+                string caliberName = arr[20].ToString();
 
                 WeaponParameters parameters = new WeaponParameters(id, displayName, mass,
                     shortName, caliber, inhandObject, onfloorObject,
                     addonObject, reloadTime, fireTime, fireRestartTime,
                     fireObject, damageBallMod, damageEnMod, magazineCapacity,
-                    oneShootCount, accuracy, description, caliberName,type);
+                    oneShootCount, accuracy, description, caliberName, type, fireOffset);
                 _weaponParameters.Add(id_, parameters);
             }
         }

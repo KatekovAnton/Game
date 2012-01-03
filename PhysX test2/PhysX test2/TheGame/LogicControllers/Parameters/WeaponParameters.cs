@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Xna.Framework;
+
 namespace PhysX_test2.TheGame.LogicControllers.Parameters
 {
     public class WeaponParameters : ItemParameters
@@ -25,6 +27,8 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
         public string _caliberName;
         public int _type;
 
+        public Vector3 _firedelta = new Vector3(0.05f, -0.25f, 0.05f);
+
         public WeaponParameters(int __dbID, string __displayName, float __mass,
                              string __shortName,
                              int __caliber,
@@ -42,7 +46,8 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
                              float __accuracy,
                              string __description,
                              string __caliberName,
-                                int __type)
+                             int __type,
+                            string __firedelta)
             : base(__dbID, __displayName, __mass)
         {
             _shortName = __shortName;
@@ -72,6 +77,10 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
                 _description += "\0";
             _caliberName = __caliberName;
             _type = __type;
+
+
+            string[] arr = __firedelta.Split(',');
+            _firedelta = new Vector3(Convert.ToSingle(arr[0].Replace('.', ',')), Convert.ToSingle(arr[1].Replace('.', ',')), Convert.ToSingle(arr[2].Replace('.', ',')));
         }
 
         public WeaponParameters(WeaponParameters _another)
