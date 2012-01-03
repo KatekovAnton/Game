@@ -23,7 +23,7 @@ namespace PhysX_test2.TheGame.LogicControllers
         public BaseLogicController(GameLevel __level)
         {
             _itsLevel = __level;
-            _itsLevel.AddController(this);
+            _itsLevel.AddController(this); 
             _id = IdGenerator.StaticGenerator.NewId();
         }
 

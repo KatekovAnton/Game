@@ -74,7 +74,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         /// </summary>
         public void EndDoFrame()
         {
-            moved = (globalpose.Translation != CurrentPosition.Translation);
+            moved = globalpose != CurrentPosition;
             globalpose = CurrentPosition;
             
         }

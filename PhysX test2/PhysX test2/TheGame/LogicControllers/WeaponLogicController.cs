@@ -65,7 +65,7 @@ namespace PhysX_test2.TheGame.LogicControllers
                 return false;
 
             _lastfiretime = __gameTime.TotalGameTime;
-            _weaponFire.LocateToLevel(_weaponObject._inHandObject);
+            _weaponFire.LocateConstrainedToLevel(_weaponObject._inHandObject);
             return true;
         }
 
@@ -73,6 +73,8 @@ namespace PhysX_test2.TheGame.LogicControllers
         {
             if (_weaponFire._onLevel && (__gametime.TotalGameTime.TotalMilliseconds - _lastfiretime.TotalMilliseconds) > _baseParameters._fireTime)
                 _weaponFire.RemoveFromLevel();
+            else
+                _weaponFire.CalcParameters();
         }
 
         public override Parameters.DynamicParameters GetParameters()

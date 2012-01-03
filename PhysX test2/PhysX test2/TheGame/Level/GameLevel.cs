@@ -15,12 +15,13 @@ namespace PhysX_test2.TheGame.Level
     {
         public EngineScene _scene;
         public MyContainer<BaseLogicController> _allLogicObjects;
-
+        public MyContainer<BaseLogicController> _objectsForRemove;
 
         public GameLevel(EngineScene __scene)
         {
             _scene = __scene;
             _allLogicObjects = new MyContainer<BaseLogicController>();
+            _objectsForRemove = new MyContainer<BaseLogicController>();
         }
         public float times = 0;
         public Vector3 GetSpawnPlace()
@@ -36,7 +37,7 @@ namespace PhysX_test2.TheGame.Level
 
         public void RemoveController(BaseLogicController __object)
         {
-            _allLogicObjects.Remove(__object);
+            _objectsForRemove.Add(__object);
         }
       
         public void AddEngineObject(Engine.Logic.PivotObject __object, Engine.Logic.PivotObject __parentObject = null)
@@ -67,8 +68,11 @@ namespace PhysX_test2.TheGame.Level
 
         public void Update(GameTime __gameTime)
         {
+            _objectsForRemove.Clear();
             foreach (BaseLogicController controller in _allLogicObjects)
                 controller.Update(__gameTime);
+            foreach (BaseLogicController controller in _objectsForRemove)
+                _allLogicObjects.Remove(controller);
         }
 
         public Vector3 CreateRandomizedPoint(Vector3 StartPoint, float accuracy)
@@ -127,7 +131,6 @@ namespace PhysX_test2.TheGame.Level
                 moveVector);
 
             
-            AddController(result);
             result.LocateToLevel();
         }
 

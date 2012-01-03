@@ -50,12 +50,6 @@ namespace PhysX_test2.TheGame.LogicControllers
             }
             else
             {
-                /*
-                 "totalBullets");
-            StatisticContainer.Instance().BeginFrame("totalBulletFaces");
-            StatisticContainer.Instance().BeginFrame("totalBulletObjects");
-                 * */
-
                 StatisticContainer.Instance().UpdateParameter("totalBullets", 1);
                 Vector3 delta = _moveVector * _baseParameters._speed * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
                 Vector3 resulpoint = new Vector3();
@@ -72,7 +66,6 @@ namespace PhysX_test2.TheGame.LogicControllers
                     //stop the update
                     _itsLevel.RemoveController(this);
 
-                    
                     CreateIntersectionEffect(_moveVector, resulpoint);
                 }
             }

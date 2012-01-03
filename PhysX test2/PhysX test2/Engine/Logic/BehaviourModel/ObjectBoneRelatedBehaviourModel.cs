@@ -69,23 +69,20 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
 
             localMatrix =  position *GlobalPoseMatrix;
             Matrix resultMatrix = localMatrix * _parentCharacterController._currentFrames[parentBone] * _parentCharacterController.Position;
-            mov = CurrentPosition != resultMatrix;
+   
             CurrentPosition = resultMatrix;
         }
 
         public override void DoFrame(GameTime gametime)
         {
             Matrix newpos = localMatrix * _parentCharacterController._currentFrames[parentBone] * _parentCharacterController.Position;
-            moved = newpos!=CurrentPosition|| mov;
             CurrentPosition = newpos;
-            mov = false;
         }
 
         public override void Move(Vector3 displacement)
         {
             localMatrix = localMatrix * Matrix.CreateTranslation(displacement);
             Matrix resultMatrix = localMatrix * _parentCharacterController._currentFrames[parentBone] * _parentCharacterController.Position;
-            mov = CurrentPosition != resultMatrix;
             CurrentPosition = resultMatrix;
         }
     }

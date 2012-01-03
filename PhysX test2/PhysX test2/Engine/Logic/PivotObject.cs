@@ -68,7 +68,13 @@ namespace PhysX_test2.Engine.Logic
         public bool _needMouseCast;
         public bool _needBulletCast;
 
+        public bool _isBillboardCostrained;
+        public bool _isBillboard;
+        public Vector3 _objectConstrAxis = Vector3.UnitX;
+        public Vector3 _objectConstrForward = Vector3.UnitY;
+
         protected bool _visible;
+        public bool moved;
 
         public virtual void SetVisible(bool __visible)
         {
@@ -76,9 +82,12 @@ namespace PhysX_test2.Engine.Logic
         }
 
         public PivotObject()
-        { }
+        {
+            _isBillboard = false;
+            _isBillboardCostrained = false;
+        }
 
-        public bool moved;
+        
        
         public abstract RenderObject HaveRenderAspect();
         public abstract Render.Materials.Material HaveMaterial();
@@ -138,9 +147,26 @@ namespace PhysX_test2.Engine.Logic
         public void Update()
         {
             transform = behaviourmodel.globalpose;
-            renderMatrix = useDeltaMatrix ? deltaMatrix * transform : transform;
+           /* if (_isBillboard || _isBillboardCostrained)
+            {
+                Matrix bbmatrix = Matrix.CreateBillboard(behaviourmodel.globalpose.Translation, MyGame.Instance._engine.Camera._position, Vector3.Up, MyGame.Instance._engine.Camera._direction);
+                transform = bbmatrix;
+            }*/
+            /*  else
+              if (_isBillboardCostrained)
+              {
+                  Matrix bbmatrix = Matrix.CreateConstrainedBillboard(transform.Translation, MyGame.Instance._engine.Camera._position, _objectConstrAxis, MyGame.Instance._engine.Camera._direction, _objectConstrForward);
+                  renderMatrix = bbmatrix;
+              }*/
+            
             if (moved)
                 raycastaspect.boundingShape.Update(transform);
+
+            renderMatrix = transform;
+            if(useDeltaMatrix)
+                renderMatrix = deltaMatrix * transform;
+            else
+                renderMatrix = transform;
 
         }
 

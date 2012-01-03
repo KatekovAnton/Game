@@ -15,9 +15,10 @@ namespace PhysX_test2.Engine
         private GameEngine _engine;
 
         public BoundingFrustum cameraFrustum = new BoundingFrustum(Matrix.Identity);
-    
 
-
+        public Vector3 _position;
+        public Vector3 _target;
+        public Vector3 _direction;
 
         public Camera(GameEngine engine, Vector3? cameraposition = null, Vector3? cameratarget = null)
         {
@@ -26,6 +27,11 @@ namespace PhysX_test2.Engine
             if (cameraposition == null)
                 cameraposition = new Vector3(30, 30, 10);
             _engine = engine;
+            _position = cameraposition.Value;
+            _target = cameratarget.Value;
+            _direction = (_target - _position);
+            _direction.Normalize();
+            
             float katet = -(cameratarget.Value.Y - cameraposition.Value.Y);
             float gipotenuza = (cameraposition.Value - cameratarget.Value).Length();
             _cameraPitch = -MathHelper.PiOver2 + Convert.ToSingle(Math.Acos(Convert.ToDouble(katet / gipotenuza)));
@@ -52,6 +58,12 @@ namespace PhysX_test2.Engine
 
         public void Update(Vector3 cameraposition, Vector3 cameratarget)
         {
+            _position = cameraposition;
+            _target = cameratarget;
+            _direction = (_target - _position);
+            _direction.Normalize();
+
+
             float katet = -(cameratarget.Y - cameraposition.Y);
             float gipotenuza = (cameraposition - cameratarget).Length();
             this._cameraPitch = -MathHelper.PiOver2 + Convert.ToSingle(Math.Acos(Convert.ToDouble(katet / gipotenuza)));

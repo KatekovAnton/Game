@@ -13,24 +13,20 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         {
             CurrentPosition = globalpose =  Matrix.Identity;
         }
-        protected bool mov;
+  
 
         public override void SetGlobalPose(Matrix GlobalPoseMatrix, object Additionaldata, PivotObject __parent)
         {
-            mov = CurrentPosition != GlobalPoseMatrix;
             CurrentPosition = GlobalPoseMatrix;
         }
        
         public override void DoFrame(GameTime gametime)
         {
-            moved = mov;
-            mov = false;
         }
 
         public override void Move(Vector3 displacement)
         {
             Matrix newposition = globalpose * Matrix.CreateTranslation(displacement);
-            mov = CurrentPosition != newposition;
             CurrentPosition = newposition;
         }
     }

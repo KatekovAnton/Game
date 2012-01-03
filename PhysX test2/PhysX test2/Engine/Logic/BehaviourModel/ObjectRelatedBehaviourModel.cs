@@ -34,23 +34,21 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
 
             localMatrix = GlobalPoseMatrix;
             Matrix resultMatrix = localMatrix * __parent.transform;
-            mov = CurrentPosition != resultMatrix;
             CurrentPosition = resultMatrix;
         }
 
         public override void DoFrame(GameTime gametime)
         {
             Matrix newpos = localMatrix * _parentCharacter.behaviourmodel.CurrentPosition;
-            moved = newpos!=CurrentPosition|| mov;
+        
             CurrentPosition = newpos;
-            mov = false;
+            
         }
 
         public override void Move(Vector3 displacement)
         {
             localMatrix = localMatrix * Matrix.CreateTranslation(displacement);
             Matrix resultMatrix = localMatrix * _parentCharacter.transform;
-            mov = CurrentPosition != resultMatrix;
             CurrentPosition = resultMatrix;
         }
     }

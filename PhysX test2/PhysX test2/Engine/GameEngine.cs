@@ -210,7 +210,14 @@ namespace PhysX_test2.Engine
                     lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(i * delta, 25, j * delta));
                     AddObjectToScene(lo);
                 }
-            
+
+            {
+                LevelObject lo = LoadObject("testBillboard\0", null, false, false) as LevelObject;
+                lo._isBillboardCostrained = true;
+                lo.SetGlobalPose(Matrix.CreateTranslation(0, 17, 10));
+                AddObjectToScene(lo);
+            }
+
             ////test side
             {
                 LevelObjectTestSide = LoadObject("TestSideWorldObject\0", null, true, true) as LevelObject;
@@ -219,10 +226,10 @@ namespace PhysX_test2.Engine
             }
 
             /////sphere
-            {
+         /*   {
                 LevelObjectCursorSphere = LoadObject("Cursor\0", null, false, false) as LevelObject;
                 AddObjectToScene(LevelObjectCursorSphere);
-            }
+            }*/
 
             //чистим временные какахи
             //это стоит делать елси объекты больше не будут подгружаться
@@ -302,9 +309,6 @@ namespace PhysX_test2.Engine
 
             // Update Physics
             Scene.Simulate((float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f);
-
-
-            //update world objects
             Scene.FlushStream();
             Scene.FetchResults(SimulationStatus.RigidBodyFinished, true);
 
