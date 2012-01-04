@@ -252,7 +252,8 @@ namespace PhysX_test2.Content
             {
                 Vector3 v1 = Vertices[Indices[index + 1]] - Vertices[Indices[index]];
                 Vector3 v2 = Vertices[Indices[index + 2]] - Vertices[Indices[index]];
-                normal = Vector3.Transform(Vector3.Cross(v1, v2), transform);
+
+                normal = Vector3.TransformNormal(Vector3.Cross(v1, v2), transform);
                 normal.Normalize();
                 return new Vector3?(Vector3.Transform((p1 + p2 * distance), transform));
             }

@@ -79,7 +79,7 @@ namespace PhysX_test2.Engine
 
 
         private List<HotKey> _hotkeys;
-        public bool cameraneedsupdate;
+        public bool cameraneedsupdate = true;
 
         public GameEngine(MyGame game)
         {

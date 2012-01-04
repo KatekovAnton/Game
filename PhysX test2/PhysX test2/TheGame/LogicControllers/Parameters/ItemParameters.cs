@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PhysX_test2.TheGame.LogicControllers.Parameters
 {
-    public class ItemParameters : InteractiveObjectParameters
+    public class ItemParameters : ControllerParameters
     {
         public float _mass;
         public string _inventoryImage;

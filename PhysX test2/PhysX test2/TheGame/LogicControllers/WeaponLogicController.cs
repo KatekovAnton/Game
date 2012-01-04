@@ -56,6 +56,13 @@ namespace PhysX_test2.TheGame.LogicControllers
             _isFiring = false;
         }
 
+        public override void RemoveFromLevel()
+        {
+            _itsLevel.RemoveController(this);
+            _weaponFire.RemoveFromLevel();
+            _weaponObject.RemoveFromScene();
+        }
+
         private bool CanFire(GameTime __gametime)
         {
             return _weaponObject._state == GameWeaponState.InHand && (__gametime.TotalGameTime.TotalMilliseconds - _lastfiretime.TotalMilliseconds) > _instanceParameters._fireRestartTime;
@@ -79,10 +86,10 @@ namespace PhysX_test2.TheGame.LogicControllers
                 _weaponFire.CalcParameters();
         }
 
-        public override Parameters.DynamicParameters GetParameters()
+     /*   public override Parameters.DynamicParameters GetParameters()
         {
             return _instanceParameters;
-        }
+        }*/
 
         public override void TakeHit(Parameters.BulletDynamicParameters __bulletParameters)
         {
@@ -94,7 +101,7 @@ namespace PhysX_test2.TheGame.LogicControllers
         {
             WeaponParameters parameters = StaticObjects.WeaponParameters[__nameAsId];
             GameWeapon myWeapon = new GameWeapon(parameters._inhandObject, parameters._onfloorObject, parameters._addonObject, __level);
-            GameSimpleObject weaponFire = new GameSimpleObject(parameters._fireObject, Engine.Logic.PivotObjectDependType.Body, __level, false, false);
+            GameSimpleObject weaponFire = new GameSimpleObject(parameters._fireObject, __level);
             WeaponLogicController newGun = new WeaponLogicController(__level, myWeapon, weaponFire);
             newGun._baseParameters = parameters;
             newGun._instanceParameters = new WeaponDynamicParameters(parameters);

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PhysX_test2.Engine.Render.Materials
 {
-    class TextureMaterial : Material
+    class DiffuseMaterial : Material
     {
         public class SubsetMaterial
         {
@@ -26,12 +26,11 @@ namespace PhysX_test2.Engine.Render.Materials
 
         public Lod[] lodmats;
 
-
-        public TextureMaterial(Lod[] _lodmats)
+        public DiffuseMaterial(Lod[] _lodmats)
         {
             lodmats = _lodmats;
+            type = MaterialType.Diffuse;
         }
-
 
         public override void Apply(int lod, int subset)
         {

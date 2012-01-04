@@ -19,8 +19,21 @@ namespace PhysX_test2.Engine.Logic
         Body
     }
 
+    public enum PivotObjectMaterialType
+    {
+        Stone,
+        Metal,
+        Wood,
+        DynamicStone,
+        DynamicMetal,
+        DynamicWood
+    }
+    
     public abstract class PivotObject
     {
+        public bool _unloaded = false;
+        public PivotObjectMaterialType matrialType = PivotObjectMaterialType.Stone;
+
         /// <summary>
         /// некая инфа о происхождении объекта
         /// </summary>

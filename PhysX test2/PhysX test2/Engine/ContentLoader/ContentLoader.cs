@@ -173,13 +173,13 @@ namespace PhysX_test2.Engine.ContentLoader
             mat = packs.GetObject(name , mat) as  MaterialDescription;
             if (mat._userCount == 0)
             {
-                TextureMaterial.Lod[] lods = new TextureMaterial.Lod[mat.lodMats.Length];
+                DiffuseMaterial.Lod[] lods = new DiffuseMaterial.Lod[mat.lodMats.Length];
                 for (int i = 0; i < mat.lodMats.Length; i++)
                 {
-                    TextureMaterial.SubsetMaterial[] mats = new TextureMaterial.SubsetMaterial[mat.lodMats[i].mats.Length];
+                    DiffuseMaterial.SubsetMaterial[] mats = new DiffuseMaterial.SubsetMaterial[mat.lodMats[i].mats.Length];
                     for (int j = 0; j < mat.lodMats[i].mats.Length; j++)
                     {
-                        mats[j] = new TextureMaterial.SubsetMaterial();
+                        mats[j] = new DiffuseMaterial.SubsetMaterial();
                         Content.Texture inage = new Content.Texture();
                         inage = packs.GetObject(mat.lodMats[i].mats[j].DiffuseTextureName, inage) as Content.Texture;
 
@@ -188,17 +188,17 @@ namespace PhysX_test2.Engine.ContentLoader
                         inage.Retain(inage.texture);
                         mats[j].diffuseTexture = inage.texture;
                     }
-                    lods[i] = new TextureMaterial.Lod(mats);
+                    lods[i] = new DiffuseMaterial.Lod(mats);
                     
                 }
-                TextureMaterial result = new TextureMaterial(lods);
+                DiffuseMaterial result = new DiffuseMaterial(lods);
                 mat.Retain(result);
 
-                return new TextureMaterial(lods);
+                return new DiffuseMaterial(lods);
             }
             else
             {
-                TextureMaterial result = mat._engineSampleObject as TextureMaterial;
+                DiffuseMaterial result = mat._engineSampleObject as DiffuseMaterial;
                 mat.Retain();
 
                 for (int i = 0; i < mat.lodMats.Length; i++)
@@ -441,6 +441,8 @@ namespace PhysX_test2.Engine.ContentLoader
         public static void UnloadPivotObject(
             PivotObject theobject)
         {
+            if (theobject._unloaded)
+                return;
             LevelObject gobject = theobject as LevelObject;
             if (gobject == null)
                 return;
@@ -487,7 +489,9 @@ namespace PhysX_test2.Engine.ContentLoader
                     Content.CollisionMesh cm = pc_cm.ReadedContentObject as Content.CollisionMesh;
                     cm.Release();
                 }
+                theobject._unloaded = true;
             }
+
         }
 
 

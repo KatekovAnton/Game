@@ -5,12 +5,12 @@ using System.Text;
 
 namespace PhysX_test2.TheGame.LogicControllers.Parameters
 {
-    public class InteractiveObjectParameters
+    public class ControllerParameters
     {
         public int _dbID;
         public string _name;
 
-        public InteractiveObjectParameters(int __dbID, string __displayName)
+        public ControllerParameters(int __dbID, string __displayName)
         {
             _dbID = __dbID;
             _name = __displayName;

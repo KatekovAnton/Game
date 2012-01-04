@@ -103,16 +103,18 @@ namespace PhysX_test2.TheGame.Level
                 dispersion = 0;
 
             float module = (float)MyRandom.Instance.NextDouble();
-         
+
             dispersion *= module;
 
-            float multx = MyRandom.Instance.Next(0, 10) > 5 ? 1 : -1;
-            float multy = MyRandom.Instance.Next(0, 10) > 5 ? 1 : -1;
-            float multz = MyRandom.Instance.Next(0, 10) > 5 ? 1 : -1;
+            float rx = MyRandom.Instance.Next(0, 10), ry = MyRandom.Instance.Next(0, 10), rz = MyRandom.Instance.Next(0, 10);
+
+            float multx = (rx > 5 ? 1 : -1) * (rx - 5) / 2.0f;
+            float multy = (ry > 5 ? 1 : -1) * (ry - 5) / 2.0f;
+            float multz = (rz > 5 ? 1 : -1) * (rz - 5) / 2.0f;
 
             Vector3 deltaRadius = new Vector3(dispersion * multx, dispersion * multy, dispersion * multz);
             Vector3 result = StartPoint + deltaRadius;
-            
+
             return result;
         }
 
@@ -155,14 +157,22 @@ namespace PhysX_test2.TheGame.Level
             result.LocateToLevel();
         }
 
-        public bool SearchBulletIntersection(BulletLogicController __bullet, Vector3 __moveVector, ref Vector3 __resultPoint)
+        public void CreateIntersectionEffect(Vector3 __axis, Vector3 __position, Vector3 __normal, Engine.Logic.PivotObjectMaterialType __matType, LogicControllers.Parameters.BulletType __bulletType)
+        {
+            //TODO ADD EFFECT!!!!!
+            string paramid = StaticObjects.GetEffectParameters(__matType, __bulletType);
+            EffectLogicController newController = LogicControllers.EffectLogicController.CreateEffect(paramid, this, __position, __normal);
+            newController.LocateOnLevel(MyGame.UpdateTime.TotalGameTime);
+        }
+
+        public bool SearchBulletIntersection(BulletLogicController __bullet, Vector3 __moveVector, out Vector3 __resultPoint, out Vector3 __resultNormal, out PivotObjectMaterialType __resulttype)
         {
             Vector3 startPosition = __bullet._hisObject._object.behaviourmodel.CurrentPosition.Translation;
             Vector3 endPosition = startPosition + __moveVector;
             Vector3 intersectionPoint = new Vector3();
+            Vector3 intersectionNormal = new Vector3();
 
-         
-            PivotObject intersectedObject = _scene.SearchBulletIntersection(startPosition, endPosition, out intersectionPoint);
+            PivotObject intersectedObject = _scene.SearchBulletIntersection(startPosition, endPosition, out intersectionPoint, out intersectionNormal);
 
             if (intersectedObject != null)
             {
@@ -172,10 +182,15 @@ namespace PhysX_test2.TheGame.Level
                 if (blc != null)
                     blc.TakeHit(__bullet._instanceParameters);
 
+                __resulttype = intersectedObject.matrialType;
                 __resultPoint = intersectionPoint;
+                __resultNormal = intersectionNormal;
                 return true;
             }
 
+            __resultPoint = new Vector3();
+            __resulttype = PivotObjectMaterialType.Metal;
+            __resultNormal = new Vector3();
             return false;            
         }
     }

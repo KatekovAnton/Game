@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PhysX_test2.TheGame.LogicControllers.Parameters
 {
-    public class MotralParameters : InteractiveObjectParameters
+    public class MotralParameters : ControllerParameters
     {
         //load from database
         public static Dictionary<string, MotralParameters> _allObjects;

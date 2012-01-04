@@ -5,8 +5,15 @@ using System.Text;
 
 namespace PhysX_test2.TheGame.LogicControllers.Parameters
 {
+    public enum BulletType
+    {
+        Bullet,
+        Energy,
+        Rocket
+    }
     public class BulletParameters : ItemParameters
     {
+        public BulletType _type = BulletType.Bullet;
 
         public int _caliber;
         public float _damage;

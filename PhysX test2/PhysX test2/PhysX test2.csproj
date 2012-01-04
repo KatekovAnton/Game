@@ -167,6 +167,7 @@
     <Compile Include="Engine\Helpers\ScreenLog.cs" />
     <Compile Include="Engine\Logic\ParticleObject.cs" />
     <Compile Include="Engine\ObjectCashe.cs" />
+    <Compile Include="Engine\Render\Materials\OpacityMaterial.cs" />
     <Compile Include="Engine\Render\ParticleRenderObject.cs" />
     <Compile Include="TheGame\InputManagers\InputProviderAI.cs" />
     <Compile Include="TheGame\InputManagers\InputProviderNetwork.cs" />
@@ -193,7 +194,7 @@
     <Compile Include="BaseExtensions\MyContainer.cs" />
     <Compile Include="Engine\Render\DebugRender\DebugRenderer.cs" />
     <Compile Include="Engine\Render\Materials\Material.cs" />
-    <Compile Include="Engine\Render\Materials\TextureMaterial.cs" />
+    <Compile Include="Engine\Render\Materials\DiffuseMaterial.cs" />
     <Compile Include="Content\EngineMesh.cs" />
     <Compile Include="Content\MeshList.cs" />
     <Compile Include="Content\Packs\Pack.cs" />
@@ -227,12 +228,14 @@
     <Compile Include="TheGame\LogicControllers\ControlActions\ControlAction.cs" />
     <Compile Include="TheGame\LogicControllers\BaseLogicController.cs" />
     <Compile Include="TheGame\LogicControllers\CharacterLogicController.cs" />
+    <Compile Include="TheGame\LogicControllers\EffectLogicController.cs" />
     <Compile Include="TheGame\LogicControllers\ImortalLevelGeometryLogicController.cs" />
     <Compile Include="TheGame\LogicControllers\MortalLevelGeometryLogicController.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\BulletBox.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\BulletParameters.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\CharacterParameters.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\DynamicParameters.cs" />
+    <Compile Include="TheGame\LogicControllers\Parameters\EffectParameters.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\InteractiveObjectParameters.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\ItemParameters.cs" />
     <Compile Include="TheGame\LogicControllers\Parameters\MotralParameters.cs" />

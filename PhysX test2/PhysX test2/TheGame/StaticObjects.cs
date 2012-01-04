@@ -46,11 +46,13 @@ namespace PhysX_test2.TheGame
             get;
             private set;
         }
+
         public SQliteConnector Database
         {
             get;
             private set;
         }
+
         private Dictionary<string, string> _localizations;
 
         //load from database
@@ -90,6 +92,23 @@ namespace PhysX_test2.TheGame
             }
         }
 
+        private static Dictionary<string, EffectParameters> _effectParameters;
+        public static Dictionary<string, EffectParameters> EffectParameters
+        {
+            get
+            {
+                return _effectParameters;
+            }
+        }
+
+        private class EffectHash
+        {
+            public Engine.Logic.PivotObjectMaterialType _materialType;
+            public PhysX_test2.TheGame.LogicControllers.Parameters.BulletType _bulletType;
+            public PhysX_test2.TheGame.LogicControllers.Parameters.EffectParameters _resultEffect;
+        }
+        private static EffectHash[] _effectHashTable;
+
         private StaticObjects()
         { 
             //init all static objects here
@@ -100,6 +119,8 @@ namespace PhysX_test2.TheGame
             LoadAnimations();
             LoadCharacterInformation();
             LoadWeaponInformation();
+            LoadEffects();
+            LoadEffectHashTable();
         }
 
         private void ConnectToDatabase(string __databaseName)
@@ -119,7 +140,7 @@ namespace PhysX_test2.TheGame
             }
         }
 
-        public void LoadAnimations()
+        private void LoadAnimations()
         {
             _animations = new Dictionary<int, Dictionary<int, AnimationInfo>>();
             SQliteResultSet anims = Database.executeSelect("select distinct character from character_animations", null);
@@ -142,7 +163,115 @@ namespace PhysX_test2.TheGame
             }
         }
 
-        public void LoadBulletInformation()
+        private void LoadEffects()
+        {
+            if (_effectParameters != null)
+                return;
+
+            _effectParameters = new Dictionary<string, EffectParameters>();
+            object[] data = new object[1];
+            object[] effectdata = new object[4];
+            data[0] = effectdata;
+
+            effectdata[0] = 0;
+            effectdata[1] = 5000.0;
+            effectdata[2] = "Object";
+            effectdata[3] = "Fire01LO\0";
+
+            EffectParameters ep = new EffectParameters(0, "testEffect", data);
+            _effectParameters.Add("0", ep);
+            //TODO: loads from database
+        }
+
+        private void LoadEffectHashTable()
+        {
+            _effectHashTable = new EffectHash[3 * 3];
+            {
+                EffectHash eh = new EffectHash();
+                eh._bulletType = BulletType.Bullet;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                _effectHashTable[0] = eh;
+
+                eh._resultEffect = _effectParameters["0"];
+            }
+            {
+                EffectHash eh = new EffectHash();
+                eh._bulletType = BulletType.Bullet;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                _effectHashTable[1] = eh;
+
+                eh._resultEffect = _effectParameters["0"];
+            }
+            {
+                EffectHash eh = new EffectHash();
+                eh._bulletType = BulletType.Bullet;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                _effectHashTable[2] = eh;
+
+                eh._resultEffect = _effectParameters["0"];
+            }
+            {
+                EffectHash eh = new EffectHash();
+                eh._bulletType = BulletType.Bullet;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                _effectHashTable[3] = eh;
+
+                eh._resultEffect = _effectParameters["0"];
+            }
+            {
+                EffectHash eh = new EffectHash();
+                eh._bulletType = BulletType.Bullet;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                _effectHashTable[4] = eh;
+
+                eh._resultEffect = _effectParameters["0"];
+            }
+            {
+                EffectHash eh = new EffectHash();
+                eh._bulletType = BulletType.Bullet;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                _effectHashTable[5] = eh;
+
+                eh._resultEffect = _effectParameters["0"];
+            }
+            {
+                EffectHash eh = new EffectHash();
+                eh._bulletType = BulletType.Bullet;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                _effectHashTable[6] = eh;
+
+                eh._resultEffect = _effectParameters["0"];
+            }
+            {
+                EffectHash eh = new EffectHash();
+                eh._bulletType = BulletType.Bullet;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                _effectHashTable[7] = eh;
+
+                eh._resultEffect = _effectParameters["0"];
+            }
+            {
+                EffectHash eh = new EffectHash();
+                eh._bulletType = BulletType.Bullet;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                _effectHashTable[8] = eh;
+
+                eh._resultEffect = _effectParameters["0"];
+            }
+        }
+
+        public static string GetEffectParameters(Engine.Logic.PivotObjectMaterialType __material, 
+            PhysX_test2.TheGame.LogicControllers.Parameters.BulletType __bullet)
+        {
+            for (int i = 0; i < _effectHashTable.Length; i++)
+            {
+                if (_effectHashTable[i]._bulletType == __bullet && _effectHashTable[i]._materialType == __material)
+                    return _effectHashTable[i]._resultEffect._dbID.ToString();
+            }
+            return "0";
+        }
+
+        private void LoadBulletInformation()
         {
             if (_bulletParameters != null)
                 return;
@@ -176,8 +305,7 @@ namespace PhysX_test2.TheGame
             }
         }
 
-
-        public void LoadCharacterInformation()
+        private void LoadCharacterInformation()
         {
             if (_characterParameters != null)
                 return;
@@ -205,7 +333,7 @@ namespace PhysX_test2.TheGame
             }
         }
 
-        public void LoadWeaponInformation()
+        private void LoadWeaponInformation()
         {
             if (_weaponParameters != null)
                 return;

@@ -69,6 +69,16 @@ namespace PhysX_test2.TheGame.LogicControllers
             SwitchGun();
         }
 
+        public override void RemoveFromLevel()
+        {
+            if (_hisWeapon != null)
+                _hisWeapon.RemoveFromLevel();
+            _hisObject.RemoveFromLevel();
+            _hisHead.RemoveFromLevel();
+            _itsLevel.RemoveController(this);
+           
+        }
+
         public void SwitchGun()
         {
             MyGame.ScreenLogMessage("switching my gun");
@@ -170,10 +180,10 @@ namespace PhysX_test2.TheGame.LogicControllers
             MyGame.ScreenLogMessage("character taking hit", Color.Red);
         }
 
-        public override Parameters.DynamicParameters GetParameters()
+      /*  public override Parameters.DynamicParameters GetParameters()
         {
             return _instanceParameters;
-        }
+        }*/
 
         public static CharacterLogicController CreateCharacter(string __nameIsId, GameLevel __level, bool _needMC)
         {
@@ -181,7 +191,7 @@ namespace PhysX_test2.TheGame.LogicControllers
 
 
             GameCharacter myCharacter = new GameCharacter(parameters._levelObjectName, Matrix.Identity, __level);
-            GameSimpleObject myHead = new GameSimpleObject(parameters._headObjectName, Engine.Logic.PivotObjectDependType.Head, __level, false, false);
+            GameSimpleObject myHead = new GameSimpleObject(parameters._headObjectName,  __level, Engine.Logic.PivotObjectDependType.Head, false, false);
             CharacterLogicController result = new CharacterLogicController(__level, myCharacter, myHead, !_needMC);
             result._baseParameters = parameters;
             return result;

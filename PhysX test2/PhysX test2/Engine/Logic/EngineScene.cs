@@ -185,7 +185,7 @@ namespace PhysX_test2.Engine.Logic
             _sceneGraph.calculateShadowVisibleObjects(GameEngine.Instance.GraphicPipeleine.frustumForShadow, _shadowObjects);
         }
         private MyContainer<PivotObject> _intersectedObjects = new MyContainer<PivotObject>();
-        public bool SearchPoint(Microsoft.Xna.Framework.Ray __ray, float __distance, out Vector3 __resultPoint, out PivotObject __resultObject)
+        public bool SearchPoint(Microsoft.Xna.Framework.Ray __ray, float __distance, out Vector3 __resultPoint, out PivotObject __resultObject, out Vector3 __pointNormal)
         {
             Engine.Logic.PivotObject clickedlo = null;
             Vector3 newpoint = new Vector3();
@@ -210,13 +210,13 @@ namespace PhysX_test2.Engine.Logic
                     }
                 }
             }
-
+            __pointNormal = normal;
             __resultObject = clickedlo;
             __resultPoint = newpoint;
             return finded;
             
         }
-        public PivotObject SearchBulletIntersection(Vector3 __start, Vector3 __end, out Vector3 __intersectionPoint)
+        public PivotObject SearchBulletIntersection(Vector3 __start, Vector3 __end, out Vector3 __intersectionPoint, out Vector3 __pointNormal)
         {
             Vector3 min = new Vector3(__start.X < __end.X ? __start.X : __end.X,
                __start.Y < __end.Y ? __start.Y : __end.Y,
@@ -226,19 +226,16 @@ namespace PhysX_test2.Engine.Logic
                 __start.Z > __end.Z ? __start.Z : __end.Z);
 
             Microsoft.Xna.Framework.BoundingBox bb = new BoundingBox(min, max);
-            __intersectionPoint = new Vector3();
+
             _sceneGraph.calculateBoxIntersectedObjects(bb, _intersectedObjects);
             StatisticContainer.Instance().UpdateParameter("totalBulletObjects", _intersectedObjects.Count);
             Vector3 raydir = __end - __start;
             float length = raydir.Length();
             raydir.Normalize();
             Microsoft.Xna.Framework.Ray bulletRay = new Microsoft.Xna.Framework.Ray(__start, raydir);
-            Vector3 resultpoint = new Vector3();
             PivotObject resultObject = null;
-            if (SearchPoint(bulletRay, length, out resultpoint, out resultObject))
-            {
-                __intersectionPoint = resultpoint;
-            }
+            SearchPoint(bulletRay, length, out __intersectionPoint, out resultObject, out __pointNormal);
+            
             return resultObject;
         }
 

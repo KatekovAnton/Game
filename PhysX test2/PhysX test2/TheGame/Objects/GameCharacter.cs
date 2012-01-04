@@ -39,6 +39,11 @@ namespace PhysX_test2.TheGame.Objects
             _onLevel = false;
         }
 
+        public void RemoveFromLevel()
+        {
+            _hisLevel.RemoveObject(_levelObject);
+        }
+
         public void dropParameters()
         {
             //method

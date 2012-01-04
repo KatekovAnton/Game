@@ -53,7 +53,9 @@ namespace PhysX_test2.TheGame.LogicControllers
                 StatisticContainer.Instance().UpdateParameter("totalBullets", 1);
                 Vector3 delta = _moveVector * _baseParameters._speed * (float)(__gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0);
                 Vector3 resulpoint = new Vector3();
-                if (!_itsLevel.SearchBulletIntersection(this, delta, ref resulpoint))
+                Vector3 resulnormal = new Vector3();
+                Engine.Logic.PivotObjectMaterialType mattype = Engine.Logic.PivotObjectMaterialType.Metal;
+                if (!_itsLevel.SearchBulletIntersection(this, delta, out resulpoint, out resulnormal, out mattype))
                 {
                     //move forward
                     Matrix newmatrix = _hisObject._object.behaviourmodel.CurrentPosition * Matrix.CreateTranslation(delta);
@@ -61,20 +63,20 @@ namespace PhysX_test2.TheGame.LogicControllers
                 }
                 else
                 {
-                    //remove visible object
-                    _hisObject.RemoveFromLevel();
-                    //stop the update
-                    _itsLevel.RemoveController(this);
-
-                    CreateIntersectionEffect(_moveVector, resulpoint);
+                    RemoveFromLevel();
+                    _itsLevel.CreateIntersectionEffect(_moveVector, resulpoint, resulnormal, mattype, _baseParameters._type);
                 }
             }
         }
 
-        public void CreateIntersectionEffect(Vector3 __axis, Vector3 __position)
+        public override void RemoveFromLevel()
         {
-            //TODO ADD EFFECT!!!!!
+            //remove visible object
+            _hisObject.RemoveFromLevel();
+            //stop the update
+            _itsLevel.RemoveController(this);
         }
+        
 
         public void LocateToLevel()
         {
@@ -82,10 +84,6 @@ namespace PhysX_test2.TheGame.LogicControllers
             _hisObject._object._gameObject = this;
         }
 
-        public override Parameters.DynamicParameters GetParameters()
-        {
-            return _instanceParameters;
-        }
 
         public override void TakeHit(Parameters.BulletDynamicParameters __bulletParameters)
         {

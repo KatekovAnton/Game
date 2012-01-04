@@ -24,10 +24,10 @@ namespace PhysX_test2.TheGame.Objects
 
         public LevelObject _parent;
 
-        public GameSimpleObject(string __objectName, Engine.Logic.PivotObjectDependType __dependType, GameLevel __level, bool __mouseRC, bool __bulletRC)
-            :base(__level, __mouseRC, __bulletRC)
+        public GameSimpleObject(string __objectName, GameLevel __level, Engine.Logic.PivotObjectDependType __dependType = PivotObjectDependType.Body, bool __mouseRC = false, bool __bulletRC = false)
+            : base(__level, __mouseRC, __bulletRC)
         {
-            _object = Engine.GameEngine.LoadObject(__objectName, null, __mouseRC, __bulletRC, __dependType) as LevelObject; 
+            _object = Engine.GameEngine.LoadObject(__objectName, null, __mouseRC, __bulletRC, __dependType) as LevelObject;
         }
 
         public void CalcParameters()
@@ -86,10 +86,16 @@ namespace PhysX_test2.TheGame.Objects
             _onLevel = false;
         }
 
+        public void Unload()
+        {
+            if (!_object._unloaded)
+                PhysX_test2.Engine.ContentLoader.ContentLoader.UnloadPivotObject(_object);
+        }
+
         ~GameSimpleObject()
         {
             RemoveFromLevel();
-            PhysX_test2.Engine.ContentLoader.ContentLoader.UnloadPivotObject(_object);
+            Unload();
         }
     }
 }
