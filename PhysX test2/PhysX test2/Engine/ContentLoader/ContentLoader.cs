@@ -303,18 +303,18 @@ namespace PhysX_test2.Engine.ContentLoader
                 }
                 else
                 {
-                    UnAnimRenderObject.Model[] models = new UnAnimRenderObject.Model[rod.LODs.Count];
+                    MyModel[] models = new MyModel[rod.LODs.Count];
                     for (int i = 0; i < models.Length; i++)
                     {
-                        UnAnimRenderObject.SubSet[] modelsubsets = new UnAnimRenderObject.SubSet[rod.LODs[i].subsets.Count];
+                        SubSet[] modelsubsets = new SubSet[rod.LODs[i].subsets.Count];
                         for (int j = 0; j < modelsubsets.Length; j++)
                         {
                             ContentMesh[] subsetmeshes = loadMeshArray(rod.LODs[i].subsets[j].MeshNames, packs);
                             EngineMesh subsetmesh = EngineMesh.FromContentMeshes(subsetmeshes);
                             //меши могут быть по-разному сгруппированы поэтому будем их каждый раз по новой загружать
-                            modelsubsets[j] = new UnAnimRenderObject.SubSet(subsetmesh);
+                            modelsubsets[j] = new SubSet(subsetmesh);
                         }
-                        models[i] = new UnAnimRenderObject.Model(modelsubsets);
+                        models[i] = new MyModel(modelsubsets);
                     }
                     RenderObject result = new UnAnimRenderObject(models, rod.IsShadowCaster, rod.IsShadowReceiver);
                     rod.Retain(result);

@@ -61,7 +61,7 @@ float Float4ToFloat(float4 color)
 
 //ТЕНИ
 float4x4 LightViewProj;
-float3 LightDirection = float3(-1, -1, -1);
+float3 LightDirection = normalize(float3(-1, -1, -1));
 float4 AmbientColor = float4(0.15, 0.15, 0.15, 0);
 float DepthBias = 0.001f;
 

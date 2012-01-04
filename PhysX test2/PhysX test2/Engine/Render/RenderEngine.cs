@@ -16,8 +16,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PhysX_test2.Engine.Render
 {
+
+    public enum InstancingTechnique
+    {
+        HardwareInstancing,
+        NoInstancing,
+        NoInstancingOrStateBatching
+    }
+
+
     public class RenderPipeline
     {
+        
+        public static InstancingTechnique instancingTechnique = InstancingTechnique.HardwareInstancing;
+
         public static bool EnableShadows;
         public static bool SmoothShadows;
         public static bool EnableGrass;

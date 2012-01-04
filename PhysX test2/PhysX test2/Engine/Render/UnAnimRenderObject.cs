@@ -12,77 +12,74 @@ using StillDesign.PhysX;
 
 namespace PhysX_test2.Engine.Render
 {
+    public class SubSet : System.IDisposable
+    {
+        public EngineMesh mesh;
+        public bool Disposed = false;
+        public SubSet(EngineMesh m)
+        {
+            mesh = m;
+        }
+        public void Dispose()
+        {
+            if (!Disposed)
+            {
+                mesh.Dispose();
+                mesh = null;
+                Disposed = true;
+                GC.SuppressFinalize(this);
+            }
+        }
+        ~SubSet()
+        {
+            Dispose();
+        }
+    }
+
+    public class MyModel : System.IDisposable
+    {
+        public SubSet[] subsets;
+        public bool Disposed = false;
+        public MyModel(SubSet[] array)
+        {
+            subsets = new SubSet[array.Length];
+            array.CopyTo(subsets, 0);
+        }
+        public void Dispose()
+        {
+            if (!Disposed)
+            {
+                for (int i = 0; i < subsets.Length; i++)
+                    subsets[i].Dispose();
+                subsets = null;
+                Disposed = true;
+                GC.SuppressFinalize(this);
+            }
+        }
+
+        ~MyModel()
+        {
+            Dispose();
+        }
+    }
 
     public class UnAnimRenderObject : RenderObject
     {
-        #region RENDER
-
-        public class SubSet :System.IDisposable
-        {
-            public EngineMesh mesh;
-            public bool Disposed = false;
-            public SubSet(EngineMesh m)
-            {
-                mesh = m;
-            }
-            public void Dispose()
-            {
-                if (!Disposed)
-                {
-                    mesh.Dispose();
-                    mesh = null;
-                    Disposed = true;
-                    GC.SuppressFinalize(this);
-                }
-            }
-            ~SubSet()
-            {
-                Dispose();
-            }
-        }
-
-        public class Model : System.IDisposable
-        {
-            public SubSet[] subsets;
-            public bool Disposed = false;
-            public Model(SubSet[] array)
-            {
-                subsets = new SubSet[array.Length];
-                array.CopyTo(subsets, 0);
-            }
-            public void Dispose()
-            {
-                if (!Disposed)
-                {
-                    for (int i = 0; i < subsets.Length; i++)
-                        subsets[i].Dispose();
-                    subsets = null;
-                    Disposed = true;
-                    GC.SuppressFinalize(this);
-                }
-            }
-
-            ~Model()
-            {
-                Dispose();
-            }
-        }
+        
        
-        public Model[] LODs
+        public MyModel[] LODs
         {
             get;
             private set;
         }
 
-        #endregion
-
-        public UnAnimRenderObject(Model[] lods)
+        public UnAnimRenderObject(MyModel[] lods)
         {
             LODs = lods;
         }
 
         public UnAnimRenderObject(
-            Model[] lods,
+            MyModel[] lods,
             bool shadowcaster,
             bool shadowreceiver)
         {
