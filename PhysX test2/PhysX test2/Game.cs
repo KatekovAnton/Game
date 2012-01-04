@@ -41,6 +41,7 @@ namespace PhysX_test2
         public static GameTime UpdateTime = new GameTime();
 
         public Vector3 _mousepoint = Vector3.Zero;
+        public Vector3 _mousepointNormal = Vector3.UnitY;
         public Ray ray;
 
         //some additional variables
@@ -153,7 +154,7 @@ namespace PhysX_test2
             {
                 if (!lo._needMouseCast)
                     continue;
-                Vector3? point = lo.raycastaspect.IntersectionClosest(ray, lo.transform);
+                Vector3? point = lo.raycastaspect.IntersectionClosest(ray, lo.transform, ref _mousepointNormal);
                 if (point != null)
                 {
                     float range = (point.Value - camerapos).Length();

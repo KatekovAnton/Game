@@ -189,14 +189,14 @@ namespace PhysX_test2.Engine.Logic
         {
             Engine.Logic.PivotObject clickedlo = null;
             Vector3 newpoint = new Vector3();
-
+            Vector3 normal = new Vector3();
             float distance = __distance;
             bool finded = false;
             foreach (Engine.Logic.PivotObject lo in this._intersectedObjects)
             {
                 if (!lo._needBulletCast)
                     continue;
-                Vector3? point = lo.raycastaspect.IntersectionClosest(__ray, lo.transform);
+                Vector3? point = lo.raycastaspect.IntersectionClosest(__ray, lo.transform, ref normal);
                 if (point != null)
                 {
                     StatisticContainer.Instance().UpdateParameter("totalBulletFaces", lo.raycastaspect.RCCM.Indices.Length / 3);

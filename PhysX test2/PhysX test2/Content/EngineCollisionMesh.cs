@@ -177,14 +177,14 @@ namespace PhysX_test2.Content
                 return new float?(distance);
             return null;
         }
-        public Vector3? IntersectionClosest(Microsoft.Xna.Framework.Ray ray, Matrix transform)
+        public Vector3? IntersectionClosest(Microsoft.Xna.Framework.Ray ray, Matrix transform, ref Vector3 normal)
         {
             var detransform = Matrix.Invert(transform);
 
             Vector3 p1 = Vector3.Transform(ray.Position, detransform);
             Vector3 p2 = Vector3.Transform(ray.Direction + ray.Position, detransform);
             p2 -= p1;
-
+            int index = -1;
             var isIntersected = false;
             var distance = 0.0f;
             for (int i = 0; i < Indices.Length; i += 3)
@@ -192,6 +192,8 @@ namespace PhysX_test2.Content
                 Vector3 v0 = Vertices[Indices[i]];
                 Vector3 v1 = Vertices[Indices[i + 1]] - Vertices[Indices[i]];
                 Vector3 v2 = Vertices[Indices[i + 2]] - Vertices[Indices[i]];
+
+                
 
                 // solution of linear system
                 // finds line and plane intersection point (if exists)
@@ -243,12 +245,20 @@ namespace PhysX_test2.Content
                 {
                     isIntersected = true;
                     distance = t3;
+                    index = i;
                 }
             }
             if (isIntersected)
+            {
+                Vector3 v1 = Vertices[Indices[index + 1]] - Vertices[Indices[index]];
+                Vector3 v2 = Vertices[Indices[index + 2]] - Vertices[Indices[index]];
+                normal = Vector3.Transform(Vector3.Cross(v1, v2), transform);
+                normal.Normalize();
                 return new Vector3?(Vector3.Transform((p1 + p2 * distance), transform));
+            }
             return null;
         }
+
         public bool IntersectionExist(Microsoft.Xna.Framework.Ray ray, Matrix detransform)
         {
             // var detransform = Matrix.Invert(transform);
