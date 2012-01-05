@@ -160,7 +160,10 @@ namespace PhysX_test2.TheGame.Level
         public void CreateIntersectionEffect(Vector3 __axis, Vector3 __position, Vector3 __normal, Engine.Logic.PivotObjectMaterialType __matType, LogicControllers.Parameters.BulletType __bulletType)
         {
             //TODO ADD EFFECT!!!!!
+            
             string paramid = StaticObjects.GetEffectParameters(__matType, __bulletType);
+            if (paramid == null)
+                return;
             EffectLogicController newController = LogicControllers.EffectLogicController.CreateEffect(paramid, this, __position, __normal);
             newController.LocateOnLevel(MyGame.UpdateTime.TotalGameTime);
         }

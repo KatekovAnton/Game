@@ -24,9 +24,11 @@ namespace PhysX_test2.Engine.Logic
         Stone,
         Metal,
         Wood,
-        DynamicStone,
         DynamicMetal,
-        DynamicWood
+        DynamicWood,
+        DynamicStone,
+        DynamicHuman,
+        DynamicAlien
     }
     
     public abstract class PivotObject

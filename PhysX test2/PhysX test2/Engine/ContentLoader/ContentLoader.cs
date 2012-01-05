@@ -454,12 +454,18 @@ namespace PhysX_test2.Engine.ContentLoader
             if (description != null)
             {
                 description.Release();
-
+                if (description._userCount == 0)
+                {
+                    pc.objectReaded = false;
+                    pc.ReadedContentObject = null;
+                }
                 //unload ro
                 PackContent pc_rod = PackList.Instance.FindObject(description.RODName, ref p);
                 Content.RenderObjectDescription rod = pc_rod.ReadedContentObject as Content.RenderObjectDescription;
                 RenderObject obj = rod._engineSampleObject as RenderObject;
                 rod.Release();
+
+
                 if (description.IsAnimated)
                 {
                     PackContent pc_characterContent = PackList.Instance.FindObject(description.CharacterName, ref p);
@@ -479,6 +485,11 @@ namespace PhysX_test2.Engine.ContentLoader
                         PackContent pc_image =  PackList.Instance.FindObject(matd.lodMats[i].mats[j].DiffuseTextureName, ref p);
                         Content.Texture inage = pc_image.ReadedContentObject as Content.Texture;
                         inage.Release();
+                        if (inage._userCount == 0)
+                        {
+                            pc_image.objectReaded = false;
+                            pc.ReadedContentObject = null;
+                        }
                     }
                 }
 
@@ -491,9 +502,6 @@ namespace PhysX_test2.Engine.ContentLoader
                 }
                 theobject._unloaded = true;
             }
-
         }
-
-
     }
 }

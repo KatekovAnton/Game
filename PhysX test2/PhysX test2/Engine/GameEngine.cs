@@ -207,6 +207,7 @@ namespace PhysX_test2.Engine
                 for (int j = 0; j < y; j++)
                 {
                     LevelObject lo = LoadObject("WoodenCrate10WorldObject\0", null, true, true) as LevelObject;
+                    lo.matrialType = PivotObjectMaterialType.DynamicWood;
                     lo.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(i * delta, 25, j * delta));
                     AddObjectToScene(lo);
                 }
@@ -324,6 +325,11 @@ namespace PhysX_test2.Engine
                 _cameraController.UpdateCamera();
             }
 
+            
+        }
+
+        public void UpdateEnd(GameTime gameTime)
+        {
             //очищаем конвейер
             GraphicPipeleine.NewFrame(lightDir);
 
@@ -339,6 +345,7 @@ namespace PhysX_test2.Engine
             animationManager.UpdateEnd(gameTime);
             FPSCounter.Update(gameTime);
         }
+
 
 
         public void Draw() {

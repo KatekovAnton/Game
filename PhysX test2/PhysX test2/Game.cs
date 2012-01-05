@@ -186,7 +186,7 @@ namespace PhysX_test2
             SearchClickedObject();
 
             _MAINGAME.Update(gameTime);
-
+            _engine.UpdateEnd(gameTime);
             base.Update(gameTime);
         }
 

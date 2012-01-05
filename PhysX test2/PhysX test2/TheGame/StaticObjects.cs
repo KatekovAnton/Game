@@ -176,7 +176,7 @@ namespace PhysX_test2.TheGame
             effectdata[0] = 0;
             effectdata[1] = 5000.0;
             effectdata[2] = "Object";
-            effectdata[3] = "Fire01LO\0";
+            effectdata[3] = "EffectLevelObject\0";
 
             EffectParameters ep = new EffectParameters(0, "testEffect", data);
             _effectParameters.Add("0", ep);
@@ -197,7 +197,7 @@ namespace PhysX_test2.TheGame
             {
                 EffectHash eh = new EffectHash();
                 eh._bulletType = BulletType.Bullet;
-                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.Stone;
                 _effectHashTable[1] = eh;
 
                 eh._resultEffect = _effectParameters["0"];
@@ -205,23 +205,23 @@ namespace PhysX_test2.TheGame
             {
                 EffectHash eh = new EffectHash();
                 eh._bulletType = BulletType.Bullet;
-                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.Wood;
                 _effectHashTable[2] = eh;
 
                 eh._resultEffect = _effectParameters["0"];
             }
-            {
+          /*  {
                 EffectHash eh = new EffectHash();
                 eh._bulletType = BulletType.Bullet;
-                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.DynamicWood;
                 _effectHashTable[3] = eh;
 
                 eh._resultEffect = _effectParameters["0"];
-            }
+            }*/
             {
                 EffectHash eh = new EffectHash();
                 eh._bulletType = BulletType.Bullet;
-                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.DynamicStone;
                 _effectHashTable[4] = eh;
 
                 eh._resultEffect = _effectParameters["0"];
@@ -229,32 +229,24 @@ namespace PhysX_test2.TheGame
             {
                 EffectHash eh = new EffectHash();
                 eh._bulletType = BulletType.Bullet;
-                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.DynamicMetal;
                 _effectHashTable[5] = eh;
 
                 eh._resultEffect = _effectParameters["0"];
             }
-            {
+           /* {
                 EffectHash eh = new EffectHash();
                 eh._bulletType = BulletType.Bullet;
-                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.DynamicHuman;
                 _effectHashTable[6] = eh;
 
                 eh._resultEffect = _effectParameters["0"];
-            }
+            }*/
             {
                 EffectHash eh = new EffectHash();
                 eh._bulletType = BulletType.Bullet;
-                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
+                eh._materialType = Engine.Logic.PivotObjectMaterialType.DynamicAlien;
                 _effectHashTable[7] = eh;
-
-                eh._resultEffect = _effectParameters["0"];
-            }
-            {
-                EffectHash eh = new EffectHash();
-                eh._bulletType = BulletType.Bullet;
-                eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
-                _effectHashTable[8] = eh;
 
                 eh._resultEffect = _effectParameters["0"];
             }
@@ -265,10 +257,12 @@ namespace PhysX_test2.TheGame
         {
             for (int i = 0; i < _effectHashTable.Length; i++)
             {
+                if (_effectHashTable[i] == null)
+                    continue;
                 if (_effectHashTable[i]._bulletType == __bullet && _effectHashTable[i]._materialType == __material)
                     return _effectHashTable[i]._resultEffect._dbID.ToString();
             }
-            return "0";
+            return null;
         }
 
         private void LoadBulletInformation()

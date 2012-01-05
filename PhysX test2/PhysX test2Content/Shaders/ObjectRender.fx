@@ -220,6 +220,10 @@ PS_INPUT SkinnedVertexShaderNoSM(SkinnedVertex vertex)
 
 float4 SolidTextureNoSM(PS_INPUT f) : COLOR0
 {
+	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
+	if(color.a<0.02)
+		discard;
+
 	float shadowintens = 0.4f;
 	float minclamp = 0.1;
 	
@@ -230,8 +234,8 @@ float4 SolidTextureNoSM(PS_INPUT f) : COLOR0
 
 	lambertfactor*=1.1;
     
-    float3 color = tex2D(TextureSampler, f.TextureCoordinate).rgb* lambertfactor;
-    return float4(color,1);
+    float3 color1 = color.rgb* lambertfactor;
+    return float4(color1,1);
 
 }
 float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
@@ -246,6 +250,10 @@ float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
 
 float4 SolidTextureSM(PS_INPUT f) : COLOR0
 {
+	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
+	if(color.a<0.02)
+		discard;
+
 	float4 lightingPosition = mul(f.WorldPos, LightViewProj);
 	float2 ShadowTexCoord = 0.5 * lightingPosition.xy / lightingPosition.w + float2( 0.5, 0.5 );
 	ShadowTexCoord.y = 1.0f - ShadowTexCoord.y;
@@ -269,12 +277,16 @@ float4 SolidTextureSM(PS_INPUT f) : COLOR0
 			lambertfactor = shadowintens;
 	}
 	lambertfactor*=1.1;
-	float3 color = tex2D(TextureSampler, f.TextureCoordinate).rgb* lambertfactor;
-	return float4(color,1);
+	float3 color1 = color.rgb* lambertfactor;
+	return float4(color1,1);
 }
 
 float4 SolidTextureSMR(PS_INPUT f) : COLOR0
 {
+	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
+	if(color.a<0.02)
+		discard;
+
 	float4 lightingPosition = mul(f.WorldPos, LightViewProj);
 	float2 ShadowTexCoord = 0.5 * lightingPosition.xy / lightingPosition.w + float2( 0.5, 0.5 );
 	ShadowTexCoord.y = 1.0f - ShadowTexCoord.y;
@@ -298,14 +310,17 @@ float4 SolidTextureSMR(PS_INPUT f) : COLOR0
 			lambertfactor = shadowintens;
 	}
 	lambertfactor*=1.1;
-	float3 color = tex2D(TextureSampler, f.TextureCoordinate).rgb* lambertfactor;
-	return float4(color,1);
+	float3 color1 = color.rgb* lambertfactor;
+	return float4(color1,1);
 }
 
 
 
 float4 SolidTextureSMSmooth(PS_INPUT f) : COLOR0
 {
+	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
+	if(color.a<0.02)
+		discard;
 	float4 lightingPosition = mul(f.WorldPos, LightViewProj);
 	float2 ShadowTexCoord = 0.5 * lightingPosition.xy / lightingPosition.w + float2( 0.5, 0.5 );
 	ShadowTexCoord.y = 1.0f - ShadowTexCoord.y;
@@ -351,8 +366,8 @@ float4 SolidTextureSMSmooth(PS_INPUT f) : COLOR0
 
 	lambertfactor*=1.1;
 
-	float3 color = tex2D(TextureSampler, f.TextureCoordinate).rgb* lambertfactor;
-	return float4(color,1);
+	float3 color1 = color.rgb* lambertfactor;
+	return float4(color1,1);
 }
 //=================================================================================
 

@@ -32,7 +32,7 @@ namespace PhysX_test2.TheGame.Objects
             : base(__level, true, true)
         {
             _levelObject = Engine.GameEngine.LoadObject(__aliveName, __aliveMatrix, true, true) as LevelObject;
-
+            _levelObject.matrialType = PivotObjectMaterialType.DynamicHuman;
             _controllerAlive = (_levelObject.renderaspect as Engine.Render.AnimRenderObject).character;
 
             _isAlive = false;
