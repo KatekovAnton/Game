@@ -73,8 +73,9 @@ namespace PhysX_test2
         {
           //  filename = System.IO.Path.GetDirectoryName(
           //      System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(6) + DateTime.Now.ToString().Replace('.', ':') + ".txt";
-
-            sw = new System.IO.StreamWriter("111.txt", false, Encoding.Default);
+            filename = "111.txt";
+            sw = new System.IO.StreamWriter(filename, false, Encoding.Default);
+            
         }
 
         public override void WriteMessage(string __message)

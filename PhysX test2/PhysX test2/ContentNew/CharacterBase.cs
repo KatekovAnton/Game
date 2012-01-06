@@ -38,7 +38,7 @@ namespace PhysX_test2.ContentNew
         }
     }
 
-    public class CharacterBase : PackContentEntity
+    public class CharacterBase : IPackContentEntity
     {
         public Bone[] bones;
         public Bone Root;

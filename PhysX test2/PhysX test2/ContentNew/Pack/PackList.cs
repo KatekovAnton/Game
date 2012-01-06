@@ -36,7 +36,7 @@ namespace PhysX_test2.ContentNew
             return null;
         }
 
-        public PackContentHeader GetObject(string objectname, PackContentEntity pc)
+        public PackContentHeader GetObject(string objectname, IPackContentEntity pc)
         {
             Pack containedpack = null;
             PackContentHeader pch = FindObject(objectname, ref containedpack);

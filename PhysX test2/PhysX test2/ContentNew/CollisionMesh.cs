@@ -13,7 +13,7 @@ using System.IO;
 
 namespace PhysX_test2.ContentNew
 {
-    public class CollisionMesh:PackContentEntity
+    public class CollisionMesh:IPackContentEntity
     {
         public Vector3[] Vertices;
         public int[] Indices;

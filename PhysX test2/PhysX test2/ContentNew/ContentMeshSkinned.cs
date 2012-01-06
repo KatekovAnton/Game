@@ -8,7 +8,7 @@ using System.IO;
 
 namespace PhysX_test2.ContentNew
 {
-    public class ContentMeshSkinned:PackContentEntity
+    public class ContentMeshSkinned:IPackContentEntity
     {
         public SkinnedVertex[] vertices;
         public int[] indices;

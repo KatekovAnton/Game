@@ -15,7 +15,20 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         public Vector3 LinearVelocity;
         public Vector3 AngularMomentum;
         public Vector3 AngularVelocity;
-        public PhysicData() { }
+        public PhysicData()
+        {
+        }
+
+        public PhysicData(Vector3 __LinearMomentum,     
+            Vector3 __LinearVelocity,
+            Vector3 __AngularMomentum,
+            Vector3 __AngularVelocity)
+        {
+            LinearMomentum = __LinearMomentum;
+            LinearVelocity = __LinearVelocity;
+            AngularMomentum = __AngularMomentum;
+            AngularVelocity = __AngularVelocity;
+        }
         public static readonly PhysicData ZeroParameters = new PhysicData();
  
 

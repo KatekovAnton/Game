@@ -5,7 +5,7 @@ using System.IO;
 
 namespace PhysX_test2.ContentNew
 {
-    public class RenderObjectDescription: PackContentEntity
+    public class RenderObjectDescription: IPackContentEntity
     {
         public bool IsShadowCaster = false;
         public bool IsShadowReceiver = false;

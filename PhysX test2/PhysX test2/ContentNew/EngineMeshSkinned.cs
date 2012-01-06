@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2.ContentNew
 {
-    public class EngineMeshSkinned : PackEngineObject
+    public class EngineMeshSkinned : IPackEngineObject
     {
         private VertexBuffer vertexBuffer;
         private IndexBuffer indexBuffer;
@@ -27,7 +27,7 @@ namespace PhysX_test2.ContentNew
         
         public bool Disposed;
 
-        public void CreateFromContentEntity(PackContentEntity[] __contentEntities)
+        public void CreateFromContentEntity(IPackContentEntity[] __contentEntities)
         {
             if (!Disposed)
                 Dispose();

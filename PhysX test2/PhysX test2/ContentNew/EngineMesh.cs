@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2.ContentNew
 {
-    public class EngineMesh : PackEngineObject
+    public class EngineMesh : IPackEngineObject
     {
         public bool Disposed;
         private VertexBuffer vertexBuffer;
@@ -36,7 +36,7 @@ namespace PhysX_test2.ContentNew
             
         }
 
-        public void CreateFromContentEntity(PackContentEntity[] __contentEntities)
+        public void CreateFromContentEntity(IPackContentEntity[] __contentEntities)
         {
             if (!Disposed)
                 Dispose();

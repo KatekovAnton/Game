@@ -13,6 +13,12 @@ namespace PhysX_test2.Engine.Render.Materials
         {
             public Texture2D diffuseTexture;
             public Texture2D opacityTexture;
+
+            public SubsetMaterial(Texture2D __diffuseTexture, Texture2D __opacityTexture)
+            {
+                diffuseTexture = __diffuseTexture;
+                opacityTexture = __opacityTexture;
+            }
         }
 
         public class Lod

@@ -27,38 +27,6 @@ inline float Float4ToFloat( float4 rgba )
     return dot( rgba, decode_mask );
 }
 
-
-/*
-float4 FloatToFloat4(float f)
-{
-	float4 color = float4(1,1,1,1);
-	f *= 256;
-	color.x = floor(f);
-	f = (f-color.x)*256;
-	color.y = floor(f);
-	color.z = f-color.y;
-	color.xy *= 0.00390625; // *= 1.0/256
-	return color;
-}
-
-float Float4ToFloat(float4 color)
-{
-	const float4 byte_to_float=float4(1.0,1.0/256,1.0/(256*256),1.0);
-	return dot(color,byte_to_float);
-}*/
-
-/*
-float4 FloatToFloat4(float f)
-{
-	float4 color = float4(f,1,1,1);
-	return color;
-}
-
-float Float4ToFloat(float4 color)
-{
-	return color.r;
-}*/
-
 //ТЕНИ
 float4x4 LightViewProj;
 float3 LightDirection = normalize(float3(-1, -1, -1));

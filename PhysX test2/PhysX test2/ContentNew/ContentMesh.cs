@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2.ContentNew
 {
-    public class ContentMesh: PackContentEntity
+    public class ContentMesh: IPackContentEntity
     {
         public Vertex[] vertices;
         public int[] indices;

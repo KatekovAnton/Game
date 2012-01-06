@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PhysX_test2.ContentNew
 {
-    public class MaterialDescription:PackContentEntity
+    public class MaterialDescription:IPackContentEntity
     {
         public Lod[] lodMats;
 

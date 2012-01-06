@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 namespace PhysX_test2.Engine.Animation
 {
-    public class CharacterStatic : ContentNew.PackEngineObject                              // класс чарактера
+    public class CharacterStatic : ContentNew.IPackEngineObject                              // класс чарактера
     {
         public CharacterPart[] parts;                   // список частей
         public SkeletonExtended skeleton;
@@ -40,7 +40,7 @@ namespace PhysX_test2.Engine.Animation
             parts = parts1.ToArray();
         }
 
-        public void CreateFromContentEntity(ContentNew.PackContentEntity[] __contentEntities)
+        public void CreateFromContentEntity(ContentNew.IPackContentEntity[] __contentEntities)
         {
             if (!Disposed)
                 Dispose();

@@ -172,8 +172,8 @@ namespace PhysX_test2.ContentNew
     public class PackContentHeader
     {
         public int _userCount;
-        public PackEngineObject _engineObject;
-        public PackContentEntity _contentObject;
+        public IPackEngineObject _engineObject;
+        public IPackContentEntity _contentObject;
 
 
 
@@ -214,7 +214,7 @@ namespace PhysX_test2.ContentNew
             }
         }
 
-        public void Retain(PackEngineObject __newObject = null)
+        public void Retain(IPackEngineObject __newObject = null)
         {
             //TODO - check logic
             if (__newObject == null && _engineObject == null)
@@ -247,7 +247,7 @@ namespace PhysX_test2.ContentNew
     /// <summary>
     /// Interface for content objects
     /// </summary>
-    public interface PackContentEntity
+    public interface IPackContentEntity
     {
         void LoadBody(byte[] __data);
     }
@@ -255,8 +255,8 @@ namespace PhysX_test2.ContentNew
     /// <summary>
     /// Interface for engine objects
     /// </summary>
-    public interface PackEngineObject : IDisposable
+    public interface IPackEngineObject : IDisposable
     {
-        void CreateFromContentEntity(PackContentEntity[] __contentEntities);
+        void CreateFromContentEntity(IPackContentEntity[] __contentEntities);
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2.ContentNew
 {
-    public class LevelObjectDescription: PackContentEntity
+    public class LevelObjectDescription: IPackContentEntity
     {
         public string RCCMName;
         public bool IsRCCMEnabled;
