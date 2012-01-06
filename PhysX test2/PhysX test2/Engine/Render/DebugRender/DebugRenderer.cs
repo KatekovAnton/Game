@@ -17,8 +17,9 @@ namespace PhysX_test2.Engine.Render.DebugRender
 
         public static Color AABBColor = Color.White;
         public static Color AABRColor = Color.Red;
+        public static Color BBColor = Color.Yellow;
 
-        public VertexPositionColor[] BBPointList = new VertexPositionColor[]
+        public VertexPositionColor[] AABBPointList = new VertexPositionColor[]
         { 
             new VertexPositionColor(new Vector3(),AABBColor),
             new VertexPositionColor(new Vector3(),AABBColor),
@@ -29,6 +30,19 @@ namespace PhysX_test2.Engine.Render.DebugRender
             new VertexPositionColor(new Vector3(),AABBColor),
             new VertexPositionColor(new Vector3(),AABBColor)
         };
+
+        public VertexPositionColor[] BBPointList = new VertexPositionColor[]
+        { 
+            new VertexPositionColor(new Vector3(),BBColor),
+            new VertexPositionColor(new Vector3(),BBColor),
+            new VertexPositionColor(new Vector3(),BBColor),
+            new VertexPositionColor(new Vector3(),BBColor),
+            new VertexPositionColor(new Vector3(),BBColor),
+            new VertexPositionColor(new Vector3(),BBColor),
+            new VertexPositionColor(new Vector3(),BBColor),
+            new VertexPositionColor(new Vector3(),BBColor)
+        };
+
         public VertexPositionColor[] BRPointList = new VertexPositionColor[]
         { 
             new VertexPositionColor(new Vector3(),AABRColor),
@@ -45,17 +59,17 @@ namespace PhysX_test2.Engine.Render.DebugRender
         public void RenderAABB(Logic.SceneGraph.OTBoundingShape boundingShape)
         {
             {
-                BBPointList[0].Position.X = boundingShape.aabb.XNAbb.Max.X; BBPointList[0].Position.Y = boundingShape.aabb.XNAbb.Max.Y; BBPointList[0].Position.Z = boundingShape.aabb.XNAbb.Max.Z;
-                BBPointList[1].Position.X = boundingShape.aabb.XNAbb.Max.X; BBPointList[1].Position.Y = boundingShape.aabb.XNAbb.Max.Y; BBPointList[1].Position.Z = boundingShape.aabb.XNAbb.Min.Z;
-                BBPointList[2].Position.X = boundingShape.aabb.XNAbb.Min.X; BBPointList[2].Position.Y = boundingShape.aabb.XNAbb.Max.Y; BBPointList[2].Position.Z = boundingShape.aabb.XNAbb.Max.Z;
-                BBPointList[3].Position.X = boundingShape.aabb.XNAbb.Min.X; BBPointList[3].Position.Y = boundingShape.aabb.XNAbb.Max.Y; BBPointList[3].Position.Z = boundingShape.aabb.XNAbb.Min.Z;
-                BBPointList[4].Position.X = boundingShape.aabb.XNAbb.Max.X; BBPointList[4].Position.Y = boundingShape.aabb.XNAbb.Min.Y; BBPointList[4].Position.Z = boundingShape.aabb.XNAbb.Max.Z;
-                BBPointList[5].Position.X = boundingShape.aabb.XNAbb.Max.X; BBPointList[5].Position.Y = boundingShape.aabb.XNAbb.Min.Y; BBPointList[5].Position.Z = boundingShape.aabb.XNAbb.Min.Z;
-                BBPointList[6].Position.X = boundingShape.aabb.XNAbb.Min.X; BBPointList[6].Position.Y = boundingShape.aabb.XNAbb.Min.Y; BBPointList[6].Position.Z = boundingShape.aabb.XNAbb.Max.Z;
-                BBPointList[7].Position.X = boundingShape.aabb.XNAbb.Min.X; BBPointList[7].Position.Y = boundingShape.aabb.XNAbb.Min.Y; BBPointList[7].Position.Z = boundingShape.aabb.XNAbb.Min.Z;
+                AABBPointList[0].Position.X = boundingShape.aabb.XNAbb.Max.X; AABBPointList[0].Position.Y = boundingShape.aabb.XNAbb.Max.Y; AABBPointList[0].Position.Z = boundingShape.aabb.XNAbb.Max.Z;
+                AABBPointList[1].Position.X = boundingShape.aabb.XNAbb.Max.X; AABBPointList[1].Position.Y = boundingShape.aabb.XNAbb.Max.Y; AABBPointList[1].Position.Z = boundingShape.aabb.XNAbb.Min.Z;
+                AABBPointList[2].Position.X = boundingShape.aabb.XNAbb.Min.X; AABBPointList[2].Position.Y = boundingShape.aabb.XNAbb.Max.Y; AABBPointList[2].Position.Z = boundingShape.aabb.XNAbb.Max.Z;
+                AABBPointList[3].Position.X = boundingShape.aabb.XNAbb.Min.X; AABBPointList[3].Position.Y = boundingShape.aabb.XNAbb.Max.Y; AABBPointList[3].Position.Z = boundingShape.aabb.XNAbb.Min.Z;
+                AABBPointList[4].Position.X = boundingShape.aabb.XNAbb.Max.X; AABBPointList[4].Position.Y = boundingShape.aabb.XNAbb.Min.Y; AABBPointList[4].Position.Z = boundingShape.aabb.XNAbb.Max.Z;
+                AABBPointList[5].Position.X = boundingShape.aabb.XNAbb.Max.X; AABBPointList[5].Position.Y = boundingShape.aabb.XNAbb.Min.Y; AABBPointList[5].Position.Z = boundingShape.aabb.XNAbb.Min.Z;
+                AABBPointList[6].Position.X = boundingShape.aabb.XNAbb.Min.X; AABBPointList[6].Position.Y = boundingShape.aabb.XNAbb.Min.Y; AABBPointList[6].Position.Z = boundingShape.aabb.XNAbb.Max.Z;
+                AABBPointList[7].Position.X = boundingShape.aabb.XNAbb.Min.X; AABBPointList[7].Position.Y = boundingShape.aabb.XNAbb.Min.Y; AABBPointList[7].Position.Z = boundingShape.aabb.XNAbb.Min.Z;
             }
             device.DrawUserIndexedPrimitives<VertexPositionColor>(
-                PrimitiveType.LineList, BBPointList, 0, BBPointList.Length, BBIndices, 0, BBIndices.Length / 2);
+                PrimitiveType.LineList, AABBPointList, 0, AABBPointList.Length, BBIndices, 0, BBIndices.Length / 2);
 
         }
         public void RenderTransformedBB(Logic.SceneGraph.OTBoundingShape boundingShape)
@@ -89,17 +103,17 @@ namespace PhysX_test2.Engine.Render.DebugRender
         public void RenderSGNodeBR(Logic.SceneGraph.SGNode node)
         {
             {
-                BBPointList[0].Position.X = node.boundingBox.Max.X; BBPointList[0].Position.Y = node.boundingBox.Max.Y; BBPointList[0].Position.Z = node.boundingBox.Max.Z;
-                BBPointList[1].Position.X = node.boundingBox.Max.X; BBPointList[1].Position.Y = node.boundingBox.Max.Y; BBPointList[1].Position.Z = node.boundingBox.Min.Z;
-                BBPointList[2].Position.X = node.boundingBox.Min.X; BBPointList[2].Position.Y = node.boundingBox.Max.Y; BBPointList[2].Position.Z = node.boundingBox.Max.Z;
-                BBPointList[3].Position.X = node.boundingBox.Min.X; BBPointList[3].Position.Y = node.boundingBox.Max.Y; BBPointList[3].Position.Z = node.boundingBox.Min.Z;
-                BBPointList[4].Position.X = node.boundingBox.Max.X; BBPointList[4].Position.Y = node.boundingBox.Min.Y; BBPointList[4].Position.Z = node.boundingBox.Max.Z;
-                BBPointList[5].Position.X = node.boundingBox.Max.X; BBPointList[5].Position.Y = node.boundingBox.Min.Y; BBPointList[5].Position.Z = node.boundingBox.Min.Z;
-                BBPointList[6].Position.X = node.boundingBox.Min.X; BBPointList[6].Position.Y = node.boundingBox.Min.Y; BBPointList[6].Position.Z = node.boundingBox.Max.Z;
-                BBPointList[7].Position.X = node.boundingBox.Min.X; BBPointList[7].Position.Y = node.boundingBox.Min.Y; BBPointList[7].Position.Z = node.boundingBox.Min.Z;
+                AABBPointList[0].Position.X = node.boundingBox.Max.X; AABBPointList[0].Position.Y = node.boundingBox.Max.Y; AABBPointList[0].Position.Z = node.boundingBox.Max.Z;
+                AABBPointList[1].Position.X = node.boundingBox.Max.X; AABBPointList[1].Position.Y = node.boundingBox.Max.Y; AABBPointList[1].Position.Z = node.boundingBox.Min.Z;
+                AABBPointList[2].Position.X = node.boundingBox.Min.X; AABBPointList[2].Position.Y = node.boundingBox.Max.Y; AABBPointList[2].Position.Z = node.boundingBox.Max.Z;
+                AABBPointList[3].Position.X = node.boundingBox.Min.X; AABBPointList[3].Position.Y = node.boundingBox.Max.Y; AABBPointList[3].Position.Z = node.boundingBox.Min.Z;
+                AABBPointList[4].Position.X = node.boundingBox.Max.X; AABBPointList[4].Position.Y = node.boundingBox.Min.Y; AABBPointList[4].Position.Z = node.boundingBox.Max.Z;
+                AABBPointList[5].Position.X = node.boundingBox.Max.X; AABBPointList[5].Position.Y = node.boundingBox.Min.Y; AABBPointList[5].Position.Z = node.boundingBox.Min.Z;
+                AABBPointList[6].Position.X = node.boundingBox.Min.X; AABBPointList[6].Position.Y = node.boundingBox.Min.Y; AABBPointList[6].Position.Z = node.boundingBox.Max.Z;
+                AABBPointList[7].Position.X = node.boundingBox.Min.X; AABBPointList[7].Position.Y = node.boundingBox.Min.Y; AABBPointList[7].Position.Z = node.boundingBox.Min.Z;
             }
             device.DrawUserIndexedPrimitives<VertexPositionColor>(
-                PrimitiveType.LineList, BBPointList, 0, BBPointList.Length, BBIndices, 0, BBIndices.Length / 2);
+                PrimitiveType.LineList, AABBPointList, 0, AABBPointList.Length, BBIndices, 0, BBIndices.Length / 2);
 
         }
 

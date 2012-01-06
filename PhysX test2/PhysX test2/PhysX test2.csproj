@@ -139,6 +139,17 @@
     <Compile Include="BaseExtensions\SQliteShell\SQliteConnector.cs" />
     <Compile Include="BaseExtensions\SQliteShell\SQliteResultSet.cs" />
     <Compile Include="BaseExtensions\StatisticContainer.cs" />
+    <Compile Include="ContentNew\CharacterBase.cs" />
+    <Compile Include="ContentNew\CollisionMesh.cs" />
+    <Compile Include="ContentNew\LevelObjectDescription.cs" />
+    <Compile Include="ContentNew\MaterialDescription.cs" />
+    <Compile Include="ContentNew\Mesh.cs" />
+    <Compile Include="ContentNew\MeshSkinned.cs" />
+    <Compile Include="ContentNew\Pack\Pack.cs" />
+    <Compile Include="ContentNew\Pack\PackContentHeader.cs" />
+    <Compile Include="ContentNew\Pack\PackList.cs" />
+    <Compile Include="ContentNew\RenderObjectDescription.cs" />
+    <Compile Include="ContentNew\Texture.cs" />
     <Compile Include="Content\CollisionMesh.cs" />
     <Compile Include="ContactCallback.cs" />
     <Compile Include="Content\ContentMesh.cs" />

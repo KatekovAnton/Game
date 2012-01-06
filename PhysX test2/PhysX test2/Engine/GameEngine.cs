@@ -195,6 +195,7 @@ namespace PhysX_test2.Engine
             ///box 
             {
                 LevelObjectBox = LoadObject("WoodenCrate10WorldObject\0", null, true, true) as LevelObject;
+                LevelObjectBox.matrialType = PivotObjectMaterialType.DynamicWood;
                 LevelObjectBox.SetGlobalPose(Matrix.CreateRotationX(1.0f) * Matrix.CreateTranslation(0, 25, 0));
                 AddObjectToScene(LevelObjectBox);
             }

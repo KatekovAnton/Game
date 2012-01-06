@@ -125,10 +125,11 @@ namespace PhysX_test2.Engine.Render
             byte[] ec = (new EffectProcessor()).Process(content, new ContextTrick()).GetEffectCode();
 
 
-          /*  BinaryWriter bw = new BinaryWriter(new FileStream("Content\\Shaders\\ObjectRender.fx", FileMode.Create));
+         /*   BinaryWriter bw = new BinaryWriter(new FileStream("Effect.shader", FileMode.Create));
             bw.Write(ec);
             bw.Flush();
             bw.Close();*/
+
             if (MyGame.Instance.GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)
             {
                 AnimRenderSM = "AnimRenderSMR";

@@ -174,7 +174,7 @@ namespace PhysX_test2.TheGame
             data[0] = effectdata;
 
             effectdata[0] = 0;
-            effectdata[1] = 5000.0;
+            effectdata[1] = 10000.0;
             effectdata[2] = "Object";
             effectdata[3] = "EffectLevelObject\0";
 

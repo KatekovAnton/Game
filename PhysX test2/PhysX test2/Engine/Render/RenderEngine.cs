@@ -413,7 +413,7 @@ namespace PhysX_test2.Engine.Render
                 _visualizationEffect.CurrentTechnique.Passes[0].Apply();
                 foreach (PivotObject wo in debugRenderArray)
                 {
-                   // debugRenderer.RenderTransformedBB(wo.boundingShape);
+                    debugRenderer.RenderTransformedBB(wo.raycastaspect.boundingShape);
                    // debugRenderer.RenderAABR(wo.boundingShape);
                     debugRenderer.RenderAABB(wo.raycastaspect.boundingShape);
                 }

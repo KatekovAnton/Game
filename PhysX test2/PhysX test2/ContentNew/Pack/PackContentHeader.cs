@@ -1,10 +1,12 @@
 ﻿using System;
-using System.IO;
-using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-namespace PhysX_test2.Content
-{
+using System.Linq;
+using System.Text;
 
+using System.IO;
+
+namespace PhysX_test2.ContentNew
+{
 
     public class ElementType
     {
@@ -126,7 +128,7 @@ namespace PhysX_test2.Content
         public int loadedformat;
         public string name;
     }
-   
+
     public class MeshContentadditionalheader
     {
         public int ismaxdetalized;
@@ -166,15 +168,15 @@ namespace PhysX_test2.Content
             }
         }
     }
-   
-    public class PackContent
+
+    public class PackContentHeader
     {
         public int _userCount;
-        public object _engineSampleObject;
-        public PackContent ReadedContentObject; 
+        public PackEngineObject _engineObject;
+        public PackContentEntity _contentObject;
 
 
-        public bool objectReaded;
+
         public int number;
         public int offset;
         public int size;
@@ -183,12 +185,12 @@ namespace PhysX_test2.Content
         public string name;
         public MeshContentadditionalheader mh = null;
 
-        public PackContent()
+        public PackContentHeader()
         {
             _userCount = 0;
         }
 
-        public PackContent(System.IO.BinaryReader br, int _number)//16+имя
+        public PackContentHeader(System.IO.BinaryReader br, int _number)//16+имя
         {
             this.number = _number;
             int length = br.ReadInt32();
@@ -196,7 +198,7 @@ namespace PhysX_test2.Content
             offset = br.ReadInt32();
             loadedformat = br.ReadInt32();
             headersize = br.ReadInt32();
-            
+
             //когдато я бы л молодой и глупый и теперь пишу этот кастыль
             if (loadedformat == ElementType.MeshOptimazedForStore || loadedformat == ElementType.MeshOptimazedForLoading)
             {
@@ -209,16 +211,16 @@ namespace PhysX_test2.Content
             }
         }
 
-        public void Retain(object __newObject = null)
+        public void Retain(PackEngineObject __newObject = null)
         {
             //TODO - check logic
-            if (__newObject == null && _engineSampleObject == null)
+            if (__newObject == null && _engineObject == null)
                 throw new Exception();
             _userCount++;
             if (__newObject == null)
                 return;
-            if (_engineSampleObject == null)
-                _engineSampleObject = __newObject;
+            if (_engineObject == null)
+                _engineObject = __newObject;
         }
 
         public virtual void Release()
@@ -226,25 +228,37 @@ namespace PhysX_test2.Content
             _userCount--;
             if (_userCount == 0)
             {
-                IDisposable obj = _engineSampleObject as IDisposable;
+                IDisposable obj = _engineObject as IDisposable;
                 if (obj != null)
                     obj.Dispose();
 
-                _engineSampleObject = null;
-                objectReaded = false;
-                ReadedContentObject = null;
+                _engineObject = null;
+                _contentObject = null;
             }
         }
 
         public virtual void loadbody(byte[] array)
-        {}
+        { }
 
         public virtual void Unload()
         {
-            objectReaded = false;
-            ReadedContentObject = null;
+            _contentObject = null;
         }
     }
 
-    
+    /// <summary>
+    /// Interface for content objects
+    /// </summary>
+    public interface PackContentEntity
+    {
+        void LoadBody(byte[] __data);
+    }
+
+    /// <summary>
+    /// Interface for engine objects
+    /// </summary>
+    public interface PackEngineObject
+    {
+        void CreateFromContentEntity(PackContentEntity __contentEntity);
+    }
 }
