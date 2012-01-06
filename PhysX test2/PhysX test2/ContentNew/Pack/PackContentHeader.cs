@@ -97,5 +97,6 @@ namespace PhysX_test2.ContentNew
     public interface IPackEngineObject : IDisposable
     {
         void CreateFromContentEntity(IPackContentEntity[] __contentEntities);
+       // void CreateFormEngineObject(IPackEngineObject __object);
     }
 }
