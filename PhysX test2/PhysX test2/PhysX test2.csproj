@@ -150,6 +150,7 @@
     <Compile Include="ContentNew\Pack\Pack.cs" />
     <Compile Include="ContentNew\Pack\PackContentHeader.cs" />
     <Compile Include="ContentNew\Pack\PackList.cs" />
+    <Compile Include="ContentNew\Pack\PackSettngs.cs" />
     <Compile Include="ContentNew\RenderObjectDescription.cs" />
     <Compile Include="ContentNew\Texture.cs" />
     <Compile Include="Content\CollisionMesh.cs" />

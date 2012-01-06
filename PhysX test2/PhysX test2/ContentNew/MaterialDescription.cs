@@ -39,5 +39,10 @@ namespace PhysX_test2.ContentNew
                 }
             }
         }
+
+        public int GetContentType()
+        {
+            return ElementType.Material;
+        }
     }
 }

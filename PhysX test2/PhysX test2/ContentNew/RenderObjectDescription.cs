@@ -79,7 +79,11 @@ namespace PhysX_test2.ContentNew
             NeedRotate = br.ReadBoolean();
             isTransparent = br.ReadBoolean();
             isSelfIllumination = br.ReadBoolean();
+        }
 
+        public int GetContentType()
+        {
+            return ElementType.RenderObjectDescription;
         }
     }
 }

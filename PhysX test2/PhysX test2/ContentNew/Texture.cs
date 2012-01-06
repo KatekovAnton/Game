@@ -31,5 +31,10 @@ namespace PhysX_test2.ContentNew
         {
             texture = Texture2D.FromStream(MyGame.Device, new System.IO.MemoryStream(array));
         }
+
+        public int GetContentType()
+        {
+            return ElementType.PNGTexture;
+        }
     }
 }

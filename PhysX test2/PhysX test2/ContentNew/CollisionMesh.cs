@@ -103,5 +103,10 @@ namespace PhysX_test2.ContentNew
             ConvexMesh convexMesh = core.CreateConvexMesh(stream);
             return new ConvexShapeDescription(convexMesh);
         }
+
+        public int GetContentType()
+        {
+            return ElementType.CollisionMesh;
+        }
     }
 }

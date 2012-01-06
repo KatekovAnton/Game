@@ -66,5 +66,10 @@ namespace PhysX_test2.ContentNew
 
             br.Close();
         }
+
+        public int GetContentType()
+        {
+            return ElementType.MeshOptimazedForLoading;
+        }
     }
 }

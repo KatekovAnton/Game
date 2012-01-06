@@ -126,5 +126,10 @@ namespace PhysX_test2.ContentNew
             for (int i = 0; i < topindexes.Length; i++)
                 topindexes[i] = self.ReadInt32();
         }
+
+        public int GetContentType()
+        {
+            return ElementType.SkeletonWithAddInfo;
+        }
     }
 }
