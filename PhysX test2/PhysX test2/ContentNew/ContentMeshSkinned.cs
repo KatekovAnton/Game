@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
+using System.Text;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 
-namespace PhysX_test2.Content
+namespace PhysX_test2.ContentNew
 {
-    public class ContentSkinnedMesh : PackContent
+    public class ContentMeshSkinned:PackContentEntity
     {
         public SkinnedVertex[] vertices;
         public int[] indices;
-        public static CharacterContent skeleton;
+        public static CharacterBase skeleton;
 
-        public override void loadbody(byte[] buffer)
+        public void LoadBody(byte[] buffer)
         {
             //  vertexdeclaration = new VertexPositionNormalTexture();
             BinaryReader br = new BinaryReader(new MemoryStream(buffer));

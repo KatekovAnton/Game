@@ -101,16 +101,22 @@ namespace PhysX_test2.TheGame.Level
             float dispersion = (1.0f - accuracy);
             if (dispersion < 0)
                 dispersion = 0;
+           
 
-            float module = (float)MyRandom.Instance.NextDouble();
+            float rx = MyRandom.Instance.Next(0, 10);
+            float ry = MyRandom.Instance.Next(0, 10);
+            float rz = MyRandom.Instance.Next(0, 10);
 
-            dispersion *= module;
 
-            float rx = MyRandom.Instance.Next(0, 10), ry = MyRandom.Instance.Next(0, 10), rz = MyRandom.Instance.Next(0, 10);
+            float dx = (float)MyRandom.Instance.NextDouble();
+            float dy = (float)MyRandom.Instance.NextDouble();
+            float dz = (float)MyRandom.Instance.NextDouble();
 
-            float multx = (rx > 5 ? 1 : -1) * (rx - 5) / 2.0f;
-            float multy = (ry > 5 ? 1 : -1) * (ry - 5) / 2.0f;
-            float multz = (rz > 5 ? 1 : -1) * (rz - 5) / 2.0f;
+            const float mult = 1.2f;
+
+            float multx = (rx > 5 ? 1 : -1) * (dx) * mult;
+            float multy = (ry > 5 ? 1 : -1) * (dy) * mult;
+            float multz = (rz > 5 ? 1 : -1) * (dz) * mult;
 
             Vector3 deltaRadius = new Vector3(dispersion * multx, dispersion * multy, dispersion * multz);
             Vector3 result = StartPoint + deltaRadius;

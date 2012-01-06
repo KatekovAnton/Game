@@ -185,6 +185,9 @@ namespace PhysX_test2.ContentNew
         public string name;
         public MeshContentadditionalheader mh = null;
 
+
+        public int _disposeCount = 0;
+
         public PackContentHeader()
         {
             _userCount = 0;
@@ -223,22 +226,17 @@ namespace PhysX_test2.ContentNew
                 _engineObject = __newObject;
         }
 
-        public virtual void Release()
+        public void Release()
         {
             _userCount--;
             if (_userCount == 0)
             {
-                IDisposable obj = _engineObject as IDisposable;
-                if (obj != null)
-                    obj.Dispose();
-
+                _engineObject.Dispose();
                 _engineObject = null;
-                _contentObject = null;
+
+                _disposeCount++;
             }
         }
-
-        public virtual void loadbody(byte[] array)
-        { }
 
         public virtual void Unload()
         {
@@ -257,7 +255,7 @@ namespace PhysX_test2.ContentNew
     /// <summary>
     /// Interface for engine objects
     /// </summary>
-    public interface PackEngineObject
+    public interface PackEngineObject : IDisposable
     {
         void CreateFromContentEntity(PackContentEntity __contentEntity);
     }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PhysX_test2.ContentNew
 {
-    class RenderObjectDescription
+    public class RenderObjectDescription
     {
     }
 }

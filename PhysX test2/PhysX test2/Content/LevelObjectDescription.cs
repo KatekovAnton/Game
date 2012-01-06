@@ -21,8 +21,6 @@ namespace PhysX_test2.Content
 
         public string RODName;
 
-        public RenderObjectDescription ROD;
-
         public bool IsAnimated;
 
         public string CharacterName;

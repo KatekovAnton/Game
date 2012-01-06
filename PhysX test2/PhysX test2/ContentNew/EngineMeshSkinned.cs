@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2.ContentNew
 {
-    class MeshSkinned
+    public class EngineMeshSkinned
     {
     }
 

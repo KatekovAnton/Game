@@ -276,7 +276,6 @@ namespace PhysX_test2.Engine.ContentLoader
             RenderObjectDescription rod = new RenderObjectDescription();
 
             rod = packs.GetObject(description.RODName, rod) as Content.RenderObjectDescription;
-            description.ROD = rod;
             if (rod._userCount == 0)
             {
                 if (description.IsAnimated)
