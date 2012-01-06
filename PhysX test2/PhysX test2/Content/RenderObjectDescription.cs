@@ -11,7 +11,6 @@ namespace PhysX_test2.Content
     
     public class RenderObjectDescription: PackContent
     {
-        
         public Pack pack;
         //отбрасывает ли тени
         public bool IsShadowCaster = false;

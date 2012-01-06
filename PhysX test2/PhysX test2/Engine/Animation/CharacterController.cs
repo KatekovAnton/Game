@@ -123,7 +123,7 @@ namespace PhysX_test2.Engine.Animation
             CheckNodes();
         }
 
-        public void CompyPoseFromAnother(CharacterController __anotherController)
+        public void CopyPoseFromAnother(CharacterController __anotherController)
         {
             if (__anotherController._baseCharacter != _baseCharacter)
                 throw new Exception();

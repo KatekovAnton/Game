@@ -7,7 +7,21 @@ namespace PhysX_test2.ContentNew
 {
     public class MaterialDescription:PackContentEntity
     {
-        public MaterialDescription() { }
+        public Lod[] lodMats;
+
+        public class SubsetMaterial
+        {
+            public string DiffuseTextureName;
+        }
+
+        public class Lod
+        {
+            public SubsetMaterial[] mats;
+        }
+
+        public MaterialDescription() 
+        { }
+
         public void LoadBody(byte[] buffer)
         {
             System.IO.BinaryReader br = new System.IO.BinaryReader(new System.IO.MemoryStream(buffer));
@@ -24,15 +38,6 @@ namespace PhysX_test2.ContentNew
                     lodMats[i].mats[j].DiffuseTextureName = br.ReadPackString();
                 }
             }
-        }
-        public Lod[] lodMats;
-        public class SubsetMaterial
-        {
-            public string DiffuseTextureName;
-        }
-        public class Lod
-        {
-            public SubsetMaterial[] mats;
         }
     }
 }

@@ -54,6 +54,7 @@ namespace PhysX_test2.Content
         {
             indexBuffer.Dispose();
             vertexBuffer.Dispose();
+            Disposed = true;
         }
 
 

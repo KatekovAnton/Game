@@ -245,21 +245,8 @@ namespace PhysX_test2.Engine.ContentLoader
             if (characterContent._userCount == 0)
             {
                 characterResult = new CharacterStatic();
-                characterResult.skeleton = new SkeletonExtended();
-                System.IO.BinaryReader br = new System.IO.BinaryReader(new System.IO.MemoryStream(characterContent.data));
-                characterResult.skeleton.loadbody(br);
-                List<CharacterPart> parts = new List<CharacterPart>();
-                bool bottomExist = br.ReadBoolean();
-                if (bottomExist)
-                    parts.Add(new CharacterPart(AnimationGraph.AnimationGraphFromStream(br)));
-
-
-                bool topExist = br.ReadBoolean();
-                if (topExist)
-                    parts.Add(new CharacterPart(AnimationGraph.AnimationGraphFromStream(br)));
-
-                characterResult.parts = parts.ToArray();
-                characterContent.Retain( characterResult);
+                characterResult.CreateFromContentEntity(new PackContent[] { characterContent });
+                characterContent.Retain(characterResult);
             }
             else
             {

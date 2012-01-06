@@ -257,6 +257,6 @@ namespace PhysX_test2.ContentNew
     /// </summary>
     public interface PackEngineObject : IDisposable
     {
-        void CreateFromContentEntity(PackContentEntity __contentEntity);
+        void CreateFromContentEntity(PackContentEntity[] __contentEntities);
     }
 }
