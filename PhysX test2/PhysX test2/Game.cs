@@ -141,38 +141,8 @@ namespace PhysX_test2
         {
             ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), _engine.Camera.View, _engine.Camera.Projection);
         }
-
-        public void SearchClickedObject()
-        {
-            //ищем объект на кот тыкнули
-            Engine.Logic.PivotObject clickedlo = null;
-            Vector3 newpoint = _mousepoint;
-            float distance = 10000;
-
-            Vector3 camerapos = ray.Position;
-            foreach (Engine.Logic.PivotObject lo in this._engine.gameScene._visibleObjects)
-            {
-                if (!lo._needMouseCast)
-                    continue;
-                Vector3? point = lo.raycastaspect.IntersectionClosest(ray, lo.transform, ref _mousepointNormal);
-                if (point != null)
-                {
-                    float range = (point.Value - camerapos).Length();
-                    if (range < distance)
-                    {
-                        Vector3 direction = ray.Direction;
-                        direction.Normalize();
-                        clickedlo = lo;
-                        distance = range;
-                        newpoint = point.Value;
-                        newpoint += (direction*0.3f);
-                    }
-                }
-            }
-            _mousepoint = newpoint;
-            
-          //  _engine.LevelObjectCursorSphere.behaviourmodel.SetGlobalPose(Matrix.CreateTranslation(newpoint), null);
-        }
+        bool ft = true;
+        
 
         protected override void Update(GameTime gameTime)
         {
@@ -183,7 +153,6 @@ namespace PhysX_test2
             MouseManager.Manager.Update();
             HandleKeyboard(Keyboard.GetState());
             _engine.Update(gameTime);
-            SearchClickedObject();
 
             _MAINGAME.Update(gameTime);
             _engine.UpdateEnd(gameTime);

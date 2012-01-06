@@ -222,12 +222,6 @@ namespace PhysX_test2.Engine
                 AddObjectToScene(LevelObjectTestSide);
             }
 
-            /////sphere
-         /*   {
-                LevelObjectCursorSphere = LoadObject("Cursor\0", null, false, false) as LevelObject;
-                AddObjectToScene(LevelObjectCursorSphere);
-            }*/
-
             //чистим временные какахи
             //это стоит делать елси объекты больше не будут подгружаться
             //тоесть если игра по уровням скажем
@@ -273,6 +267,7 @@ namespace PhysX_test2.Engine
         public void CreateCharCameraController(LevelObject __targetCharacter)
         {
             _cameraController = new CameraControllerPerson(Camera, __targetCharacter, new Vector3(-10, 10, 0));
+            cameraneedsupdate = true;
         }
 
         public void SwichBehaviourModel()
@@ -317,7 +312,7 @@ namespace PhysX_test2.Engine
 
             //Udating data for scenegraph
             gameScene.UpdateScene();
-
+            SearchClickedObject();
             if (MouseManager.Manager.moved || cameraneedsupdate || MouseManager.Manager.scrollWheelDelta != 0)
             {
                 cameraneedsupdate = false;
@@ -327,6 +322,36 @@ namespace PhysX_test2.Engine
             }
 
             
+        }
+
+        public void SearchClickedObject()
+        {
+            //ищем объект на кот тыкнули
+            Engine.Logic.PivotObject clickedlo = null;
+            Vector3 newpoint = MyGame.Instance._mousepoint;
+            float distance = 10000;
+
+            Vector3 camerapos = MyGame.Instance. ray.Position;
+            foreach (Engine.Logic.PivotObject lo in this.gameScene._visibleObjects)
+            {
+                if (!lo._needMouseCast)
+                    continue;
+                Vector3? point = lo.raycastaspect.IntersectionClosest(MyGame.Instance.ray, lo.transform, ref MyGame.Instance._mousepointNormal);
+                if (point != null)
+                {
+                    float range = (point.Value - camerapos).Length();
+                    if (range < distance)
+                    {
+                        Vector3 direction = MyGame.Instance.ray.Direction;
+                        direction.Normalize();
+                        clickedlo = lo;
+                        distance = range;
+                        newpoint = point.Value;
+                        newpoint += (direction * 0.3f);
+                    }
+                }
+            }
+            MyGame.Instance._mousepoint = newpoint;
         }
 
         public void UpdateEnd(GameTime gameTime)
