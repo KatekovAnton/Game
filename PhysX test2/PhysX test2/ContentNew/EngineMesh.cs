@@ -99,6 +99,11 @@ namespace PhysX_test2.ContentNew
             vertexBuffer.Dispose();
             Disposed = true;
         }
+
+        public bool needAutoDispose()
+        {
+            return true;
+        }
     }
 
     public struct Vertex : IVertexType

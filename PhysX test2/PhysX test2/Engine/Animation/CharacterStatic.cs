@@ -62,5 +62,10 @@ namespace PhysX_test2.Engine.Animation
 
             loadFormData(character.data);
         }
+
+        public bool needAutoDispose()
+        {
+            return true;
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace PhysX_test2.ContentNew
     {
         public SkinnedVertex[] vertices;
         public int[] indices;
-        public static CharacterBase skeleton;
+        public static Engine.Animation.CharacterStatic skeleton;
 
         public void LoadBody(byte[] buffer)
         {
@@ -37,7 +37,7 @@ namespace PhysX_test2.ContentNew
                 for (var j = 0; j < relationBoneCount; j++)
                 {
                     string name = br.ReadPackString();
-                    boneIndices[j] = skeleton.IndexOf(name);
+                    boneIndices[j] = skeleton.skeleton.baseskelet.IndexOf(name);
                 }
                 bindx.X = boneIndices[0];
                 bindx.Y = boneIndices[1];

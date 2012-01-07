@@ -16,7 +16,7 @@ namespace PhysX_test2.Content
 
         public const int MeshList = 10;
         public const int StringList = 11;
-        public const int WorldObjectDescription = 12;
+        public const int LevelObjectDescription = 12;
         public const int GameObjectDescription = 13;
         public const int RenderObjectDescription = 14;
 
@@ -63,7 +63,7 @@ namespace PhysX_test2.Content
                     return "Convex mesh";
                 case ElementType.StringList:
                     return "String list";
-                case ElementType.WorldObjectDescription:
+                case ElementType.LevelObjectDescription:
                     return "World object description";
                 case ElementType.GameObjectDescription:
                     return "Game object description";
@@ -105,7 +105,7 @@ namespace PhysX_test2.Content
                 case "String list":
                     return ElementType.StringList;
                 case "World object description":
-                    return ElementType.WorldObjectDescription;
+                    return ElementType.LevelObjectDescription;
                 case "Game object description":
                     return ElementType.GameObjectDescription;
                 case "Render object description":

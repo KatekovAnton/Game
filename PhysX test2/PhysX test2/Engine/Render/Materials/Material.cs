@@ -13,7 +13,7 @@ namespace PhysX_test2.Engine.Render.Materials
         OpacityDiffuse
     }
 
-    public abstract class Material
+    public abstract class Material:ContentNew.IPackEngineObject
     {
         public MaterialType type;
 
@@ -37,7 +37,20 @@ namespace PhysX_test2.Engine.Render.Materials
 
         public static Effect ObjectRenderEffect;
 
-       // public abstract void Apply();
         public abstract void Apply(int lod, int subset);
+
+        public void Dispose() 
+        {
+
+        }
+
+        public void CreateFromContentEntity(ContentNew.IPackContentEntity[] __entities)
+        { }
+
+        public bool needAutoDispose()
+        {
+            return false;
+        }
+
     }
 }

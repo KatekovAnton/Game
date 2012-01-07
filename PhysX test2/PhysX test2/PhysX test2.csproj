@@ -178,6 +178,7 @@
     <Compile Include="Engine\CameraControllers\CameraControllerPerson.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerSuperClass.cs" />
     <Compile Include="Engine\ContentLoader\ContentLoader.cs" />
+    <Compile Include="Engine\ContentLoader\NewContentLoader.cs" />
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
     <Compile Include="Engine\Helpers\ScreenLog.cs" />
     <Compile Include="Engine\Logic\ParticleObject.cs" />

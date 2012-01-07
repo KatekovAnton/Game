@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PhysX_test2.Content
 {
-    public class LevelObjectDescription : PackContent
+    public class LevelObjectDescription : PackContent, ContentNew.IPackContentEntity
     {
 
         public string RCCMName;
@@ -57,6 +57,8 @@ namespace PhysX_test2.Content
         {
 
         }
+
+        
 
         public override void loadbody(byte[] array)
         {
@@ -135,6 +137,21 @@ namespace PhysX_test2.Content
             }
 
             br.Close();
+        }
+
+        public void LoadBody(byte[] array)
+        {
+            loadbody(array);
+        }
+
+        public int GetContentType()
+        {
+            return ElementType.LevelObjectDescription;
+        }
+
+        public ContentNew.IPackEngineObject CreateEngineObject()
+        {
+            return null;
         }
     
         public Pack Pack

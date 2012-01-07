@@ -17,7 +17,7 @@ namespace PhysX_test2.ContentNew
 
             string[] filenames = System.IO.Directory.GetFiles(path, @"*.pack");
             packs = new Pack[filenames.Length];
-            PhysX_test2.LogProvider.logMessage("Content system: Number of packs: " + packs.Length.ToString());
+            PhysX_test2.LogProvider.logMessage("New Content system: Number of packs: " + packs.Length.ToString());
             for (int i = 0; i < filenames.Length; i++)
                 packs[i] = new Pack(filenames[i]);
         }
@@ -43,11 +43,11 @@ namespace PhysX_test2.ContentNew
             //если объект уже загружен
             if (pch._contentObject != null || pch._engineObject != null)
             {
-                PhysX_test2.LogProvider.logMessage("Content system: Object loaded:\t\t" + objectname.Substring(0, objectname.Length - 1) + "\t\t type of " + ElementType.ReturnString(pch.loadedformat));
+                PhysX_test2.LogProvider.logMessage("New Content system: Object loaded:\t\t" + objectname.Substring(0, objectname.Length - 1) + "\t\t type of " + ElementType.ReturnString(pch.loadedformat));
             }
             else
             {
-                PhysX_test2.LogProvider.logMessage("Content system: Loading object:\t\t" + objectname.Substring(0, objectname.Length - 1) + "\t\t type of " + ElementType.ReturnString(pch.loadedformat));
+                PhysX_test2.LogProvider.logMessage("New Content system: Loading object:\t\t" + objectname.Substring(0, objectname.Length - 1) + "\t\t type of " + ElementType.ReturnString(pch.loadedformat));
                 System.IO.BinaryReader br = new System.IO.BinaryReader(containedpack.fi.OpenRead());
                 br.BaseStream.Seek(containedpack.headersize + pch.offset, System.IO.SeekOrigin.Begin);
                 byte[] objBuffer = br.ReadBytes(pch.size);

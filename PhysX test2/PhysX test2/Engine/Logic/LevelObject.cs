@@ -7,7 +7,7 @@ using PhysX_test2.Engine.Render;
 
 namespace PhysX_test2.Engine.Logic
 {
-    public class LevelObject : PivotObject
+    public class LevelObject : PivotObject, ContentNew.IPackEngineObject
     {        
         /// <summary>
         /// for group для графики
@@ -48,11 +48,20 @@ namespace PhysX_test2.Engine.Logic
             behaviourmodel.DoFrame(gt);
             renderaspect.SetPosition(behaviourmodel.CurrentPosition);
         }
-        /*from editor
-        public override void SetActive(bool active)
+
+        public void CreateFromContentEntity(ContentNew.IPackContentEntity[] __contentEntities)
         {
-            editorAspect.isActive = active;
+            
         }
-         */
+
+        public void Dispose()
+        {
+
+        }
+
+        public bool needAutoDispose()
+        {
+            return false;
+        }
     }
 }

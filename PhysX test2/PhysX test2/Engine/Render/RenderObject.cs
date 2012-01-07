@@ -7,7 +7,7 @@ using PhysX_test2.Content;
 using StillDesign.PhysX;
 namespace PhysX_test2.Engine.Render
 {
-    public abstract class RenderObject:System.IDisposable
+    public abstract class RenderObject:System.IDisposable,ContentNew.IPackEngineObject
     {
         public string PictureTehnique;
         public string ShadowTehnique;
@@ -32,5 +32,14 @@ namespace PhysX_test2.Engine.Render
             Disposed = true;
         }
 
+        public void CreateFromContentEntity(ContentNew.IPackContentEntity[] __contentEntities)
+        {
+            throw new Exception("Create handly!");
+        }
+
+        public bool needAutoDispose()
+        {
+            return true;
+        }
     }
 }

@@ -69,7 +69,8 @@ namespace PhysX_test2.ContentNew
             _userCount--;
             if (_userCount == 0)
             {
-                _engineObject.Dispose();
+                if (_engineObject.needAutoDispose())
+                    _engineObject.Dispose();
                 _engineObject = null;
 
                 _disposeCount++;
@@ -98,6 +99,7 @@ namespace PhysX_test2.ContentNew
     public interface IPackEngineObject : IDisposable
     {
         void CreateFromContentEntity(IPackContentEntity[] __contentEntities);
+        bool needAutoDispose();
        // void CreateFormEngineObject(IPackEngineObject __object);
     }
 }

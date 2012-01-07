@@ -25,6 +25,11 @@ namespace PhysX_test2.ContentNew
             Vertices = null;
         }
 
+        public bool needAutoDispose()
+        {
+            return true;
+        }
+
         public void CreateFromContentEntity(IPackContentEntity[] __entities)
         {
             CollisionMesh cm = __entities[0] as CollisionMesh;

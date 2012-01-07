@@ -41,5 +41,10 @@ namespace PhysX_test2.ContentNew
         {
             return this;
         }
+
+        public bool needAutoDispose()
+        {
+            return true;
+        }
     }
 }

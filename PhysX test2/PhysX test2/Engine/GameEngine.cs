@@ -46,6 +46,7 @@ namespace PhysX_test2.Engine
 
         //content
         private PackList packs;
+        private ContentNew.PackList newPacks;
 
 
         //physx
@@ -92,6 +93,7 @@ namespace PhysX_test2.Engine
 
             game._engine = this;
             packs = new PackList();
+            newPacks = new ContentNew.PackList();
             Instance = this;
             lightDir.Normalize();
 
