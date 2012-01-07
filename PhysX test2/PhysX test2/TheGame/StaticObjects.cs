@@ -169,18 +169,15 @@ namespace PhysX_test2.TheGame
                 return;
 
             _effectParameters = new Dictionary<string, EffectParameters>();
-            object[] data = new object[1];
-            object[] effectdata = new object[4];
-            data[0] = effectdata;
-
-            effectdata[0] = 0;
-            effectdata[1] = 10000.0;
-            effectdata[2] = "Object";
-            effectdata[3] = "EffectLevelObject\0";
-
-            EffectParameters ep = new EffectParameters(0, "testEffect", data);
-            _effectParameters.Add("0", ep);
-            //TODO: loads from database
+            SQliteResultSet efects = Database.executeSelect("select * from effects", null);
+            foreach (object[] data in efects.result)
+            {
+                string effectId = data[0].ToString();
+                int effectIdInt = Convert.ToInt32(data[0]);
+                SQliteResultSet efectsItems = Database.executeSelect("select * from effect_items where effectId = " + effectId, null);
+                EffectParameters ep = new EffectParameters(effectIdInt, data[1] as string, efectsItems.result.ToArray());
+                _effectParameters.Add(effectId, ep);
+            }
         }
 
         private void LoadEffectHashTable()
@@ -192,7 +189,7 @@ namespace PhysX_test2.TheGame
                 eh._materialType = Engine.Logic.PivotObjectMaterialType.Metal;
                 _effectHashTable[0] = eh;
 
-                eh._resultEffect = _effectParameters["0"];
+                eh._resultEffect = _effectParameters["1"];
             }
             {
                 EffectHash eh = new EffectHash();
@@ -200,7 +197,7 @@ namespace PhysX_test2.TheGame
                 eh._materialType = Engine.Logic.PivotObjectMaterialType.Stone;
                 _effectHashTable[1] = eh;
 
-                eh._resultEffect = _effectParameters["0"];
+                eh._resultEffect = _effectParameters["1"];
             }
             {
                 EffectHash eh = new EffectHash();
@@ -208,7 +205,7 @@ namespace PhysX_test2.TheGame
                 eh._materialType = Engine.Logic.PivotObjectMaterialType.Wood;
                 _effectHashTable[2] = eh;
 
-                eh._resultEffect = _effectParameters["0"];
+                eh._resultEffect = _effectParameters["1"];
             }
           /*  {
                 EffectHash eh = new EffectHash();
@@ -216,7 +213,7 @@ namespace PhysX_test2.TheGame
                 eh._materialType = Engine.Logic.PivotObjectMaterialType.DynamicWood;
                 _effectHashTable[3] = eh;
 
-                eh._resultEffect = _effectParameters["0"];
+                eh._resultEffect = _effectParameters["1"];
             }*/
             {
                 EffectHash eh = new EffectHash();
@@ -224,7 +221,7 @@ namespace PhysX_test2.TheGame
                 eh._materialType = Engine.Logic.PivotObjectMaterialType.DynamicStone;
                 _effectHashTable[4] = eh;
 
-                eh._resultEffect = _effectParameters["0"];
+                eh._resultEffect = _effectParameters["1"];
             }
             {
                 EffectHash eh = new EffectHash();
@@ -232,7 +229,7 @@ namespace PhysX_test2.TheGame
                 eh._materialType = Engine.Logic.PivotObjectMaterialType.DynamicMetal;
                 _effectHashTable[5] = eh;
 
-                eh._resultEffect = _effectParameters["0"];
+                eh._resultEffect = _effectParameters["1"];
             }
            /* {
                 EffectHash eh = new EffectHash();
@@ -240,7 +237,7 @@ namespace PhysX_test2.TheGame
                 eh._materialType = Engine.Logic.PivotObjectMaterialType.DynamicHuman;
                 _effectHashTable[6] = eh;
 
-                eh._resultEffect = _effectParameters["0"];
+                eh._resultEffect = _effectParameters["1"];
             }*/
             {
                 EffectHash eh = new EffectHash();
@@ -248,7 +245,7 @@ namespace PhysX_test2.TheGame
                 eh._materialType = Engine.Logic.PivotObjectMaterialType.DynamicAlien;
                 _effectHashTable[7] = eh;
 
-                eh._resultEffect = _effectParameters["0"];
+                eh._resultEffect = _effectParameters["1"];
             }
         }
 

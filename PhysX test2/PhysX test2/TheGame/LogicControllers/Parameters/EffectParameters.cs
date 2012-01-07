@@ -26,6 +26,7 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
                 _parameters = new Dictionary<string, object>();
             }
         }
+       
         public double _lifeTime;
         public EffectItem[] _effectItems;
 
@@ -45,7 +46,10 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
                 if (name.CompareTo("Object") == 0)
                 {
                     ei._type = EffectItemType.Object;
-                    ei._parameters.Add("objectName", effectData[3]);
+                    string name1 = effectData[3] as string;
+                    if (!name1.EndsWith("\0"))
+                        name1 += "\0";
+                    ei._parameters.Add("objectName", name1);
                 }
                 else if (name.CompareTo("Billboard") == 0)
                 {
