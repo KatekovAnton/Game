@@ -143,6 +143,7 @@
     <Compile Include="ContentNew\CollisionMesh.cs" />
     <Compile Include="ContentNew\ContentMesh.cs" />
     <Compile Include="ContentNew\ContentMeshSkinned.cs" />
+    <Compile Include="ContentNew\EngineCollisionMesh.cs" />
     <Compile Include="ContentNew\LevelObjectDescription.cs" />
     <Compile Include="ContentNew\MaterialDescription.cs" />
     <Compile Include="ContentNew\EngineMesh.cs" />

@@ -129,6 +129,12 @@ namespace PhysX_test2.ContentNew
             return ElementType.LevelObjectDescription;
         }
 
+        public IPackEngineObject CreateEngineObject()
+        {
+            //TODO
+            return null;
+        }
+
         //движущийся объект(не по законам физики, а собств вычислениями - пули например)
         public const int objectmovingbehaviourmodel = 0;
         const string ObjectMovingBehaviourModel = "Moving behaviour model";

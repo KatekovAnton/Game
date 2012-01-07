@@ -89,6 +89,7 @@ namespace PhysX_test2.ContentNew
     {
         void LoadBody(byte[] __data);
         int GetContentType();
+        IPackEngineObject CreateEngineObject();
     }
 
     /// <summary>

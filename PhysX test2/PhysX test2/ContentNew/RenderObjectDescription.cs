@@ -85,5 +85,11 @@ namespace PhysX_test2.ContentNew
         {
             return ElementType.RenderObjectDescription;
         }
+
+        public IPackEngineObject CreateEngineObject()
+        {
+            //TODO: make
+            return null;
+        }
     }
 }

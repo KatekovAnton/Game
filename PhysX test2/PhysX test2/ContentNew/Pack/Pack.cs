@@ -14,10 +14,12 @@ namespace PhysX_test2.ContentNew
         public int headersize;
         static int formayid = 43647457;
         public bool fullsucces;
+
         public Pack(string filename)
         {
             AddObjectsToPack(filename);
         }
+
         public void AddObjectsToPack(string filename)
         {
             List<int> needcalcsize = new List<int>();

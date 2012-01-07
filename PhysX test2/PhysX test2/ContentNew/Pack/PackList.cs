@@ -20,7 +20,6 @@ namespace PhysX_test2.ContentNew
             PhysX_test2.LogProvider.logMessage("Content system: Number of packs: " + packs.Length.ToString());
             for (int i = 0; i < filenames.Length; i++)
                 packs[i] = new Pack(filenames[i]);
-
         }
 
         public PackContentHeader FindObject(string name, ref Pack pp)
@@ -41,7 +40,8 @@ namespace PhysX_test2.ContentNew
             Pack containedpack = null;
             PackContentHeader pch = FindObject(objectname, ref containedpack);
 
-            if (pch._contentObject != null)
+            //если объект уже загружен
+            if (pch._contentObject != null || pch._engineObject != null)
             {
                 PhysX_test2.LogProvider.logMessage("Content system: Object loaded:\t\t" + objectname.Substring(0, objectname.Length - 1) + "\t\t type of " + ElementType.ReturnString(pch.loadedformat));
             }

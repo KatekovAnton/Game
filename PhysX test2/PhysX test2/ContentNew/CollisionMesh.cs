@@ -108,5 +108,12 @@ namespace PhysX_test2.ContentNew
         {
             return ElementType.CollisionMesh;
         }
+
+        public IPackEngineObject CreateEngineObject()
+        {
+            EngineCollisionMesh ecm = new EngineCollisionMesh();
+            
+            return null;
+        }
     }
 }

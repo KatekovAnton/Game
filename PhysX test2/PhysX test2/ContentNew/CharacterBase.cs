@@ -131,5 +131,12 @@ namespace PhysX_test2.ContentNew
         {
             return ElementType.SkeletonWithAddInfo;
         }
+
+        public IPackEngineObject CreateEngineObject()
+        {
+            Engine.Animation.CharacterStatic cs = new Engine.Animation.CharacterStatic();
+            cs.CreateFromContentEntity(new IPackContentEntity[]{ this });
+            return cs;
+        }
     }
 }

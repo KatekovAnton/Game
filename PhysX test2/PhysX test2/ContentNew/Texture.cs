@@ -36,5 +36,10 @@ namespace PhysX_test2.ContentNew
         {
             return ElementType.PNGTexture;
         }
+
+        public IPackEngineObject CreateEngineObject()
+        {
+            return this;
+        }
     }
 }

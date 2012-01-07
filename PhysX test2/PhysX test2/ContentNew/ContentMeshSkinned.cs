@@ -71,5 +71,11 @@ namespace PhysX_test2.ContentNew
         {
             return ElementType.MeshOptimazedForLoading;
         }
+
+        public IPackEngineObject CreateEngineObject()
+        {
+            throw new Exception("mesh creates from array!");
+            return null;
+        }
     }
 }

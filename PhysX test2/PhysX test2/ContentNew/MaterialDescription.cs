@@ -40,6 +40,12 @@ namespace PhysX_test2.ContentNew
             }
         }
 
+        public IPackEngineObject CreateEngineObject()
+        {
+            //TODO
+            return null;
+        }
+
         public int GetContentType()
         {
             return ElementType.Material;
