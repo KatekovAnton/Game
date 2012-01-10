@@ -98,8 +98,9 @@ namespace PhysX_test2.Engine.CameraControllers
             }
             else
             {
-                newtarget = _targetPoint;
+               newtarget = _targetPoint;
             }
+
             _lastTargetPoint = newtarget;
 
             float cursorPositionX = MouseManager.Manager.state.X;
@@ -125,10 +126,12 @@ namespace PhysX_test2.Engine.CameraControllers
             _mouseWheelOld = mouseState.ScrollWheelValue;
 
             delta = newtarget - _currentTarget;
+
             delta.Y = 0;
             delta.Normalize();
             delta *= _cameraDelta;
 
+            //if (delta.Length()>5)
             MyMath.perehod(ref _delta, delta, 0.9f);
         }
 
