@@ -8,7 +8,8 @@ namespace PhysX_test2.Engine.CameraControllers
 {
     public class CameraControllerPerson : CameraControllerSuperClass
     {
-        
+        protected Vector3 _delta = Vector3.Zero;
+
         public float _yAngle;
         private float _zAngle;
 
@@ -48,10 +49,8 @@ namespace PhysX_test2.Engine.CameraControllers
         {
             if (angle == 0)
                 return;
-            if (_zAngle + angle > 0.7f)
-                return;
-            if (_zAngle + angle < -0.7f)
-                return;
+            if (_zAngle + angle > 0.7f)     return;
+            if (_zAngle + angle < -0.7f)    return;
             _zAngle += angle;
 
             Matrix resMatr;
@@ -126,16 +125,18 @@ namespace PhysX_test2.Engine.CameraControllers
 
             _mouseWheelOld = mouseState.ScrollWheelValue;
 
-            _delta = newtarget - _currentTarget;
-            _delta.Y = 0;
-            _delta.Normalize();
-            _delta *= _cameraDelta;
+            delta = newtarget - _currentTarget;
+            delta.Y = 0;
+            delta.Normalize();
+            delta *= _cameraDelta;
+            MyMath.perehod(ref _delta, delta, 0.9f);
         }
 
         public override void UpdateCamera()
         {
-            MyMath.perehod(ref _currentTarget, _character.transform.Translation, 0.9f);
-            MyMath.perehod(ref _currendPosition, _currentTarget + _offset, 0.9f);
+            MyMath.perehod(ref _currentTarget, _character.transform.Translation + _delta , 0.1f);
+            MyMath.perehod(ref _currendPosition, _currentTarget + _offset + _delta, 0.9f);
+           // _currendPosition = _currentTarget + _offset;
             base.UpdateCamera();
         }
     }

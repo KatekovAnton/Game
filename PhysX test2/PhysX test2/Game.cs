@@ -134,7 +134,6 @@ namespace PhysX_test2
             LogProvider.logMessage("Closing application");
             LogProvider.SaveLog();
             LogProvider.Close();
-           
         }
 
         private void HandleKeyboard(KeyboardState keyboardState)

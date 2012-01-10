@@ -58,8 +58,8 @@ namespace PhysX_test2.Engine
 
         public void Update(Vector3 cameraposition, Vector3 cameratarget)
         {
-            MyMath.perehod(ref _position, cameraposition, 0.8f);
-            MyMath.perehod(ref _target, cameratarget, 0.93f);
+            _position = cameraposition;
+            _target = cameratarget;
             _direction = (_target - _position);
             _direction.Normalize();
 
