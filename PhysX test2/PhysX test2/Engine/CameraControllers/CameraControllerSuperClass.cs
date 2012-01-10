@@ -10,8 +10,6 @@ namespace PhysX_test2.Engine.CameraControllers
 
         public float _speedLimit = 0.0f;
 
-        public bool _justcreated = true;
-
         protected CameraControllerSuperClass(Camera cam, Vector3 currentPos, Vector3 targetPosition)
         {
             _speedLimit = 50.0f;
@@ -21,39 +19,9 @@ namespace PhysX_test2.Engine.CameraControllers
             _camera.Update(_currendPosition , _currentTarget );
         }
 
-
-        public Vector3 CurrentPosition()
-        {
-            return _currendPosition;
-        }
-
-
-        public void SetCurrentPosition(Vector3 vect)
-        {
-            _currendPosition = vect;
-            _camera.Update(_currendPosition , _currentTarget );
-            _justcreated = true;
-        }
-
-
-        public Vector3 CurrentTarget()
-        {
-            return _currentTarget;
-        }
-
-
-        public void SetCurrentTarget(Vector3 vect)
-        {
-            _currentTarget = vect;
-            _camera.Update(_currendPosition , _currentTarget );
-            _justcreated = true;
-        }
-
-
         public virtual void UpdateCamera()
         {
             _camera.Update(_currendPosition , _currentTarget );
-            _justcreated = false;
         }
 
     }

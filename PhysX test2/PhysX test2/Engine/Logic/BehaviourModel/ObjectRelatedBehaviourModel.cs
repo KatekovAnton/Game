@@ -33,13 +33,15 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
             _parentCharacter = __parent;
 
             localMatrix = GlobalPoseMatrix;
-
+            _parentCharacter = __parent;
             Matrix resultMatrix;
             if (__parent != null)
-                resultMatrix = localMatrix * __parent.transform;
+                resultMatrix = localMatrix * __parent.behaviourmodel.CurrentPosition;
             else
                 resultMatrix = localMatrix;
             CurrentPosition = resultMatrix;
+
+            CommitPosition();
         }
 
         public override void DoFrame(GameTime gametime)

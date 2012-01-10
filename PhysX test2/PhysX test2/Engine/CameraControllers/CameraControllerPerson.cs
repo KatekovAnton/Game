@@ -134,7 +134,8 @@ namespace PhysX_test2.Engine.CameraControllers
 
         public override void UpdateCamera()
         {
-            MyMath.perehod(ref _currentTarget, _character.transform.Translation + _delta , 0.1f);
+            _currentTarget = _character.transform.Translation + _delta;
+          //  MyMath.perehod(ref _currentTarget, _character.transform.Translation + _delta , 0.1f);
             MyMath.perehod(ref _currendPosition, _currentTarget + _offset + _delta, 0.9f);
            // _currendPosition = _currentTarget + _offset;
             base.UpdateCamera();

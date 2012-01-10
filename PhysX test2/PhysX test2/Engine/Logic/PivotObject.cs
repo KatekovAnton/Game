@@ -144,11 +144,13 @@ namespace PhysX_test2.Engine.Logic
             }
         }
 
-        public void SetGlobalPose(Microsoft.Xna.Framework.Matrix newPose, PivotObject __parent = null)
+        public void SetGlobalPose(Microsoft.Xna.Framework.Matrix newPose,bool afterupdate = false, PivotObject __parent = null)
         {
             behaviourmodel.SetGlobalPose(newPose, null, __parent);
-            transform = newPose;
+            transform = behaviourmodel.globalpose;
             moved = true;
+            if (afterupdate)
+                Update();
         }
 
         public void SetPosition(Vector3 position)

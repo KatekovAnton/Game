@@ -32,6 +32,13 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         /// <summary>
         /// запоминаем что надо
         /// </summary>
+        /// 
+        protected void CommitPosition()
+        {
+            moved = globalpose != CurrentPosition;
+            globalpose = CurrentPosition;
+        }
+
         public virtual void BeginDoFrame()
         {
             PreviousPosition = globalpose;
@@ -74,7 +81,7 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
         /// </summary>
         public void EndDoFrame()
         {
-            moved = globalpose != CurrentPosition;
+            moved = globalpose != CurrentPosition || moved;
             globalpose = CurrentPosition;
             
         }

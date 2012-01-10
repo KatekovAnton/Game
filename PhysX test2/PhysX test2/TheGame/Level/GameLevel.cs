@@ -56,7 +56,7 @@ namespace PhysX_test2.TheGame.Level
 
             if (__parentObject != null)
             {
-                __object.SetGlobalPose(Matrix.Identity, __parentObject);
+                __object.SetGlobalPose(Matrix.Identity, true, __parentObject);
                 _scene._objects.AddRule(__parentObject, __object);
             }
         }
@@ -77,7 +77,7 @@ namespace PhysX_test2.TheGame.Level
 
             if (__parentObject != null)
             {
-                __object.SetGlobalPose(__position, __parentObject);
+                __object.SetGlobalPose(__position, true, __parentObject);
                 _scene._objects.AddRule(__parentObject, __object);
             }
         }
