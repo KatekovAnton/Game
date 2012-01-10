@@ -58,8 +58,10 @@ namespace PhysX_test2.Engine
 
         public void Update(Vector3 cameraposition, Vector3 cameratarget)
         {
+
             _position = cameraposition;
             _target = cameratarget;
+          
             _direction = (_target - _position);
             _direction.Normalize();
 
