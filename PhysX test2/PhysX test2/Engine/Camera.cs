@@ -58,8 +58,15 @@ namespace PhysX_test2.Engine
 
         public void Update(Vector3 cameraposition, Vector3 cameratarget)
         {
-            MyMath.perehod(ref _position, cameraposition, 0.8f);
-            MyMath.perehod(ref _target, cameratarget, 0.93f);
+            //ТУТ только жеское выставление позиции - все интерполяции должны быть в 
+            //верхних слоях, а в движк идут только готовы знчения, иначе извне будет невозможно 
+            //сделать жесткое выставлеие камеры, как это например в катсценах когда камера из
+            //одного места уходит в другое
+            //зы да это и излишество - и без него же работет 
+            _position = cameraposition;
+            _target = cameratarget;
+            //MyMath.perehod(ref _position, cameraposition, 0.8f);
+            //MyMath.perehod(ref _target, cameratarget, 0.93f);
             _direction = (_target - _position);
             _direction.Normalize();
 
