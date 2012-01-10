@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace PhysX_test2
 {
@@ -11,6 +12,15 @@ namespace PhysX_test2
         /// </summary>
         static void Main(string[] args)
         {
+            foreach (string arg in args)
+            {
+                if (arg == "-git")
+                { 
+                   string git_commander = @"D:\projects\GitCommander\GitCommander\bin\Debug\GitCommander.exe";
+                   Process.Start(git_commander);                    
+                }
+            }
+
             game = new MyGame();
             game.Run();
         }

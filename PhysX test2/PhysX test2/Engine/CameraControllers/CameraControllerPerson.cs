@@ -73,7 +73,6 @@ namespace PhysX_test2.Engine.CameraControllers
             if (_cameraDelta * value > 3.8f)
                 return;
 
-          //  MyMath.perehod(ref _offset, _offset * value, 0.95f);
             _offset.X *= value;
             _offset.Y *= value;
             _offset.Z *= value;
@@ -129,6 +128,7 @@ namespace PhysX_test2.Engine.CameraControllers
             delta.Y = 0;
             delta.Normalize();
             delta *= _cameraDelta;
+
             MyMath.perehod(ref _delta, delta, 0.9f);
         }
 
