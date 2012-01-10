@@ -152,6 +152,7 @@ namespace PhysX_test2
             KeyboardManager.Manager.Update();
             MouseManager.Manager.Update();
             HandleKeyboard(Keyboard.GetState());
+
             _engine.Update(gameTime);
 
             _MAINGAME.Update(gameTime);

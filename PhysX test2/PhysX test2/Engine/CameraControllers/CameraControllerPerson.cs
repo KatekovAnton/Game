@@ -73,10 +73,12 @@ namespace PhysX_test2.Engine.CameraControllers
                 return;
             if (_cameraDelta * value > 3.8f)
                 return;
+
+          //  MyMath.perehod(ref _offset, _offset * value, 0.95f);
             _offset.X *= value;
             _offset.Y *= value;
             _offset.Z *= value;
-
+            
             _cameraDelta *= value;
 
             UpdateCamera();
@@ -102,11 +104,11 @@ namespace PhysX_test2.Engine.CameraControllers
             }
             _lastTargetPoint = newtarget;
 
-            float cursorPositionX = Mouse.GetState().X;
+            float cursorPositionX = MouseManager.Manager.state.X;
             float deltaX = cursorPositionX - _lastMousePosX;
-            float cursorPositionY = Mouse.GetState().Y;
+            float cursorPositionY = MouseManager.Manager.state.Y;
             float deltaY = cursorPositionY - _lastMousePosY;
-            MouseState mouseState = Mouse.GetState();
+            MouseState mouseState = MouseManager.Manager.state;
             if (mouseState.RightButton == ButtonState.Pressed)
             {
                 RotateCameraAroundChar(-deltaX * Settings.rotateSpeed);
@@ -119,7 +121,6 @@ namespace PhysX_test2.Engine.CameraControllers
             // обработка зума
             if (mouseState.ScrollWheelValue > _mouseWheelOld)
                 ZoomCameraFromCha(1 / Settings.zoomSpeed);
-
             else if (mouseState.ScrollWheelValue < _mouseWheelOld)
                 ZoomCameraFromCha(Settings.zoomSpeed);
 
@@ -133,9 +134,8 @@ namespace PhysX_test2.Engine.CameraControllers
 
         public override void UpdateCamera()
         {
-
-            _currentTarget = _character.transform.Translation;
-            _currendPosition = _currentTarget + _offset;
+            MyMath.perehod(ref _currentTarget, _character.transform.Translation, 0.9f);
+            MyMath.perehod(ref _currendPosition, _currentTarget + _offset, 0.9f);
             base.UpdateCamera();
         }
     }

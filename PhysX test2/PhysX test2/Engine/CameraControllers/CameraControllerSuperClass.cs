@@ -53,7 +53,7 @@ namespace PhysX_test2.Engine.CameraControllers
 
         public virtual void UpdateCamera()
         {
-            _camera.Update(_currendPosition + _delta, _currentTarget + _delta);
+            _camera.Update(_currendPosition , _currentTarget );
             _justcreated = false;
         }
 
