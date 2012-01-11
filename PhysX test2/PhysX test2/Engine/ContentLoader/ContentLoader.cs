@@ -367,6 +367,8 @@ namespace PhysX_test2.Engine.ContentLoader
             StillDesign.PhysX.Scene scene,
             PivotObjectDependType __dependType)
         {
+
+
             if (characterMaterial == null)
             {
                 StillDesign.PhysX.MaterialDescription md = new StillDesign.PhysX.MaterialDescription();
@@ -439,6 +441,7 @@ namespace PhysX_test2.Engine.ContentLoader
 
             if (description != null)
             {
+
                 description.Release();
                 if (description._userCount == 0)
                 {

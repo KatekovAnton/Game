@@ -54,11 +54,6 @@ namespace PhysX_test2.Content
                 byte[] objBuffer = br.ReadBytes(pch.size);
                 br.Close();
                 pc.loadbody(objBuffer);
-                if (objectname.CompareTo("EffectTexture\0") == 0)
-                {
-                    int a = 0; 
-                    a++;
-                }
                 pch.objectReaded = true;
                 pch.ReadedContentObject = pc;
             }

@@ -27,6 +27,12 @@ namespace PhysX_test2.TheGame.Objects
             _object = Engine.GameEngine.LoadObject(__name, null, false, false) as LevelObject; 
         }
 
+        public void Delete()
+        {
+            RemoveFromLevel();
+            PhysX_test2.Engine.ContentLoader.ContentLoader.UnloadPivotObject(_object);
+        }
+
 
         public void LocateToLevel()
         {
@@ -45,8 +51,7 @@ namespace PhysX_test2.TheGame.Objects
 
         ~GameBulletSimple()
         {
-            RemoveFromLevel();
-            PhysX_test2.Engine.ContentLoader.ContentLoader.UnloadPivotObject(_object);
+            Delete();
         }
     }
 }

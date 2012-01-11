@@ -72,7 +72,7 @@ namespace PhysX_test2.TheGame
 
         public void LoadSampleData()
         {
-            _engine.CasheObject("SimpleBullet_LO\0", null, false, false);
+          //  _engine.CasheObject("SimpleBullet_LO\0", null, false, false);
           //  _engine.CasheObject("EffectLevelObject\0", null, false, false);
             //загрузка всего
             _engine.Loaddata();
