@@ -315,13 +315,13 @@ namespace PhysX_test2.Engine
             //Udating data for scenegraph
             gameScene.UpdateScene();
             SearchClickedObject();
-            if (MouseManager.Manager.moved || cameraneedsupdate || MouseManager.Manager.scrollWheelDelta != 0)
-            {
+          //  if (MouseManager.Manager.moved || cameraneedsupdate || MouseManager.Manager.scrollWheelDelta != 0)
+           // {
                 cameraneedsupdate = false;
                 // обработка камеры
                 _cameraController.UpdateCamerafromUser(MyGame.Instance._mousepoint);
                 _cameraController.UpdateCamera();
-            }
+           // }
 
             
         }

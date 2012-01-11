@@ -89,7 +89,7 @@ namespace PhysX_test2.TheGame.LogicControllers
                     case EffectItemType.Object:
                         {
                             GameSimpleObject effectObject = new GameSimpleObject(ep._effectItems[i]._parameters["objectName"].ToString(), __level);
-                            effectObject._object.SetGlobalPose(Matrix.CreateBillboard(__position + __normal*0.02f, __position + __normal*20, Vector3.Up, -__normal));
+                            effectObject._object.SetGlobalPose(Matrix.CreateBillboard(__position + __normal*0.02f, __position + __normal*20, Vector3.Up, -__normal),true);
                             res._objects[i] = effectObject;
                         } break;
                     //TODO: other cases

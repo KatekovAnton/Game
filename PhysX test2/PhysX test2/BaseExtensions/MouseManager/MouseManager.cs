@@ -25,11 +25,13 @@ namespace PhysX_test2
         public bool isJustPressed;
         public bool isJustReleased;
 
+        public MouseState state;
+
         public bool moved;
         bool ft = true;
         public MouseManager()
         {
-            MouseState state = Mouse.GetState();
+            state = Mouse.GetState();
             scrollWheelValue = state.ScrollWheelValue;
             scrollWheelSTARTValue = state.ScrollWheelValue;
 
@@ -43,7 +45,7 @@ namespace PhysX_test2
                 ft = false;
                 return;
             }
-               MouseState state = Mouse.GetState();
+            state = Mouse.GetState();
             if (mousePos.X != state.X || mousePos.Y != state.Y)
                 moved = true;
             else

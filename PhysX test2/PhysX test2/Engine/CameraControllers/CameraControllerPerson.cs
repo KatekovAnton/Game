@@ -8,7 +8,8 @@ namespace PhysX_test2.Engine.CameraControllers
 {
     public class CameraControllerPerson : CameraControllerSuperClass
     {
-        
+        protected Vector3 _delta = Vector3.Zero;
+
         public float _yAngle;
         private float _zAngle;
 
@@ -48,10 +49,8 @@ namespace PhysX_test2.Engine.CameraControllers
         {
             if (angle == 0)
                 return;
-            if (_zAngle + angle > 0.7f)
-                return;
-            if (_zAngle + angle < -0.7f)
-                return;
+            if (_zAngle + angle > 0.7f)     return;
+            if (_zAngle + angle < -0.7f)    return;
             _zAngle += angle;
 
             Matrix resMatr;
@@ -73,10 +72,11 @@ namespace PhysX_test2.Engine.CameraControllers
                 return;
             if (_cameraDelta * value > 3.8f)
                 return;
+
             _offset.X *= value;
             _offset.Y *= value;
             _offset.Z *= value;
-
+            
             _cameraDelta *= value;
 
             UpdateCamera();
@@ -102,11 +102,11 @@ namespace PhysX_test2.Engine.CameraControllers
             }
             _lastTargetPoint = newtarget;
 
-            float cursorPositionX = Mouse.GetState().X;
+            float cursorPositionX = MouseManager.Manager.state.X;
             float deltaX = cursorPositionX - _lastMousePosX;
-            float cursorPositionY = Mouse.GetState().Y;
+            float cursorPositionY = MouseManager.Manager.state.Y;
             float deltaY = cursorPositionY - _lastMousePosY;
-            MouseState mouseState = Mouse.GetState();
+            MouseState mouseState = MouseManager.Manager.state;
             if (mouseState.RightButton == ButtonState.Pressed)
             {
                 RotateCameraAroundChar(-deltaX * Settings.rotateSpeed);
@@ -119,23 +119,25 @@ namespace PhysX_test2.Engine.CameraControllers
             // обработка зума
             if (mouseState.ScrollWheelValue > _mouseWheelOld)
                 ZoomCameraFromCha(1 / Settings.zoomSpeed);
-
             else if (mouseState.ScrollWheelValue < _mouseWheelOld)
                 ZoomCameraFromCha(Settings.zoomSpeed);
 
             _mouseWheelOld = mouseState.ScrollWheelValue;
 
-            _delta = newtarget - _currentTarget;
-            _delta.Y = 0;
-            _delta.Normalize();
-            _delta *= _cameraDelta;
+            delta = newtarget - _currentTarget;
+            delta.Y = 0;
+            delta.Normalize();
+            delta *= _cameraDelta;
+
+            MyMath.perehod(ref _delta, delta, 0.9f);
         }
 
         public override void UpdateCamera()
         {
-
-            _currentTarget = _character.transform.Translation;
-            _currendPosition = _currentTarget + _offset;
+            _currentTarget = _character.transform.Translation + _delta;
+          //  MyMath.perehod(ref _currentTarget, _character.transform.Translation + _delta , 0.1f);
+            MyMath.perehod(ref _currendPosition, _currentTarget + _offset + _delta, 0.9f);
+           // _currendPosition = _currentTarget + _offset;
             base.UpdateCamera();
         }
     }

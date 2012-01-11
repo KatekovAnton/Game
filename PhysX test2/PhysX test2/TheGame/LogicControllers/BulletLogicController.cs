@@ -36,7 +36,7 @@ namespace PhysX_test2.TheGame.LogicControllers
             _startPosition = __startPos.Translation;
             _moveVector = __moveVector;
             _moveVector.Normalize();
-            _hisObject._object.SetGlobalPose(__startPos);
+            _hisObject._object.SetGlobalPose(__startPos,true);
         }
 
         public override void Update(GameTime __gameTime)
@@ -59,7 +59,7 @@ namespace PhysX_test2.TheGame.LogicControllers
                 {
                     //move forward
                     Matrix newmatrix = _hisObject._object.behaviourmodel.CurrentPosition * Matrix.CreateTranslation(delta);
-                    _hisObject._object.SetGlobalPose(newmatrix);
+                    _hisObject._object.SetGlobalPose(newmatrix, true);
                 }
                 else
                 {
