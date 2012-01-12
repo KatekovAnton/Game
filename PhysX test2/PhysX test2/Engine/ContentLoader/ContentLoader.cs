@@ -367,6 +367,8 @@ namespace PhysX_test2.Engine.ContentLoader
             StillDesign.PhysX.Scene scene,
             PivotObjectDependType __dependType)
         {
+
+
             if (characterMaterial == null)
             {
                 StillDesign.PhysX.MaterialDescription md = new StillDesign.PhysX.MaterialDescription();
@@ -439,6 +441,7 @@ namespace PhysX_test2.Engine.ContentLoader
 
             if (description != null)
             {
+
                 description.Release();
                 if (description._userCount == 0)
                 {
@@ -450,19 +453,34 @@ namespace PhysX_test2.Engine.ContentLoader
                 Content.RenderObjectDescription rod = pc_rod.ReadedContentObject as Content.RenderObjectDescription;
                 RenderObject obj = rod._engineSampleObject as RenderObject;
                 rod.Release();
+                if (rod._userCount == 0)
+                {
+                    pc_rod.objectReaded = false;
+                    pc_rod.ReadedContentObject = null;
+                }
 
-
+                //unload character
                 if (description.IsAnimated)
                 {
                     PackContent pc_characterContent = PackList.Instance.FindObject(description.CharacterName, ref p);
                     Content.CharacterContent characterContent = pc_characterContent.ReadedContentObject as Content.CharacterContent;
                     characterContent.Release();
+                    if (characterContent._userCount == 0)
+                    {
+                        pc_characterContent.objectReaded = false;
+                        pc_characterContent.ReadedContentObject = null;
+                    }
                 }
 
                 //unload material
                 PackContent pc_mat = PackList.Instance.FindObject(description.matname, ref p);
                 Content.MaterialDescription matd = pc_mat.ReadedContentObject as Content.MaterialDescription;
                 matd.Release();
+                if (matd._userCount == 0)
+                {
+                    pc_mat.objectReaded = false;
+                    pc_mat.ReadedContentObject = null;
+                }
 
                 for (int i = 0; i < matd.lodMats.Length; i++)
                 {
@@ -474,7 +492,7 @@ namespace PhysX_test2.Engine.ContentLoader
                         if (inage._userCount == 0)
                         {
                             pc_image.objectReaded = false;
-                            pc.ReadedContentObject = null;
+                            pc_image.ReadedContentObject = null;
                         }
                     }
                 }
@@ -485,7 +503,50 @@ namespace PhysX_test2.Engine.ContentLoader
                     PackContent pc_cm = PackList.Instance.FindObject(description.RCCMName, ref p);
                     Content.CollisionMesh cm = pc_cm.ReadedContentObject as Content.CollisionMesh;
                     cm.Release();
+                    if (cm._userCount == 0)
+                    {
+                        pc_cm.objectReaded = false;
+                        pc_cm.ReadedContentObject = null;
+                    }
                 }
+
+
+                //unload behaviourmodel
+                gobject.behaviourmodel.Disable();
+                switch (description.BehaviourType)
+                {
+                    case LevelObjectDescription.objectmovingbehaviourmodel:
+                        {
+                            throw new Exception("Unsupported behaviour model!");
+                        } break;
+                    case LevelObjectDescription.objectphysiccharcontrollerbehaviourmodel:
+                        {
+                            Logic.BehaviourModel.ObjectPhysicControllerBehaviourModel cm = gobject.behaviourmodel as Logic.BehaviourModel.ObjectPhysicControllerBehaviourModel;
+                            cm._actor.Dispose();
+                        } break;
+                    case LevelObjectDescription.objectstaticbehaviourmodel:
+                        {
+                            //nothing; gc 
+                        } break;
+                    case LevelObjectDescription.objectphysicbehaviourmodel:
+                        {
+                            Logic.BehaviourModel.ObjectPhysicControllerBehaviourModel cm = gobject.behaviourmodel as Logic.BehaviourModel.ObjectPhysicControllerBehaviourModel;
+                            cm._actor.Dispose();
+                        } break;
+                    case LevelObjectDescription.objectBonerelatedbehaviourmodel:
+                        {
+                            //nothing; gc
+                        } break;
+                    case LevelObjectDescription.objectRelatedBehaviourModel:
+                        {
+                            //nothing; gc
+                        } break;
+                    default:
+                        {
+                            throw new Exception("Unsupported behaviour model!");
+                        } break;
+                }
+                gobject.behaviourmodel = null;
                 theobject._unloaded = true;
             }
         }

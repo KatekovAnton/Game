@@ -12,7 +12,7 @@ using PhysX_test2.Engine.Animation;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace PhysX_test2.Engine.ContentLoader
-{
+{/*
     public abstract class NewContentLoader
     {
         private static StillDesign.PhysX.Material characterMaterial;
@@ -455,5 +455,5 @@ namespace PhysX_test2.Engine.ContentLoader
             theobject._unloaded = true;
         }
     }
-    
+    */
 }

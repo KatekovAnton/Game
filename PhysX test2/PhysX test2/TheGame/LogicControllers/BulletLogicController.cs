@@ -43,10 +43,8 @@ namespace PhysX_test2.TheGame.LogicControllers
         {
             if ((__gameTime.TotalGameTime.TotalMilliseconds - _createdTime.TotalMilliseconds) > _baseParameters._lifeTime)
             {
-                //remove visible object
-                _hisObject.RemoveFromLevel();
-                //stop the update
-                _itsLevel.RemoveController(this);
+                RemoveFromLevel();
+                _hisObject.Delete();
             }
             else
             {
@@ -63,7 +61,9 @@ namespace PhysX_test2.TheGame.LogicControllers
                 }
                 else
                 {
+                    //remove and unload
                     RemoveFromLevel();
+                    _hisObject.Delete();
                     _itsLevel.CreateIntersectionEffect(_moveVector, resulpoint, resulnormal, mattype, _baseParameters._type);
                 }
             }
