@@ -7,6 +7,7 @@ namespace PhysX_test2
 {
     public interface IKeyboardUser// : IInterfaceUser
     {
+        bool GlobalUser { set; get; }
         bool IsKeyboardCaptured();
         List<HotKey> hotkeys();
     }

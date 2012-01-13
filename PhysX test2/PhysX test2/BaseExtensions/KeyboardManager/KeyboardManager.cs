@@ -19,6 +19,7 @@ namespace PhysX_test2
                     return scaningKeys[i];
             return new KeyScan(key);
         }
+
         private sealed class KeyboardManagerCreator
         {
             private static readonly KeyboardManager instance = new KeyboardManager();
@@ -28,6 +29,7 @@ namespace PhysX_test2
                 get { return instance; }
             }
         }
+
         public static KeyboardManager Manager
         {
             get { return KeyboardManagerCreator._KeyboardManager; }
@@ -63,20 +65,36 @@ namespace PhysX_test2
                 lastusercount = keyboardusers.Count;
             }
             currentState = Keyboard.GetState();
-            for (int hk = 0; hk < scaningKeys.Count; hk++)
-                scaningKeys[hk].Update();
+            foreach (KeyScan KeyScan in scaningKeys)
+                KeyScan.Update();
 
             foreach (IKeyboardUser user in keyboardusers)
             {
-                List<HotKey> hotkeys = user.hotkeys();
-                foreach (HotKey k in hotkeys)
+                if (captured_user!=null || user.GlobalUser)
                 {
-                    k.TryExecute();
+                    List<HotKey> hotkeys = user.hotkeys();
+                    foreach (HotKey k in hotkeys)
+                    {
+                        k.TryExecute();
+                    }
                 }
             }
 
-            
         }
+
+        bool keys_captured_by_user = false;
+        IKeyboardUser captured_user;
+
+        public void Capture(IKeyboardUser IKeyboardUser)
+        {
+            captured_user = IKeyboardUser;
+        }
+
+        public void CaptureRelease()
+        {
+            keys_captured_by_user = false;
+        }
+
         private List<IKeyboardUser> keyboardusers;
         public static bool IsMouseCaptured
         {

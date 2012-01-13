@@ -63,11 +63,15 @@ namespace PhysX_test2
 
         public static ScreenLog ScreenLog;
 
+        public bool GlobalUser { set{} get { return true; } }
         
         public MyGame()
         {
             _hotkeys = new List<HotKey>();
-            _hotkeys.Add(new HotKey(new Keys[] {Keys.OemTilde }, SwitchConsole));
+            _hotkeys.Add(new HotKey(new Keys[] { Keys.OemTilde }, SwitchConsoleView));
+            _hotkeys.Add(new HotKey(new Keys[] { Keys.Escape }, ShowMainMenu));
+            _hotkeys.Add(new HotKey(new Keys[] { Keys.LeftControl, Keys.C }, SwitchConsoleEditMode));
+
             KeyboardManager.Manager.AddKeyboardUser(this);
 
             ScreenLog = new Engine.Helpers.ScreenLog();
@@ -204,9 +208,19 @@ namespace PhysX_test2
             ScreenLog.TraceMessage(__message, c);
         }
 
-        public void SwitchConsole()
+        public void SwitchConsoleView()
         {
             showConsole = !showConsole;
+        }
+
+        public void ShowMainMenu()
+        {
+        
+        }
+
+        public void SwitchConsoleEditMode()
+        {
+
         }
 
         public bool IsKeyboardCaptured()

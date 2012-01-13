@@ -19,6 +19,8 @@ namespace PhysX_test2.TheGame
     {
         private List<HotKey> _hotkeys;
 
+        public bool GlobalUser { set { } get { return false; } }
+
         public const string _playerCharacterKey = "player";
         public const string _playerWeaponKey = "playerWeapon";
 
