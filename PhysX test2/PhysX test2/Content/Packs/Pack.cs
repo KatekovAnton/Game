@@ -44,20 +44,23 @@ namespace PhysX_test2.Content
             }
 
             headersize = Convert.ToInt32(br.BaseStream.Position);
+            if (needcalcsize.Count != 0)
+            {
+                for (int i = 0; i < needcalcsize.Count - 1; i++)
+                {
+                    Objects[needcalcsize[i]].size = Objects[needcalcsize[i] + 1].offset - Objects[needcalcsize[i]].offset;
+                }
 
-            for (int i = 0; i < needcalcsize.Count - 1; i++)
-            {
-                Objects[needcalcsize[i]].size = Objects[needcalcsize[i] + 1].offset - Objects[needcalcsize[i]].offset;
-            }
-            if (needcalcsize[needcalcsize.Count - 1] + 1 == Objects.Length)
-            {
-                Objects[needcalcsize[needcalcsize.Count - 1]].size = Convert.ToInt32(this.fi.Length) -
-                    (Objects[Objects.Length - 1].offset + headersize);
-            }
-            else
-            {
-                int processingobject = needcalcsize[needcalcsize.Count - 1];
-                Objects[processingobject].size = Objects[processingobject + 1].offset - Objects[processingobject].offset;
+                if (needcalcsize[needcalcsize.Count - 1] + 1 == Objects.Length)
+                {
+                    Objects[needcalcsize[needcalcsize.Count - 1]].size = Convert.ToInt32(this.fi.Length) -
+                        (Objects[Objects.Length - 1].offset + headersize);
+                }
+                else
+                {
+                    int processingobject = needcalcsize[needcalcsize.Count - 1];
+                    Objects[processingobject].size = Objects[processingobject + 1].offset - Objects[processingobject].offset;
+                }
             }
             br.Close();
             fullsucces = true;
