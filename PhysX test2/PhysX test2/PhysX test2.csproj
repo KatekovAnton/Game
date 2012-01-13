@@ -159,6 +159,7 @@
     <Compile Include="Content\ContentMesh.cs" />
     <Compile Include="Content\ContentSkinnedMesh.cs" />
     <Compile Include="Content\EngineCollisionMesh.cs" />
+    <Compile Include="Content\Fonts.cs" />
     <Compile Include="Content\MaterialDescription.cs" />
     <Compile Include="Content\RenderObjectDescription.cs" />
     <Compile Include="Content\LevelObjectDescription.cs" />
@@ -276,6 +277,8 @@
     <Compile Include="TheGame\Objects\GameSimpleObject.cs" />
     <Compile Include="TheGame\StaticObjects.cs" />
     <Compile Include="TheGame\TheGame.cs" />
+    <Compile Include="UserInterface\BaseInterface.cs" />
+    <Compile Include="UserInterface\Controls.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Community.CsharpSqlite.dll">

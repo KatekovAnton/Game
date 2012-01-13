@@ -40,7 +40,6 @@ namespace PhysX_test2.Engine
         public ScreenLog screenLog;
 
         //for text rendering
-        public SpriteFont Font1;
         public SpriteBatch spriteBatch;
 
 

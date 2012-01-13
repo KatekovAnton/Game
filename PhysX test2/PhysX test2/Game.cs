@@ -46,7 +46,9 @@ namespace PhysX_test2
 
         //some additional variables
         public Vector3 _boxScreenPosition;
-        private SpriteFont _font1;
+
+       
+
         private Vector2 _fontPos;
      
         public GameEngine _engine;
@@ -123,11 +125,11 @@ namespace PhysX_test2
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _font1 = Content.Load<SpriteFont>("Courier New");
+            Fonts.Load("base_skin");
+
             _fontPos = new Vector2(10.0f, 10.0f);
             _lighting = new BasicEffect(MyGame.Device);
 
-            _engine.Font1 = _font1;
         }
 
 
@@ -179,14 +181,14 @@ namespace PhysX_test2
             _outputstring = _engine.Camera.View.Translation.ToString() + '\n' + _engine.Camera.View.Up.ToString();
             _spriteBatch.Begin();
             if (_engine.BoxScreenPosition.Z < 1.0)
-                _spriteBatch.DrawString(_font1, "Box position = " + _engine.LevelObjectBox.behaviourmodel.GetGlobalPose().Translation.ToString(), new Vector2(_engine.BoxScreenPosition.X, _engine.BoxScreenPosition.Y), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);
+                _spriteBatch.DrawString(PhysX_test2.Content.Fonts._font1, "Box position = " + _engine.LevelObjectBox.behaviourmodel.GetGlobalPose().Translation.ToString(), new Vector2(_engine.BoxScreenPosition.X, _engine.BoxScreenPosition.Y), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);
 
 
-            _spriteBatch.DrawString(_font1, string.Format("FPS: {0} Frame time: {1}", _engine.FPSCounter.FramesPerSecond, _engine.FPSCounter.FrameTime), Vector2.Zero, Color.Black);
-            _spriteBatch.DrawString(_font1, "Visible objects count: " + _engine.visibleobjectscount.ToString(), new Vector2(0, 15), Color.Black);
-            _spriteBatch.DrawString(_font1, "Recalulcalated objects count: " + _engine.gameScene._sceneGraph.recalulcalated().ToString(), new Vector2(0, 30), Color.Black);
-            _spriteBatch.DrawString(_font1, "Character angle: " + _engine.playerState.ToString(), new Vector2(0, 45), Color.Black);
-            _spriteBatch.DrawString(_font1, _helpHint, new Vector2(0, 60), Color.Black);
+            _spriteBatch.DrawString(Fonts._font1, string.Format("FPS: {0} Frame time: {1}", _engine.FPSCounter.FramesPerSecond, _engine.FPSCounter.FrameTime), Vector2.Zero, Color.Black);
+            _spriteBatch.DrawString(Fonts._font1, "Visible objects count: " + _engine.visibleobjectscount.ToString(), new Vector2(0, 15), Color.Black);
+            _spriteBatch.DrawString(Fonts._font1, "Recalulcalated objects count: " + _engine.gameScene._sceneGraph.recalulcalated().ToString(), new Vector2(0, 30), Color.Black);
+            _spriteBatch.DrawString(Fonts._font1, "Character angle: " + _engine.playerState.ToString(), new Vector2(0, 45), Color.Black);
+            _spriteBatch.DrawString(Fonts._font1, _helpHint, new Vector2(0, 60), Color.Black);
 
 
             if (showConsole)
@@ -194,7 +196,7 @@ namespace PhysX_test2
                 int i = 0;
                 foreach (ScreenLogMessage ScreenLogMessage in ScreenLog)
                 {
-                    _spriteBatch.DrawString(_font1, ScreenLogMessage.text, new Vector2(0, GameConfiguration.ScreenResolution.Y - (i++) * 10 - 15), ScreenLogMessage.Color);
+                    _spriteBatch.DrawString(Fonts._font1, ScreenLogMessage.text, new Vector2(0, GameConfiguration.ScreenResolution.Y - (i++) * 10 - 15), ScreenLogMessage.Color);
                 }
             }
             _spriteBatch.End();

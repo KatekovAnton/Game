@@ -6,7 +6,7 @@ namespace PhysX_test2
 #if WINDOWS || XBOX
     static class Program
     {
-        static MyGame game;
+       public static MyGame game;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
