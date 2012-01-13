@@ -98,7 +98,6 @@ namespace PhysX_test2.TheGame
             _anotherChar._hisInput = new InputManagers.InputProviderAI();
             WeaponLogicController _anotherWeapon = WeaponLogicController.CreateWeapon("1", _level);
             _anotherChar.SetGun(_anotherWeapon);
-
         }
 
         public void Update(GameTime __gameTime)
