@@ -9,7 +9,7 @@ namespace PhysX_test2
     {
         bool GlobalUser { set; get; }
         bool IsKeyboardCaptured();
-        List<HotKey> hotkeys();
+        List<HotKey> hotkeys { get; }
     }
 
     public class HotKey

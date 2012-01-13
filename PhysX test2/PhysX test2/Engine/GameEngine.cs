@@ -82,6 +82,9 @@ namespace PhysX_test2.Engine
         private List<HotKey> _hotkeys;
         public bool cameraneedsupdate = true;
         public bool GlobalUser { set { } get { return false; } }
+
+        
+
         public GameEngine(MyGame game)
         {
             screenLog = new ScreenLog();
@@ -118,9 +121,12 @@ namespace PhysX_test2.Engine
             return false; 
         }
 
-        public List<HotKey> hotkeys() 
-        { 
-            return _hotkeys;
+        public List<HotKey> hotkeys
+        {
+            get
+            {
+                return _hotkeys;
+            }
         }
 
         public void Initalize() 

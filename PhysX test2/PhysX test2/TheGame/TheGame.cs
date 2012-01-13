@@ -59,9 +59,12 @@ namespace PhysX_test2.TheGame
             _characters[_playerCharacterKey].SwitchGun();
         }
 
-        public List<HotKey> hotkeys()
+        public List<HotKey> hotkeys
         {
-            return _hotkeys;
+            get
+            {
+                return _hotkeys;
+            }
         }
 
 
@@ -78,8 +81,6 @@ namespace PhysX_test2.TheGame
           //  _engine.CasheObject("EffectLevelObject\0", null, false, false);
             //загрузка всего
             _engine.Loaddata();
-
-
 
             CharacterLogicController me = CharacterLogicController.CreateCharacter("1", _level, false);
             me.SetAlive(true);

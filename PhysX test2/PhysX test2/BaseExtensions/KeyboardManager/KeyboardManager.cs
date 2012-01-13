@@ -43,8 +43,7 @@ namespace PhysX_test2
                 //scaningKeys.Clear();
                 foreach (IKeyboardUser user in keyboardusers)
                 {
-                    List<HotKey> hotkeys = user.hotkeys();
-                    foreach (HotKey k in hotkeys)
+                    foreach (HotKey k in user.hotkeys)
                     {
                         for (int i = 0; i < k.associatedKeys.Length; i++)
                         {
@@ -70,15 +69,20 @@ namespace PhysX_test2
 
             foreach (IKeyboardUser user in keyboardusers)
             {
-                if (captured_user!=null || user.GlobalUser)
+                if (!keys_captured_by_user || user.GlobalUser)
                 {
-                    List<HotKey> hotkeys = user.hotkeys();
-                    foreach (HotKey k in hotkeys)
+                    foreach (HotKey k in user.hotkeys)
                     {
                         k.TryExecute();
                     }
                 }
             }
+
+            if (keys_captured_by_user)
+                foreach (HotKey k in captured_user.hotkeys)
+                 {
+                  k.TryExecute();
+                  }
 
         }
 

@@ -228,9 +228,12 @@ namespace PhysX_test2
             return false;
         }
 
-        public List<HotKey> hotkeys()
+        public List<HotKey> hotkeys
         {
-            return _hotkeys;
+            get
+            {
+                return _hotkeys;
+            }
         }
     }
     
