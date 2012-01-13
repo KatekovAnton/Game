@@ -53,7 +53,7 @@ namespace PhysX_test2
         private BasicEffect _lighting;
 
         public TheGame.TheGame _MAINGAME;
-
+        
 
         private bool showConsole = true;
         private string _outputstring = string.Empty;
@@ -61,13 +61,16 @@ namespace PhysX_test2
 
         private string _helpHint = "Press \'O\' to swich debug render\nPress \'P\' to toggle physic model of box\nPress \'I\' to force marine to drop gun\nPress \'Left Ctrl + C\' to toggle event console";
 
+        public static ScreenLog ScreenLog;
+
         
         public MyGame()
         {
             _hotkeys = new List<HotKey>();
-            _hotkeys.Add(new HotKey(new Keys[] {Keys.LeftControl, Keys.C }, SwitchConsole));
+            _hotkeys.Add(new HotKey(new Keys[] {Keys.OemTilde }, SwitchConsole));
             KeyboardManager.Manager.AddKeyboardUser(this);
 
+            ScreenLog = new Engine.Helpers.ScreenLog();
 
             PhysX_test2.MouseManager.Manager = new MouseManager();
             Instance = this;
@@ -184,12 +187,12 @@ namespace PhysX_test2
 
             if (showConsole)
             {
-                for (int i = 0; i < ScreenLog.Messages.Count; i++)
+                int i = 0;
+                foreach (ScreenLogMessage ScreenLogMessage in ScreenLog)
                 {
-                    _spriteBatch.DrawString(_font1, ScreenLog.Messages[i], new Vector2(0, GameConfiguration.ScreenResolution.Y - i * 10 - 15), ScreenLog.MessageColors[i]);
+                    _spriteBatch.DrawString(_font1, ScreenLogMessage.text, new Vector2(0, GameConfiguration.ScreenResolution.Y - (i++) * 10 - 15), ScreenLogMessage.Color);
                 }
             }
-
             _spriteBatch.End();
         }
 

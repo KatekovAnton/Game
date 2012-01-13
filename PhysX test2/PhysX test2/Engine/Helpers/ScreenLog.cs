@@ -7,20 +7,10 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2.Engine.Helpers
 {
-    public class ScreenLog
+    public class ScreenLog : List<ScreenLogMessage>
     {
         //VOVA - макс кол-во строчек на экране
-        private static int maxLines = 50;
-        public static List<string> Messages
-        {
-            get;
-            private set;
-        }
-        public static List<Color> MessageColors
-        {
-            get;
-            private set;
-        }
+        private int maxLines = 50;
 
         public int MaxLines
         {
@@ -35,26 +25,42 @@ namespace PhysX_test2.Engine.Helpers
             }
         }
 
-        private static void ClampMessages()
+        public string Text
+        { get { string txt = ""; foreach (ScreenLogMessage slm in this) txt += slm.text + "\n"; return txt; } }
+
+        private void ClampMessages()
         {
-            if (Messages.Count > maxLines)
+            if (Count > maxLines)
             {
-                Messages.RemoveRange(maxLines, Messages.Count - maxLines);
-                MessageColors.RemoveRange(maxLines, MessageColors.Count - maxLines);
+                RemoveRange(maxLines, Count - maxLines);
             }
         }
 
-        public ScreenLog()
+    /*    public ScreenLog() : base()
         {
-            Messages = new List<string>();
-            MessageColors = new List<Color>();
+     
+        }
+        */
+        public new void Add(ScreenLogMessage __message)
+        {
+            this.Insert(0, __message);
+            ClampMessages();
         }
 
-        public static void TraceMessage(string __message, Color __color)
+        public void TraceMessage(string __text, Color __color)
+        { 
+            Add(new ScreenLogMessage(__text,__color));
+        }
+    }
+
+    public class ScreenLogMessage  
+    {
+        public string text;
+        public Color Color;
+        public ScreenLogMessage(string __text, Color __color)
         {
-            Messages.Insert(0, __message);
-            MessageColors.Insert(0, __color);
-            ClampMessages();
+            this.Color = __color;
+            this.text = __text;
         }
     }
 }
