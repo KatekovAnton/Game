@@ -12,14 +12,18 @@ namespace PhysX_test2
         /// </summary>
         static void Main(string[] args)
         {
-            foreach (string arg in args)
+            try
             {
-                if (arg == "-git")
-                { 
-                   string git_commander = @"D:\projects\GitCommander\GitCommander\bin\Debug\GitCommander.exe";
-                   Process.Start(git_commander);                    
+                foreach (string arg in args)
+                {
+                    if (arg == "-git")
+                    {
+                        string git_commander = @"C:\Users\shpengler\Desktop\git\GitCommander\GitCommander\bin\Debug\GitCommander.exe";
+                        Process.Start(git_commander);
+                    }
                 }
             }
+            catch { }
 
             game = new MyGame();
             game.Run();
