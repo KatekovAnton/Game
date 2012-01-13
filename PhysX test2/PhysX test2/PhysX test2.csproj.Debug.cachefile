@@ -9,4 +9,5 @@ PhysXCore.dll
 PhysXDevice.dll
 PhysXLoader.dll
 Data\Data.pack
+Data\Interface.pack
 Data\Data.sqlite
