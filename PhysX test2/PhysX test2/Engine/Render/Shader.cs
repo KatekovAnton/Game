@@ -102,7 +102,7 @@ namespace PhysX_test2.Engine.Render
 
         public static Effect Load(Microsoft.Xna.Framework.Content.ContentManager content)
         {
-            Effect e = content.Load<Effect>("Shaders\\ObjectRender");
+            Effect e = content.Load<Effect>("ObjectRender");
             if (MyGame.Instance.GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)
             {
                 AnimRenderSM = "AnimRenderSMR";
