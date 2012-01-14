@@ -12,9 +12,9 @@ using PhysX_test2.Engine.Logic;
 using Microsoft.Xna.Framework.Graphics;
 
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Content.Pipeline;
+/*using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
+using Microsoft.Xna.Framework.Content.Pipeline.Processors;*/
 
 namespace PhysX_test2.Engine.Render
 {
@@ -43,7 +43,7 @@ namespace PhysX_test2.Engine.Render
         //ОТДЕЛЬНЫЕ ТЕХНИКИ НА ТРАВУ
 
 
-       protected class LoggerTrick : ContentBuildLogger
+      /* protected class LoggerTrick : ContentBuildLogger
         {
             public override void LogMessage(string message, params object[] messageArgs)
             {
@@ -92,7 +92,7 @@ namespace PhysX_test2.Engine.Render
             {
                 throw new NotImplementedException();
             }
-        }
+        }*/
 
         protected Shader(GraphicsDevice device, byte[] effecCode)
             : base(device, effecCode)
@@ -100,7 +100,7 @@ namespace PhysX_test2.Engine.Render
             
         }
 
-        /*public static Effect Load(Microsoft.Xna.Framework.Content.ContentManager content)
+        public static Effect Load(Microsoft.Xna.Framework.Content.ContentManager content)
         {
             Effect e = content.Load<Effect>("Shaders\\ObjectRender");
             if (MyGame.Instance.GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)
@@ -115,22 +115,22 @@ namespace PhysX_test2.Engine.Render
                 CreateAnimShadowMap = "CreateAnimShadowMapR";
             }
             return e;
-        }*/
+        }
         
-        public static Effect FromStream(Stream stream, GraphicsDevice device)
+      /*  public static Effect FromStream(Stream stream, GraphicsDevice device)
         {
             var content = new EffectContent();
             stream.Seek(0, SeekOrigin.Begin);
             content.EffectCode = (new StreamReader(stream)).ReadToEnd();
             byte[] ec = (new EffectProcessor()).Process(content, new ContextTrick()).GetEffectCode();
-
+        */
 
          /*   BinaryWriter bw = new BinaryWriter(new FileStream("Effect.shader", FileMode.Create));
             bw.Write(ec);
             bw.Flush();
             bw.Close();*/
 
-            if (MyGame.Instance.GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)
+       /*     if (MyGame.Instance.GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)
             {
                 AnimRenderSM = "AnimRenderSMR";
                 NotAnimRenderSM = "NotAnimRenderSMR";
@@ -146,7 +146,7 @@ namespace PhysX_test2.Engine.Render
             }
 
             return new Shader(device, ec);
-        }
+        }*/
     }
 
     
