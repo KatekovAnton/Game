@@ -1,6 +1,5 @@
 Content\Courier New.xnb
-Content\Shaders\ObjectRender.xnb
-Content\Shaders\ObjectRender.fx
+Content\ObjectRender.xnb
 Community.CsharpSqlite.dll
 cudart32_30_9.dll
 NxCharacter.dll
@@ -10,4 +9,5 @@ PhysXCore.dll
 PhysXDevice.dll
 PhysXLoader.dll
 Data\Data.pack
+Data\Interface.pack
 Data\Data.sqlite

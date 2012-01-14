@@ -129,7 +129,13 @@ namespace PhysX_test2
 
             _fontPos = new Vector2(10.0f, 10.0f);
             _lighting = new BasicEffect(MyGame.Device);
+            this.Exiting += new EventHandler<EventArgs>(MyGame_Exiting);
+        }
 
+        void MyGame_Exiting(object sender, EventArgs e)
+        {
+            _engine.UnLoad();
+            LogProvider.Close();
         }
 
 
@@ -140,8 +146,6 @@ namespace PhysX_test2
         protected override void UnloadContent()
         {
             _engine.UnLoad();
-            LogProvider.logMessage("Closing application");
-            LogProvider.SaveLog();
             LogProvider.Close();
         }
 
@@ -158,6 +162,10 @@ namespace PhysX_test2
             StatisticContainer.Instance().EndFrame();
             StatisticContainer.Instance().BeginFrame();
             KeyboardManager.Manager.Update();
+
+            
+
+
             MouseManager.Manager.Update();
             HandleKeyboard(Keyboard.GetState());
 
@@ -237,7 +245,11 @@ namespace PhysX_test2
                 return _hotkeys;
             }
         }
+
+        
     }
+    
+
     
 
     public class UserOutput : UserOutputStream

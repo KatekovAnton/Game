@@ -8,6 +8,7 @@ namespace PhysX_test2
     public class LogProvider
     {
         private static LogBase _log;
+        private static bool _closed = true;
         
         public static bool NeedTracePhysXMessages
         {
@@ -32,7 +33,13 @@ namespace PhysX_test2
 
         public static void Close()
         {
+            if (_closed)
+                return;
+            logMessage("Closing application");
+            SaveLog();
             _log.Close();
+            _log = null;
+            _closed = true;
         }
 
         public static void logMessage(string __msg)
@@ -43,6 +50,7 @@ namespace PhysX_test2
                 LogProvider.logMessage("Opening application");
                 NeedTraceContentSystemMessages = true;
                 NeedTracePhysXMessages = true;
+                _closed = false;
             }
 
             _log.WriteMessage(__msg); 
