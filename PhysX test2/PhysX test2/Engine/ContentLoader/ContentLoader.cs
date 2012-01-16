@@ -167,6 +167,14 @@ namespace PhysX_test2.Engine.ContentLoader
             return behaviourmodel;
         }
 
+        public static Content.Texture LoadTexture(string name)
+        {
+            Content.Texture image = new Content.Texture();
+            image = PackList.Instance.GetObject(name, image) as Content.Texture;
+            image.Retain(image.texture);
+            return image;
+        }
+
         private static Material loadMaterial(string name, PackList packs)
         {
             PhysX_test2.Content.MaterialDescription mat = new MaterialDescription();

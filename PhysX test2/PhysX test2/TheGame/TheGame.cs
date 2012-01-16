@@ -18,7 +18,7 @@ namespace PhysX_test2.TheGame
     public class TheGame:IKeyboardUser
     {
         private List<HotKey> _hotkeys;
-
+        public bool AllKeys { get { return false; } }
         public bool GlobalUser { set { } get { return false; } }
 
         public const string _playerCharacterKey = "player";

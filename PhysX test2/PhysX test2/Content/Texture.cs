@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PhysX_test2.Content
 {
-    class Texture:PackContent
+   public  class Texture:PackContent
     {
         public Texture2D texture
         {

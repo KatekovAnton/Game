@@ -24,7 +24,7 @@ namespace PhysX_test2.Engine
 
         //static variables for enviroment
         public static GameEngine Instance;
-        
+        public bool AllKeys { get { return false; } }
 
 
         //engine camera and engine render

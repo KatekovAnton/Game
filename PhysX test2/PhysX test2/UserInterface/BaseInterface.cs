@@ -5,8 +5,26 @@ using System.Text;
 
 namespace PhysX_test2.UserInterface
 {
-    public class BaseInterface
+    public class GameInterface : Controls.SomeInterface
     {
+        public override void Init() 
+        {
+           
+
+        }
+
+        public override void Draw()
+        {
+            //setrendertarget here
+            base.Draw();
+
+        }
+
+        public override void Update()
+        {
+
+            base.Update();
+        }
 
     }
 }
