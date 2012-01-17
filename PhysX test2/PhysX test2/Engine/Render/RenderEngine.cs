@@ -27,12 +27,10 @@ namespace PhysX_test2.Engine.Render
 
     public class RenderPipeline
     {
-        
         public static InstancingTechnique instancingTechnique = InstancingTechnique.HardwareInstancing;
 
         public static bool EnableShadows;
         public static bool SmoothShadows;
-        public static bool EnableGrass;
         public static bool EnableDebugRender;
 
 
@@ -42,7 +40,7 @@ namespace PhysX_test2.Engine.Render
         private List<string> arrays;
         private RenderTarget2D shadowRenderTarget;
         private int shadowMapWidthHeight = 2048;
-        private GraphicsDevice Device;
+        private GraphicsDevice _device;
         private BasicEffect _visualizationEffect;
 
         /// <summary>
@@ -55,27 +53,27 @@ namespace PhysX_test2.Engine.Render
 
         private DebugRender.DebugRenderer debugRenderer;
         private MyContainer<PivotObject> debugRenderArray;
-        private Camera Camera;
+        private Camera camera;
 
         public RenderPipeline(GraphicsDevice dev, Camera c)
         {
-            Device = dev;
-            Camera = c;
-            _visualizationEffect = new BasicEffect(this.Device)
+            _device = dev;
+            camera = c;
+            _visualizationEffect = new BasicEffect(this._device)
             {
                 VertexColorEnabled = true
             };
             /// <summary>
             /// added
             /// </summary>
-            sprite = new SpriteBatch(this.Device);
+            sprite = new SpriteBatch(this._device);
 
 
 
             frustumForShadow = new BoundingFrustum(Matrix.Identity);
-            debugRenderer = new DebugRender.DebugRenderer(Device, _visualizationEffect);
+            debugRenderer = new DebugRender.DebugRenderer(_device, _visualizationEffect);
             debugRenderArray = new MyContainer<PivotObject>(10, 3);
-            EnableShadows = EnableGrass = SmoothShadows = true;
+            EnableShadows = SmoothShadows = true;
             EnableDebugRender = false;
             //EnableShadows = false;
             //SmoothShadows = false;
@@ -83,7 +81,7 @@ namespace PhysX_test2.Engine.Render
             {
                 if (dev.GraphicsProfile == GraphicsProfile.HiDef)
                 {
-                    shadowRenderTarget = new RenderTarget2D(Device,
+                    shadowRenderTarget = new RenderTarget2D(_device,
                                                            shadowMapWidthHeight,
                                                            shadowMapWidthHeight,
                                                            false,
@@ -94,7 +92,7 @@ namespace PhysX_test2.Engine.Render
                 {
                     if (GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef))
                     {
-                        shadowRenderTarget = new RenderTarget2D(Device,
+                        shadowRenderTarget = new RenderTarget2D(_device,
                                                                shadowMapWidthHeight,
                                                                shadowMapWidthHeight,
                                                                false,
@@ -104,7 +102,7 @@ namespace PhysX_test2.Engine.Render
                     else
                     {
                         //TODO to cofig
-                        shadowRenderTarget = new RenderTarget2D(Device,
+                        shadowRenderTarget = new RenderTarget2D(_device,
                                                                                      dev.PresentationParameters.BackBufferWidth,
                                                                                       dev.PresentationParameters.BackBufferHeight,
                                                                                      false,
@@ -159,9 +157,14 @@ namespace PhysX_test2.Engine.Render
 
         }
 
+        /// <summary>
+        /// тут решаем что за рыба и как её соотв рендерить.
+        /// </summary>
+        /// <param name="AddedObject">объект</param>
         public void ProceedObject(RenderObject AddedObject)
         {
-            //тут решаем что за рыба и как её соотв рендерить.
+            //TODO
+            //обработать случай с ParticleRenderObject
             if (AddedObject.isTransparent)
             {
                 //не мб шадовкастером и не мб анимированным
@@ -219,6 +222,7 @@ namespace PhysX_test2.Engine.Render
             debugRenderArray.Clear();
             lightViewProjection = CreateLightViewProjectionMatrix(lightDir);
         }
+
         public void AddObjectToPipeline(MyContainer<PivotObject> AddedObjects)
         {
             foreach (PivotObject AddedObject in AddedObjects)
@@ -226,6 +230,7 @@ namespace PhysX_test2.Engine.Render
             foreach (PivotObject AddedObject in AddedObjects)
                 debugRenderArray.Add(AddedObject);
         }
+
         public void AddObjectToShadow(MyContainer<PivotObject> AddedObjects)
         {
             foreach (PivotObject AddedObject in AddedObjects)
@@ -236,17 +241,16 @@ namespace PhysX_test2.Engine.Render
             }
 
         }
+
         private Matrix CreateLightViewProjectionMatrix(Vector3 lightDir)
         {
-            
-
             // Matrix with that will rotate in points the direction of the light
             Matrix lightRotation = Matrix.CreateLookAt(Vector3.Zero,
                                                        -lightDir,
                                                        Vector3.Up);
 
             // Get the corners of the frustum
-            Vector3[] frustumCorners = Camera.cameraFrustum.GetCorners();
+            Vector3[] frustumCorners = camera.cameraFrustum.GetCorners();
 
             // Transform the positions of the corners into the direction of the light
             for (int i = 0; i < frustumCorners.Length; i++)
@@ -284,7 +288,7 @@ namespace PhysX_test2.Engine.Render
             return final;
         }
 
-        Matrix CreateLookAt(Vector3 cameraPos, Vector3 target, Vector3 up)
+        private Matrix CreateLookAt(Vector3 cameraPos, Vector3 target, Vector3 up)
         {
             Vector3 zaxis = (cameraPos - target);
             zaxis.Normalize();
@@ -303,9 +307,9 @@ namespace PhysX_test2.Engine.Render
 
         private void RenderToShadowMap(Matrix lightViewProjection, Vector3 lightDir)
         {            
-            Device.SetRenderTarget(shadowRenderTarget);
+            _device.SetRenderTarget(shadowRenderTarget);
 
-            Device.Clear(Color.White);
+            _device.Clear(Color.White);
             
 
             Render.Materials.Material.ObjectRenderEffect.Parameters["LightDirection"].SetValue(lightDir);
@@ -334,22 +338,22 @@ namespace PhysX_test2.Engine.Render
                 }
             }
           
-            Device.SetRenderTarget(null);
+            _device.SetRenderTarget(null);
         }
         
         public void RenderToPicture(Camera Camera, Vector3 lightDir)
         {
             
-            Device.RasterizerState = RasterizerState.CullClockwise;
-            Device.DepthStencilState = DepthStencilState.Default;
-            Device.BlendState = BlendState.Opaque;
+            _device.RasterizerState = RasterizerState.CullClockwise;
+            _device.DepthStencilState = DepthStencilState.Default;
+            _device.BlendState = BlendState.Opaque;
 
             
-            Device.SamplerStates[0] = SamplerState.LinearWrap;
-            if (Device.GraphicsProfile == GraphicsProfile.Reach)
-                Device.SamplerStates[1] = SamplerState.PointClamp;
+            _device.SamplerStates[0] = SamplerState.LinearWrap;
+            if (_device.GraphicsProfile == GraphicsProfile.Reach)
+                _device.SamplerStates[1] = SamplerState.PointClamp;
             else
-                Device.SamplerStates[1] = SamplerState.PointWrap;
+                _device.SamplerStates[1] = SamplerState.PointWrap;
             if (EnableShadows)
             {
                 RenderToShadowMap(lightViewProjection, lightDir);
@@ -358,7 +362,7 @@ namespace PhysX_test2.Engine.Render
                 Render.Materials.Material.ObjectRenderEffect.Parameters["ShadowMap"].SetValue(shadowRenderTarget);
             }
 
-            this.Device.Clear(Color.CornflowerBlue);
+            this._device.Clear(Color.CornflowerBlue);
 
 
             PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect.Parameters["Projection"].SetValue(Camera.Projection);
@@ -414,18 +418,9 @@ namespace PhysX_test2.Engine.Render
                 foreach (PivotObject wo in debugRenderArray)
                 {
                     debugRenderer.RenderTransformedBB(wo.raycastaspect.boundingShape);
-                   // debugRenderer.RenderAABR(wo.boundingShape);
+                    //debugRenderer.RenderAABR(wo.raycastaspect.boundingShape);
                     debugRenderer.RenderAABB(wo.raycastaspect.boundingShape);
                 }
-                
-               /* sprite.Begin(SpriteSortMode.FrontToBack, new BlendState());
-
-                SamplerState ss = createNewState(SamplerState.PointClamp);
-                ss.Filter = TextureFilter.Point;
-                Device.SamplerStates[1] = ss;
-                sprite.Draw(shadowRenderTarget, new Rectangle(0, 0, 128, 128), Color.Wheat);
-                sprite.End();*/
-                
             }
         }
 
@@ -442,6 +437,7 @@ namespace PhysX_test2.Engine.Render
                 }
             }
         }
+
         public void RenderBlendArrayWithTehnique(string name)
         {
             MyContainer<PivotObject> Objects = ArraysPerTehnique[name].Objects;
@@ -449,7 +445,7 @@ namespace PhysX_test2.Engine.Render
                 return;
 
             //  (source × Blend.One) + (destination × Blend.One)
-            BlendState oldstate = Device.BlendState;
+            BlendState oldstate = _device.BlendState;
             BlendState newstate = new BlendState();
             newstate.AlphaBlendFunction = BlendFunction.Add;
             newstate.AlphaDestinationBlend = Blend.One;
@@ -457,9 +453,9 @@ namespace PhysX_test2.Engine.Render
             newstate.ColorBlendFunction = BlendFunction.Add;
             newstate.ColorDestinationBlend = Blend.One;
             newstate.ColorSourceBlend = Blend.SourceColor;
-            Device.BlendState = newstate;
+            _device.BlendState = newstate;
             RenderArrayWithTehnique(name);
-            Device.BlendState = oldstate;
+            _device.BlendState = oldstate;
         }
 
         public RasterizerState createNewState(RasterizerState aotherstate)
@@ -474,6 +470,7 @@ namespace PhysX_test2.Engine.Render
 
             return res;
         }
+
         public SamplerState createNewState(SamplerState aotherstate)
         {
             SamplerState res = new SamplerState();
