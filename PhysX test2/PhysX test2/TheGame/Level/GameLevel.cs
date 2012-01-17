@@ -73,13 +73,16 @@ namespace PhysX_test2.TheGame.Level
                 Engine.AnimationManager.AnimationManager.Manager.AddAnimationUser(ro.Update, ro.character);
             }
 
-            _scene.AddObject(__object);
+            
 
             if (__parentObject != null)
             {
+                _scene.AddObject(__object, false);
                 __object.SetGlobalPose(__position, true, __parentObject);
                 _scene._objects.AddRule(__parentObject, __object);
             }
+            else 
+                _scene.AddObject(__object);
         }
 
         public void RemoveObject(Engine.Logic.PivotObject theObjecr)

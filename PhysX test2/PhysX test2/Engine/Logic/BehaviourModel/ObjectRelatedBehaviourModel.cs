@@ -54,7 +54,6 @@ namespace PhysX_test2.Engine.Logic.BehaviourModel
            
         
             CurrentPosition = newpos;
-            
         }
 
         public override void Move(Vector3 displacement)

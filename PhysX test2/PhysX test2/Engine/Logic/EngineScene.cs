@@ -126,9 +126,10 @@ namespace PhysX_test2.Engine.Logic
             return null;
         }
 
-        public void AddObject(PivotObject newObject)
+        public void AddObject(PivotObject newObject, bool needUpdate = true)
         {
-            newObject.Update();
+            if(needUpdate)
+                newObject.Update();
             newObject.behaviourmodel.Enable();
             _objects.Add(newObject);
             _sceneGraph.AddObject(newObject);

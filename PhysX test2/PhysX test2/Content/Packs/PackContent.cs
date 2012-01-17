@@ -197,7 +197,7 @@ namespace PhysX_test2.Content
             loadedformat = br.ReadInt32();
             headersize = br.ReadInt32();
             
-            //когдато я бы л молодой и глупый и теперь пишу этот кастыль
+            //когдато я был молодой и глупый и теперь пишу этот кастыль
             if (loadedformat == ElementType.MeshOptimazedForStore || loadedformat == ElementType.MeshOptimazedForLoading)
             {
                 mh = new MeshContentadditionalheader();

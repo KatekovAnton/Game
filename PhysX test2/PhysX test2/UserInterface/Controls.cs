@@ -15,6 +15,86 @@ namespace PhysX_test2.UserInterface
 {
    public static class Controls
    {
+       public abstract class Control
+       {
+           public string Text = "";
+           public Vector2 Position;
+           public Control Parent = null;
+
+           public abstract void Draw();
+           public abstract void Update();
+       }
+
+       public abstract class SomeInterface : UserControl
+       {
+           public abstract void Init();
+           public void Add(Control item)
+           {   ChildControls.Add(item);    }
+       }
+
+       public class UserControl : Control
+       {
+           public List<Control> ChildControls = new List<Control>();
+
+           public override void Draw()
+           {
+               foreach (Control Control in ChildControls)
+                   Control.Draw();
+           }
+
+           public override void Update()
+           {
+               foreach (Control Control in ChildControls)
+                   Control.Update();
+           }
+       }
+
+       public class TextBox : UserControl, IKeyboardUser
+       {
+           public bool GlobalUser { set { } get { return false; } }
+           public bool IsKeyboardCaptured() { return false; }
+           List<HotKey> _hotkeys = new List<HotKey>();
+           public List<HotKey> hotkeys { get { return _hotkeys; } }
+           public bool AllKeys { get { return true; } }
+
+           public TextBox(Control parent, string init_text, Vector2 position, List<HotKey> _hotkeys)
+           {
+               Parent = parent;
+               Text = init_text;
+               Position = position;
+               _hotkeys = hotkeys;
+           }
+
+           public override void Draw()
+           {
+               //Program.game._spriteBatch.Draw(
+               base.Draw();
+           }
+
+           public override void Update()
+           {
+               base.Draw();
+           }
+       }
+
+       public class Label : Control
+       {
+           public SpriteFont Font;
+           public Color Color;
+           public Label(Color color)
+           { Color = color; }
+
+           public override void Draw()
+           {
+               Program.game._spriteBatch.DrawString(Font, Text, Position, Color);
+           }
+
+           public override void Update()
+           {      }
+           
+       }
+
+
      /*  public class Panel : Control
        {
            public List<Control> controls = new List<Control>();

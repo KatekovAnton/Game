@@ -38,7 +38,11 @@ namespace PhysX_test2.Engine.Render
 
         public static string TransparentSelfIlmnNoSM = "TransparentSelfIlmnNoSM";
 
-        
+
+        public static string InstancedNoSM = "InstancedNoSM";
+        public static string InstancedSM = "InstancedSM";
+        public static string InstancedSMSmooth = "InstancedSMSmooth";
+
 
         //ОТДЕЛЬНЫЕ ТЕХНИКИ НА ТРАВУ
 
@@ -113,6 +117,9 @@ namespace PhysX_test2.Engine.Render
 
                 CreateStaticShadowMap = "CreateStaticShadowMapR";
                 CreateAnimShadowMap = "CreateAnimShadowMapR";
+
+                InstancedSM = "InstancedSMR";
+                InstancedSMSmooth = InstancedSM;
             }
             return e;
         }

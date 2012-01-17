@@ -83,7 +83,7 @@ namespace PhysX_test2.TheGame.LogicControllers
             if (_weaponFire._onLevel && (__gametime.TotalGameTime.TotalMilliseconds - _lastfiretime.TotalMilliseconds) > _baseParameters._fireTime)
                 _weaponFire.RemoveFromLevel();
             else
-                _weaponFire.CalcParameters();
+                _weaponFire.CalcParameters(_weaponObject._inHandObject);
         }
 
      /*   public override Parameters.DynamicParameters GetParameters()
