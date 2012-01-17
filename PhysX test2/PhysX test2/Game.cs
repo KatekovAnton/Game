@@ -61,7 +61,7 @@ namespace PhysX_test2
         private string _outputstring = string.Empty;
         private SpriteBatch _spriteBatch;
 
-        private string _helpHint = "Press \'O\' to swich debug render\nPress \'P\' to toggle physic model of box\nPress \'I\' to force marine to drop gun\nPress \'Left Ctrl + C\' to toggle event console";
+        private string _helpHint = "Press \'O\' to swich debug render\nPress \'P\' to toggle physic model of box\nPress \'I\' to force marine to drop gun\nPress \'~\' to toggle event console";
 
         public static ScreenLog ScreenLog;
 
@@ -153,9 +153,7 @@ namespace PhysX_test2
         {
             ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), _engine.Camera.View, _engine.Camera.Projection);
         }
-        bool ft = true;
         
-
         protected override void Update(GameTime gameTime)
         {
             UpdateTime = gameTime;
