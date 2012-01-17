@@ -267,7 +267,7 @@
     <Compile Include="TheGame\Objects\StateGraphs\GameCharacter\CharacterGraphEdge.cs" />
     <Compile Include="TheGame\Objects\StateGraphs\GameCharacter\CharacterGraphNode.cs" />
     <Compile Include="TheGame\Objects\GameObject.cs" />
-    <Compile Include="MathExtensions.cs" />
+    <Compile Include="BaseExtensions\MyMath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game.cs" />
