@@ -19,5 +19,18 @@ namespace PhysX_test2
                 return _randomze;
             }
         }
+
+        public static float NextFloat(float max)
+        {
+           return (float)Instance.NextDouble() * max;
+        }
+
+        public static float NextFloat(float min, float max)
+        {
+            float range = max - min;
+            float value = NextFloat(range);
+            return value + min;
+        }
+
     }
 }

@@ -22,7 +22,7 @@ namespace PhysX_test2.TheGame.Objects
         public bool _onLevel;
         public LevelObject _object;
 
-        public LevelObject _parent;
+        private bool _locatedAtLastFrame = false;
 
         public GameSimpleObject(string __objectName, GameLevel __level, Engine.Logic.PivotObjectDependType __dependType = PivotObjectDependType.Body, bool __mouseRC = false, bool __bulletRC = false)
             : base(__level, __mouseRC, __bulletRC)
@@ -30,14 +30,21 @@ namespace PhysX_test2.TheGame.Objects
             _object = Engine.GameEngine.LoadObject(__objectName, null, __mouseRC, __bulletRC, __dependType) as LevelObject;
         }
 
-        public void CalcParameters()
+        public void CalcParameters(PivotObject __parent)
         {
-            if (!_onLevel)
+            if (!_onLevel || _locatedAtLastFrame)
+            {
+                _locatedAtLastFrame = false;
                 return;
+            }
 
             if (_object._isBillboardCostrained)
             {
-                Vector3 axis = Vector3.TransformNormal(Vector3.UnitY, _parent.transform);
+                Vector3 axis = Vector3.UnitY;
+                if(__parent != null)
+                    axis = Vector3.TransformNormal(Vector3.UnitY, __parent.transform);
+                else
+                    axis = Vector3.TransformNormal(Vector3.UnitY, _object.transform);
                 _object._objectConstrAxis = axis;
             }
         }
@@ -46,43 +53,46 @@ namespace PhysX_test2.TheGame.Objects
         {
             if (!_onLevel)
             {
-                _parent = __parentObject;
+                _onLevel = true;
                 _hisLevel.AddEngineObject(_object, __parentObject);
                 _object._isBillboard = false;
                 _object._isBillboardCostrained = false;
+
+                _locatedAtLastFrame = true;
             }
-            _onLevel = true;
         }
 
         public void LocateBillboardToLevel(LevelObject __parentObject)
         {
             if (!_onLevel)
             {
-                _parent = __parentObject;
+                _onLevel = true;
                 _hisLevel.AddEngineObject(_object, __parentObject);
                 _object._isBillboard = true;
                 _object._isBillboardCostrained = false;
+
+                _locatedAtLastFrame = true;
             }
-            _onLevel = true;
         }
 
         public void LocateConstrainedToLevel(LevelObject __parentObject, Vector3 __delta)
         {
             if (!_onLevel)
             {
-                _parent = __parentObject;
-                _hisLevel.AddEngineObject(_object,Matrix.CreateTranslation(__delta), __parentObject);
+                _onLevel = true;
                 _object._isBillboard = false;
                 _object._isBillboardCostrained = true;
+                CalcParameters(__parentObject);
+                _hisLevel.AddEngineObject(_object, Matrix.CreateTranslation(__delta), __parentObject);
+
+                _locatedAtLastFrame = true;
             }
-            _onLevel = true;
         }
 
         public void RemoveFromLevel()
         {
             if(_onLevel)
                 _hisLevel.RemoveObject(_object);
-            _parent = null;
             _onLevel = false;
         }
 

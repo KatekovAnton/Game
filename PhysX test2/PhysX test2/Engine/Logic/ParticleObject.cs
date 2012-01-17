@@ -26,23 +26,34 @@ namespace PhysX_test2.Engine.Logic
         /// </summary>
         public Render.Materials.Material material;
 
-        public int _particlesCount;
+ 
         public MyContainer<ParticleData> _particles;
         private static MyContainer<ParticleData> _particlesForRemove = new MyContainer<ParticleData>();
 
-
+        public float _gravityRelationMultiplier;
         public bool _isBillboards = true;
 
-        public ParticleObject(TimeSpan __currentTime, Vector3 __maxSize, int __particleCount)
+        public ParticleObject(TimeSpan __currentTime, Vector3 __maxSize, int __particleCount, Vector3 __position, Vector3 __direction, float __gravityRelationMultiplier)
         {
             behaviourmodel = new BehaviourModel.ObjectStaticBehaviourModel();
             raycastaspect = new RaycastBoundObject(new SceneGraph.OTBoundingShape(__maxSize), null);
+            SetGlobalPose(Matrix.CreateTranslation(__position), true);
 
 
-            _particlesCount = __particleCount;
-            _particles = new MyContainer<ParticleData>(_particlesCount, 1);
-            for (int i = 0; i < _particlesCount; i++)
-                _particles.Add(new ParticleData(__currentTime.TotalMilliseconds, 1000.0));
+            _particles = new MyContainer<ParticleData>(__particleCount, 1);
+            for (int i = 0; i < __particleCount; i++)
+            {
+                float yaw = MyRandom.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
+                float pitch = MyRandom.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
+                float roll = MyRandom.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
+
+                Matrix result = Matrix.CreateFromYawPitchRoll(yaw, pitch, roll);
+                Vector3 direction = Vector3.TransformNormal(__direction, result);
+
+                float mult = MyRandom.NextFloat(_gravityRelationMultiplier * 0.7f, _gravityRelationMultiplier * 1.3f);
+
+                _particles.Add(new ParticleData(__currentTime.TotalMilliseconds, 1000.0 - MyRandom.Instance.Next(1000 / 3), __position, direction,mult));
+            }
         }
 
         public override Render.Materials.Material HaveMaterial()
@@ -96,20 +107,22 @@ namespace PhysX_test2.Engine.Logic
         private Matrix[] GetParticleData()
         {
             //aggregating results
-            Matrix[] data = new Matrix[_particlesCount];
+            Matrix[] data = new Matrix[_particles.Count];
             if (_isBillboards)
-                for (int i = 0; i < _particlesCount; i++)
+                for (int i = 0; i < _particles.Count; i++)
                     data[i] = Matrix.CreateBillboard(_particles[i]._position, MyGame.Instance._engine.Camera._position, Vector3.Up, MyGame.Instance._engine.Camera._direction);
             else
-                for (int i = 0; i < _particlesCount; i++)
+                for (int i = 0; i < _particles.Count; i++)
                     data[i] = Matrix.CreateTranslation(_particles[i]._position);
             return data;
         }
+
+       
     }
 
     public class ParticleData
     {
-        public float _size;
+        public float _gravityRelationMultiplier;
         /// <summary>
         /// Position of particle
         /// </summary>
@@ -123,15 +136,20 @@ namespace PhysX_test2.Engine.Logic
         public double _liveTime;
         public double _createTime;
 
-        public ParticleData(double __createTime, double __liveTime)
+        public ParticleData(double __createTime, double __liveTime, Vector3 __position, Vector3 __direction, float __gravityRelationMultiplier)
         {
             _createTime = __createTime;
             _liveTime = __liveTime;
+            _gravityRelationMultiplier = __gravityRelationMultiplier;
         }
 
         public void Update(double __elapsedTime)
         {
-            
+            _position = _position + _curentDiection * (float)__elapsedTime;
+           
+            //TODO 
+            //simulate gravity like
+            _curentDiection.Y -= _gravityRelationMultiplier * (float)__elapsedTime;
         }
     }
 }
