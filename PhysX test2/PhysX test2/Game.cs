@@ -133,6 +133,7 @@ namespace PhysX_test2
 
         void MyGame_Exiting(object sender, EventArgs e)
         {
+            Device.Dispose();
             _engine.UnLoad();
             LogProvider.Close();
         }

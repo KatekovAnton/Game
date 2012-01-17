@@ -75,23 +75,25 @@ namespace PhysX_test2.Engine.Logic
             //renderaspect.SetPosition(behaviourmodel.CurrentPosition);
 
             //calculate particle data
-            UpdateParticles(gt);
+            UpdateParticles();
+
+            SortParticles();
 
             //set particle data
             renderaspect.SetParticleData(GetParticleData());
         }
 
 
-        private void UpdateParticles(Microsoft.Xna.Framework.GameTime __gt)
+        protected void UpdateParticles()
         {
             _particlesForRemove.Clear();
 
 
             //TODO: calculate data
-            double time = __gt.ElapsedGameTime.TotalMilliseconds/1000.0;
+            double time = MyGame.UpdateTime.ElapsedGameTime.TotalSeconds;
             foreach (ParticleData pd in _particles)
             {
-                if ((__gt.TotalGameTime.TotalMilliseconds - pd._createTime) > pd._liveTime)
+                if ((MyGame.UpdateTime.TotalGameTime.TotalMilliseconds - pd._createTime) > pd._liveTime)
                     _particlesForRemove.Add(pd);
                 else
                     pd.Update(time);            
@@ -104,7 +106,7 @@ namespace PhysX_test2.Engine.Logic
             _particlesForRemove.Clear();
         }
 
-        private Matrix[] GetParticleData()
+        protected Matrix[] GetParticleData()
         {
             //aggregating results
             Matrix[] data = new Matrix[_particles.Count];
@@ -115,6 +117,12 @@ namespace PhysX_test2.Engine.Logic
                 for (int i = 0; i < _particles.Count; i++)
                     data[i] = Matrix.CreateTranslation(_particles[i]._position);
             return data;
+        }
+
+        protected void SortParticles()
+        { 
+            //TODO
+            //sort particals by camera distance
         }
 
        
@@ -151,5 +159,7 @@ namespace PhysX_test2.Engine.Logic
             //simulate gravity like
             _curentDiection.Y -= _gravityRelationMultiplier * (float)__elapsedTime;
         }
+
+        
     }
 }

@@ -474,7 +474,6 @@ namespace PhysX_test2.Engine.Render
 
             return res;
         }
-
         public SamplerState createNewState(SamplerState aotherstate)
         {
             SamplerState res = new SamplerState();
@@ -489,6 +488,11 @@ namespace PhysX_test2.Engine.Render
             
 
             return res;
+        }
+
+        ~RenderPipeline()
+        {
+            
         }
     }
 }
