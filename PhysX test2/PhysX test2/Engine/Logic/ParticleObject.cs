@@ -79,10 +79,16 @@ namespace PhysX_test2.Engine.Logic
 
             SortParticles();
 
-            //set particle data
-            renderaspect.SetParticleData(GetParticleData());
+            
         }
 
+        public override void AfterUpdate()
+        {
+            //set particle data
+            if(_isOnScreen)
+                renderaspect.SetParticleData(GetParticleData());
+            base.AfterUpdate();
+        }
 
         protected void UpdateParticles()
         {

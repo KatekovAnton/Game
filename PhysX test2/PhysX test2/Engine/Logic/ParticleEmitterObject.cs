@@ -27,9 +27,6 @@ namespace PhysX_test2.Engine.Logic
             GenerateParticles();
 
             SortParticles();
-
-            //set particle data
-            renderaspect.SetParticleData(GetParticleData());
         }
 
         protected void GenerateParticles()

@@ -65,11 +65,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\ObjectRender.fx">
+    <Compile Include="Shaders\ObjectRender.fx">
       <Name>ObjectRender</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

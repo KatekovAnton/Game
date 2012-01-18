@@ -215,7 +215,7 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
                 SGNode n = _subtreeStack.Pop();
                 PivotObject[] objects = n.Entities.ToArray();
                 foreach (PivotObject obj in objects)
-                    obj.SetVisible(true);
+                    obj.SetIsOnScreen(true);
                     
                 visibleEntities.AddRange(n.Entities.ToArray());
                 if (n.Children != null)
@@ -273,7 +273,7 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
                                 if (entContType != ContainmentType.Disjoint)
                                 {
                                     intersectedEntities.Add(wo);
-                                    wo.SetVisible(true);
+                                    wo.SetIsOnScreen(true);
                                 }
                             }
                             if (node.nestingLevel != _maxNestingLevel)
@@ -341,7 +341,7 @@ namespace PhysX_test2.Engine.Logic.SceneGraph
                                 if (entContType != ContainmentType.Disjoint)
                                 {
                                     visibleEntities.Add(wo);
-                                    wo.SetVisible(true);
+                                    wo.SetIsOnScreen(true);
                                 }
                             }
                             if(node.nestingLevel!=_maxNestingLevel)
