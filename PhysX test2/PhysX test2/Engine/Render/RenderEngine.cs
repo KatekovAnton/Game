@@ -112,44 +112,51 @@ namespace PhysX_test2.Engine.Render
                     SmoothShadows = false;
                 }
             }
+
             arrays = new List<string>();
-            arrays.Add(Shader.AnimRenderNoSM);
-            arrays.Add(Shader.NotAnimRenderNoSM);
-            arrays.Add(Shader.AnimRenderSM);
-            arrays.Add(Shader.NotAnimRenderSM);
 
-            arrays.Add(Shader.CreateStaticShadowMap);
-            arrays.Add(Shader.CreateAnimShadowMap);
-
-
-
-            ArraysPerTehnique.Add(Shader.AnimRenderNoSM, new RenderArray(   Shader.AnimRenderNoSM));
-            ArraysPerTehnique.Add(Shader.NotAnimRenderNoSM, new RenderArray(Shader.NotAnimRenderNoSM));
-
-            ArraysPerTehnique.Add(Shader.AnimRenderSM, new RenderArray(     Shader.AnimRenderSM));
-            ArraysPerTehnique.Add(Shader.NotAnimRenderSM, new RenderArray(  Shader.NotAnimRenderSM));
-
-            if (dev.GraphicsProfile == GraphicsProfile.HiDef)
-            {
-                ArraysPerTehnique.Add(Shader.AnimRenderSMSmooth, new RenderArray(   Shader.AnimRenderSMSmooth));
-                ArraysPerTehnique.Add(Shader.NotAnimRenderSMSmooth, new RenderArray(Shader.NotAnimRenderSMSmooth));
-                arrays.Add(Shader.AnimRenderSMSmooth);
-                arrays.Add(Shader.NotAnimRenderSMSmooth);
-
-                ArraysPerTehnique.Add(Shader.TransparentSMSmooth, new RenderArray(Shader.TransparentSMSmooth));
-                arrays.Add(Shader.TransparentSMSmooth);
+            {//основные
+                arrays.Add(Shader.AnimRenderNoSM);
+                arrays.Add(Shader.NotAnimRenderNoSM);
+                arrays.Add(Shader.AnimRenderSM);
+                arrays.Add(Shader.NotAnimRenderSM);
             }
 
-            arrays.Add(Shader.TransparentSM);
-            arrays.Add(Shader.TransparentSelfIlmnNoSM);
-            arrays.Add(Shader.TransparentNoSM);
 
-            ArraysPerTehnique.Add(Shader.TransparentSM, new RenderArray(Shader.TransparentSM));
-            ArraysPerTehnique.Add(Shader.TransparentSelfIlmnNoSM, new RenderArray(Shader.TransparentSelfIlmnNoSM));
-            ArraysPerTehnique.Add(Shader.TransparentNoSM, new RenderArray(Shader.TransparentNoSM));
+            {//шмапа
+                arrays.Add(Shader.CreateStaticShadowMap);
+                arrays.Add(Shader.CreateAnimShadowMap);
+            }
 
-            ArraysPerTehnique.Add(Shader.CreateStaticShadowMap, new RenderArray(Shader.CreateStaticShadowMap));
-            ArraysPerTehnique.Add(Shader.CreateAnimShadowMap, new RenderArray(Shader.CreateAnimShadowMap));
+            {//прозрачные
+                arrays.Add(Shader.TransparentSM);
+                arrays.Add(Shader.TransparentSelfIlmnNoSM);
+                arrays.Add(Shader.TransparentNoSM);
+            }
+
+            {//инстансные
+                //инст с шм
+                arrays.Add(Shader.InstancedNoSM);
+                arrays.Add(Shader.InstancedSM);
+                //инстанс прозр с шм
+                arrays.Add(Shader.InstancedTransparentNoSM);
+                arrays.Add(Shader.InstancedTransparentSM);
+                //инстанс прозр самосвет
+                arrays.Add(Shader.InstancedTransparentSelfIlmnNoSM);
+            }
+
+            //если хайдеф, то и сгладенная шмапа
+            if (dev.GraphicsProfile == GraphicsProfile.HiDef)
+            {
+                arrays.Add(Shader.AnimRenderSMSmooth);
+                arrays.Add(Shader.NotAnimRenderSMSmooth);
+                arrays.Add(Shader.TransparentSMSmooth);
+                arrays.Add(Shader.InstancedTransparentSMSmooth);
+                arrays.Add(Shader.InstancedSMSmooth);
+            }
+
+            foreach (string s in arrays)
+                ArraysPerTehnique.Add(s, new RenderArray(s));
         }
 
         public void NewParameters(bool _EnableShadows, bool _SmoothShadows, bool _EnableGrass)
@@ -163,57 +170,99 @@ namespace PhysX_test2.Engine.Render
         /// <param name="AddedObject">объект</param>
         public void ProceedObject(RenderObject AddedObject)
         {
-            //TODO
-            //обработать случай с ParticleRenderObject
-            if (AddedObject.isTransparent)
+            if (AddedObject as UnAnimRenderObject != null || AddedObject as AnimRenderObject != null)
             {
-                //не мб шадовкастером и не мб анимированным
-                if (AddedObject.isshadowreceiver)
-                    if (EnableShadows)
-                        if (SmoothShadows)
-                            AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentSMSmooth;
+                #region fillrender
+                if (AddedObject.isTransparent)
+                {
+                    //не мб шадовкастером и не мб анимированным
+                    if (AddedObject.isshadowreceiver)
+                        if (EnableShadows)
+                            if (SmoothShadows)
+                                AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentSMSmooth;
+                            else
+                                AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentSM;
                         else
-                            AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentSM;
+                            AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentNoSM;
                     else
                         AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentNoSM;
-                else
-                    AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentNoSM;
-            }
-            else
-            {
-                if (AddedObject.isanimated)
-                {
-                    if (AddedObject.isshadowcaster && EnableShadows)
-                        AddedObject.ShadowTehnique = Shader.CreateAnimShadowMap;
-
-                    if (AddedObject.isshadowreceiver)
-                        if (EnableShadows)
-                            if (SmoothShadows)
-                                AddedObject.PictureTehnique = Shader.AnimRenderSMSmooth;
-                            else
-                                AddedObject.PictureTehnique = Shader.AnimRenderSM;
-                        else
-                            AddedObject.PictureTehnique = Shader.AnimRenderNoSM;
                 }
                 else
                 {
-                    if (AddedObject.isshadowcaster && EnableShadows)
-                        AddedObject.ShadowTehnique = Shader.CreateStaticShadowMap;
+                    if (AddedObject.isanimated)
+                    {
+                        if (AddedObject.isshadowcaster && EnableShadows)
+                            AddedObject.ShadowTehnique = Shader.CreateAnimShadowMap;
 
-
-                    if (AddedObject.isshadowreceiver)
-                        if (EnableShadows)
-                            if (SmoothShadows)
-                                AddedObject.PictureTehnique = Shader.NotAnimRenderSMSmooth;
+                        if (AddedObject.isshadowreceiver)
+                            if (EnableShadows)
+                                if (SmoothShadows)
+                                    AddedObject.PictureTehnique = Shader.AnimRenderSMSmooth;
+                                else
+                                    AddedObject.PictureTehnique = Shader.AnimRenderSM;
                             else
-                                AddedObject.PictureTehnique = Shader.NotAnimRenderSM;
+                                AddedObject.PictureTehnique = Shader.AnimRenderNoSM;
+                    }
+                    else
+                    {
+                        if (AddedObject.isshadowcaster && EnableShadows)
+                            AddedObject.ShadowTehnique = Shader.CreateStaticShadowMap;
+
+
+                        if (AddedObject.isshadowreceiver)
+                            if (EnableShadows)
+                                if (SmoothShadows)
+                                    AddedObject.PictureTehnique = Shader.NotAnimRenderSMSmooth;
+                                else
+                                    AddedObject.PictureTehnique = Shader.NotAnimRenderSM;
+                            else
+                                AddedObject.PictureTehnique = Shader.NotAnimRenderNoSM;
                         else
                             AddedObject.PictureTehnique = Shader.NotAnimRenderNoSM;
-                    else
-                        AddedObject.PictureTehnique = Shader.NotAnimRenderNoSM;
+                    }
                 }
+                #endregion
+            }
+            else if (AddedObject as ParticleRenderObject != null)
+            {
+                #region instanced render
+                if (AddedObject.isTransparent)
+                {
+                    //не мб шадовкастером и не мб анимированным
+                    if (AddedObject.isshadowreceiver)
+                        if (EnableShadows)
+                            if (SmoothShadows)
+                                AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.InstancedTransparentSelfIlmnNoSM : Shader.InstancedTransparentSMSmooth;
+                            else
+                                AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.InstancedTransparentSelfIlmnNoSM : Shader.InstancedTransparentSM;
+                        else
+                            AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.InstancedTransparentSelfIlmnNoSM : Shader.InstancedTransparentNoSM;
+                    else
+                        AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.InstancedTransparentSelfIlmnNoSM : Shader.InstancedTransparentNoSM;
+                }
+                else
+                {
+                    //отключим пока возможность кастования теней
+                    //if (AddedObject.isshadowcaster && EnableShadows)
+                    //    AddedObject.ShadowTehnique = Shader.CreateStaticShadowMap;
+
+
+                    if (AddedObject.isshadowreceiver)
+                        if (EnableShadows)
+                            if (SmoothShadows)
+                                AddedObject.PictureTehnique = Shader.InstancedSMSmooth;
+                            else
+                                AddedObject.PictureTehnique = Shader.InstancedSM;
+                        else
+                            AddedObject.PictureTehnique = Shader.InstancedNoSM;
+                    else
+                        AddedObject.PictureTehnique = Shader.InstancedNoSM;
+
+                }
+                #endregion
             }
         }
+
 
         public void NewFrame(Vector3 lightDir)
         {
@@ -315,29 +364,8 @@ namespace PhysX_test2.Engine.Render
             Render.Materials.Material.ObjectRenderEffect.Parameters["LightDirection"].SetValue(lightDir);
             Render.Materials.Material.ObjectRenderEffect.Parameters["LightViewProj"].SetValue(lightViewProjection);
 
-
-            MyContainer<PivotObject> Objects = ArraysPerTehnique[Shader.CreateStaticShadowMap].Objects;
-            if (!Objects.IsEmpty)
-            {
-                Materials.Material.ObjectRenderEffect.CurrentTechnique = Materials.Material.ObjectRenderEffect.Techniques[Shader.CreateStaticShadowMap];
-
-                foreach (PivotObject wo in Objects)
-                {
-                    Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.renderMatrix);
-                    wo.HaveRenderAspect().SelfRender(2, wo.HaveMaterial());
-                }
-            }
-            MyContainer<PivotObject> ObjectsA = ArraysPerTehnique[Shader.CreateAnimShadowMap].Objects;
-            if (!Objects.IsEmpty)
-            {
-                Materials.Material.ObjectRenderEffect.CurrentTechnique = Materials.Material.ObjectRenderEffect.Techniques[Shader.CreateAnimShadowMap];
-                foreach (PivotObject wo in ObjectsA)
-                {
-                    Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.renderMatrix);
-                    wo.HaveRenderAspect().SelfRender(2, wo.HaveMaterial());
-                }
-            }
-          
+            RenderArrayWithTehnique(Shader.CreateStaticShadowMap, 2);
+            RenderArrayWithTehnique(Shader.CreateAnimShadowMap, 2);
             _device.SetRenderTarget(null);
         }
         
@@ -424,7 +452,7 @@ namespace PhysX_test2.Engine.Render
             }
         }
 
-        public void RenderArrayWithTehnique(string name)
+        public void RenderArrayWithTehnique(string name, int lodnumber = 0)
         {
             MyContainer<PivotObject> Objects = ArraysPerTehnique[name].Objects;
             if (!Objects.IsEmpty)
@@ -433,7 +461,7 @@ namespace PhysX_test2.Engine.Render
                 foreach (PivotObject wo in Objects)
                 {
                     Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.renderMatrix);
-                    wo.HaveRenderAspect().SelfRender(0, wo.HaveMaterial());
+                    wo.HaveRenderAspect().SelfRender(lodnumber, wo.HaveMaterial());
                 }
             }
         }

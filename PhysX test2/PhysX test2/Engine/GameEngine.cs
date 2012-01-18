@@ -371,6 +371,8 @@ namespace PhysX_test2.Engine
             GraphicPipeleine.NewFrame(lightDir);
 
             gameScene.CalculateVisibleObjects();
+            gameScene.AfterUpdate();
+
             Vector3 v1 = MyGame.DeviceManager.GraphicsDevice.Viewport.Project(LevelObjectBox.transform.Translation, Camera.Projection, Camera.View, Matrix.Identity);
             BoxScreenPosition = new Vector3(Convert.ToSingle(Convert.ToInt32(v1.X)), Convert.ToSingle(Convert.ToInt32(v1.Y)), v1.Z);
 

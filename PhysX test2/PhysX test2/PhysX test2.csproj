@@ -134,6 +134,7 @@
     <Compile Include="BaseExtensions\KeyboardManager\KeyScan.cs" />
     <Compile Include="BaseExtensions\MouseManager\MouseManager.cs" />
     <Compile Include="BaseExtensions\MyRandom.cs" />
+    <Compile Include="BaseExtensions\Notifications.cs" />
     <Compile Include="BaseExtensions\Plist.cs" />
     <Compile Include="BaseExtensions\SQliteShell\SQliteConnector.cs" />
     <Compile Include="BaseExtensions\SQliteShell\SQliteResultSet.cs" />
@@ -261,6 +262,8 @@
     <Compile Include="TheGame\Objects\GameBulletBase.cs" />
     <Compile Include="TheGame\Objects\GameBulletSimple.cs" />
     <Compile Include="TheGame\Objects\GameCharacter.cs" />
+    <Compile Include="TheGame\Objects\GameParticleEmitterObject.cs" />
+    <Compile Include="TheGame\Objects\GameParticleObject.cs" />
     <Compile Include="TheGame\Objects\GameWeapon.cs" />
     <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphEdge.cs" />
     <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphController.cs" />

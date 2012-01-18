@@ -180,6 +180,12 @@ namespace PhysX_test2.Engine.Logic
 
         }
 
+        public void AfterUpdate()
+        {
+            foreach (PivotObject po in _objects)
+                po.AfterUpdate();
+        }
+
         public void CalculateVisibleObjects()
         {
             _sceneGraph.calculateVisibleObjects(GameEngine.Instance.Camera.cameraFrustum, _visibleObjects);

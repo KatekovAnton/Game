@@ -30,30 +30,46 @@ namespace PhysX_test2.Engine.Logic
         public MyContainer<ParticleData> _particles;
         private static MyContainer<ParticleData> _particlesForRemove = new MyContainer<ParticleData>();
 
-        public float _gravityRelationMultiplier;
+        
         public bool _isBillboards = true;
 
-        public ParticleObject(TimeSpan __currentTime, Vector3 __maxSize, int __particleCount, Vector3 __position, Vector3 __direction, float __gravityRelationMultiplier)
+        protected Vector3 _direction;
+        protected Vector3 _position;
+        protected Vector3 _maxSize;
+        public float _gravityRelationMultiplier;
+        public float _dispRadius;
+
+
+        public ParticleObject(Vector3 __maxSize, int __particleCount, Vector3 __position, Vector3 __direction, float __dispRadius, float __gravityRelationMultiplier)
         {
+            //TODO
+            //it can be moving also
             behaviourmodel = new BehaviourModel.ObjectStaticBehaviourModel();
             raycastaspect = new RaycastBoundObject(new SceneGraph.OTBoundingShape(__maxSize), null);
             SetGlobalPose(Matrix.CreateTranslation(__position), true);
 
-
+            _dispRadius = __dispRadius;
+            _direction = __direction;
+            _position = __position;
+            _maxSize = __maxSize;
             _particles = new MyContainer<ParticleData>(__particleCount, 1);
             for (int i = 0; i < __particleCount; i++)
-            {
-                float yaw = MyRandom.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
-                float pitch = MyRandom.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
-                float roll = MyRandom.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
+                _particles.Add(CreateParticle());
+        }
 
-                Matrix result = Matrix.CreateFromYawPitchRoll(yaw, pitch, roll);
-                Vector3 direction = Vector3.TransformNormal(__direction, result);
+        protected ParticleData CreateParticle()
+        {
+            float yaw = MyRandom.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
+            float pitch = MyRandom.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
+            float roll = MyRandom.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
 
-                float mult = MyRandom.NextFloat(_gravityRelationMultiplier * 0.7f, _gravityRelationMultiplier * 1.3f);
+            Matrix result = Matrix.CreateFromYawPitchRoll(yaw, pitch, roll);
+            Vector3 resultDirection = Vector3.TransformNormal(_direction, result);
 
-                _particles.Add(new ParticleData(__currentTime.TotalMilliseconds, 1000.0 - MyRandom.Instance.Next(1000 / 3), __position, direction,mult));
-            }
+            Vector3 delta = new Vector3(MyRandom.NextFloat(_dispRadius), MyRandom.NextFloat(_dispRadius), MyRandom.NextFloat(_dispRadius));
+
+            float mult = MyRandom.NextFloat(_gravityRelationMultiplier * (1.0f - _dispRadius), _gravityRelationMultiplier * (1.0f + _dispRadius));
+            return new ParticleData(MyGame.UpdateTime.TotalGameTime.TotalMilliseconds, 1000.0 - MyRandom.Instance.Next(1000 / 3), _position + delta, resultDirection, mult);
         }
 
         public override Render.Materials.Material HaveMaterial()
@@ -68,21 +84,23 @@ namespace PhysX_test2.Engine.Logic
 
         public override void DoFrame(Microsoft.Xna.Framework.GameTime gt)
         {
-            //dont need - static only
-            //behaviourmodel.DoFrame(gt);
+            behaviourmodel.DoFrame(gt);
 
-            //set position - lookslike dont need too
-            //renderaspect.SetPosition(behaviourmodel.CurrentPosition);
+            renderaspect.SetPosition(behaviourmodel.CurrentPosition);
 
-            //calculate particle data
             UpdateParticles();
-
-            SortParticles();
-
-            //set particle data
-            renderaspect.SetParticleData(GetParticleData());
         }
 
+        public override void AfterUpdate()
+        {
+            //set particle data
+            if (_isOnScreen)
+            {
+                SortParticles();
+                renderaspect.SetParticleData(GetParticleData());
+            }
+            base.AfterUpdate();
+        }
 
         protected void UpdateParticles()
         {

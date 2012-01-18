@@ -88,12 +88,12 @@ namespace PhysX_test2.Engine.Logic
         public Vector3 _objectConstrAxis = Vector3.UnitX;
         public Vector3 _objectConstrForward = -Vector3.UnitY;
 
-        protected bool _visible;
+        protected bool _isOnScreen;
         public bool moved;
 
-        public virtual void SetVisible(bool __visible)
+        public virtual void SetIsOnScreen(bool __isOnScreen)
         {
-            _visible = __visible;
+            _isOnScreen = __isOnScreen;
         }
 
         public PivotObject()
@@ -112,7 +112,7 @@ namespace PhysX_test2.Engine.Logic
         {
             moved = false;
             behaviourmodel.BeginDoFrame();
-            SetVisible(false);
+            SetIsOnScreen(false);
         }
 
         public void EndDoFrame()
@@ -153,6 +153,18 @@ namespace PhysX_test2.Engine.Logic
                 Update();
         }
 
+        public virtual void AfterUpdate()
+        {
+            if (_isOnScreen)
+            {
+                renderMatrix = transform;
+                if (useDeltaMatrix)
+                    renderMatrix = deltaMatrix * transform;
+                else
+                    renderMatrix = transform;
+            }
+        }
+
         public void SetPosition(Vector3 position)
         {
             behaviourmodel.SetPosition(position);
@@ -171,13 +183,6 @@ namespace PhysX_test2.Engine.Logic
 
             if (moved)
                 raycastaspect.boundingShape.Update(transform);
-
-
-            renderMatrix = transform;
-            if (useDeltaMatrix)
-                renderMatrix = deltaMatrix * transform;
-            else
-                renderMatrix = transform;
 
         }
 
