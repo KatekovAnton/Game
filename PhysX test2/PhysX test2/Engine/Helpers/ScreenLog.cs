@@ -36,11 +36,6 @@ namespace PhysX_test2.Engine.Helpers
             }
         }
 
-    /*    public ScreenLog() : base()
-        {
-     
-        }
-        */
         public new void Add(ScreenLogMessage __message)
         {
             this.Insert(0, __message);

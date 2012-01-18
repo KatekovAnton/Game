@@ -1,4 +1,8 @@
 Content\Courier New.xnb
+Content\Shaders\ObjectRender.xnb
+Content\Shaders\ObjectRenderHiDef.xnb
+Content\Shaders\ObjectRenderReach.xnb
+Content\Shaders\ObjectRenderUltraLow.xnb
 Content\ObjectRender.xnb
 Community.CsharpSqlite.dll
 cudart32_30_9.dll
@@ -8,6 +12,7 @@ PhysXCooking.dll
 PhysXCore.dll
 PhysXDevice.dll
 PhysXLoader.dll
+config.cfg
 Data\Data.pack
 Data\Interface.pack
 Data\Data.sqlite

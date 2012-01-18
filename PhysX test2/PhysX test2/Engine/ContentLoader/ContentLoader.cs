@@ -167,6 +167,27 @@ namespace PhysX_test2.Engine.ContentLoader
             return behaviourmodel;
         }
 
+        public static Content.Texture LoadTexture(string name)
+        {
+            Content.Texture image = new Content.Texture();
+            image = PackList.Instance.GetObject(name, image) as Content.Texture;
+            image.Retain(image.texture);
+            return image;
+        }
+
+        public static void UnloadTexture(Content.Texture texture)
+        {
+            Pack p = null;
+            PackContent pc_image = PackList.Instance.FindObject(texture.name, ref p);
+            Content.Texture inage = pc_image.ReadedContentObject as Content.Texture;
+            inage.Release();
+            if (inage._userCount == 0)
+            {
+                pc_image.objectReaded = false;
+                pc_image.ReadedContentObject = null;
+            }
+        }
+
         private static Material loadMaterial(string name, PackList packs)
         {
             PhysX_test2.Content.MaterialDescription mat = new MaterialDescription();

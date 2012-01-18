@@ -70,6 +70,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\Community.CsharpSqlite.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -122,6 +123,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseExtensions\Config.cs" />
     <Compile Include="BaseExtensions\ExcLog.cs" />
     <Compile Include="BaseExtensions\GameConfiguration.cs" />
     <Compile Include="BaseExtensions\Graph\GraphController.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="BaseExtensions\KeyboardManager\KeyScan.cs" />
     <Compile Include="BaseExtensions\MouseManager\MouseManager.cs" />
     <Compile Include="BaseExtensions\MyRandom.cs" />
+    <Compile Include="BaseExtensions\Notifications.cs" />
     <Compile Include="BaseExtensions\Plist.cs" />
     <Compile Include="BaseExtensions\SQliteShell\SQliteConnector.cs" />
     <Compile Include="BaseExtensions\SQliteShell\SQliteResultSet.cs" />
@@ -180,6 +183,7 @@
     <Compile Include="Engine\ContentLoader\NewContentLoader.cs" />
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
     <Compile Include="Engine\Helpers\ScreenLog.cs" />
+    <Compile Include="Engine\Logic\ParticleEmitterObject.cs" />
     <Compile Include="Engine\Logic\ParticleObject.cs" />
     <Compile Include="Engine\ObjectCashe.cs" />
     <Compile Include="Engine\Render\Materials\OpacityMaterial.cs" />
@@ -259,6 +263,8 @@
     <Compile Include="TheGame\Objects\GameBulletBase.cs" />
     <Compile Include="TheGame\Objects\GameBulletSimple.cs" />
     <Compile Include="TheGame\Objects\GameCharacter.cs" />
+    <Compile Include="TheGame\Objects\GameParticleEmitterObject.cs" />
+    <Compile Include="TheGame\Objects\GameParticleObject.cs" />
     <Compile Include="TheGame\Objects\GameWeapon.cs" />
     <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphEdge.cs" />
     <Compile Include="TheGame\Objects\StateGraphs\ObjectGraph\ObjectGraphController.cs" />
@@ -267,7 +273,7 @@
     <Compile Include="TheGame\Objects\StateGraphs\GameCharacter\CharacterGraphEdge.cs" />
     <Compile Include="TheGame\Objects\StateGraphs\GameCharacter\CharacterGraphNode.cs" />
     <Compile Include="TheGame\Objects\GameObject.cs" />
-    <Compile Include="MathExtensions.cs" />
+    <Compile Include="BaseExtensions\MyMath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game.cs" />
@@ -277,6 +283,7 @@
     <Compile Include="TheGame\TheGame.cs" />
     <Compile Include="UserInterface\BaseInterface.cs" />
     <Compile Include="UserInterface\Controls.cs" />
+    <Compile Include="UserInterface\UIContent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Community.CsharpSqlite.dll">
@@ -346,6 +353,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="config.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Data\Data.pack">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

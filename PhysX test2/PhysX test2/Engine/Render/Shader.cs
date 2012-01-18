@@ -38,9 +38,21 @@ namespace PhysX_test2.Engine.Render
 
         public static string TransparentSelfIlmnNoSM = "TransparentSelfIlmnNoSM";
 
-        
 
+        //вот эти техники надо сделать
+        public static string InstancedNoSM = "InstancedNoSM";
+        public static string InstancedSM = "InstancedSM";
+        public static string InstancedSMSmooth = "InstancedSMSmooth";
+
+        public static string InstancedTransparentNoSM = "InstancedTransparentNoSM";
+        public static string InstancedTransparentSM = "InstancedTransparentSM";
+        public static string InstancedTransparentSMSmooth = "InstancedTransparentSMSmooth";
+
+        public static string InstancedTransparentSelfIlmnNoSM = "InstancedTransparentSelfIlmnNoSM";
+     
+        
         //ОТДЕЛЬНЫЕ ТЕХНИКИ НА ТРАВУ
+        //а надо ли??
 
 
       /* protected class LoggerTrick : ContentBuildLogger
@@ -113,6 +125,12 @@ namespace PhysX_test2.Engine.Render
 
                 CreateStaticShadowMap = "CreateStaticShadowMapR";
                 CreateAnimShadowMap = "CreateAnimShadowMapR";
+
+                InstancedSM = "InstancedSMR";
+                InstancedSMSmooth = InstancedSM;
+
+                InstancedTransparentSM = "InstancedTransparentSMR";
+                InstancedTransparentSMSmooth = InstancedTransparentSM;
             }
             return e;
         }
@@ -168,5 +186,4 @@ namespace PhysX_test2.Engine.Render
             this.Objects = new MyContainer<PivotObject>(100, 10);
         }
     }
-    
 }

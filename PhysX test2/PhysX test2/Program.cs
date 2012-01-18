@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace PhysX_test2
 {
 #if WINDOWS || XBOX
-    static class Program
+   public static class Program
     {
        public static MyGame game;
         /// <summary>

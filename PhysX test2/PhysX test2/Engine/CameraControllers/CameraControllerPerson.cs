@@ -125,22 +125,21 @@ namespace PhysX_test2.Engine.CameraControllers
 
             _mouseWheelOld = mouseState.ScrollWheelValue;
 
-            delta = newtarget - _currentTarget;
-
-            delta.Y = 0;
-            delta.Normalize();
-            delta *= _cameraDelta;
-
-            //if (delta.Length()>5)
-            MyMath.perehod(ref _delta, delta, 0.9f);
+            _delta = newtarget - _currentTarget;
+            _delta.Y = 0;
+            if(_delta.LengthSquared()!=0)
+                _delta.Normalize();
+            _delta *= _cameraDelta;
         }
 
         public override void UpdateCamera()
         {
             _currentTarget = _character.transform.Translation + _delta;
-          //  MyMath.perehod(ref _currentTarget, _character.transform.Translation + _delta , 0.1f);
-            MyMath.perehod(ref _currendPosition, _currentTarget + _offset + _delta, 0.9f);
-           // _currendPosition = _currentTarget + _offset;
+            //float time = Convert.ToSingle(MyGame.UpdateTime.ElapsedGameTime.TotalMilliseconds / 1000);
+
+          //  MyMath.perehod(ref _currentTarget, _character.transform.Translation + _delta , 0.9f);
+           // MyMath.perehod(ref _currendPosition, _currentTarget + _offset, 0.9f);
+            _currendPosition = _currentTarget + _offset;
             base.UpdateCamera();
         }
     }

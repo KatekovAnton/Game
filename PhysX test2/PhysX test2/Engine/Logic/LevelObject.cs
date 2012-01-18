@@ -27,9 +27,9 @@ namespace PhysX_test2.Engine.Logic
             material = _material;
         }
 
-        public override void SetVisible(bool __visible)
+        public override void SetIsOnScreen(bool __visible)
         {
-            _visible = __visible;
+            _isOnScreen = __visible;
             renderaspect.visible = __visible;
         }
 
@@ -48,6 +48,8 @@ namespace PhysX_test2.Engine.Logic
             behaviourmodel.DoFrame(gt);
             renderaspect.SetPosition(behaviourmodel.CurrentPosition);
         }
+
+
 
         public void CreateFromContentEntity(ContentNew.IPackContentEntity[] __contentEntities)
         {

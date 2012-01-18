@@ -18,7 +18,7 @@ namespace PhysX_test2.TheGame
     public class TheGame:IKeyboardUser
     {
         private List<HotKey> _hotkeys;
-
+     //   public bool AllKeys { get { return false; } }
         public bool GlobalUser { set { } get { return false; } }
 
         public const string _playerCharacterKey = "player";
@@ -49,10 +49,7 @@ namespace PhysX_test2.TheGame
             
         }
 
-        public bool IsKeyboardCaptured()
-        {
-            return false;
-        }
+        public bool IsKeyboardCaptured { set {  } get { return false; } }
 
         public void SwichGunState()
         {
@@ -77,6 +74,7 @@ namespace PhysX_test2.TheGame
 
         public void LoadSampleData()
         {
+            //Cashe all small objects!!!
             _engine.CasheObject("SimpleBullet_LO\0", null, false, false);
             _engine.CasheObject("EffectLevelObject\0", null, false, false);
             //загрузка всего

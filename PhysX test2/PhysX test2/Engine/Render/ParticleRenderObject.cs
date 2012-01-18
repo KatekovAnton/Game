@@ -24,7 +24,7 @@ namespace PhysX_test2.Engine.Render
 
         private Matrix[] _matrices;
         private MyModel _model;
-        private DynamicVertexBuffer instanceVertexBuffer;
+        private DynamicVertexBuffer _instanceVertexBuffer;
 
         public ParticleRenderObject(int __particleCount, MyModel __model)
         {
@@ -65,25 +65,25 @@ namespace PhysX_test2.Engine.Render
                 return;
 
             // If we have more instances than room in our vertex buffer, grow it to the neccessary size.
-            if ((instanceVertexBuffer == null) ||
-                (instances.Length > instanceVertexBuffer.VertexCount))
+            if ((_instanceVertexBuffer == null) ||
+                (instances.Length > _instanceVertexBuffer.VertexCount))
             {
-                if (instanceVertexBuffer != null)
-                    instanceVertexBuffer.Dispose();
+                if (_instanceVertexBuffer != null)
+                    _instanceVertexBuffer.Dispose();
 
-                instanceVertexBuffer = new DynamicVertexBuffer(MyGame.Device, instanceVertexDeclaration,
+                _instanceVertexBuffer = new DynamicVertexBuffer(MyGame.Device, instanceVertexDeclaration,
                                                                instances.Length, BufferUsage.WriteOnly);
             }
 
             // Transfer the latest instance transform matrices into the instanceVertexBuffer.
-            instanceVertexBuffer.SetData(instances, 0, instances.Length, SetDataOptions.Discard);
+            _instanceVertexBuffer.SetData(instances, 0, instances.Length, SetDataOptions.Discard);
             Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(Matrix.Identity);
             foreach (SubSet s in _model.subsets)
             {
                 // Tell the GPU to read from both the model vertex buffer plus our instanceVertexBuffer.
                 MyGame.Device.SetVertexBuffers(
                     new VertexBufferBinding(s.mesh.VertexBuffer, 4 * (3 + 3 + 2), 0),
-                    new VertexBufferBinding(instanceVertexBuffer, 0, 1)
+                    new VertexBufferBinding(_instanceVertexBuffer, 0, 1)
                 );
 
                 MyGame.Device.Indices = s.mesh.IndexBuffer;
@@ -131,6 +131,17 @@ namespace PhysX_test2.Engine.Render
             }
         }
 
+        public override void Dispose()
+        {
+            if (!Disposed)
+            {
+                if ((_instanceVertexBuffer == null) && !(_instanceVertexBuffer.IsDisposed))
+                    _instanceVertexBuffer.Dispose();
+                _model.Dispose();
+                _matrices = null;
+                base.Dispose();
+            }
+        }
 
         /// <summary>
         /// This technique is NOT a good idea! It is only included in the sample

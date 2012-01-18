@@ -1,4 +1,4 @@
-﻿uniform extern float4x4 World;
+uniform extern float4x4 World;
 uniform extern float4x4 View;
 uniform extern float4x4 Projection;
 
@@ -27,7 +27,7 @@ inline float Float4ToFloat( float4 rgba )
     return dot( rgba, decode_mask );
 }
 
-//ТЕНИ
+//����
 float4x4 LightViewProj;
 float3 LightDirection = normalize(float3(-1, -1, -1));
 float4 AmbientColor = float4(0.15, 0.15, 0.15, 0);
@@ -107,11 +107,6 @@ CreateShadowMap_VSOut CreateShadowMap_SkinnedVertexShader(SkinnedVertex vertex)
     return Out;
 }
 
-float4 CreateShadowMap_PixelShader(CreateShadowMap_VSOut input) : COLOR
-{ 
-    return float4(input.Depth, 0, 0, 1);
-}
-
 float4 CreateShadowMap_PixelShaderR(CreateShadowMap_VSOut input) : COLOR
 { 
     return FloatToFloat4(input.Depth);
@@ -126,7 +121,7 @@ float4 CreateShadowMap_PixelShaderR(CreateShadowMap_VSOut input) : COLOR
 
 
 
-
+//===============================VERTEX SHADER======================================
 
 PS_INPUT StaticVertexShaderSM(Vertex vertex)
 {
@@ -181,7 +176,25 @@ PS_INPUT SkinnedVertexShaderNoSM(SkinnedVertex vertex)
     return f;
 }
 
+PS_INPUT NoInstancingVertexShaderNoSM(Vertex vertex)
+{
+    PS_INPUT f = (PS_INPUT)0;
+	f.Position = mul(mul(mul(vertex.Position, World), View), Projection);
+	f.TextureCoordinate = vertex.TextureCoordinate;
+	f.Normal = normalize(mul(vertex.Normal, (float3x3)World));
 
+	return f;
+}
+
+PS_INPUT NoInstancingVertexShaderSM(Vertex vertex)
+{
+    PS_INPUT f = (PS_INPUT)0;
+	f.Position = mul(mul(mul(vertex.Position, World), View), Projection);
+	f.TextureCoordinate = vertex.TextureCoordinate;
+	f.Normal = normalize(mul(vertex.Normal, (float3x3)World)); 
+	f.WorldPos = mul(vertex.Position, World); 
+	return f;
+}
 
 
 //===============================PIXEL SHADER======================================
@@ -216,39 +229,6 @@ float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
 	return color;
 }
 
-float4 SolidTextureSM(PS_INPUT f) : COLOR0
-{
-	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
-	if(color.a<0.02)
-		discard;
-
-	float4 lightingPosition = mul(f.WorldPos, LightViewProj);
-	float2 ShadowTexCoord = 0.5 * lightingPosition.xy / lightingPosition.w + float2( 0.5, 0.5 );
-	ShadowTexCoord.y = 1.0f - ShadowTexCoord.y;
-	float shadowdepth = tex2D(ShadowMapSampler, ShadowTexCoord).r;    
-	float ourdepth = (lightingPosition.z / lightingPosition.w) - DepthBias;
-	
-
-
-	float shadowintens = 0.4f;
-	float minclamp = 0.1;
-	
-
-
-	float shadowcoeff =0;
-	float lambertfactor = clamp( dot( -f.Normal,normalize(LightDirection)),minclamp,1.0f)+shadowintens - minclamp;
-
-	if (shadowdepth < ourdepth)
-	{
-		shadowcoeff = 0.15;
-		if(lambertfactor !=shadowintens)
-			lambertfactor = shadowintens;
-	}
-	lambertfactor*=1.1;
-	float3 color1 = color.rgb* lambertfactor;
-	return float4(color1,1);
-}
-
 float4 SolidTextureSMR(PS_INPUT f) : COLOR0
 {
 	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
@@ -281,73 +261,34 @@ float4 SolidTextureSMR(PS_INPUT f) : COLOR0
 	float3 color1 = color.rgb* lambertfactor;
 	return float4(color1,1);
 }
-
-
-
-float4 SolidTextureSMSmooth(PS_INPUT f) : COLOR0
-{
-	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
-	if(color.a<0.02)
-		discard;
-	float4 lightingPosition = mul(f.WorldPos, LightViewProj);
-	float2 ShadowTexCoord = 0.5 * lightingPosition.xy / lightingPosition.w + float2( 0.5, 0.5 );
-	ShadowTexCoord.y = 1.0f - ShadowTexCoord.y;
-	float ourdepth = (lightingPosition.z / lightingPosition.w) - DepthBias;
-	
-
-
-	float shadowintens = 0.4f;
-	float minclamp = 0.1;
-	
-
-
-	float shadowcoeff =0;
-	float lambertfactor = clamp(dot(-f.Normal,normalize(LightDirection)), minclamp, 1.0f)+shadowintens - minclamp;
-
-
-	if(tex2D(ShadowMapSampler, ShadowTexCoord).r < ourdepth)
-		shadowcoeff = 0.35;
-	if(tex2D(ShadowMapSampler, ShadowTexCoord + float2( -1.0/2048.0, -1.0/2048.0)).x < ourdepth)
-		shadowcoeff += 0.0625;
-	if(tex2D(ShadowMapSampler, ShadowTexCoord + float2( -1.0/2048.0, 0)).x < ourdepth)	
-		shadowcoeff += 0.125;
-	if(tex2D(ShadowMapSampler, ShadowTexCoord + float2( -1.0/2048.0, 1.0/2048.0)).x < ourdepth)
-		shadowcoeff += 0.0625;
-	if(tex2D(ShadowMapSampler, ShadowTexCoord + float2( 0, -1.0/2048.0)).x < ourdepth)
-		shadowcoeff += 0.125;
-	if(tex2D(ShadowMapSampler, ShadowTexCoord + float2( 0, 1.0/2048.0)).x < ourdepth)
-		shadowcoeff += 0.125;
-	if(tex2D(ShadowMapSampler, ShadowTexCoord + float2( 1.0/2048.0, -1.0/2048.0)).x < ourdepth)
-		shadowcoeff += 0.0625;
-	if(tex2D(ShadowMapSampler, ShadowTexCoord + float2( 1.0/2048.0, 0)).x < ourdepth)
-		shadowcoeff += 0.125;
-	if(tex2D(ShadowMapSampler, ShadowTexCoord + float2( 1, 1.0/2048.0)).x < ourdepth)
-		shadowcoeff += 0.0625;
-	
-
-	shadowcoeff = 0.95 - shadowcoeff * shadowintens;
-
-
-	if(shadowcoeff!=1.0 && lambertfactor > shadowcoeff)
-		lambertfactor = shadowcoeff;
-
-
-	lambertfactor*=1.1;
-
-	float3 color1 = color.rgb* lambertfactor;
-	return float4(color1,1);
-}
 //=================================================================================
 
 
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////
+////�������� ���������
+technique CreateStaticShadowMapR
+{
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 CreateShadowMap_StaticVertexShader();
+        PixelShader = compile ps_2_0 CreateShadowMap_PixelShaderR();
+    }
+}
 
+technique CreateAnimShadowMapR
+{
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 CreateShadowMap_SkinnedVertexShader();
+        PixelShader = compile ps_2_0 CreateShadowMap_PixelShaderR();
+    }
+}
 
-
-
-//РЕНДЕР БЕЗ ШАДОВМАПЫ
+//////////////////////////////////////////////////////////////////////////////////////
+//������ ��� ���������
 technique AnimRenderNoSM
 {
   pass P0
@@ -366,46 +307,35 @@ technique NotAnimRenderNoSM
   }
 }
 
-
-//РЕНДЕР СО СГЛАЖЕННОЙ ШАДОВМАПОЙ
-technique AnimRenderSMSmooth
+technique TransparentNoSM
 {
-  pass P0
-  {
-    VertexShader = compile vs_2_0 SkinnedVertexShaderSM();
-    PixelShader = compile ps_2_0 SolidTextureSMSmooth();
-  }
-}
-
-technique NotAnimRenderSMSmooth
-{
-  pass P0
+  pass Pass1
   {
     VertexShader = compile vs_2_0 StaticVertexShaderSM();
-    PixelShader = compile ps_2_0 SolidTextureSMSmooth();
-  }
-}
-//РЕНДЕР С НЕСГЛАЖЕННОЙ ШАДОВМАПОЙ
-//HiDef
-technique AnimRenderSM
-{
-  pass P0
-  {
-    VertexShader = compile vs_2_0 SkinnedVertexShaderSM();
-    PixelShader = compile ps_2_0 SolidTextureSM();
+    PixelShader = compile ps_2_0 SolidTextureNoSM();
   }
 }
 
-technique NotAnimRenderSM
+technique InstancedNoSM
 {
-  pass P0
-  {
-    VertexShader = compile vs_2_0 StaticVertexShaderSM();
-    PixelShader = compile ps_2_0 SolidTextureSM();
-  }
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 NoInstancingVertexShaderNoSM();
+        PixelShader = compile ps_2_0 SolidTextureNoSM();
+    }
 }
-//РЕНДЕР С НЕСГЛАЖЕННОЙ ШАДОВМАПОЙ
-//Reach
+
+technique InstancedTransparentNoSM
+{
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 NoInstancingVertexShaderNoSM();
+        PixelShader = compile ps_2_0 SolidTextureNoSM();
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+//������ � ������������ ����������
 technique AnimRenderSMR
 {
   pass P0
@@ -424,35 +354,35 @@ technique NotAnimRenderSMR
   }
 }
 
-//РЕНДЕР ПРОЗРАЧНЫХ ОБЪЕКТОВ
-//не самосвет
-technique TransparentNoSM
+technique TransparentSMR
 {
-  pass Pass1
+  pass P0
   {
     VertexShader = compile vs_2_0 StaticVertexShaderSM();
-    PixelShader = compile ps_2_0 SolidTextureSM();
+    PixelShader = compile ps_2_0 SolidTextureSMR();
   }
 }
 
-technique TransparentSM
+technique InstancedSMR
 {
-  pass Pass1
-  {
-    VertexShader = compile vs_2_0 StaticVertexShaderSM();
-    PixelShader = compile ps_2_0 SolidTextureSM();
-  }
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 NoInstancingVertexShaderSM();
+        PixelShader = compile ps_2_0 SolidTextureSMR();
+    }
 }
 
-technique TransparentSMSmooth
+technique InstancedTransparentSMR
 {
-  pass Pass1
-  {
-    VertexShader = compile vs_2_0 StaticVertexShaderSM();
-    PixelShader = compile ps_2_0 SolidTextureSMSmooth();
-  }
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 NoInstancingVertexShaderSM();
+        PixelShader = compile ps_2_0 SolidTextureSMR();
+    }
 }
-//саомсвет
+
+//////////////////////////////////////////////////////////////////////////////////////
+//������ �������� ���������� ��������
 technique TransparentSelfIlmnNoSM
 {
   pass Pass1
@@ -462,135 +392,11 @@ technique TransparentSelfIlmnNoSM
   }
 }
 
-////СОЗДАНИЕ ШАДОВМАПЫ
-//HiDef
-technique CreateStaticShadowMap
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_2_0 CreateShadowMap_StaticVertexShader();
-        PixelShader = compile ps_2_0 CreateShadowMap_PixelShader();
-    }
-}
-technique CreateAnimShadowMap
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_2_0 CreateShadowMap_SkinnedVertexShader();
-        PixelShader = compile ps_2_0 CreateShadowMap_PixelShader();
-    }
-}
-//Reach
-technique CreateStaticShadowMapR
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_2_0 CreateShadowMap_StaticVertexShader();
-        PixelShader = compile ps_2_0 CreateShadowMap_PixelShaderR();
-    }
-}
-technique CreateAnimShadowMapR
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_2_0 CreateShadowMap_SkinnedVertexShader();
-        PixelShader = compile ps_2_0 CreateShadowMap_PixelShaderR();
-    }
-}
-
-
-//ОТДЕЛЬНЫЕ ТЕХНИКИ НА ТРАВУ И ПУЛИ СО ВЗРЫВАМИ
-
-//instanced
-
-PS_INPUT HardwareInstancingVertexShader(Vertex vertex,
-                                                  float4x4 instanceTransform : BLENDWEIGHT)
-{
-    PS_INPUT f = (PS_INPUT)0;
-	f.Position = mul(mul(mul(vertex.Position, instanceTransform), View), Projection);
-	f.TextureCoordinate = vertex.TextureCoordinate;
-  
-	f.Normal = normalize(mul(vertex.Normal, (float3x3)World));  
-	return f;
-}
-
-technique InstancedNoSM
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
-        PixelShader = compile ps_2_0 SolidTextureNoSM();
-    }
-}
-
-technique InstancedSM
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
-        PixelShader = compile ps_2_0 SolidTextureSM();
-    }
-}
-
-technique InstancedSMR
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
-        PixelShader = compile ps_2_0 SolidTextureSMR();
-    }
-}
-
-technique InstancedSMSmooth
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
-        PixelShader = compile ps_2_0 SolidTextureSMSmooth();
-    }
-}
-
-technique InstancedTransparentNoSM
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
-        PixelShader = compile ps_2_0 SolidTextureNoSM();
-    }
-}
-
-technique InstancedTransparentSM
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
-        PixelShader = compile ps_2_0 SolidTextureSM();
-    }
-}
-
-technique InstancedTransparentSMR
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
-        PixelShader = compile ps_2_0 SolidTextureSMR();
-    }
-}
-
-technique InstancedTransparentSMSmooth
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
-        PixelShader = compile ps_2_0 SolidTextureSMSmooth();
-    }
-}
-
 technique InstancedTransparentSelfIlmnNoSM
 {
     pass Pass1
     {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
+        VertexShader = compile vs_2_0 NoInstancingVertexShaderNoSM();
         PixelShader = compile ps_2_0 SolidTextureSelfIll();
     }
 }

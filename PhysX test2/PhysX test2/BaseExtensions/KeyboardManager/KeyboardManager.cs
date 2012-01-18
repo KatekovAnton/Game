@@ -10,7 +10,11 @@ namespace PhysX_test2
 {
     public class KeyboardManager
     {
+        public static bool Shift, Ctrl, Alt, NumLock, etc;
+
         public static KeyboardState currentState;
+        public static List<Keys> PressedKeys;
+        public static List<Keys> LastPressedKeys;
         public static List<KeyScan> scaningKeys;
         public static KeyScan GetScanForKey(Keys key)
         {
@@ -63,40 +67,118 @@ namespace PhysX_test2
                 }
                 lastusercount = keyboardusers.Count;
             }
+
+            LastPressedKeys = PressedKeys;//currentState.GetPressedKeys().ToList<Keys>();
             currentState = Keyboard.GetState();
+            PressedKeys = currentState.GetPressedKeys().ToList<Keys>();
+            Shift = currentState.IsKeyDown(Keys.LeftShift);
+            Ctrl = currentState.IsKeyDown(Keys.LeftControl);
+            Alt = currentState.IsKeyDown(Keys.LeftAlt);
+
             foreach (KeyScan KeyScan in scaningKeys)
                 KeyScan.Update();
 
-            foreach (IKeyboardUser user in keyboardusers)
+            if (keys_captured_by_user)
             {
-                if (!keys_captured_by_user || user.GlobalUser)
+                foreach (HotKey k in captured_user.hotkeys)
                 {
-                    foreach (HotKey k in user.hotkeys)
+                    k.TryExecute();
+                }
+
+                if (keys_captured_by_user)
+                if (PressedKeys.Count >= 1)
+                {
+                    foreach (HotKey k in captured_user.hotkeys)
+                    if (k.associatedKeys.Length == 1)
                     {
-                        k.TryExecute();
+                        PressedKeys.Remove(k.associatedKeys[0]);
+                        LastPressedKeys.Remove(k.associatedKeys[0]); 
+                    }
+
+                    if (captured_user_all_keys != null)
+                    {
+                        List<Keys> NewKeys = PressedKeys.Except<Keys>(LastPressedKeys).ToList<Keys>();
+                        foreach (Keys Key in NewKeys)
+                        key_buffer += Key_To_Str(Key);
+                        //   if (!LastPressedKeys.Contains(PressedKeys[0]))
+                        captured_user_all_keys.KeyPress();
                     }
                 }
             }
+            else
+                foreach (IKeyboardUser user in keyboardusers)
+                {
+                    if (user.GlobalUser)
+                    {
+                        foreach (HotKey k in user.hotkeys)
+                        {
+                            k.TryExecute();
+                        }
+                    }
+                }
+        }
 
-            if (keys_captured_by_user)
-                foreach (HotKey k in captured_user.hotkeys)
+        static public string Key_To_Str(Keys Key)
+        {
+             int i = (int)Key;
+             if (i > 31 && i < 127)
+             {
+                 string str = Convert.ToChar((int)Key).ToString();
+                 if (Shift)
                  {
-                  k.TryExecute();
+                     switch (i)
+                     {
+                         case 48: str = ")"; break;
+                         case 57: str = "("; break;
+                         default: ; break;
+                     }
+                     return str;
+                 }
+                 else
+                 {
+                     return str.ToLowerInvariant();
+                 }
+             }
+             else
+             {
+                string str = "";
+                switch (i)
+                  {
+                    case 187: str = Shift ? "+" : "="; break;
+                    case 189: str = Shift ? "_" : "-"; break;
+                      default: ; break;
                   }
+                return str;
+             }
 
+             return "?";
         }
 
         bool keys_captured_by_user = false;
+
+        public static string key_buffer = "";
+
         IKeyboardUser captured_user;
+        IAllKeys captured_user_all_keys;
+
 
         public void Capture(IKeyboardUser IKeyboardUser)
         {
             captured_user = IKeyboardUser;
+            captured_user_all_keys = IKeyboardUser as IAllKeys;
+            captured_user.IsKeyboardCaptured = true;
+            keys_captured_by_user = true;
         }
 
         public void CaptureRelease()
         {
-            keys_captured_by_user = false;
+            if (keys_captured_by_user)
+            {
+                keys_captured_by_user = false;
+                captured_user.IsKeyboardCaptured = false;
+                captured_user_all_keys = null;
+                captured_user = null;
+            }
         }
 
         private List<IKeyboardUser> keyboardusers;
@@ -106,7 +188,7 @@ namespace PhysX_test2
             {
                 foreach (IKeyboardUser user in Manager.keyboardusers)
                 {
-                    if (user.IsKeyboardCaptured())
+                    if (user.IsKeyboardCaptured)
                         return true;
                 }
                 return false;

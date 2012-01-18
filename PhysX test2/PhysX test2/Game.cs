@@ -28,7 +28,7 @@ namespace PhysX_test2
     public class MyGame : Game, IKeyboardUser
     {
         private List<HotKey> _hotkeys;
-
+   //     public bool AllKeys { get { return false; } }
         public static MyGameState _currentState;
 
         public static GraphicsDeviceManager DeviceManager;
@@ -47,28 +47,31 @@ namespace PhysX_test2
         //some additional variables
         public Vector3 _boxScreenPosition;
 
-       
-
         private Vector2 _fontPos;
      
         public GameEngine _engine;
         private BasicEffect _lighting;
 
         public TheGame.TheGame _MAINGAME;
-        
 
         private bool showConsole = true;
         private string _outputstring = string.Empty;
-        private SpriteBatch _spriteBatch;
+        public SpriteBatch _spriteBatch;
 
-        private string _helpHint = "Press \'O\' to swich debug render\nPress \'P\' to toggle physic model of box\nPress \'I\' to force marine to drop gun\nPress \'Left Ctrl + C\' to toggle event console";
+
+        private string _helpHint = "\'Escape\' to Show MainMenu\n\'O\' to swich debug render\n\'P\' to toggle physic model of box\n\'I\' to force marine to drop gun\n\'~\' to toggle event console\n\'Left Ctrl + C\' to console writing";
+
 
         public static ScreenLog ScreenLog;
+
+
+
 
         public bool GlobalUser { set{} get { return true; } }
         
         public MyGame()
         {
+            Config c = Config.Instance;
             _hotkeys = new List<HotKey>();
             _hotkeys.Add(new HotKey(new Keys[] { Keys.OemTilde }, SwitchConsoleView));
             _hotkeys.Add(new HotKey(new Keys[] { Keys.Escape }, ShowMainMenu));
@@ -130,10 +133,14 @@ namespace PhysX_test2
             _fontPos = new Vector2(10.0f, 10.0f);
             _lighting = new BasicEffect(MyGame.Device);
             this.Exiting += new EventHandler<EventArgs>(MyGame_Exiting);
+
+            _engine.UI = new UserInterface.GameInterface();
+
         }
 
         void MyGame_Exiting(object sender, EventArgs e)
         {
+            Device.Dispose();
             _engine.UnLoad();
             LogProvider.Close();
         }
@@ -153,18 +160,13 @@ namespace PhysX_test2
         {
             ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), _engine.Camera.View, _engine.Camera.Projection);
         }
-        bool ft = true;
         
-
         protected override void Update(GameTime gameTime)
         {
             UpdateTime = gameTime;
             StatisticContainer.Instance().EndFrame();
             StatisticContainer.Instance().BeginFrame();
             KeyboardManager.Manager.Update();
-
-            
-
 
             MouseManager.Manager.Update();
             HandleKeyboard(Keyboard.GetState());
@@ -180,7 +182,7 @@ namespace PhysX_test2
         {
             base.Draw(gameTime);
             _engine.Draw();
-
+            
             drawstring();
         }
 
@@ -204,7 +206,7 @@ namespace PhysX_test2
                 int i = 0;
                 foreach (ScreenLogMessage ScreenLogMessage in ScreenLog)
                 {
-                    _spriteBatch.DrawString(Fonts._font1, ScreenLogMessage.text, new Vector2(0, GameConfiguration.ScreenResolution.Y - (i++) * 10 - 15), ScreenLogMessage.Color);
+                    _spriteBatch.DrawString(Fonts._font1, ScreenLogMessage.text, new Vector2(0, GameConfiguration.ScreenResolution.Y - (i++) * 10 - 35), ScreenLogMessage.Color);
                 }
             }
             _spriteBatch.End();
@@ -230,13 +232,11 @@ namespace PhysX_test2
 
         public void SwitchConsoleEditMode()
         {
-
+            showConsole = true;
+            KeyboardManager.Manager.Capture(((UserInterface.GameInterface)_engine.UI).debug_textbox);
         }
 
-        public bool IsKeyboardCaptured()
-        {
-            return false;
-        }
+        public bool IsKeyboardCaptured { set { } get { return false; } }
 
         public List<HotKey> hotkeys
         {
