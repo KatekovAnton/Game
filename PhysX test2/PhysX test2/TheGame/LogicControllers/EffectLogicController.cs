@@ -102,8 +102,8 @@ namespace PhysX_test2.TheGame.LogicControllers
 
                         } break;
                     case EffectItemType.Particles:
-                        { 
-
+                        {
+                           // GameParticleObject effectObject = new GameParticleObject(__level, "Fire01LO\0", new Vector3(1), 10, __position, __normal, 0.1f, 0.0f);
                         } break;
                 }
             }

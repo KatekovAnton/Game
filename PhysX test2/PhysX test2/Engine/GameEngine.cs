@@ -80,7 +80,7 @@ namespace PhysX_test2.Engine
 
         private List<HotKey> _hotkeys;
         public bool cameraneedsupdate = true;
-        public bool GlobalUser { set { } get { return false; } }
+        public bool GlobalUser { set { } get { return true; } }
 
         public UserInterface.Controls.ISomeInterface UI;  //UI is the part of engine, but it most created first by GAME class
 
@@ -154,13 +154,8 @@ namespace PhysX_test2.Engine
             _cameraController.UpdateCamerafromUser(MyGame.Instance._mousepoint);
             _cameraController.UpdateCamera();
 
-            try
-            {
-                UI.Init();
-            }
-            catch (Exception ee)
-            { ExcLog.LogException(ee); }
-          
+
+            UI.Init();
         }
 
         public void CasheObject(string __name,
@@ -193,6 +188,12 @@ namespace PhysX_test2.Engine
          
             loNew.Update();
             return loNew;
+        }
+
+        public static ParticleObject CreateParticleObject(string __renderObjectName, Vector3 __maxSize, int __count, Vector3 __position, Vector3 __direction, float __dispersionRadius, float __gravityMult)
+        {
+            //TODO
+            return null;
         }
 
         public void Loaddata()

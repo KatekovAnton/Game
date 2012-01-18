@@ -86,24 +86,24 @@ namespace PhysX_test2
                 }
 
                 if (keys_captured_by_user)
-                if (PressedKeys.Count >= 1)
-                {
-                    foreach (HotKey k in captured_user.hotkeys)
-                    if (k.associatedKeys.Length == 1)
+                    if (PressedKeys.Count >= 1)
                     {
-                        PressedKeys.Remove(k.associatedKeys[0]);
-                        LastPressedKeys.Remove(k.associatedKeys[0]); 
-                    }
+                        foreach (HotKey k in captured_user.hotkeys)
+                            if (k.associatedKeys.Length == 1)
+                            {
+                                PressedKeys.Remove(k.associatedKeys[0]);
+                                LastPressedKeys.Remove(k.associatedKeys[0]);
+                            }
 
-                    if (captured_user_all_keys != null)
-                    {
-                        List<Keys> NewKeys = PressedKeys.Except<Keys>(LastPressedKeys).ToList<Keys>();
-                        foreach (Keys Key in NewKeys)
-                        key_buffer += Key_To_Str(Key);
-                        //   if (!LastPressedKeys.Contains(PressedKeys[0]))
-                        captured_user_all_keys.KeyPress();
+                        if (captured_user_all_keys != null)
+                        {
+                            List<Keys> NewKeys = PressedKeys.Except<Keys>(LastPressedKeys).ToList<Keys>();
+                            foreach (Keys Key in NewKeys)
+                                key_buffer += Key_To_Str(Key);
+                            //   if (!LastPressedKeys.Contains(PressedKeys[0]))
+                            captured_user_all_keys.KeyPress();
+                        }
                     }
-                }
             }
             else
                 foreach (IKeyboardUser user in keyboardusers)

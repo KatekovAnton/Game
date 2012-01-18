@@ -72,7 +72,7 @@ namespace PhysX_test2.UserInterface
         public Textures(string path)
             : base(path)
         {
-            Empty = new RT(50, 50, "Empty");
+            Empty = new RT(32, 32, "Empty");
             Program.game.GraphicsDevice.SetRenderTarget(Empty);
             Program.game._spriteBatch.Begin();
             Program.game.GraphicsDevice.Clear(Color.Yellow);

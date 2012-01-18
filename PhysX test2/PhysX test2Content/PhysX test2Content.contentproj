@@ -65,11 +65,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Shaders\ObjectRender.fx">
+    <None Include="Shaders\ObjectRender.fx">
       <Name>ObjectRender</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -98,21 +98,33 @@
       <Name>ObjectRender</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="Shaders\ObjectRenderHiDef.fx">
+    <None Include="Shaders\ObjectRenderHiDef.fx">
       <Name>ObjectRenderHiDef</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
-    </Compile>
-    <Compile Include="Shaders\ObjectRenderReach.fx">
+    </None>
+    <None Include="Shaders\ObjectRenderReach.fx">
       <Name>ObjectRenderReach</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
-    </Compile>
-    <Compile Include="Shaders\ObjectRenderUltraLow.fx">
+    </None>
+    <None Include="Shaders\ObjectRenderUltraLow.fx">
       <Name>ObjectRenderUltraLow</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
-    </Compile>
+    </None>
+    <None Include="ObjectRenderHiDef.xnb">
+      <Name>ObjectRenderHiDef</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ObjectRenderReach.xnb">
+      <Name>ObjectRenderReach</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ObjectRenderUltraLow.xnb">
+      <Name>ObjectRenderUltraLow</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

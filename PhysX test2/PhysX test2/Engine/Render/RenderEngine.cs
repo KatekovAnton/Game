@@ -73,10 +73,14 @@ namespace PhysX_test2.Engine.Render
             frustumForShadow = new BoundingFrustum(Matrix.Identity);
             debugRenderer = new DebugRender.DebugRenderer(_device, _visualizationEffect);
             debugRenderArray = new MyContainer<PivotObject>(10, 3);
-            EnableShadows = SmoothShadows = true;
-            EnableDebugRender = false;
-            //EnableShadows = false;
-            //SmoothShadows = false;
+            EnableShadows = Config.Instance.GetBooleanParameter("enableShadows");
+            SmoothShadows = Config.Instance.GetBooleanParameter("smoothShadows");
+            EnableDebugRender = Config.Instance.GetBooleanParameter("enableDebugRender");
+
+            int size = Config.Instance.GetIntegerParameter("shadowMapSize");
+            if (size != 0)
+                shadowMapWidthHeight = size;
+
             if (EnableShadows)
             {
                 if (dev.GraphicsProfile == GraphicsProfile.HiDef)
@@ -90,7 +94,7 @@ namespace PhysX_test2.Engine.Render
                 }
                 else
                 {
-                    if (!Config.Instance.GetBooleanParameter("ultraLowShadows"))
+                    if (!Config.Instance.GetBooleanParameter("ultraLowRender"))
                     {
                         shadowRenderTarget = new RenderTarget2D(_device,
                                                                shadowMapWidthHeight,

@@ -167,6 +167,17 @@ namespace PhysX_test2.Engine.ContentLoader
             return behaviourmodel;
         }
 
+        public static ParticleRenderObject LoadObject(string __name)
+        {
+            //TODO
+            return null;
+        }
+
+        public static void UnloadObject(ParticleRenderObject __object)
+        {
+            //TODO
+        }
+
         public static Content.Texture LoadTexture(string name)
         {
             Content.Texture image = new Content.Texture();

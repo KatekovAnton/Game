@@ -19,7 +19,7 @@ namespace PhysX_test2.Content
         public const int LevelObjectDescription = 12;
         public const int GameObjectDescription = 13;
         public const int RenderObjectDescription = 14;
-
+        public const int ParticelRenderObjectDescription = 15;
 
 
         public const int CollisionMesh = 20;
@@ -71,6 +71,8 @@ namespace PhysX_test2.Content
                     return "Render object description";
                 case ElementType.Material:
                     return "Material";
+                case ElementType.ParticelRenderObjectDescription:
+                    return "Particle Object Description";
                 default:
                     return "wrong format";
             }
@@ -112,6 +114,8 @@ namespace PhysX_test2.Content
                     return ElementType.RenderObjectDescription;
                 case "Material":
                     return ElementType.Material;
+                case "Particle Object Description":
+                    return ElementType.ParticelRenderObjectDescription;
                 default:
                     return -1;
             }

@@ -162,6 +162,7 @@
     <Compile Include="Content\EngineCollisionMesh.cs" />
     <Compile Include="Content\Fonts.cs" />
     <Compile Include="Content\MaterialDescription.cs" />
+    <Compile Include="Content\ParticleRenderObjectDescription.cs" />
     <Compile Include="Content\RenderObjectDescription.cs" />
     <Compile Include="Content\LevelObjectDescription.cs" />
     <Compile Include="Content\Character.cs" />

@@ -1,9 +1,8 @@
 Content\Courier New.xnb
-Content\Shaders\ObjectRender.xnb
-Content\Shaders\ObjectRenderHiDef.xnb
-Content\Shaders\ObjectRenderReach.xnb
-Content\Shaders\ObjectRenderUltraLow.xnb
 Content\ObjectRender.xnb
+Content\ObjectRenderHiDef.xnb
+Content\ObjectRenderReach.xnb
+Content\ObjectRenderUltraLow.xnb
 Community.CsharpSqlite.dll
 cudart32_30_9.dll
 NxCharacter.dll

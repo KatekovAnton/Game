@@ -27,14 +27,34 @@ namespace PhysX_test2
         public string GetParameterValue(string __paramName)
         {
             if (!_config.Keys.Contains(__paramName))
+            {
+                LogProvider.logMessage("Config: parameter \'" + __paramName + "\' not found!");
                 return null;
+            }
 
             return _config[__paramName];
         }
 
         public bool GetBooleanParameter(string __paramName)
         {
-            return GetParameterValue(__paramName).ToUpper().CompareTo("YES") == 0;
+            string value = GetParameterValue(__paramName);
+            if(value == null)
+                return false;
+            return value.ToUpper().CompareTo("YES") == 0;
+        }
+
+        public int GetIntegerParameter(string __paramName)
+        {
+            int result = 0;
+            try
+            {
+                result = Convert.ToInt32(GetParameterValue(__paramName));
+            }
+            catch (Exception)
+            {
+                LogProvider.logMessage("Config: parameter \'" + __paramName + "\' not an integer!");
+            }
+            return result;
         }
 
         private Config()

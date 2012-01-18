@@ -114,9 +114,14 @@ namespace PhysX_test2.Engine.Render
 
         public static Effect Load(Microsoft.Xna.Framework.Content.ContentManager content)
         {
-            Effect e = content.Load<Effect>("ObjectRender");
+            string effectName = "ObjectRenderHiDef";
+            
             if (MyGame.Instance.GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)
             {
+                if (Config.Instance.GetBooleanParameter("ultraLowRender"))
+                    effectName = "ObjectRenderUltraLow";
+                else
+                    effectName = "ObjectRenderReach";
                 AnimRenderSM = "AnimRenderSMR";
                 NotAnimRenderSM = "NotAnimRenderSMR";
 
@@ -132,6 +137,7 @@ namespace PhysX_test2.Engine.Render
                 InstancedTransparentSM = "InstancedTransparentSMR";
                 InstancedTransparentSMSmooth = InstancedTransparentSM;
             }
+            Effect e = content.Load<Effect>(effectName);
             return e;
         }
         
