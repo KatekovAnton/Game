@@ -25,5 +25,11 @@ namespace PhysX_test2
                 throw new Exception(exceptionName);
 #endif
         }
+
+        public static void LogException(Exception ee)
+        {
+            LogException(ee.Message);
+        }
+        
     }
 }

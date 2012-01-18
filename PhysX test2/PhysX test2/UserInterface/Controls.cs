@@ -17,19 +17,25 @@ namespace PhysX_test2.UserInterface
    {
        public abstract class Control
        {
+           public Color Color;
            public string Text = "";
            public Vector2 Position;
+           public Vector2 Size;
            public Control Parent = null;
 
            public abstract void Draw();
            public abstract void Update();
+           public abstract void Dispose();
+           public abstract void UnLoad();
        }
 
-       public abstract class SomeInterface : UserControl
+       public interface ISomeInterface 
        {
-           public abstract void Init();
-           public void Add(Control item)
-           {   ChildControls.Add(item);    }
+           void Init();
+           void Draw();
+           void Update();
+           void Dispose();
+           void UnLoad();
        }
 
        public class UserControl : Control
@@ -42,37 +48,145 @@ namespace PhysX_test2.UserInterface
                    Control.Draw();
            }
 
+           public void Add(Control item) { ChildControls.Add(item); item.Parent = this; }
+
            public override void Update()
            {
                foreach (Control Control in ChildControls)
                    Control.Update();
            }
+
+           public override void Dispose() 
+           {
+               // add disposing code here 
+           }
+           public override void UnLoad() 
+           {
+               // add unloading code here
+           }
        }
 
-       public class TextBox : UserControl, IKeyboardUser
+       public class TextBox : UserControl, IKeyboardUser, IAllKeys
        {
+           public bool Capture = false;
            public bool GlobalUser { set { } get { return false; } }
-           public bool IsKeyboardCaptured() { return false; }
+           public bool IsKeyboardCaptured { set { Capture = value; } get { return Capture; } }
            List<HotKey> _hotkeys = new List<HotKey>();
            public List<HotKey> hotkeys { get { return _hotkeys; } }
-           public bool AllKeys { get { return true; } }
 
-           public TextBox(Control parent, string init_text, Vector2 position, List<HotKey> _hotkeys)
+           public SpriteFont font;
+           bool cur_vis = false;
+           int cp;
+           public int cur_pos
            {
-               Parent = parent;
+               set 
+               {
+                   if (value >= 0 && value <= Text.Length)
+                       cp = value;
+                   else
+                   { if (value > Text.Length) cp = Text.Length; else cp = 0; }
+                   cur_draw_pos = font.MeasureString(Text.Substring(0, cur_pos)).X + 1;
+               }
+               get 
+               {
+                  return cp;
+               }
+
+           }
+           byte i = 0;
+
+           public float cur_draw_pos;
+
+           public TextBox(string init_text, Vector2 position, Vector2 size, List<HotKey> _hotkeys, SpriteFont Font, Color Color)
+           {
+               font = Font;
+               this.Color = Color;
+               Size = size;
                Text = init_text;
                Position = position;
-               _hotkeys = hotkeys;
+               _hotkeys.Add(new HotKey(new Keys[] { Keys.Left }, Left));
+               _hotkeys.Add(new HotKey(new Keys[] { Keys.Right }, Right));
+               _hotkeys.Add(new HotKey(new Keys[] { Keys.Back }, BackSpace));
+               _hotkeys.Add(new HotKey(new Keys[] { Keys.Delete }, Delete));
+               _hotkeys.Add(new HotKey(new Keys[] { Keys.Home }, Home));
+               _hotkeys.Add(new HotKey(new Keys[] { Keys.End }, End));
+               _hotkeys.Add(new HotKey(new Keys[] { Keys.Insert }, Insert));
+               
+               this._hotkeys = _hotkeys;
+               cur_pos = init_text.Length;
+           }
+           bool InsertMode = false;
+           public void KeyPress()
+           {
+               if (KeyboardManager.key_buffer.Length > 0)
+               {
+                   if (!InsertMode || cp == Text.Length)
+                       Text = Text.Insert(cp, KeyboardManager.key_buffer);
+                   else
+                   {
+                       Text = Text.Remove(cp, KeyboardManager.key_buffer.Length).Insert(cp, KeyboardManager.key_buffer);
+                   }
+                   cur_pos += KeyboardManager.key_buffer.Length;
+                   KeyboardManager.key_buffer = "";
+               }
+           }
+
+           void Left()
+           {
+                cur_pos--;
+           }
+
+           void Right()
+           {
+                cur_pos++;
+           }
+
+           void BackSpace()
+           { 
+               if (cp>0)
+               {
+                  Text = Text.Remove(cur_pos - 1, 1); cur_pos--;
+               }
+           }
+
+           void Home()
+           {
+               cur_pos = 0;
+           }
+
+           void End()
+           {
+               cur_pos = Text.Length;
+           }
+
+           void Insert()
+           {
+               InsertMode = !InsertMode;
+           }
+
+           void Delete()
+           {
+               if (cp < Text.Length)
+               {
+                   Text = Text.Remove(cur_pos, 1); 
+               }
            }
 
            public override void Draw()
            {
-               //Program.game._spriteBatch.Draw(
+               Program.game._spriteBatch.Draw(UIContent.Textures["`16`16"], Position, null, Color, 0, Vector2.Zero, Size, SpriteEffects.None, 0);
+               
+               Program.game._spriteBatch.DrawString(font, Text, Position + new Vector2(2,2),Color.White);
+               if (Capture)
+                   if (cur_vis) Program.game._spriteBatch.Draw(UIContent.Textures["`2`16"], Position + new Vector2(cur_draw_pos, 0), null, Color, 0, Vector2.Zero, new Vector2(InsertMode ? 3:1,1), SpriteEffects.None, 0);
+
                base.Draw();
            }
 
            public override void Update()
            {
+               i++; if (i == 10)
+               {cur_vis = !cur_vis; i = 0;}
                base.Draw();
            }
        }
@@ -91,6 +205,12 @@ namespace PhysX_test2.UserInterface
 
            public override void Update()
            {      }
+
+           public override void UnLoad()
+           { }
+
+           public override void Dispose()
+           { }
            
        }
 
