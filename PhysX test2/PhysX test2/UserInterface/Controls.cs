@@ -194,7 +194,6 @@ namespace PhysX_test2.UserInterface
        public class Label : Control
        {
            public SpriteFont Font;
-           public Color Color;
            public Label(Color color)
            { Color = color; }
 

@@ -71,12 +71,12 @@ namespace PhysX_test2.UserInterface
             base.Update();
         }
 
-        void Dispose()
+        public override void Dispose()
         { 
             // add disposing code here
         }
 
-        void UnLoad()
+        public override void UnLoad()
         {
             // add unloading code here
         }
