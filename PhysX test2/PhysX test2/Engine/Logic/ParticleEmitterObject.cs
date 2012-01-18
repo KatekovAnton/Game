@@ -10,13 +10,17 @@ namespace PhysX_test2.Engine.Logic
 {
     public class ParticleEmitterObject:ParticleObject
     {
+        public double _emitionSpeed;
+
         /// <summary>
         /// Источник частиц, частицы запихивает в парента, но 
         /// сам при апдейте создает новые
         /// </summary>
-        public ParticleEmitterObject(TimeSpan __currentTime, Vector3 __maxSize, int __particleCount, Vector3 __position, Vector3 __direction, float __gravityRelationMultiplier)
-            : base(__currentTime, __maxSize, __particleCount, __position, __direction, __gravityRelationMultiplier)
+        public ParticleEmitterObject(Vector3 __maxSize, int __particleCount,
+            Vector3 __position, Vector3 __direction, float __dispersionRadius, float __gravityRelationMultiplier, float __emitionSpeed)
+            : base(__maxSize, __particleCount, __position, __direction, __dispersionRadius, __gravityRelationMultiplier)
         {
+            _emitionSpeed = __emitionSpeed;
         }
 
         public override void DoFrame(GameTime gt)
@@ -25,8 +29,6 @@ namespace PhysX_test2.Engine.Logic
             UpdateParticles();
 
             GenerateParticles();
-
-            SortParticles();
         }
 
         protected void GenerateParticles()
@@ -34,6 +36,8 @@ namespace PhysX_test2.Engine.Logic
             double time = MyGame.UpdateTime.ElapsedGameTime.TotalSeconds;
             //TODO 
             //generate new particles
+
+            double particles = time / _emitionSpeed;
         }
     }
 }

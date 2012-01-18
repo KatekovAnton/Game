@@ -128,6 +128,9 @@ namespace PhysX_test2.Engine.Render
 
                 InstancedSM = "InstancedSMR";
                 InstancedSMSmooth = InstancedSM;
+
+                InstancedTransparentSM = "InstancedTransparentSMR";
+                InstancedTransparentSMSmooth = InstancedTransparentSM;
             }
             return e;
         }

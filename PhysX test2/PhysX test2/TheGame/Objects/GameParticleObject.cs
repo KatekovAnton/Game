@@ -22,10 +22,10 @@ namespace PhysX_test2.TheGame.Objects
 
         public ParticleObject _object;
 
-        public GameParticleObject(GameLevel __level, Vector3 __maxSize, int __count, Vector3 __position, Vector3 __direction, float __gravityMult)
+        public GameParticleObject(GameLevel __level, Vector3 __maxSize, int __count, Vector3 __position, Vector3 __direction, float __dispersionRadius, float __gravityMult)
             :base(__level,false,false)
         {
-            _object = new ParticleObject(MyGame.UpdateTime.TotalGameTime, __maxSize, __count, __position, __direction, __gravityMult);
+            _object = new ParticleObject(__maxSize, __count, __position, __direction, __dispersionRadius, __gravityMult);
         }
     }
 }

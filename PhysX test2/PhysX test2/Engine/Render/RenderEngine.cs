@@ -151,6 +151,8 @@ namespace PhysX_test2.Engine.Render
                 arrays.Add(Shader.AnimRenderSMSmooth);
                 arrays.Add(Shader.NotAnimRenderSMSmooth);
                 arrays.Add(Shader.TransparentSMSmooth);
+                arrays.Add(Shader.InstancedTransparentSMSmooth);
+                arrays.Add(Shader.InstancedSMSmooth);
             }
 
             foreach (string s in arrays)

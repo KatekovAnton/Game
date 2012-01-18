@@ -206,13 +206,13 @@ float4 SolidTextureNoSM(PS_INPUT f) : COLOR0
     return float4(color1,1);
 
 }
+
 float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
 {
 	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
-//	if(color.a <= 0.1)
-//		discard;
+	if(color.a <= 0.1)
+		discard;
 	color *=color.a;
-	
 	return color;
 }
 
@@ -500,3 +500,97 @@ technique CreateAnimShadowMapR
 
 
 //ОТДЕЛЬНЫЕ ТЕХНИКИ НА ТРАВУ И ПУЛИ СО ВЗРЫВАМИ
+
+//instanced
+
+PS_INPUT HardwareInstancingVertexShader(Vertex vertex,
+                                                  float4x4 instanceTransform : BLENDWEIGHT)
+{
+    PS_INPUT f = (PS_INPUT)0;
+	f.Position = mul(mul(mul(vertex.Position, instanceTransform), View), Projection);
+	f.TextureCoordinate = vertex.TextureCoordinate;
+  
+	f.Normal = normalize(mul(vertex.Normal, (float3x3)World));  
+	return f;
+}
+
+technique InstancedNoSM
+{
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
+        PixelShader = compile ps_2_0 SolidTextureNoSM();
+    }
+}
+
+technique InstancedSM
+{
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
+        PixelShader = compile ps_2_0 SolidTextureSM();
+    }
+}
+
+technique InstancedSMR
+{
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
+        PixelShader = compile ps_2_0 SolidTextureSMR();
+    }
+}
+
+technique InstancedSMSmooth
+{
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
+        PixelShader = compile ps_2_0 SolidTextureSMSmooth();
+    }
+}
+
+technique InstancedTransparentNoSM
+{
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
+        PixelShader = compile ps_2_0 SolidTextureNoSM();
+    }
+}
+
+technique InstancedTransparentSM
+{
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
+        PixelShader = compile ps_2_0 SolidTextureSM();
+    }
+}
+
+technique InstancedTransparentSMR
+{
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
+        PixelShader = compile ps_2_0 SolidTextureSMR();
+    }
+}
+
+technique InstancedTransparentSMSmooth
+{
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
+        PixelShader = compile ps_2_0 SolidTextureSMSmooth();
+    }
+}
+
+technique InstancedTransparentSelfIlmnNoSM
+{
+    pass Pass1
+    {
+        VertexShader = compile vs_2_0 HardwareInstancingVertexShader();
+        PixelShader = compile ps_2_0 SolidTextureSelfIll();
+    }
+}
