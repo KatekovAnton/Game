@@ -24,7 +24,7 @@ namespace PhysX_test2.Engine
 
         //static variables for enviroment
         public static GameEngine Instance;
-        public bool AllKeys { get { return false; } }
+      //  public bool AllKeys { get { return false; } }
 
 
         //engine camera and engine render
@@ -82,7 +82,7 @@ namespace PhysX_test2.Engine
         public bool cameraneedsupdate = true;
         public bool GlobalUser { set { } get { return false; } }
 
-        
+        public UserInterface.Controls.ISomeInterface UI;  //UI is the part of engine, but it most created first by GAME class
 
         public GameEngine(MyGame game)
         {
@@ -115,10 +115,7 @@ namespace PhysX_test2.Engine
 
         public PhysX_test2.TheGame.InputManagers.CharacterMoveState playerState = TheGame.InputManagers.CharacterMoveState.Stay;
 
-        public bool IsKeyboardCaptured()
-        {
-            return false; 
-        }
+        public bool IsKeyboardCaptured { set { } get { return false; } }
 
         public List<HotKey> hotkeys
         {
@@ -156,6 +153,13 @@ namespace PhysX_test2.Engine
             // обработка камеры
             _cameraController.UpdateCamerafromUser(MyGame.Instance._mousepoint);
             _cameraController.UpdateCamera();
+
+            try
+            {
+                UI.Init();
+            }
+            catch (Exception ee)
+            { ExcLog.LogException(ee); }
           
         }
 
@@ -328,7 +332,7 @@ namespace PhysX_test2.Engine
                 _cameraController.UpdateCamera();
            // }
 
-            
+                UI.Update();
         }
 
         public void SearchClickedObject()
@@ -385,6 +389,10 @@ namespace PhysX_test2.Engine
             //основной рендер. будет потом в колор рендертаргет. Внутри- дефферед шэйдинг и вся хрень
             GraphicPipeleine.RenderToPicture(Camera, lightDir);
 
+
+            Program.game._spriteBatch.Begin();
+            UI.Draw();
+            Program.game._spriteBatch.End();
             //потом пост-процессинг
 
             //потом ещё чонить
@@ -429,6 +437,7 @@ namespace PhysX_test2.Engine
 
         public void UnLoad() 
         {
+            UI.UnLoad();
             _cashe.ClearCashe();
             gameScene.Core.Dispose();
             gameScene.Scene.Dispose();

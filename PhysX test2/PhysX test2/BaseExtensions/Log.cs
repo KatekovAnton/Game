@@ -55,6 +55,12 @@ namespace PhysX_test2
 
             _log.WriteMessage(__msg); 
         }
+
+        public static void logMessage(Exception ee)
+        {
+            logMessage(ee.Message +"\n\n"+ ee.StackTrace);
+        }
+
     }
     public abstract class LogBase
     {

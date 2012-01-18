@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Input;
 
 namespace PhysX_test2
 {
-    public interface IKeyboardUser// : IInterfaceUser
+    public interface IKeyboardUser
     {
         bool GlobalUser { set; get; }
-        bool IsKeyboardCaptured();
-        bool AllKeys { get; }
+        bool IsKeyboardCaptured { set; get; }
         List<HotKey> hotkeys { get; }
+    }
+
+    public interface IAllKeys
+    {
+        void KeyPress();
     }
 
     public class HotKey
@@ -45,6 +50,7 @@ namespace PhysX_test2
                             canexecute = false;
                             return;
                         }
+
                         timelast = scanforcurrentkey.timePressed;
                     }
                     if (canexecute)

@@ -28,7 +28,7 @@ namespace PhysX_test2
     public class MyGame : Game, IKeyboardUser
     {
         private List<HotKey> _hotkeys;
-        public bool AllKeys { get { return false; } }
+   //     public bool AllKeys { get { return false; } }
         public static MyGameState _currentState;
 
         public static GraphicsDeviceManager DeviceManager;
@@ -54,8 +54,6 @@ namespace PhysX_test2
 
         public TheGame.TheGame _MAINGAME;
 
-        public UserInterface.GameInterface UI;
-
         private bool showConsole = true;
         private string _outputstring = string.Empty;
         public SpriteBatch _spriteBatch;
@@ -65,6 +63,9 @@ namespace PhysX_test2
 
 
         public static ScreenLog ScreenLog;
+
+
+
 
         public bool GlobalUser { set{} get { return true; } }
         
@@ -131,6 +132,9 @@ namespace PhysX_test2
             _fontPos = new Vector2(10.0f, 10.0f);
             _lighting = new BasicEffect(MyGame.Device);
             this.Exiting += new EventHandler<EventArgs>(MyGame_Exiting);
+
+            _engine.UI = new UserInterface.GameInterface();
+
         }
 
         void MyGame_Exiting(object sender, EventArgs e)
@@ -163,9 +167,6 @@ namespace PhysX_test2
             StatisticContainer.Instance().BeginFrame();
             KeyboardManager.Manager.Update();
 
-            
-
-
             MouseManager.Manager.Update();
             HandleKeyboard(Keyboard.GetState());
 
@@ -180,7 +181,7 @@ namespace PhysX_test2
         {
             base.Draw(gameTime);
             _engine.Draw();
-
+            
             drawstring();
         }
 
@@ -204,7 +205,7 @@ namespace PhysX_test2
                 int i = 0;
                 foreach (ScreenLogMessage ScreenLogMessage in ScreenLog)
                 {
-                    _spriteBatch.DrawString(Fonts._font1, ScreenLogMessage.text, new Vector2(0, GameConfiguration.ScreenResolution.Y - (i++) * 10 - 15), ScreenLogMessage.Color);
+                    _spriteBatch.DrawString(Fonts._font1, ScreenLogMessage.text, new Vector2(0, GameConfiguration.ScreenResolution.Y - (i++) * 10 - 35), ScreenLogMessage.Color);
                 }
             }
             _spriteBatch.End();
@@ -231,13 +232,10 @@ namespace PhysX_test2
         public void SwitchConsoleEditMode()
         {
             showConsole = true;
-            
+            KeyboardManager.Manager.Capture(((UserInterface.GameInterface)_engine.UI).debug_textbox);
         }
 
-        public bool IsKeyboardCaptured()
-        {
-            return false;
-        }
+        public bool IsKeyboardCaptured { set { } get { return false; } }
 
         public List<HotKey> hotkeys
         {
