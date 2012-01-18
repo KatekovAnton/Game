@@ -70,6 +70,7 @@ namespace PhysX_test2
         
         public MyGame()
         {
+            Config c = Config.Instance;
             _hotkeys = new List<HotKey>();
             _hotkeys.Add(new HotKey(new Keys[] { Keys.OemTilde }, SwitchConsoleView));
             _hotkeys.Add(new HotKey(new Keys[] { Keys.Escape }, ShowMainMenu));

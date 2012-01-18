@@ -9,6 +9,7 @@ PhysXCooking.dll
 PhysXCore.dll
 PhysXDevice.dll
 PhysXLoader.dll
+config.cfg
 Data\Data.pack
 Data\Interface.pack
 Data\Data.sqlite

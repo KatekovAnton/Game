@@ -90,7 +90,7 @@ namespace PhysX_test2.Engine.Render
                 }
                 else
                 {
-                    if (GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef))
+                    if (!Config.Instance.GetBooleanParameter("ultraLowShadows"))
                     {
                         shadowRenderTarget = new RenderTarget2D(_device,
                                                                shadowMapWidthHeight,
@@ -101,7 +101,6 @@ namespace PhysX_test2.Engine.Render
                     }
                     else
                     {
-                        //TODO to cofig
                         shadowRenderTarget = new RenderTarget2D(_device,
                                                                                      dev.PresentationParameters.BackBufferWidth,
                                                                                       dev.PresentationParameters.BackBufferHeight,
