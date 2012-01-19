@@ -43,15 +43,15 @@ namespace PhysX_test2
 
         public static void Init()
         {
-            string str_low = "0123456789abcdefghijklmnopqrstuvwxyz;=,-./[\\]'`";
-            string str_up = ")!@#$%^&*(ABCDEFGHIJKLMNOPQRSTUVWXYZ:+<_>?{|}\"~";
+            string str_low = "0123456789abcdefghijklmnopqrstuvwxyz;=,-./`[\\]'`";
+            string str_up = ")!@#$%^&*(ABCDEFGHIJKLMNOPQRSTUVWXYZ:+<_>?~{|}\"~";
 
              Keys_l = new Dictionary<int, string>();
              Keys_u = new Dictionary<int, string>();
 
              Keys_add(ref str_low, ref str_up, 48, 10);
              Keys_add(ref str_low, ref str_up, 65, 26);
-             Keys_add(ref str_low, ref str_up, 186, 6);
+             Keys_add(ref str_low, ref str_up, 186, 7);
              Keys_add(ref str_low, ref str_up, 219, 4);
 
              
