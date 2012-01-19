@@ -15,15 +15,13 @@ namespace PhysX_test2
 {
     public class Config : Scripting.MyPythonEngine
     {
-        private static Config _instance;
-        public static Config Instance
+        public  static Config Instance;
+        private static Config default_cfg;
+
+        public static void Init()
         {
-            get
-            {
-                if(_instance == null) 
-                    _instance = new Config("config.cfg","^_[a-z]");
-                return _instance;
-            }
+            default_cfg = new Config("DefaultConfig.py", "");
+            Instance = new Config("config.cfg","^_[a-z]");
         }
 
 
@@ -36,7 +34,8 @@ namespace PhysX_test2
                     return base[key];
                 else
                 {
-                    ExcLog.LogException("Config ERROR:  Variable not found : " + key);
+                    if (default_cfg.ContainsKey(key)) return default_cfg[key];
+                    ExcLog.LogException("Config ERROR: "+ file_name +"\nVariable not found : " + key);
                     return false;
                 }
             }

@@ -315,6 +315,9 @@
     <Content Include="cudart32_30_9.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="DefaultConfig.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
     <Content Include="IronPython.dll">
