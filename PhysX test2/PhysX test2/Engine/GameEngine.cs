@@ -393,6 +393,7 @@ namespace PhysX_test2.Engine
             GraphicPipeleine.RenderToPicture(Camera, lightDir);
 
 
+           // Program.game._spriteBatch.Begin(SpriteSortMode.Texture,BlendState.NonPremultiplied,SamplerState.AnisotropicClamp,DepthStencilState.None,RasterizerState.CullNone);
             Program.game._spriteBatch.Begin();
             UI.Draw();
             Program.game._spriteBatch.End();

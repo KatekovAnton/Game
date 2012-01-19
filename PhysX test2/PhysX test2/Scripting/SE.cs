@@ -23,6 +23,12 @@ namespace PhysX_test2.Scripting
         public static ScriptEngine scriptengine;
         public static ScriptScope scriptscope;
 
+
+        public static dynamic Ex(string script_name)
+        {
+           return scripts[script_name].Execute();
+        }
+
         public static void Init()
         {
            scripts = new SCRIPTS(@"Content\Scripts\"); 
@@ -30,6 +36,8 @@ namespace PhysX_test2.Scripting
            scriptscope = scriptengine.CreateScope();
            // scriptscope.SetVariable("null", null);
            scriptscope.SetVariable("result", "");
+
+            
         }
 
         public static dynamic Execute(string str)
