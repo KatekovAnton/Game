@@ -26,6 +26,23 @@ namespace PhysX_test2
             }
         }
 
+
+        public new dynamic this[string key]
+        {
+           // set;
+            get 
+            {
+                if (this.ContainsKey(key))
+                    return base[key];
+                else
+                {
+                    ExcLog.LogException("Config ERROR:  Variable not found : " + key);
+                    return false;
+                }
+            }
+
+        }
+
         public Config(string config_file, string variables_filter)
             : base(config_file)
         {

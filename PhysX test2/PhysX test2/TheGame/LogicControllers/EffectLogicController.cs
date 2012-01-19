@@ -16,7 +16,7 @@ namespace PhysX_test2.TheGame.LogicControllers
     {
         private EffectParameters _baseParameters;
 
-        private GameSimpleObject[] _objects;
+        private GameObject[] _objects;
         private TimeSpan _locateTime;
 
         private bool _onLevel = false;
@@ -41,7 +41,7 @@ namespace PhysX_test2.TheGame.LogicControllers
             {
                 for(int i = 0; i< _objects.Length;i++)
                 {
-                    GameSimpleObject gso = _objects[i];
+                    GameObject gso = _objects[i];
                     if ((__gameTime.TotalGameTime.TotalMilliseconds - _locateTime.TotalMilliseconds) > _baseParameters._effectItems[i]._lifeTime)
                         gso.RemoveFromLevel();
                     
@@ -55,7 +55,7 @@ namespace PhysX_test2.TheGame.LogicControllers
             _itsLevel.RemoveController(this);
             for (int i = 0; i < _objects.Length; i++)
             {
-                GameSimpleObject gso = _objects[i];
+                GameObject gso = _objects[i];
                 gso.RemoveFromLevel();
                 gso.Unload();
             }
@@ -68,9 +68,23 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public void LocateOnLevel(TimeSpan __now)
         {
-            foreach (GameSimpleObject o in _objects)
+            
+            for(int i =0;i< _objects.Length;i++)
             {
-                o.LocateToLevel(null);
+                GameObject o = _objects[i];
+                EffectParameters.EffectItem item = _baseParameters._effectItems[i];
+                switch (item._type)
+                {
+                    case EffectItemType.Object:
+                        {
+                            o.LocateToLevel(null);
+                        } break;
+                    case EffectItemType.Particles:
+                        {
+                            o.LocateToLevel(null);
+                        } break;
+                    default: break;
+                }
             }
             _locateTime = __now;
             _onLevel = true;
@@ -80,7 +94,7 @@ namespace PhysX_test2.TheGame.LogicControllers
         {
             EffectParameters ep = StaticObjects.EffectParameters[__id];
             EffectLogicController res = new EffectLogicController(__level, ep);
-            res._objects = new GameSimpleObject[ep._effectItems.Length];
+            res._objects = new GameObject[ep._effectItems.Length];
             for (int i = 0; i < ep._effectItems.Length; i++)
             {
                 EffectParameters.EffectItem item = ep._effectItems[i];
@@ -103,7 +117,13 @@ namespace PhysX_test2.TheGame.LogicControllers
                         } break;
                     case EffectItemType.Particles:
                         {
-                           // GameParticleObject effectObject = new GameParticleObject(__level, "Fire01LO\0", new Vector3(1), 10, __position, __normal, 0.1f, 0.0f);
+                            float size = Convert.ToSingle(ep._effectItems[i]._parameters["size"]);
+                            int count = Convert.ToInt32(ep._effectItems[i]._parameters["count"]);
+                            float dispersion = Convert.ToSingle(ep._effectItems[i]._parameters["dispersion"]);
+                            float gravity = Convert.ToSingle(ep._effectItems[i]._parameters["gravity"]);
+                            GameParticleObject effectObject = new GameParticleObject(ep._effectItems[i]._parameters["objectName"] as string, __level, new Vector3(size), count, __normal, dispersion, gravity);
+                            effectObject._object.SetGlobalPose(Matrix.CreateTranslation(__position), true);
+                            res._objects[i] = effectObject;
                         } break;
                 }
             }

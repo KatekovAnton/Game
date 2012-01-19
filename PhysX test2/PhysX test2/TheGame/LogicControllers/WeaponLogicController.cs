@@ -43,10 +43,10 @@ namespace PhysX_test2.TheGame.LogicControllers
             switch (__newState)
             {
                 case GameWeaponState.None:
-                    _weaponObject.RemoveFromScene();
+                    _weaponObject.RemoveFromLevel();
                     break;
                 case GameWeaponState.InHand:
-                    _weaponObject.TakeInHand(__owner._hisObject);
+                    _weaponObject.TakeInHand(__owner._hisObject._levelObject);
                     break;
                 case GameWeaponState.OnFloor:
                     _weaponObject.DropOnFloor();
@@ -60,7 +60,7 @@ namespace PhysX_test2.TheGame.LogicControllers
         {
             _itsLevel.RemoveController(this);
             _weaponFire.RemoveFromLevel();
-            _weaponObject.RemoveFromScene();
+            _weaponObject.RemoveFromLevel();
         }
 
         private bool CanFire(GameTime __gametime)

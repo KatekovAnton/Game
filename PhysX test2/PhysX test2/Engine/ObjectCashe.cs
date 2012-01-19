@@ -13,10 +13,12 @@ namespace PhysX_test2.Engine
     public class ObjectCashe
     {
         public Dictionary<string, PivotObject> _cashedObjects;
+        public Dictionary<string, ParticleObject> _cashedPObjects;
 
         public ObjectCashe()
         {
             _cashedObjects = new Dictionary<string, PivotObject>();
+            _cashedPObjects = new Dictionary<string, ParticleObject>();
         }
 
         public void ClearCashe()
@@ -25,6 +27,12 @@ namespace PhysX_test2.Engine
                 ContentLoader.ContentLoader.UnloadPivotObject(_cashedObjects[key]);
 
             _cashedObjects.Clear();
+
+
+            foreach (string key in _cashedPObjects.Keys)
+                ContentLoader.ContentLoader.UnloadParticleObject(_cashedPObjects[key]);
+
+            _cashedPObjects.Clear();
         }
 
         public void RemoveObject(string __name)
@@ -37,6 +45,16 @@ namespace PhysX_test2.Engine
             ContentLoader.ContentLoader.UnloadPivotObject(obj);
         }
 
+        public void RemoveParticleObject(string __name)
+        {
+            if (!_cashedPObjects.Keys.Contains(__name))
+                return;
+
+            ParticleObject obj = _cashedPObjects[__name];
+
+            ContentLoader.ContentLoader.UnloadParticleObject(obj);
+        }
+
         public void CasheObject(string __name,
             Matrix? __deltaMatrix,
             bool __needMouseCast,
@@ -46,6 +64,12 @@ namespace PhysX_test2.Engine
         {
             PivotObject newObject = GameEngine.LoadObject(__name, __deltaMatrix, __needMouseCast, __needBulletCast, __dependType);
             _cashedObjects.Add(__name, newObject);
+        }
+
+        public void CasheParticleObject(string __name)
+        {
+            ParticleObject newObject = GameEngine.LoadParticleObject(__name, new Vector3(1, 1, 1));
+            _cashedPObjects.Add(__name, newObject);
         }
     }
 }

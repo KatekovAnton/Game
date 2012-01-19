@@ -33,8 +33,7 @@ namespace PhysX_test2.Engine.Render
 
         public override void SelfRender(int lod, Materials.Material mat = null)
         {
-            //TODO: instancing!!!
-
+            mat.Apply(0,0);
             switch (RenderPipeline.instancingTechnique)
             {
                 case InstancingTechnique.HardwareInstancing:
@@ -44,11 +43,6 @@ namespace PhysX_test2.Engine.Render
                 case InstancingTechnique.NoInstancing:
                     DrawModelNoInstancing(_model, new Matrix[] { Matrix.Identity }, _matrices);
                     break;
-
-                /*           case InstancingTechnique.NoInstancingOrStateBatching:
-                               DrawModelNoInstancingOrStateBatching(instancedModel, instancedModelBones,
-                                                                    instanceTransforms, view, projection);
-                               break;*/
             }
 
         }
@@ -75,25 +69,24 @@ namespace PhysX_test2.Engine.Render
             // Transfer the latest instance transform matrices into the instanceVertexBuffer.
             _instanceVertexBuffer.SetData(instances, 0, instances.Length, SetDataOptions.Discard);
             Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(Matrix.Identity);
-            foreach (SubSet s in _model.subsets)
+
+            // Tell the GPU to read from both the model vertex buffer plus our instanceVertexBuffer.
+            MyGame.Device.SetVertexBuffers(
+                new VertexBufferBinding(_model.subsets[0].mesh.VertexBuffer, 0, 0),
+                new VertexBufferBinding(_instanceVertexBuffer, 0, 1)
+            );
+
+            MyGame.Device.Indices = _model.subsets[0].mesh.IndexBuffer;
+
+            // Draw all the instance copies in a single call.
+            foreach (var pass in PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect.CurrentTechnique.Passes)
             {
-                // Tell the GPU to read from both the model vertex buffer plus our instanceVertexBuffer.
-                MyGame.Device.SetVertexBuffers(
-                    new VertexBufferBinding(s.mesh.VertexBuffer, 4 * (3 + 3 + 2), 0),
-                    new VertexBufferBinding(_instanceVertexBuffer, 0, 1)
-                );
-
-                MyGame.Device.Indices = s.mesh.IndexBuffer;
-
-                // Draw all the instance copies in a single call.
-                foreach (var pass in PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect.CurrentTechnique.Passes)
-                {
-                    pass.Apply();
-                    MyGame.Device.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0,
-                                                          s.mesh.VertexBuffer.VertexCount, 0,
-                                                          s.mesh.IndexBuffer.IndexCount / 3, instances.Length);
-                }
+                pass.Apply();
+                MyGame.Device.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0,
+                                                       _model.subsets[0].mesh.VertexBuffer.VertexCount, 0,
+                                                       _model.subsets[0].mesh.IndexBuffer.IndexCount / 3, instances.Length);
             }
+
         }
 
 
@@ -132,7 +125,7 @@ namespace PhysX_test2.Engine.Render
         {
             if (!Disposed)
             {
-                if ((_instanceVertexBuffer == null) && !(_instanceVertexBuffer.IsDisposed))
+                if ((_instanceVertexBuffer != null) && !(_instanceVertexBuffer.IsDisposed))
                     _instanceVertexBuffer.Dispose();
                 _model.Dispose();
                 _matrices = null;
@@ -199,6 +192,8 @@ namespace PhysX_test2.Engine.Render
         /// <param name="matrices">Matrices per particle</param>
         public void SetParticleData(Matrix[] matrices)
         {
+
+
             _matrices = matrices;
         }
     }

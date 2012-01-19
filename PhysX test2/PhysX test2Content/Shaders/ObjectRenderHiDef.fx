@@ -95,82 +95,88 @@ float4 CreateShadowMap_PixelShader(CreateShadowMap_VSOut input) : COLOR
 { 
     return float4(input.Depth, 0, 0, 1);
 }
-
-
-
-
-PS_INPUT StaticVertexShaderSM(Vertex vertex)
+//////////////////////////////////////////////////////////////////////////////////////////
+PS_INPUT MainVertexShaderNoSM(Vertex vertex, float4x4 _matrix)
 {
 	PS_INPUT f = (PS_INPUT)0;
-	f.Position = mul(mul(mul(vertex.Position, World), View), Projection);
+	f.Position = mul(mul(mul(vertex.Position, _matrix), View), Projection);
 	f.TextureCoordinate = vertex.TextureCoordinate;
-	f.Normal = normalize(mul(vertex.Normal, (float3x3)World));  
-	f.WorldPos = mul(vertex.Position, World);
+  
+	f.Normal = normalize(mul(vertex.Normal, (float3x3)_matrix));
 	return f;
+}
+PS_INPUT MainVertexShaderSM(Vertex vertex, float4x4 _matrix)
+{
+	PS_INPUT f = (PS_INPUT)0;
+	f.Position = mul(mul(mul(vertex.Position, _matrix), View), Projection);
+	f.TextureCoordinate = vertex.TextureCoordinate;
+  
+	f.Normal = normalize(mul(vertex.Normal, (float3x3)_matrix));
+	f.WorldPos = mul(vertex.Position, _matrix);
+	return f;
+}
+///////////////////////////////////////////////////////////////////////
+PS_INPUT MainAnimVertexShaderNoSM(SkinnedVertex vertex, float4x4 _matrix)
+{
+	PS_INPUT f = (PS_INPUT)0;
+
+    float d = 1.0 / (vertex.BoneWeights[1]+vertex.BoneWeights[0]);
+    float4x4 animation = Frame[(int)vertex.BoneIndices[0]]*vertex.BoneWeights[0];
+    animation += Frame[(int)vertex.BoneIndices[1]]*vertex.BoneWeights[1];
+    // animation += Frame[(int)vertex.BoneIndices[2]]*vertex.BoneWeights[2];
+
+    f.Position = mul(mul(mul(mul(vertex.Position, animation), _matrix), View), Projection);
+    f.Normal = normalize(mul(mul(vertex.Normal,(float3x3)animation), (float3x3)World));
+    f.TextureCoordinate = vertex.TextureCoordinate;
+
+
+	return f;
+}
+PS_INPUT MainAnimVertexShaderSM(SkinnedVertex vertex, float4x4 _matrix)
+{
+	PS_INPUT f = (PS_INPUT)0;
+
+    float d = 1.0 / (vertex.BoneWeights[1]+vertex.BoneWeights[0]);
+    float4x4 animation = Frame[(int)vertex.BoneIndices[0]]*vertex.BoneWeights[0];
+    animation += Frame[(int)vertex.BoneIndices[1]]*vertex.BoneWeights[1];
+    // animation += Frame[(int)vertex.BoneIndices[2]]*vertex.BoneWeights[2];
+
+    f.Position = mul(mul(mul(mul(vertex.Position, animation), _matrix), View), Projection);
+    f.Normal = normalize(mul(mul(vertex.Normal,(float3x3)animation), (float3x3)World));
+    f.TextureCoordinate = vertex.TextureCoordinate;
+
+	f.WorldPos = mul(mul(vertex.Position, animation), _matrix);
+	return f;
+}
+//////////////////////////////////////////////////////////////////////
+PS_INPUT StaticVertexShaderSM(Vertex vertex)
+{
+	return MainVertexShaderSM(vertex,World);
 }
 
 PS_INPUT StaticVertexShaderNoSM(Vertex vertex)
-{
-	PS_INPUT f = (PS_INPUT)0;
-	f.Position = mul(mul(mul(vertex.Position, World), View), Projection);
-	f.TextureCoordinate = vertex.TextureCoordinate;
-  
-	f.Normal = normalize(mul(vertex.Normal, (float3x3)World));  
-	return f;
+{ 
+	return MainVertexShaderNoSM(vertex,World);
 }
 
 PS_INPUT SkinnedVertexShaderSM(SkinnedVertex vertex)
 {
-    PS_INPUT f = (PS_INPUT)0;
-
-    float d = 1.0 / (vertex.BoneWeights[1]+vertex.BoneWeights[0]);
-    float4x4 animation = Frame[(int)vertex.BoneIndices[0]]*vertex.BoneWeights[0];
-    animation += Frame[(int)vertex.BoneIndices[1]]*vertex.BoneWeights[1];
-    // animation += Frame[(int)vertex.BoneIndices[2]]*vertex.BoneWeights[2];
-
-    f.Position = mul(mul(mul(mul(vertex.Position, animation), World), View), Projection);
-    f.Normal = normalize(mul(mul(vertex.Normal,(float3x3)animation), (float3x3)World));
-    f.TextureCoordinate = vertex.TextureCoordinate;
-
-	f.WorldPos = mul(mul(vertex.Position, animation), World);
-    return f;
+    return MainAnimVertexShaderSM(vertex,World);
 }
 
 PS_INPUT SkinnedVertexShaderNoSM(SkinnedVertex vertex)
 {
-    PS_INPUT f = (PS_INPUT)0;
-
-    float d = 1.0 / (vertex.BoneWeights[1]+vertex.BoneWeights[0]);
-    float4x4 animation = Frame[(int)vertex.BoneIndices[0]]*vertex.BoneWeights[0];
-    animation += Frame[(int)vertex.BoneIndices[1]]*vertex.BoneWeights[1];
-    // animation += Frame[(int)vertex.BoneIndices[2]]*vertex.BoneWeights[2];
-
-    f.Position = mul(mul(mul(mul(vertex.Position, animation), World), View), Projection);
-    f.Normal = normalize(mul(mul(vertex.Normal,(float3x3)animation), (float3x3)World));
-    f.TextureCoordinate = vertex.TextureCoordinate;
-
-    return f;
+    return MainAnimVertexShaderNoSM(vertex,World);
 }
 
 PS_INPUT HardwareInstancingVertexShaderSM(Vertex vertex, float4x4 instanceTransform : BLENDWEIGHT)
 {
-    PS_INPUT f = (PS_INPUT)0;
-	f.Position = mul(mul(mul(vertex.Position, instanceTransform), View), Projection);
-	f.TextureCoordinate = vertex.TextureCoordinate;
-  
-	f.Normal = normalize(mul(vertex.Normal, (float3x3)instanceTransform));  
-	f.WorldPos = mul(vertex.Position, instanceTransform);
-	return f;
+	return MainVertexShaderSM(vertex,transpose(instanceTransform));
 }
 
 PS_INPUT HardwareInstancingVertexShaderNoSM(Vertex vertex, float4x4 instanceTransform : BLENDWEIGHT)
 {
-    PS_INPUT f = (PS_INPUT)0;
-	f.Position = mul(mul(mul(vertex.Position, instanceTransform), View), Projection);
-	f.TextureCoordinate = vertex.TextureCoordinate;
-  
-	f.Normal = normalize(mul(vertex.Normal, (float3x3)instanceTransform));
-	return f;
+    return MainVertexShaderNoSM(vertex,transpose(instanceTransform));
 }
 
 //===============================PIXEL SHADER======================================

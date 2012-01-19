@@ -49,7 +49,7 @@ namespace PhysX_test2.TheGame.Objects
             }
         }
 
-        public void LocateToLevel(LevelObject __parentObject)
+        public override void LocateToLevel(LevelObject __parentObject)
         {
             if (!_onLevel)
             {
@@ -89,14 +89,14 @@ namespace PhysX_test2.TheGame.Objects
             }
         }
 
-        public void RemoveFromLevel()
+        public override void RemoveFromLevel()
         {
             if(_onLevel)
                 _hisLevel.RemoveObject(_object);
             _onLevel = false;
         }
 
-        public void Unload()
+        public override void Unload()
         {
             if (!_object._unloaded)
                 PhysX_test2.Engine.ContentLoader.ContentLoader.UnloadPivotObject(_object);

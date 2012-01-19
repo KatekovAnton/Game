@@ -388,8 +388,6 @@ namespace PhysX_test2.Engine.Render
             if (EnableShadows)
             {
                 RenderToShadowMap(lightViewProjection, lightDir);
-                
-               
                 Render.Materials.Material.ObjectRenderEffect.Parameters["ShadowMap"].SetValue(shadowRenderTarget);
             }
 
@@ -399,6 +397,7 @@ namespace PhysX_test2.Engine.Render
             PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect.Parameters["Projection"].SetValue(Camera.Projection);
             PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect.Parameters["View"].SetValue(Camera.View);
             string AnimTeh = "", NotAnimTeh = "", BlendSITeh = Shader.TransparentSelfIlmnNoSM, BlendTeh = "";
+            string InstTec = "", InstTrTec = "", InstSItec = Shader.InstancedTransparentSelfIlmnNoSM;
             if (EnableShadows)
             {
                 if (SmoothShadows)
@@ -406,12 +405,16 @@ namespace PhysX_test2.Engine.Render
                     AnimTeh = Shader.AnimRenderSMSmooth;
                     NotAnimTeh = Shader.NotAnimRenderSMSmooth;
                     BlendTeh = Shader.TransparentSMSmooth;
+                    InstTec = Shader.InstancedSMSmooth;
+                    InstTrTec = Shader.InstancedTransparentSMSmooth;
                 }
                 else
                 {
                     AnimTeh = Shader.AnimRenderSM;
                     NotAnimTeh = Shader.NotAnimRenderSM;
                     BlendTeh = Shader.TransparentSM;
+                    InstTec = Shader.InstancedSM;
+                    InstTrTec = Shader.InstancedTransparentSM;
                 }
             }
             else
@@ -419,14 +422,19 @@ namespace PhysX_test2.Engine.Render
                 AnimTeh = Shader.AnimRenderNoSM;
                 NotAnimTeh = Shader.NotAnimRenderNoSM;
                 BlendTeh = Shader.TransparentNoSM;
+                InstTec = Shader.InstancedNoSM;
+                InstTrTec = Shader.InstancedTransparentNoSM;
             }
 
 
             RenderArrayWithTehnique(AnimTeh);
             RenderArrayWithTehnique(NotAnimTeh);
+            RenderArrayWithTehnique(InstTec);
 
             RenderBlendArrayWithTehnique(BlendSITeh);
             RenderBlendArrayWithTehnique(BlendTeh);
+            RenderBlendArrayWithTehnique(InstTrTec);
+            RenderBlendArrayWithTehnique(InstSItec);
 
             //////////
             if (EnableShadows)
@@ -434,7 +442,10 @@ namespace PhysX_test2.Engine.Render
                 RenderArrayWithTehnique(Shader.AnimRenderNoSM);
                 RenderArrayWithTehnique(Shader.NotAnimRenderNoSM);
 
-                RenderArrayWithTehnique(Shader.TransparentNoSM);
+                RenderBlendArrayWithTehnique(Shader.TransparentNoSM);
+
+                RenderArrayWithTehnique(Shader.InstancedNoSM);
+                RenderBlendArrayWithTehnique(Shader.InstancedTransparentNoSM);
             }
 
 

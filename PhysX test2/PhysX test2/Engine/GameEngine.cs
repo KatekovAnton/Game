@@ -168,6 +168,11 @@ namespace PhysX_test2.Engine
             _cashe.CasheObject(__name, __deltaMatrix, __needMouseCast, __needBulletCast, __parentObject, __dependType);
         }
 
+        public void CasheParticleObject(string __name)
+        {
+            _cashe.CasheParticleObject(__name);
+        }
+
         public static PivotObject LoadObject(string __name,
             Matrix? __deltaMatrix,
             bool __needMouseCast,
@@ -190,10 +195,11 @@ namespace PhysX_test2.Engine
             return loNew;
         }
 
-        public static ParticleObject CreateParticleObject(string __renderObjectName, Vector3 __maxSize, int __count, Vector3 __position, Vector3 __direction, float __dispersionRadius, float __gravityMult)
+        public static ParticleObject LoadParticleObject(string __objectName, Vector3 __maxSize)
         {
-            //TODO
-            return null;
+            ParticleObject _object = Engine.ContentLoader.ContentLoader.LoadParticleObject(__objectName, __maxSize);
+            GameEngine.Instance.GraphicPipeleine.ProceedObject(_object.renderaspect);
+            return _object;
         }
 
         public void Loaddata()

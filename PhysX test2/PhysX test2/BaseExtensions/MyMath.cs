@@ -86,6 +86,10 @@ namespace PhysX_test2
         {
             return val > max ? max : val < min ? min : val;
         }
+        static public float minimax_float(float val, float min, float max)
+        {
+            return val > max ? max : val < min ? min : val;
+        }
 
     }
 

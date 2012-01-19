@@ -33,20 +33,31 @@ namespace PhysX_test2.TheGame.Objects
             PhysX_test2.Engine.ContentLoader.ContentLoader.UnloadPivotObject(_object);
         }
 
-
-        public void LocateToLevel()
-        {
-            if (!_onLevel)
-                _hisLevel.AddEngineObject(_object);
-            _onLevel = true;
-        }
-
-        public void RemoveFromLevel()
+        public override void RemoveFromLevel()
         {
             if (_onLevel)
                 _hisLevel.RemoveObject(_object);
-            _object._gameObject = null;
             _onLevel = false;
+        }
+
+        public override void Unload()
+        {
+            RemoveFromLevel();
+            Engine.ContentLoader.ContentLoader.UnloadPivotObject(_object);
+        }
+
+        public override void LocateToLevel(LevelObject __parent)
+        {
+#if DEBUG
+            if (__parent != null)
+                ExcLog.LogException("GameBulletSimple.LocateToLevel with parent!!!");
+
+            if(_onLevel)
+                ExcLog.LogException("GameBulletSimple.LocateToLevel but already located!!!");
+#endif
+            if (!_onLevel)
+                _hisLevel.AddEngineObject(_object);
+            _onLevel = true;
         }
 
         ~GameBulletSimple()

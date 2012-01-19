@@ -20,7 +20,6 @@ namespace PhysX_test2 {
             }
             return result;
         }
-
        
 
         public static Dictionary<string, string> FromStream(System.IO.BinaryReader bw)

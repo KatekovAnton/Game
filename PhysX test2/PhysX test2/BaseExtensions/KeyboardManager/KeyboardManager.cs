@@ -158,8 +158,8 @@ namespace PhysX_test2
 
         public static string key_buffer = "";
 
-        IKeyboardUser captured_user;
-        IAllKeys captured_user_all_keys;
+        public IKeyboardUser captured_user;
+        public  IAllKeys captured_user_all_keys;
 
 
         public void Capture(IKeyboardUser IKeyboardUser)
