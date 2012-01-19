@@ -28,6 +28,9 @@ namespace PhysX_test2.UserInterface
             Textures.GetDirectly("`64`2");
             Textures.GetDirectly("`64`32");
             Textures.GetDirectly("`32`64");
+          //  uint[] datat = new uint[16*16];
+          //  UIContent.Textures["`16`16"].GetData<uint>(datat);
+            //insert breakpoint here
         }
 
     }
@@ -123,18 +126,17 @@ namespace PhysX_test2.UserInterface
         public Vector2 Origin = Vector2.Zero;
         public int Resource_count = 0;
 
-
         public string name;
 
         public RT(int width, int heigth, string name)
-            : base(Program.game.GraphicsDevice, width, heigth, true, SurfaceFormat.Alpha8, DepthFormat.None, 0, RenderTargetUsage.DiscardContents)
+            : base(Program.game.GraphicsDevice, width, heigth, false, SurfaceFormat.Bgr565, DepthFormat.Depth16, 0, RenderTargetUsage.DiscardContents)
         {
             Origin = new Vector2(width / 2, heigth / 2); Resource_count++;
             this.name = name;
         }
 
         public RT(int width, int heigth, Color color, string name)
-            : base(Program.game.GraphicsDevice, width, heigth)
+            : base(Program.game.GraphicsDevice, width, heigth, false, SurfaceFormat.Bgr565, DepthFormat.Depth16, 0, RenderTargetUsage.DiscardContents)
         {
             Program.game.GraphicsDevice.SetRenderTarget(this);
             Program.game.GraphicsDevice.Clear(color);

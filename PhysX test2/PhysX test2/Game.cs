@@ -91,7 +91,7 @@ namespace PhysX_test2
             else
                 DeviceManager.GraphicsProfile = GraphicsProfile.HiDef;
             Content.RootDirectory = "Content";
-
+            
             DeviceManager.SynchronizeWithVerticalRetrace = false;
             IsFixedTimeStep = false;
 
@@ -112,6 +112,9 @@ namespace PhysX_test2
         protected override void Initialize()
         {
             base.Initialize();
+
+
+            Scripting.SE.Init();
 
             _MAINGAME.Initialize();
 
