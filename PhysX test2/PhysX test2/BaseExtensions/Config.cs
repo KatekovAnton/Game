@@ -15,18 +15,34 @@ namespace PhysX_test2
 {
     public class Config : Scripting.MyPythonEngine
     {
-        private static Config _instance;
-        public static Config Instance
+        public  static Config Instance;
+        private static Config default_cfg;
+
+        public static void Init()
         {
-            get
-            {
-                if(_instance == null) 
-                    _instance = new Config("config.cfg");
-                return _instance;
-            }
+            default_cfg = new Config("DefaultConfig.py", "");
+            Instance = new Config("config.cfg","^_[a-z]");
         }
 
-        public Config(string config_file)
+
+        public new dynamic this[string key]
+        {
+           // set;
+            get 
+            {
+                if (this.ContainsKey(key))
+                    return base[key];
+                else
+                {
+                    if (default_cfg.ContainsKey(key)) return default_cfg[key];
+                    ExcLog.LogException("Config ERROR: "+ file_name +"\nVariable not found : " + key);
+                    return false;
+                }
+            }
+
+        }
+
+        public Config(string config_file, string variables_filter)
             : base(config_file)
         {
             scriptscope.SetVariable("false", false);
@@ -35,9 +51,8 @@ namespace PhysX_test2
             scriptscope.SetVariable("yes", true);
 
             ExScript(config_file);
-            FillByVariables("_*");
+            FillByVariables(variables_filter);
         }
-
      
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using System.Xml;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace PhysX_test2.Scripting
 {
@@ -21,6 +22,7 @@ namespace PhysX_test2.Scripting
     // Dictionary<string,dynamic> - using for UserData such as Config и т.п.
     public abstract class MyPythonEngine : Dictionary<string,dynamic>
     {
+        public string file_name = "";
         public SCRIPTS scripts;
         public ScriptEngine scriptengine;
         public ScriptScope scriptscope;
@@ -29,6 +31,7 @@ namespace PhysX_test2.Scripting
         public MyPythonEngine(string path)
             : base()
         {
+            file_name = path;
             scripts = new SCRIPTS(path);
             scriptengine = IronPython.Hosting.Python.CreateEngine();
             scriptscope = scriptengine.CreateScope();
@@ -57,46 +60,60 @@ namespace PhysX_test2.Scripting
                 return vars;
             }
         }
-
-        public dynamic Execute(string str)
+        Exception LastException;
+        public void Execute(string str)
         {
             if (str != scripts.Empty.data)
             {
-                scriptengine.Execute(str, scriptscope);
-                try { return scriptscope.GetVariable<string>("result"); }
-                catch { }
-                try { return scriptscope.GetVariable<object>("result"); }
-                catch { }
+                try
+                {
+                    scriptengine.Execute(str, scriptscope);
+                }
+                catch (Exception ee)
+                {
+                    LastException = ee;
+                    ExcLog.LogException_ToScreenLog(ee);
+                }
+               /* try { return scriptscope.GetVariable<string>("result"); }       catch { }
+                try { return scriptscope.GetVariable<object>("result"); }       catch { }*/
             }
-            return "";
+           // return "";
         }
 
-        public virtual dynamic ExScript(string script_name)
+        public virtual void ExScript(string script_name)
         {
-            try
-            {
                scriptscope.SetVariable("counter", scripts[script_name].counter++);
-               return Execute(scripts[script_name].data);
-            }
-            catch (Exception ee)
-            {
-                ExcLog.LogException("Executing Script " + script_name + " : " + ee.Message);
-            }
-            return scripts[script_name].Execute();
+               Execute(scripts[script_name].data);
+               if (LastException!=null)
+                   ExcLog.LogException("Executing Script " + script_name + " : " + LastException.Message);
+            //return scripts[script_name].Execute();
         }
 
-        public virtual void FillByVariables(string filter)
+        public virtual void FillByVariables(string name_pattern)
         {
+            Regex regex = new Regex(name_pattern);
             Dictionary<string, dynamic> vars = Variables;
             foreach (string name in vars.Keys)
+            {
+                if (regex.IsMatch(name))
                 Add(name, vars[name]);
+            }
         }
+
+
     }
 
     public class SE : MyPythonEngine
     {
         public SE(string path) : base(path) { }
-        public static SE Instance = new SE(@"Content\Scripts\");
+        private static SE _instance;
+        public static SE Instance {
+            get {
+                if (_instance == null)
+                    _instance = new SE(Config.Instance["_scripts_path"]);
+            return _instance;
+            }
+        }
     }
 
 
@@ -151,38 +168,6 @@ namespace PhysX_test2.Scripting
         public int counter = 0;
         public SCRIPT() { }
         public void Dispose() { data = ""; name = ""; }
-
-       /* public void Execute()
-        {
-            try
-            {
-                SE.Instance.scriptscope.SetVariable("counter", counter++);
-                SE.Instance.Execute(data);
-            }
-            catch (Exception ee)
-            {
-                ExcLog.LogException("Executing Script " + name + " : " + ee.Message);       
-            }
-        }
-
-        public void Add(string data)
-        {
-            this.data += "\n" + data;
-        }
-
-        public void Save() { Save(SE.Instance.scripts.path + name + ".py"); }
-        public void Save(string filename)
-        {
-            if (name != SE.Instance.scripts.Empty.name)
-            try
-            {
-               StreamWriter sw = new StreamWriter(filename, false); sw.Write(data); sw.Close(); 
-            }
-            catch (Exception ee)
-            {
-                ExcLog.LogException("Saving Script " + name + " : " + ee.Message);
-            }
-        }*/
     }
 
 }

@@ -144,13 +144,16 @@ namespace PhysX_test2.Engine.Logic
             }
         }
 
-        public void SetGlobalPose(Microsoft.Xna.Framework.Matrix newPose,bool afterupdate = false, PivotObject __parent = null)
+        public void SetGlobalPose(Microsoft.Xna.Framework.Matrix newPose, bool afterupdate = false, PivotObject __parent = null)
         {
             behaviourmodel.SetGlobalPose(newPose, null, __parent);
             transform = behaviourmodel.globalpose;
             moved = true;
             if (afterupdate)
+            {
+                behaviourmodel.EndDoFrame();
                 Update();
+            }
         }
 
         public virtual void AfterUpdate()

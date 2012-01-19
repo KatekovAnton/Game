@@ -20,7 +20,7 @@ namespace PhysX_test2.UserInterface
 
         public static void Init()
         {
-            Textures = new Textures(@"Content\Images\");
+            Textures = new Textures(Config.Instance["_textures_path"]);
             Textures.GetDirectly("`32`32");
             Textures.GetDirectly("`2`2");
             Textures.GetDirectly("`16`16");
@@ -44,7 +44,7 @@ namespace PhysX_test2.UserInterface
         {
             path = "";
             if (!Path.Contains(":")) path = GameConfiguration.AppPath+"\\";
-            if (Path.LastIndexOf("\\")>0) path += Path.Substring(0, Path.LastIndexOf("\\"));
+            if (Path.LastIndexOf("\\")>0) path += Path.Substring(0, Path.LastIndexOf("\\")+1);
 
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
         }
@@ -112,7 +112,7 @@ namespace PhysX_test2.UserInterface
                      catch 
                      {
                        // insert your pack loading here
-                         ExcLog.LogException(ee);
+                         ExcLog.LogException("Textures.Load : " + ee.Message);
                      }
                 }
 

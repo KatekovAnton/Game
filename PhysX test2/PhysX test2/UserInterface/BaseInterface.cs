@@ -33,6 +33,7 @@ namespace PhysX_test2.UserInterface
             command_buffer.Add(debug_textbox.Text);
             current_command = command_buffer.Count;
             debug_textbox.cur_pos = 0;
+            Scripting.SE.Instance.Execute(debug_textbox.Text);
             debug_textbox.Text = "";
         }
 

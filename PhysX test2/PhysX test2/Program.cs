@@ -24,7 +24,7 @@ namespace PhysX_test2
                 }
             }
             catch { }
-
+            Config.Init();
             game = new MyGame();
             game.Run();
         }

@@ -1,11 +1,13 @@
 Content\Courier New.xnb
 Content\Shaders\ObjectRenderHiDef.xnb
+Content\Scripts\EngineInit.py
 Content\ObjectRender.xnb
 Content\ObjectRenderHiDef.xnb
 Content\ObjectRenderReach.xnb
 Content\ObjectRenderUltraLow.xnb
 Community.CsharpSqlite.dll
 cudart32_30_9.dll
+DefaultConfig.py
 IronPython.dll
 IronPython.Modules.dll
 Microsoft.Dynamic.dll
