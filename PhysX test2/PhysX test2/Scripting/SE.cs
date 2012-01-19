@@ -12,6 +12,7 @@ using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using System.Xml;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace PhysX_test2.Scripting
 {
@@ -85,12 +86,18 @@ namespace PhysX_test2.Scripting
             return scripts[script_name].Execute();
         }
 
-        public virtual void FillByVariables(string filter)
+        public virtual void FillByVariables(string name_pattern)
         {
+            Regex regex = new Regex(name_pattern);
             Dictionary<string, dynamic> vars = Variables;
             foreach (string name in vars.Keys)
+            {
+                if (regex.IsMatch(name))
                 Add(name, vars[name]);
+            }
         }
+
+
     }
 
     public class SE : MyPythonEngine
@@ -151,38 +158,6 @@ namespace PhysX_test2.Scripting
         public int counter = 0;
         public SCRIPT() { }
         public void Dispose() { data = ""; name = ""; }
-
-       /* public void Execute()
-        {
-            try
-            {
-                SE.Instance.scriptscope.SetVariable("counter", counter++);
-                SE.Instance.Execute(data);
-            }
-            catch (Exception ee)
-            {
-                ExcLog.LogException("Executing Script " + name + " : " + ee.Message);       
-            }
-        }
-
-        public void Add(string data)
-        {
-            this.data += "\n" + data;
-        }
-
-        public void Save() { Save(SE.Instance.scripts.path + name + ".py"); }
-        public void Save(string filename)
-        {
-            if (name != SE.Instance.scripts.Empty.name)
-            try
-            {
-               StreamWriter sw = new StreamWriter(filename, false); sw.Write(data); sw.Close(); 
-            }
-            catch (Exception ee)
-            {
-                ExcLog.LogException("Saving Script " + name + " : " + ee.Message);
-            }
-        }*/
     }
 
 }

@@ -21,12 +21,12 @@ namespace PhysX_test2
             get
             {
                 if(_instance == null) 
-                    _instance = new Config("config.cfg");
+                    _instance = new Config("config.cfg","^_[a-z]");
                 return _instance;
             }
         }
 
-        public Config(string config_file)
+        public Config(string config_file, string variables_filter)
             : base(config_file)
         {
             scriptscope.SetVariable("false", false);
@@ -35,9 +35,8 @@ namespace PhysX_test2
             scriptscope.SetVariable("yes", true);
 
             ExScript(config_file);
-            FillByVariables("_*");
+            FillByVariables(variables_filter);
         }
-
      
     }
 }

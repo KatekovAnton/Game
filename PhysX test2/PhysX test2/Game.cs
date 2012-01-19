@@ -113,7 +113,7 @@ namespace PhysX_test2
         {
             base.Initialize();
 
-//            Scripting.SE.Instance = new Scripting.SE("" ;
+            Scripting.SE.Instance.ExScript("EngineInit");
 
             _MAINGAME.Initialize();
 

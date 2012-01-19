@@ -44,7 +44,7 @@ namespace PhysX_test2.UserInterface
         {
             path = "";
             if (!Path.Contains(":")) path = GameConfiguration.AppPath+"\\";
-            if (Path.LastIndexOf("\\")>0) path += Path.Substring(0, Path.LastIndexOf("\\"));
+            if (Path.LastIndexOf("\\")>0) path += Path.Substring(0, Path.LastIndexOf("\\")+1);
 
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
         }

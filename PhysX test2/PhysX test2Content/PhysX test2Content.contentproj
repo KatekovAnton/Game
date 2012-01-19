@@ -65,6 +65,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\EngineInit.py">
+      <Name>EngineInit</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Shaders\ObjectRender.fx">
       <Name>ObjectRender</Name>
       <Importer>EffectImporter</Importer>
