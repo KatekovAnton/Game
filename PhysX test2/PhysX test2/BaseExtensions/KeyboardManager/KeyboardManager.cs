@@ -38,6 +38,36 @@ namespace PhysX_test2
         {
             get { return KeyboardManagerCreator._KeyboardManager; }
         }
+
+
+
+        public static void Init()
+        {
+            string str_low = "0123456789abcdefghijklmnopqrstuvwxyz;=,-./[\\]'`";
+            string str_up = ")!@#$%^&*(ABCDEFGHIJKLMNOPQRSTUVWXYZ:+<_>?{|}\"~";
+
+             Keys_l = new Dictionary<int, string>();
+             Keys_u = new Dictionary<int, string>();
+
+             Keys_add(ref str_low, ref str_up, 48, 10);
+             Keys_add(ref str_low, ref str_up, 65, 26);
+             Keys_add(ref str_low, ref str_up, 186, 6);
+             Keys_add(ref str_low, ref str_up, 219, 4);
+
+             
+        }
+        
+        public static void Keys_add(ref string str_low, ref string str_up, int offset, int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Keys_l.Add(i + offset, str_low[i].ToString());
+                Keys_u.Add(i + offset, str_up[i].ToString());
+            }
+
+            str_low = str_low.Remove(0, count);
+            str_up = str_up.Remove(0,count);
+        }
         
         int lastusercount;
         public void Update()
@@ -118,40 +148,22 @@ namespace PhysX_test2
                 }
         }
 
+        static public Dictionary<int, string> Keys_l;
+        static public Dictionary<int, string> Keys_u;
+
         static public string Key_To_Str(Keys Key)
         {
-             int i = (int)Key;
-             if (i > 31 && i < 127)
-             {
-                 string str = Convert.ToChar((int)Key).ToString();
-                 if (Shift)
-                 {
-                     switch (i)
-                     {
-                         case 48: str = ")"; break;
-                         case 57: str = "("; break;
-                         default: ; break;
-                     }
-                     return str;
-                 }
-                 else
-                 {
-                     return str.ToLowerInvariant();
-                 }
-             }
-             else
-             {
-                string str = "";
-                switch (i)
-                  {
-                    case 187: str = Shift ? "+" : "="; break;
-                    case 189: str = Shift ? "_" : "-"; break;
-                      default: ; break;
-                  }
-                return str;
-             }
-
-             return "?";
+            try
+            {
+                if (Shift) return Keys_u[(int)Key];
+                return Keys_l[(int)Key];
+            }
+            catch
+            {
+                Keys_u.Add((int)Key, "");
+                Keys_l.Add((int)Key, "");
+                return "?";
+            }
         }
 
         bool keys_captured_by_user = false;
@@ -199,6 +211,7 @@ namespace PhysX_test2
             keyboardusers = new List<IKeyboardUser>();
             scaningKeys = new List<KeyScan>();
         }
+
         public void AddKeyboardUser(IKeyboardUser newUser)
         {
             keyboardusers.Add(newUser);
