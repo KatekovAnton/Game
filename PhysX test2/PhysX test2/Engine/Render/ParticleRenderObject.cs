@@ -23,7 +23,7 @@ namespace PhysX_test2.Engine.Render
          );
 
         private Matrix[] _matrices;
-        private MyModel _model;
+        public MyModel _model;
         private DynamicVertexBuffer _instanceVertexBuffer;
 
         public ParticleRenderObject(MyModel __model)
@@ -37,11 +37,11 @@ namespace PhysX_test2.Engine.Render
             switch (RenderPipeline.instancingTechnique)
             {
                 case InstancingTechnique.HardwareInstancing:
-                    DrawModelHardwareInstancing(_model, new Matrix[] { Matrix.Identity }, _matrices);
+                    DrawModelHardwareInstancing(_model, _matrices);
                     break;
 
                 case InstancingTechnique.NoInstancing:
-                    DrawModelNoInstancing(_model, new Matrix[] { Matrix.Identity }, _matrices);
+                    DrawModelNoInstancing(_model, _matrices);
                     break;
             }
 
@@ -50,7 +50,7 @@ namespace PhysX_test2.Engine.Render
         /// <summary>
         /// Efficiently draws several copies of a piece of geometry using hardware instancing.
         /// </summary>
-        void DrawModelHardwareInstancing(MyModel model, Matrix[] modelBones, Matrix[] instances)
+        void DrawModelHardwareInstancing(MyModel model, Matrix[] instances)
         {
             if (instances.Length == 0)
                 return;
@@ -95,7 +95,7 @@ namespace PhysX_test2.Engine.Render
         /// special GPU instancing techniques at all. This just does a
         /// regular loop and issues several draw calls one after another.
         /// </summary>
-        void DrawModelNoInstancing(MyModel model, Matrix[] modelBones, Matrix[] instances)
+        void DrawModelNoInstancing(MyModel model, Matrix[] instances)
         {
             foreach (SubSet s in _model.subsets)
             {
