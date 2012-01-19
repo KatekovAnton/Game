@@ -26,9 +26,18 @@ namespace PhysX_test2.Engine.Render
         public MyModel _model;
         private DynamicVertexBuffer _instanceVertexBuffer;
 
-        public ParticleRenderObject(MyModel __model)
+      
+        public ParticleRenderObject(MyModel __model, bool __ShadowCaster,
+         bool __ShadowReceiver,
+        bool __Transparent,
+         bool __SelfIlmn)
         {
             _model = __model;
+
+            isshadowcaster = __ShadowCaster;
+            isshadowreceiver = __ShadowReceiver;
+            isTransparent = __Transparent;
+            isSelfIllumination = __SelfIlmn;
         }
 
         public override void SelfRender(int lod, Materials.Material mat = null)

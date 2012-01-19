@@ -103,7 +103,7 @@ namespace PhysX_test2.TheGame.LogicControllers
                     case EffectItemType.Object:
                         {
                             GameSimpleObject effectObject = new GameSimpleObject(ep._effectItems[i]._parameters["objectName"].ToString(), __level);
-                            effectObject._object.SetGlobalPose(Matrix.CreateBillboard(__position + __normal*0.02f, __position + __normal*20, Vector3.Up, -__normal),true);
+                            effectObject._object.SetGlobalPose(Matrix.CreateBillboard(__position + __normal * 0.02f, __position + __normal * 20, Vector3.Up, -__normal), true);
                             res._objects[i] = effectObject;
                         } break;
                     //TODO: other cases
@@ -117,11 +117,26 @@ namespace PhysX_test2.TheGame.LogicControllers
                         } break;
                     case EffectItemType.Particles:
                         {
-                            float size = Convert.ToSingle(ep._effectItems[i]._parameters["size"]);
-                            int count = Convert.ToInt32(ep._effectItems[i]._parameters["count"]);
-                            float dispersion = Convert.ToSingle(ep._effectItems[i]._parameters["dispersion"]);
-                            float gravity = Convert.ToSingle(ep._effectItems[i]._parameters["gravity"]);
-                            GameParticleObject effectObject = new GameParticleObject(ep._effectItems[i]._parameters["objectName"] as string, __level, new Vector3(size), count, __normal, dispersion, gravity);
+                            float size = Convert.ToSingle((ep._effectItems[i]._parameters["size"] as string).Replace('.', ','));
+                            int count = Convert.ToInt32((ep._effectItems[i]._parameters["count"] as string).Replace('.',','));
+                            float dispersion = Convert.ToSingle((ep._effectItems[i]._parameters["dispersion"] as string).Replace('.',','));
+                            float gravity = Convert.ToSingle((ep._effectItems[i]._parameters["gravity"] as string).Replace('.',','));
+                            float angledisp = Convert.ToSingle((ep._effectItems[i]._parameters["angledisp"] as string).Replace('.', ','));
+                            float speed = Convert.ToSingle((ep._effectItems[i]._parameters["speed"] as string).Replace('.', ','));
+                            float speeddisp = Convert.ToSingle((ep._effectItems[i]._parameters["speeddisp"] as string).Replace('.', ','));
+                            GameParticleObject effectObject = new GameParticleObject(
+                                ep._effectItems[i]._parameters["objectName"] as string,
+                                __level, 
+                                new Vector3(size), 
+                                count,
+                                __normal,
+                                dispersion,
+                                gravity, 
+                                angledisp,
+                                speed,
+                                speeddisp,
+                                item._lifeTime);
+
                             effectObject._object.SetGlobalPose(Matrix.CreateTranslation(__position), true);
                             res._objects[i] = effectObject;
                         } break;

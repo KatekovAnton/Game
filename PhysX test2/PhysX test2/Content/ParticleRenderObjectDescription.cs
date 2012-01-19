@@ -13,11 +13,21 @@ namespace PhysX_test2.Content
         public string materialname;
         public string meshname;
 
+        public bool ShadowCaster;
+        public bool ShadowReceiver;
+        public bool Transparent;
+        public bool SelfIlmn;
+
         public override void loadbody(byte[] array)
         {
             BinaryReader br = new BinaryReader(new MemoryStream(array));
             meshname = br.ReadPackString();
             materialname = br.ReadPackString();
+
+            ShadowCaster = br.ReadBoolean(); ;
+            ShadowReceiver = br.ReadBoolean();
+            Transparent = br.ReadBoolean();
+            SelfIlmn = br.ReadBoolean();
             br.Close();
         }
 

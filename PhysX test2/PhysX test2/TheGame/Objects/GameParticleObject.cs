@@ -22,12 +22,12 @@ namespace PhysX_test2.TheGame.Objects
         public bool _onLevel;
         public ParticleObject _object;
 
-        public GameParticleObject(string __objectName, GameLevel __level, Vector3 __maxSize, int __count, Vector3 __direction, float __dispersionRadius, float __gravityMult)
+        public GameParticleObject(string __objectName, GameLevel __level, Vector3 __maxSize, int __count, Vector3 __direction, float __dispersionRadius, float __gravityMult, float __angledisp, float __speed, float __speeddisp, double __liveTime)
             : base(__level, false, false)
         {
             _onLevel = false;
             _object = GameEngine.LoadParticleObject("EffectParticles\0", __maxSize);
-            _object.SetParticlesParameters(__count, __direction, __dispersionRadius, __gravityMult);
+            _object.SetParticlesParameters(__count, __direction, __dispersionRadius, __gravityMult, __angledisp, __speed, __speeddisp, __liveTime);
         }
 
         public override void LocateToLevel(LevelObject __parentObject)

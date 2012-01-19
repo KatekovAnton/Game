@@ -181,12 +181,12 @@ namespace PhysX_test2.Engine.ContentLoader
                 subsetmeshes = PackList.Instance.GetObject(image.meshname,subsetmeshes) as Content.ContentMesh;
                 EngineMesh subsetmesh = new EngineMesh(subsetmeshes.vertices, subsetmeshes.indices);
                 MyModel model = new MyModel(new SubSet[] { new SubSet(subsetmesh) });
-                prod = new ParticleRenderObject(model);
+                prod = new ParticleRenderObject(model, image.ShadowCaster, image.ShadowReceiver, image.Transparent, image.SelfIlmn);
             }
             else
             {
                 ParticleObject prodold = image._engineSampleObject as ParticleObject;
-                prod = new ParticleRenderObject(prodold.renderaspect._model);
+                prod = new ParticleRenderObject(prodold.renderaspect._model, image.ShadowCaster, image.ShadowReceiver, image.Transparent, image.SelfIlmn);
             }
 
             Material m = loadMaterial(image.materialname);

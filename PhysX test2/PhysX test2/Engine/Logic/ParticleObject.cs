@@ -38,8 +38,15 @@ namespace PhysX_test2.Engine.Logic
         protected float _gravityRelationMultiplier;
         protected float _dispRadius;
         protected int _particleCount;
+
+        protected float _angledisp;
+        protected float _speed;
+        protected float _speeddisp;
+
         protected bool _firstEmitted;
         protected bool _parametersSetted;
+
+        protected double _livetime;
 
         public ParticleObject(
             BehaviourModel.ObjectBehaviourModel _behaviourmodel,
@@ -55,12 +62,18 @@ namespace PhysX_test2.Engine.Logic
             _parametersSetted = _firstEmitted = false;
         }
 
-        public void SetParticlesParameters(int __particleCount, Vector3 __direction, float __dispRadius, float __gravityRelationMultiplier)
+        public void SetParticlesParameters(int __particleCount, Vector3 __direction, float __dispRadius, float __gravityRelationMultiplier, float __angledisp, float __speed, float __speeddisp, double __livetime)
         {
             _dispRadius = __dispRadius;
             _direction = __direction;
             _gravityRelationMultiplier = __gravityRelationMultiplier;
             _particleCount = __particleCount;
+
+            _angledisp = __angledisp;
+            _speed = __speed;
+            _speeddisp = __speeddisp;
+
+            _livetime = __livetime;
 
             _parametersSetted = true;
         }
@@ -82,17 +95,18 @@ namespace PhysX_test2.Engine.Logic
 
         protected ParticleData CreateParticle()
         {
-            float yaw = MyRandom.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
-            float pitch = MyRandom.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
-            float roll = MyRandom.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
+            float yaw = MyRandom.NextFloat(-_angledisp, _angledisp);
+            float pitch = MyRandom.NextFloat(-_angledisp, _angledisp);
+            float roll = MyRandom.NextFloat(-_angledisp, _angledisp);
 
             Matrix result = Matrix.CreateFromYawPitchRoll(yaw, pitch, roll);
             Vector3 resultDirection = Vector3.TransformNormal(_direction, result);
-
+            resultDirection = resultDirection * MyRandom.NextFloat(_speed - _speeddisp, _speed + _speeddisp);
+            resultDirection.Y -= _gravityRelationMultiplier * 0.1f;
             Vector3 delta = new Vector3(MyRandom.NextFloat(_dispRadius), MyRandom.NextFloat(_dispRadius), MyRandom.NextFloat(_dispRadius));
 
             float mult = MyRandom.NextFloat(_gravityRelationMultiplier * (1.0f - _dispRadius), _gravityRelationMultiplier * (1.0f + _dispRadius));
-            return new ParticleData(MyGame.UpdateTime.TotalGameTime.TotalMilliseconds, 1000.0 - MyRandom.Instance.Next(1000 / 3), _position + delta, resultDirection, mult);
+            return new ParticleData(MyGame.UpdateTime.TotalGameTime.TotalMilliseconds, _livetime - MyRandom.Instance.Next((int)(_livetime / 2.0)), _position + delta, resultDirection, mult);
         }
 
         public override Render.Materials.Material HaveMaterial()
