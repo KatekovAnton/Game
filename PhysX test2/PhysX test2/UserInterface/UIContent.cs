@@ -28,6 +28,9 @@ namespace PhysX_test2.UserInterface
             Textures.GetDirectly("`64`2");
             Textures.GetDirectly("`64`32");
             Textures.GetDirectly("`32`64");
+            uint[] datat = new uint[16*16];
+            UIContent.Textures["`16`16"].GetData<uint>(datat);
+            //insert breakpoint here
         }
 
     }
