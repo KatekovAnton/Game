@@ -1,4 +1,7 @@
-#please use this file to store default config from config.cfg. If config.cfg is crashed this file is using
+# please use this file to store default config from config.cfg.
+# If config.cfg or other *.cfg is crashed this file is using
+#
+#
 #paths
 _scripts_path = "Content\\Scripts\\"
 _textures_path = "Content\\Images\\"

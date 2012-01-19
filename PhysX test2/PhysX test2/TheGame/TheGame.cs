@@ -43,11 +43,10 @@ namespace PhysX_test2.TheGame
             
             _hotkeys = new List<HotKey>();
             _hotkeys.Add(new HotKey(new Keys[] { Keys.I }, SwichGunState));
-
+            
             KeyboardManager.Manager.AddKeyboardUser(this);
 
-            
-        }
+       }
 
         public bool IsKeyboardCaptured { set {  } get { return false; } }
 
