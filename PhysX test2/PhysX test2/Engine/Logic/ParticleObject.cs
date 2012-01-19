@@ -74,7 +74,7 @@ namespace PhysX_test2.Engine.Logic
                 return;
 
             _firstEmitted = true;
-
+            _position = this.behaviourmodel.CurrentPosition.Translation;
             _particles = new MyContainer<ParticleData>(_particleCount, 1);
             for (int i = 0; i < _particleCount; i++)
                 _particles.Add(CreateParticle());
@@ -191,6 +191,8 @@ namespace PhysX_test2.Engine.Logic
             _createTime = __createTime;
             _liveTime = __liveTime;
             _gravityRelationMultiplier = __gravityRelationMultiplier;
+            _position = __position;
+            _curentDiection = __direction;
         }
 
         public void Update(double __elapsedTime)

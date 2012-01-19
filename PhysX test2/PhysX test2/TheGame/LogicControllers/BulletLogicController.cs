@@ -80,7 +80,7 @@ namespace PhysX_test2.TheGame.LogicControllers
 
         public void LocateToLevel()
         {
-            _hisObject.LocateToLevel();
+            _hisObject.LocateToLevel(null);
             _hisObject._object._gameObject = this;
         }
 

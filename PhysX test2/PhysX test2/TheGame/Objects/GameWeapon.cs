@@ -52,6 +52,21 @@ namespace PhysX_test2.TheGame.Objects
             _state = GameWeaponState.None;
         }
 
+        public override void LocateToLevel(LevelObject __parent)
+        {
+            if(__parent == null)
+            {
+                DropOnFloor();
+                return;
+            }
+            if(!__parent.renderaspect.isanimated)
+            {
+                DropOnFloor();
+                return;
+            }
+            TakeInHand(__parent);
+        }
+
         public void DropOnFloor()
         {
             switch (_state)
@@ -72,13 +87,13 @@ namespace PhysX_test2.TheGame.Objects
             _state = GameWeaponState.OnFloor;
         }
 
-        public void TakeInHand(GameCharacter __character)
+        public void TakeInHand(LevelObject __character)
         {
             switch (_state)
             {
                 case GameWeaponState.None:
                     {
-                        _hisLevel.AddEngineObject(_inHandObject, __character._levelObject);
+                        _hisLevel.AddEngineObject(_inHandObject, __character);
                         if (_addonObject != null)
                             _hisLevel.AddEngineObject(_addonObject, _inHandObject);
                     } break;
@@ -92,7 +107,7 @@ namespace PhysX_test2.TheGame.Objects
             _state = GameWeaponState.InHand;
         }
 
-        public void RemoveFromScene()
+        public override void RemoveFromLevel()
         {
             switch (_state)
             {
@@ -119,5 +134,17 @@ namespace PhysX_test2.TheGame.Objects
 
         public void StopFire()
         { }
+
+        public override void Unload()
+        {
+            RemoveFromLevel();
+
+            _shotFireObject.RemoveFromLevel();
+            _shotFireObject.Unload();
+
+            Engine.ContentLoader.ContentLoader.UnloadPivotObject(_inHandObject);
+            Engine.ContentLoader.ContentLoader.UnloadPivotObject(_onFloorObject);
+            Engine.ContentLoader.ContentLoader.UnloadPivotObject(_addonObject);
+        }
     }
 }

@@ -77,6 +77,11 @@ namespace PhysX_test2.TheGame
             //Cashe all small objects!!!
             _engine.CasheObject("SimpleBullet_LO\0", null, false, false);
             _engine.CasheObject("EffectLevelObject\0", null, false, false);
+
+            _engine.CasheParticleObject("EffectParticles\0");
+
+
+
             //загрузка всего
             _engine.Loaddata();
 

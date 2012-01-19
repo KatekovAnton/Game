@@ -39,7 +39,7 @@ namespace PhysX_test2.TheGame.Objects
             _onLevel = false;
         }
 
-        public void RemoveFromLevel()
+        public override void RemoveFromLevel()
         {
             _hisLevel.RemoveObject(_levelObject);
         }
@@ -51,8 +51,10 @@ namespace PhysX_test2.TheGame.Objects
 
         public void SetDead()
         {
+            #if DEBUG
             if (!_isAlive)
-                throw new Exception();
+                ExcLog.LogException("GameCharacter.SetDead whereever its already dead!");
+            #endif
             _isAlive = false;
             //method
             if (_onLevel)
@@ -71,20 +73,30 @@ namespace PhysX_test2.TheGame.Objects
             _controllerAlive.MakeUnconditionalTransition("dead01\0", true, "dead01\0");
         }
 
+        public override void LocateToLevel(LevelObject __parent)
+        {
+            #if DEBUG
+            if (__parent != null)
+                ExcLog.LogException("GameCharacter.LocateToLevel with parent not null!");
+            #endif
+            _hisLevel.AddEngineObject(_levelObject);
+            _onLevel = true;
+        }
+
         public void Fire(string __animName, string __idleName)
         {
             if (!_isAlive)
                 return;
-
-
 
             _controllerAlive.MakeUnconditionalTransition(__animName, false, __idleName);
         }
 
         public void SetAlive(string __stayBottomName, string __stayTopName)
         {
+#if DEBUG
             if (_isAlive)
-                throw new Exception();
+                ExcLog.LogException("GameCharacter.SetAlive but its already alive!");
+#endif
             _isAlive = true;
             //method
             _levelObject.SetPosition(_hisLevel.GetSpawnPlace());
@@ -95,8 +107,7 @@ namespace PhysX_test2.TheGame.Objects
             }
             else
             {
-                _hisLevel.AddEngineObject(_levelObject);
-                _onLevel = true;
+                LocateToLevel(null);
             }
             
             if (_controllerAlive == null)
@@ -121,6 +132,16 @@ namespace PhysX_test2.TheGame.Objects
         public override void Rotate(float __angle)
         {
             _levelObject.behaviourmodel.Rotate(__angle);
+        }
+
+        public override void Unload()
+        {
+            RemoveFromLevel();
+            Engine.ContentLoader.ContentLoader.UnloadPivotObject(_levelObject);
+
+            _controllerAlive = null;
+
+            _characterStateController = null;
         }
     }
 

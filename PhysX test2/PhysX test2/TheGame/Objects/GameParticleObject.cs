@@ -22,16 +22,15 @@ namespace PhysX_test2.TheGame.Objects
         public bool _onLevel;
         public ParticleObject _object;
 
-        public GameParticleObject(string __objectName, GameLevel __level, Vector3 __maxSize, int __count, Vector3 __position, Vector3 __direction, int __partCount, float __dispersionRadius, float __gravityMult)
+        public GameParticleObject(string __objectName, GameLevel __level, Vector3 __maxSize, int __count, Vector3 __direction, float __dispersionRadius, float __gravityMult)
             : base(__level, false, false)
         {
             _onLevel = false;
-            _object = Engine.ContentLoader.ContentLoader.LoadParticleObject("EffectParticles", __maxSize);
-            _object.SetGlobalPose(Matrix.CreateTranslation(__position));
-            _object.SetParticlesParameters(__partCount, __direction, __dispersionRadius, __gravityMult);
+            _object = GameEngine.LoadParticleObject("EffectParticles\0", __maxSize);
+            _object.SetParticlesParameters(__count, __direction, __dispersionRadius, __gravityMult);
         }
 
-        public void LocateToLevel(LevelObject __parentObject)
+        public override void LocateToLevel(LevelObject __parentObject)
         {
             if (!_onLevel)
             {
@@ -43,14 +42,14 @@ namespace PhysX_test2.TheGame.Objects
             }
         }
 
-        public void RemoveFromLevel()
+        public override void RemoveFromLevel()
         {
             if (_onLevel)
                 _hisLevel.RemoveObject(_object);
             _onLevel = false;
         }
 
-        public void Unload()
+        public override void Unload()
         {
             if (!_object._unloaded)
                 PhysX_test2.Engine.ContentLoader.ContentLoader.UnloadParticleObject(_object);

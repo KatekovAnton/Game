@@ -21,6 +21,9 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
             public EffectItemType _type;
             public Dictionary<string, object> _parameters;
 
+            public bool _isBillboards;
+
+
             public EffectItem()
             {
                 _parameters = new Dictionary<string, object>();
@@ -62,6 +65,13 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
                 else if (name.CompareTo("Particles") == 0)
                 {
                     ei._type = EffectItemType.Particles;
+                    ei._parameters = StaticObjects.StringToDictionary(effectData[5] as string);
+
+                    string name1 = effectData[3] as string;
+                    if (!name1.EndsWith("\0"))
+                        name1 += "\0";
+                    ei._parameters.Add("objectName", name1);
+                    ei._isBillboards = ei._parameters["elementtype"].ToString().CompareTo("1") == 0;
                 }
 
                 _effectItems[i] = ei;

@@ -43,46 +43,70 @@ namespace PhysX_test2.TheGame.Level
         public void AddEngineObject(Engine.Logic.PivotObject __object, Engine.Logic.PivotObject __parentObject = null)
         {
             LevelObject loNew = __object as LevelObject;
-            if (loNew == null)
-                return;
-
-            if (loNew.renderaspect.isanimated)
+            bool added = false;
+            if (loNew != null)
             {
-                Engine.Render.AnimRenderObject ro = loNew.renderaspect as Engine.Render.AnimRenderObject;
-                Engine.AnimationManager.AnimationManager.Manager.AddAnimationUser(ro.Update, ro.character);
+                AddLevelObject(loNew, __parentObject);
+                added = true;
             }
-
-            _scene.AddObject(__object);
-
-            if (__parentObject != null)
+            if (!added)
             {
-                __object.SetGlobalPose(Matrix.Identity, true, __parentObject);
-                _scene._objects.AddRule(__parentObject, __object);
+                ParticleObject ponew = __object as ParticleObject;
+                if (ponew != null)
+                {
+                    AddParticleObject(ponew);
+                    added = true;
+                }
             }
+            
         }
 
         public void AddEngineObject(Engine.Logic.PivotObject __object, Matrix __position, Engine.Logic.PivotObject __parentObject = null)
         {
             LevelObject loNew = __object as LevelObject;
-            if (loNew == null)
-                return;
+            bool added = false;
+            if (loNew != null)
+            {
+                AddLevelObject(loNew, __parentObject);
+            }
+            if (!added)
+            {
+                ParticleObject ponew = __object as ParticleObject;
+                if (ponew != null)
+                {
+                    AddParticleObject(ponew);
+                    added = true;
+                }
+            }
+            __object.SetGlobalPose(__position, true, __parentObject);
+        }
 
+        private void AddLevelObject(LevelObject loNew, Engine.Logic.PivotObject __parentObject = null)
+        {
             if (loNew.renderaspect.isanimated)
             {
                 Engine.Render.AnimRenderObject ro = loNew.renderaspect as Engine.Render.AnimRenderObject;
                 Engine.AnimationManager.AnimationManager.Manager.AddAnimationUser(ro.Update, ro.character);
             }
 
-            
+            _scene.AddObject(loNew);
 
             if (__parentObject != null)
             {
-                _scene.AddObject(__object, false);
-                __object.SetGlobalPose(__position, true, __parentObject);
-                _scene._objects.AddRule(__parentObject, __object);
+                loNew.SetGlobalPose(Matrix.Identity, true, __parentObject);
+                _scene._objects.AddRule(__parentObject, loNew);
             }
-            else 
-                _scene.AddObject(__object);
+        }
+
+        private void AddParticleObject(ParticleObject loNew, Engine.Logic.PivotObject __parentObject = null)
+        {
+            _scene.AddObject(loNew);
+
+            if (__parentObject != null)
+            {
+                loNew.SetGlobalPose(Matrix.Identity, true, __parentObject);
+                _scene._objects.AddRule(__parentObject, loNew);
+            }
         }
 
         public void RemoveObject(Engine.Logic.PivotObject theObjecr)
@@ -168,8 +192,6 @@ namespace PhysX_test2.TheGame.Level
 
         public void CreateIntersectionEffect(Vector3 __axis, Vector3 __position, Vector3 __normal, Engine.Logic.PivotObjectMaterialType __matType, LogicControllers.Parameters.BulletType __bulletType)
         {
-            //TODO ADD EFFECT!!!!!
-            
             string paramid = StaticObjects.GetEffectParameters(__matType, __bulletType);
             if (paramid == null)
                 return;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using PhysX_test2.TheGame.Level;
+using PhysX_test2.Engine.Logic;
 
 namespace PhysX_test2.TheGame.Objects
 {
@@ -39,5 +40,10 @@ namespace PhysX_test2.TheGame.Objects
         {
  
         }
+
+        public abstract void RemoveFromLevel();
+        public abstract void Unload();
+
+        public abstract void LocateToLevel(LevelObject __parent);
     }
 }

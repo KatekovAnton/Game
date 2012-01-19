@@ -180,6 +180,24 @@ namespace PhysX_test2.TheGame
             }
         }
 
+        public static Dictionary<string, object> StringToDictionary(string str)
+        {
+            Dictionary<string, object> result = new Dictionary<string, object>();
+
+            string[] values = str.TrimEnd(' ', ';').Split(';');
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                string parameter = values[i];
+                string[] data = parameter.Split('=');
+                if (data.Length != 2)
+                    continue;
+                result.Add(data[0], data[1]);
+            }
+
+            return result;
+        }
+
         private void LoadEffectHashTable()
         {
             _effectHashTable = new EffectHash[3 * 3];

@@ -98,11 +98,11 @@
       <Name>ObjectRender</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Shaders\ObjectRenderHiDef.fx">
+    <Compile Include="Shaders\ObjectRenderHiDef.fx">
       <Name>ObjectRenderHiDef</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
-    </None>
+    </Compile>
     <None Include="Shaders\ObjectRenderReach.fx">
       <Name>ObjectRenderReach</Name>
       <Importer>EffectImporter</Importer>
