@@ -139,7 +139,7 @@ namespace PhysX_test2.UserInterface
         public RT(int width, int heigth, Color color, string name)
             : base(Program.game.GraphicsDevice, width, heigth, false, SurfaceFormat.Alpha8, DepthFormat.Depth16, 0, RenderTargetUsage.DiscardContents)
         {
-            if (Config.Instance["ultraLowRender"])
+            if (Config.Instance["_ultraLowRender"])
             { 
                uint val = color.PackedValue;
                 uint[] arr = new uint[width*heigth];
