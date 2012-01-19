@@ -186,7 +186,7 @@ namespace PhysX_test2.Engine.ContentLoader
             else
             {
                 ParticleObject prodold = image._engineSampleObject as ParticleObject;
-                prod = prodold.renderaspect;
+                prod = new ParticleRenderObject(prodold.renderaspect._model);
             }
 
             Material m = loadMaterial(image.materialname);
