@@ -26,11 +26,8 @@ namespace PhysX_test2.Engine.Render
         private MyModel _model;
         private DynamicVertexBuffer _instanceVertexBuffer;
 
-        public ParticleRenderObject(int __particleCount, MyModel __model)
+        public ParticleRenderObject(MyModel __model)
         {
-            _matrices = new Matrix[__particleCount];
-            for (int i = 0; i < __particleCount; i++)
-                _matrices[i] = Matrix.Identity;
             _model = __model;
         }
 
