@@ -70,7 +70,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\Community.CsharpSqlite.dll</HintPath>
     </Reference>
+    <Reference Include="IronPython, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
+    <Reference Include="IronPython.Modules, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Dynamic, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Scripting.Metadata, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -189,6 +194,7 @@
     <Compile Include="Engine\ObjectCashe.cs" />
     <Compile Include="Engine\Render\Materials\OpacityMaterial.cs" />
     <Compile Include="Engine\Render\ParticleRenderObject.cs" />
+    <Compile Include="Scripting\SE.cs" />
     <Compile Include="TheGame\InputManagers\InputProviderAI.cs" />
     <Compile Include="TheGame\InputManagers\InputProviderNetwork.cs" />
     <Compile Include="TheGame\InputManagers\InputProviderPlayer.cs" />

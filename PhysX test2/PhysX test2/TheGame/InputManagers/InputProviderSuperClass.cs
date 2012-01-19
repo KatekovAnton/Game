@@ -21,7 +21,7 @@ namespace PhysX_test2.TheGame.InputManagers
         WalkBackwardRight
     };
 
-    public class InputProviderSuperClass
+    public class InputProviderSuperClass : IAllKeys, IKeyboardUser
     {
         public bool _tryAttackFirst;
         public bool _tryAttackSecond;
@@ -39,5 +39,12 @@ namespace PhysX_test2.TheGame.InputManagers
         {
  
         }
+
+        public List<HotKey> _hotkeys;
+
+        public virtual bool GlobalUser { get { return false; } }
+        public virtual bool IsKeyboardCaptured { set; get; }
+        public virtual List<HotKey> hotkeys { get {return _hotkeys;} }
+        public virtual void KeyPress() { }
     }
 }

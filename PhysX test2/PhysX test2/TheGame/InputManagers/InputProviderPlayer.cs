@@ -60,26 +60,25 @@ namespace PhysX_test2.TheGame.InputManagers
                 _bodyRotation *= -1;
             _bodyRotation += 0.05f;
             // обработка нажатий клавы
-            KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.W))
+            if (KeyboardManager.currentState.IsKeyDown(Keys.W))
             {
                 Vector3 move = Extensions.VectorForCharacterMoving(Extensions.Route.Forward, yaang);
                 _moveVector += move;
             }
 
-            if (keyboardState.IsKeyDown(Keys.S))
+            if (KeyboardManager.currentState.IsKeyDown(Keys.S))
             {
                 Vector3 move = Extensions.VectorForCharacterMoving(Extensions.Route.Back, yaang);
                 _moveVector += move;
             }
 
-            if (keyboardState.IsKeyDown(Keys.A))
+            if (KeyboardManager.currentState.IsKeyDown(Keys.A))
             {
                 Vector3 move = Extensions.VectorForCharacterMoving(Extensions.Route.Left, yaang);
                 _moveVector += move;
             }
 
-            if (keyboardState.IsKeyDown(Keys.D))
+            if (KeyboardManager.currentState.IsKeyDown(Keys.D))
             {
                 Vector3 move = Extensions.VectorForCharacterMoving(Extensions.Route.Right, yaang);
                 _moveVector += move;

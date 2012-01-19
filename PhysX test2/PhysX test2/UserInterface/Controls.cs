@@ -124,7 +124,10 @@ namespace PhysX_test2.UserInterface
                        Text = Text.Insert(cp, KeyboardManager.key_buffer);
                    else
                    {
+                      if (KeyboardManager.key_buffer.Length + cp < Text.Length)
                        Text = Text.Remove(cp, KeyboardManager.key_buffer.Length).Insert(cp, KeyboardManager.key_buffer);
+                      else
+                       Text = Text.Remove(cp).Insert(cp, KeyboardManager.key_buffer);
                    }
                    cur_pos += KeyboardManager.key_buffer.Length;
                    KeyboardManager.key_buffer = "";
@@ -168,8 +171,11 @@ namespace PhysX_test2.UserInterface
            {
                if (cp < Text.Length)
                {
-                   Text = Text.Remove(cur_pos, 1); 
+                   Text = Text.Remove(cur_pos, 1);  
+                   if (InsertMode)
+                        Text = Text.Insert(cur_pos, " ");  
                }
+
            }
 
            public override void Draw()

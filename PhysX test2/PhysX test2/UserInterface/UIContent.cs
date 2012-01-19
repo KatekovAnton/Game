@@ -107,7 +107,8 @@ namespace PhysX_test2.UserInterface
                      try { result = new RT(Program.game.Content.Load<Texture2D>(_name), _name); }
                      catch 
                      {
-                        ExcLog.LogException(ee);
+                       // insert your pack loading here
+                         ExcLog.LogException(ee);
                      }
                 }
 
