@@ -32,10 +32,8 @@ namespace PhysX_test2.UserInterface
           //  UIContent.Textures["`16`16"].GetData<uint>(datat);
             //insert breakpoint here
         }
-
     }
-
-
+    
     public abstract class AutoLoadingContent : Hashtable
     {
         public dynamic Empty;
@@ -44,7 +42,10 @@ namespace PhysX_test2.UserInterface
         public AutoLoadingContent(string Path)
             : base()
         {
-            path = GameConfiguration.AppPath + "\\" + Path;
+            path = "";
+            if (!Path.Contains(":")) path = GameConfiguration.AppPath+"\\";
+            if (Path.LastIndexOf("\\")>0) path += Path.Substring(0, Path.LastIndexOf("\\"));
+
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
         }
 
@@ -129,35 +130,42 @@ namespace PhysX_test2.UserInterface
         public string name;
 
         public RT(int width, int heigth, string name)
-            : base(Program.game.GraphicsDevice, width, heigth, false, SurfaceFormat.Bgr565, DepthFormat.Depth16, 0, RenderTargetUsage.DiscardContents)
+            : base(Program.game.GraphicsDevice, width, heigth, false, SurfaceFormat.Alpha8, DepthFormat.Depth16, 0, RenderTargetUsage.DiscardContents)
         {
             Origin = new Vector2(width / 2, heigth / 2); Resource_count++;
             this.name = name;
         }
 
         public RT(int width, int heigth, Color color, string name)
-            : base(Program.game.GraphicsDevice, width, heigth, false, SurfaceFormat.Bgr565, DepthFormat.Depth16, 0, RenderTargetUsage.DiscardContents)
+            : base(Program.game.GraphicsDevice, width, heigth, false, SurfaceFormat.Alpha8, DepthFormat.Depth16, 0, RenderTargetUsage.DiscardContents)
         {
-            Program.game.GraphicsDevice.SetRenderTarget(this);
-            Program.game.GraphicsDevice.Clear(color);
-            Program.game.GraphicsDevice.SetRenderTarget(null);
+            if (Config.Instance["ultraLowRender"])
+            { 
+               uint val = color.PackedValue;
+                uint[] arr = new uint[width*heigth];
+                for (int i = 0;i<arr.Length;i++) arr[i] = val;
+                SetData<uint>(arr);
+            }
+            else
+            {
+                Program.game.GraphicsDevice.SetRenderTarget(this);
+                Program.game.GraphicsDevice.Clear(color);
+                Program.game.GraphicsDevice.SetRenderTarget(null);
+            }
             Origin = new Vector2(width / 2, heigth / 2);
             Resource_count++;
             this.name = name;
         }
 
         public RT(Texture2D texture2d, string name)
-            : base(Program.game.GraphicsDevice, texture2d.Width, texture2d.Height, true, SurfaceFormat.Alpha8, DepthFormat.None, 0, RenderTargetUsage.PlatformContents)
+            : base(Program.game.GraphicsDevice, texture2d.Width, texture2d.Height, false, SurfaceFormat.Alpha8, DepthFormat.None, 0, RenderTargetUsage.PlatformContents)
         {
-            
             Program.game.GraphicsDevice.SetRenderTarget(this);
             Program.game.GraphicsDevice.Clear(Color.FromNonPremultiplied(0, 0, 0, 0));
             Program.game._spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, null, DepthStencilState.None, RasterizerState.CullNone);
             Program.game._spriteBatch.Draw(texture2d, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             Program.game._spriteBatch.End();
-            // Program.game.GraphicsDevice.SetRenderTarget(null);
 
-            //     Draw_in(this, Vector2.Zero, Color.White, 0, new Vector2(1, 1), SpriteEffects.None, BlendState.Opaque);
             Origin = new Vector2(texture2d.Width / 2, texture2d.Height / 2);
             Resource_count++;
             this.name = name;

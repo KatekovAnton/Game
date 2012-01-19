@@ -5,6 +5,11 @@ Content\ObjectRenderReach.xnb
 Content\ObjectRenderUltraLow.xnb
 Community.CsharpSqlite.dll
 cudart32_30_9.dll
+IronPython.dll
+IronPython.Modules.dll
+Microsoft.Dynamic.dll
+Microsoft.Scripting.dll
+Microsoft.Scripting.Metadata.dll
 NxCharacter.dll
 NxCooking.dll
 PhysXCooking.dll

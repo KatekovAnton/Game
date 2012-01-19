@@ -118,7 +118,7 @@ namespace PhysX_test2.Engine.Render
             
             if (MyGame.Instance.GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)
             {
-                if (Config.Instance.GetBooleanParameter("ultraLowRender"))
+                if (Config.Instance["ultraLowRender"])
                     effectName = "ObjectRenderUltraLow";
                 else
                     effectName = "ObjectRenderReach";

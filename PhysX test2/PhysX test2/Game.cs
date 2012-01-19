@@ -113,8 +113,7 @@ namespace PhysX_test2
         {
             base.Initialize();
 
-
-            Scripting.SE.Init();
+//            Scripting.SE.Instance = new Scripting.SE("" ;
 
             _MAINGAME.Initialize();
 
@@ -138,6 +137,7 @@ namespace PhysX_test2
             this.Exiting += new EventHandler<EventArgs>(MyGame_Exiting);
 
             _engine.UI = new UserInterface.GameInterface();
+            
 
         }
 
