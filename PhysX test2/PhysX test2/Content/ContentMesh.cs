@@ -9,7 +9,7 @@ namespace PhysX_test2.Content
     public class ContentMesh:PackContent
     {
         public Vertex[] vertices;
-        public int[] indices;
+        public ushort[] indices;
 
         public ContentMesh()
         {
@@ -21,7 +21,7 @@ namespace PhysX_test2.Content
             //  vertexdeclaration = new VertexPositionNormalTexture();
             BinaryReader br = new BinaryReader(new MemoryStream(buffer));
             vertices = new Vertex[br.ReadInt32()];
-            indices = new int[br.ReadInt32()];
+            indices = new ushort[br.ReadInt32()];
 
             for (int bv = 0; bv < vertices.Length; bv++)
             {
@@ -41,7 +41,7 @@ namespace PhysX_test2.Content
             }
 
             for (int bv = 0; bv < indices.Length; bv++)
-                indices[bv] = br.ReadInt32();
+                indices[bv] = Convert.ToUInt16(br.ReadInt32());
 
             br.Close();
         }

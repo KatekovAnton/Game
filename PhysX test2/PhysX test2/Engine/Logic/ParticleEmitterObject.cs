@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2.Engine.Logic
 {
-    public class ParticleEmitterObject:ParticleObject
+  /*  public class ParticleEmitterObject:ParticleObject
     {
         public double _emitionSpeed;
 
@@ -39,5 +39,5 @@ namespace PhysX_test2.Engine.Logic
 
             double particles = time / _emitionSpeed;
         }
-    }
+    }*/
 }

@@ -35,25 +35,48 @@ namespace PhysX_test2.Engine.Logic
 
         protected Vector3 _direction;
         protected Vector3 _position;
-        protected Vector3 _maxSize;
-        public float _gravityRelationMultiplier;
-        public float _dispRadius;
+        protected float _gravityRelationMultiplier;
+        protected float _dispRadius;
+        protected int _particleCount;
+        protected bool _firstEmitted;
+        protected bool _parametersSetted;
 
-
-        public ParticleObject(Vector3 __maxSize, int __particleCount, Vector3 __position, Vector3 __direction, float __dispRadius, float __gravityRelationMultiplier)
+        public ParticleObject(
+            BehaviourModel.ObjectBehaviourModel _behaviourmodel,
+            ParticleRenderObject _renderaspect, 
+            Render.Materials.Material _material, 
+            RaycastBoundObject _raycastaspect) 
         {
-            //TODO
-            //it can be moving also
-            behaviourmodel = new BehaviourModel.ObjectStaticBehaviourModel();
-            raycastaspect = new RaycastBoundObject(new SceneGraph.OTBoundingShape(__maxSize), null);
-            SetGlobalPose(Matrix.CreateTranslation(__position), true);
+            behaviourmodel = _behaviourmodel;
+            renderaspect = _renderaspect;
+            raycastaspect = _raycastaspect;
+            material = _material;
 
+            _parametersSetted = _firstEmitted = false;
+        }
+
+        public void SetParticlesParameters(int __particleCount, Vector3 __direction, float __dispRadius, float __gravityRelationMultiplier)
+        {
             _dispRadius = __dispRadius;
             _direction = __direction;
-            _position = __position;
-            _maxSize = __maxSize;
-            _particles = new MyContainer<ParticleData>(__particleCount, 1);
-            for (int i = 0; i < __particleCount; i++)
+            _gravityRelationMultiplier = __gravityRelationMultiplier;
+            _particleCount = __particleCount;
+
+            _parametersSetted = true;
+        }
+
+        public void FirstEmition()
+        {
+            if (_firstEmitted)
+                return;
+
+            if (!_parametersSetted)
+                return;
+
+            _firstEmitted = true;
+
+            _particles = new MyContainer<ParticleData>(_particleCount, 1);
+            for (int i = 0; i < _particleCount; i++)
                 _particles.Add(CreateParticle());
         }
 
@@ -104,6 +127,7 @@ namespace PhysX_test2.Engine.Logic
 
         protected void UpdateParticles()
         {
+            _position = behaviourmodel.CurrentPosition.Translation;
             _particlesForRemove.Clear();
 
 

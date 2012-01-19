@@ -19,20 +19,47 @@ namespace PhysX_test2.TheGame.Objects
 {
     public class GameParticleObject:GameObject
     {
-
+        public bool _onLevel;
         public ParticleObject _object;
 
-        public GameParticleObject(string __renderObjectName, GameLevel __level, Vector3 __maxSize, int __count, Vector3 __position, Vector3 __direction, float __dispersionRadius, float __gravityMult)
-            :base(__level,false,false)
+        public GameParticleObject(string __objectName, GameLevel __level, Vector3 __maxSize, int __count, Vector3 __position, Vector3 __direction, int __partCount, float __dispersionRadius, float __gravityMult)
+            : base(__level, false, false)
         {
-            
-            _object = new ParticleObject(__maxSize, __count, __position, __direction, __dispersionRadius, __gravityMult);
+            _onLevel = false;
+            _object = Engine.ContentLoader.ContentLoader.LoadParticleObject("EffectParticles", __maxSize);
+            _object.SetGlobalPose(Matrix.CreateTranslation(__position));
+            _object.SetParticlesParameters(__partCount, __direction, __dispersionRadius, __gravityMult);
+        }
+
+        public void LocateToLevel(LevelObject __parentObject)
+        {
+            if (!_onLevel)
+            {
+                _onLevel = true;
+                _hisLevel.AddEngineObject(_object, __parentObject);
+                _object._isBillboard = false;
+                _object._isBillboardCostrained = false;
+                _object.FirstEmition();
+            }
+        }
+
+        public void RemoveFromLevel()
+        {
+            if (_onLevel)
+                _hisLevel.RemoveObject(_object);
+            _onLevel = false;
         }
 
         public void Unload()
         {
             if (!_object._unloaded)
-                PhysX_test2.Engine.ContentLoader.ContentLoader.UnloadPivotObject(_object);
+                PhysX_test2.Engine.ContentLoader.ContentLoader.UnloadParticleObject(_object);
+        }
+
+        ~GameParticleObject()
+        {
+            RemoveFromLevel();
+            Unload();
         }
     }
 }

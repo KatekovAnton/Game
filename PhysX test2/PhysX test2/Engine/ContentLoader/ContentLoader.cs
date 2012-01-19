@@ -11,6 +11,8 @@ using PhysX_test2.Engine.Render.Materials;
 using PhysX_test2.Engine.Animation;
 using Microsoft.Xna.Framework.Graphics;
 
+using Microsoft.Xna.Framework;
+
 
 namespace PhysX_test2.Engine.ContentLoader
 {
@@ -167,15 +169,82 @@ namespace PhysX_test2.Engine.ContentLoader
             return behaviourmodel;
         }
 
-        public static ParticleRenderObject LoadObject(string __name)
+        public static ParticleObject LoadParticleObject(string __roname, Vector3 __size)
         {
             //TODO
-            return null;
+            Content.ParticleRenderObjectDescription image = new Content.ParticleRenderObjectDescription();
+            image = PackList.Instance.GetObject(__roname, image) as Content.ParticleRenderObjectDescription;
+            ParticleRenderObject prod = null;
+            if (image._userCount == 0)
+            {
+                ContentMesh subsetmeshes =  new ContentMesh();
+                subsetmeshes = PackList.Instance.GetObject(image.meshname,subsetmeshes) as Content.ContentMesh;
+                EngineMesh subsetmesh = new EngineMesh(subsetmeshes.vertices, subsetmeshes.indices);
+                MyModel model = new MyModel(new SubSet[] { new SubSet(subsetmesh) });
+                prod = new ParticleRenderObject(model);
+            }
+            else
+            {
+                ParticleObject prodold = image._engineSampleObject as ParticleObject;
+                prod = prodold.renderaspect;
+            }
+
+            Material m = loadMaterial(image.materialname);
+            RaycastBoundObject b = new RaycastBoundObject(new Logic.SceneGraph.OTBoundingShape(__size), null);
+            ParticleObject result = new ParticleObject(new Logic.BehaviourModel.ObjectStaticBehaviourModel(), prod, m, b);
+            image.Retain(result);
+            result.editorAspect = new EditorData(image.name, image.loadedformat);
+            return result;
         }
 
-        public static void UnloadObject(ParticleRenderObject __object)
+        public static void UnloadParticleObject(ParticleObject theobject)
         {
             //TODO
+            if (theobject._unloaded)
+                return;
+            theobject._unloaded = true;
+
+            Pack p = null;
+            PackContent pc = PackList.Instance.FindObject(theobject.editorAspect.DescriptionName, ref p);
+
+            Content.ParticleRenderObjectDescription description = pc.ReadedContentObject as Content.ParticleRenderObjectDescription;
+
+            if (description != null)
+            {
+                description.Release();
+                if (description._userCount == 0)
+                {
+                    pc.objectReaded = false;
+                    pc.ReadedContentObject = null;
+
+                    //unload ro
+                    theobject.renderaspect.Dispose();
+                }
+                //unload material
+                PackContent pc_mat = PackList.Instance.FindObject(description.materialname, ref p);
+                Content.MaterialDescription matd = pc_mat.ReadedContentObject as Content.MaterialDescription;
+                matd.Release();
+                if (matd._userCount == 0)
+                {
+                    pc_mat.objectReaded = false;
+                    pc_mat.ReadedContentObject = null;
+                }
+
+                for (int i = 0; i < matd.lodMats.Length; i++)
+                {
+                    for (int j = 0; j < matd.lodMats[i].mats.Length; j++)
+                    {
+                        PackContent pc_image = PackList.Instance.FindObject(matd.lodMats[i].mats[j].DiffuseTextureName, ref p);
+                        Content.Texture inage = pc_image.ReadedContentObject as Content.Texture;
+                        inage.Release();
+                        if (inage._userCount == 0)
+                        {
+                            pc_image.objectReaded = false;
+                            pc_image.ReadedContentObject = null;
+                        }
+                    }
+                }
+            }
         }
 
         public static Content.Texture LoadTexture(string name)
@@ -199,10 +268,10 @@ namespace PhysX_test2.Engine.ContentLoader
             }
         }
 
-        private static Material loadMaterial(string name, PackList packs)
+        private static Material loadMaterial(string name)
         {
             PhysX_test2.Content.MaterialDescription mat = new MaterialDescription();
-            mat = packs.GetObject(name , mat) as  MaterialDescription;
+            mat = PackList.Instance.GetObject(name , mat) as  MaterialDescription;
             if (mat._userCount == 0)
             {
                 DiffuseMaterial.Lod[] lods = new DiffuseMaterial.Lod[mat.lodMats.Length];
@@ -213,7 +282,7 @@ namespace PhysX_test2.Engine.ContentLoader
                     {
                         mats[j] = new DiffuseMaterial.SubsetMaterial();
                         Content.Texture inage = new Content.Texture();
-                        inage = packs.GetObject(mat.lodMats[i].mats[j].DiffuseTextureName, inage) as Content.Texture;
+                        inage = PackList.Instance.GetObject(mat.lodMats[i].mats[j].DiffuseTextureName, inage) as Content.Texture;
 
 
 
@@ -238,7 +307,7 @@ namespace PhysX_test2.Engine.ContentLoader
                     for (int j = 0; j < mat.lodMats[i].mats.Length; j++)
                     {
                         Content.Texture inage = new Content.Texture();
-                        inage = packs.GetObject(mat.lodMats[i].mats[j].DiffuseTextureName, inage) as Content.Texture;
+                        inage = PackList.Instance.GetObject(mat.lodMats[i].mats[j].DiffuseTextureName, inage) as Content.Texture;
                         inage.Retain();
                     }
                 }
@@ -246,13 +315,13 @@ namespace PhysX_test2.Engine.ContentLoader
             }
         }
 
-        private static ContentMesh[] loadMeshArray(string[] mesnames, PackList packs)
+        private static ContentMesh[] loadMeshArray(string[] mesnames)
         {
             ContentMesh[] subsetmeshes = new ContentMesh[mesnames.Length];
             for (int i = 0; i < mesnames.Length; i++)
             {
                 subsetmeshes[i] = new ContentMesh();
-                subsetmeshes[i] = packs.GetObject(mesnames[i], subsetmeshes[i]) as ContentMesh;
+                subsetmeshes[i] = PackList.Instance.GetObject(mesnames[i], subsetmeshes[i]) as ContentMesh;
             }
             return subsetmeshes;
         }
@@ -327,7 +396,7 @@ namespace PhysX_test2.Engine.ContentLoader
                         SubSet[] modelsubsets = new SubSet[rod.LODs[i].subsets.Count];
                         for (int j = 0; j < modelsubsets.Length; j++)
                         {
-                            ContentMesh[] subsetmeshes = loadMeshArray(rod.LODs[i].subsets[j].MeshNames, packs);
+                            ContentMesh[] subsetmeshes = loadMeshArray(rod.LODs[i].subsets[j].MeshNames);
                             EngineMesh subsetmesh = EngineMesh.FromContentMeshes(subsetmeshes);
                             //меши могут быть по-разному сгруппированы поэтому будем их каждый раз по новой загружать
                             modelsubsets[j] = new SubSet(subsetmesh);
@@ -399,8 +468,6 @@ namespace PhysX_test2.Engine.ContentLoader
             StillDesign.PhysX.Scene scene,
             PivotObjectDependType __dependType)
         {
-
-
             if (characterMaterial == null)
             {
                 StillDesign.PhysX.MaterialDescription md = new StillDesign.PhysX.MaterialDescription();
@@ -413,7 +480,7 @@ namespace PhysX_test2.Engine.ContentLoader
             {
                 //рендераспект - мб один на несколько объектов
                 RenderObject renderaspect = loadro(description, packs);
-                Material material = loadMaterial(description.matname, packs);
+                Material material = loadMaterial(description.matname);
                 //его тоже удалят
                 RaycastBoundObject raycastaspect = loadrcbo(description, packs);
                 Logic.BehaviourModel.BehaviourModelDescription desc = new Logic.BehaviourModel.BehaviourModelDescription();
@@ -427,7 +494,6 @@ namespace PhysX_test2.Engine.ContentLoader
                 desc.ShapeRotationAxis = description.ShapeRotationAxis;
                 desc.ShapeSize = description.ShapeSize;
                 desc.ShapeType = description.ShapeType;
-
 
                 Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel = createBehaviourModel(desc, scene,__dependType); 
               
@@ -443,7 +509,7 @@ namespace PhysX_test2.Engine.ContentLoader
                 LevelObject createdobject = description._engineSampleObject as LevelObject;
                 
                 RenderObject ro = loadro(description, packs);
-                Material material = loadMaterial(description.matname, packs);
+                Material material = loadMaterial(description.matname);
 
                 Logic.BehaviourModel.BehaviourModelDescription desc = createdobject.bmDescription;
                 Logic.BehaviourModel.ObjectBehaviourModel behaviourmodel = createBehaviourModel(desc, scene,__dependType); 
