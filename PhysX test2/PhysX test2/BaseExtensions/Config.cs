@@ -45,11 +45,11 @@ namespace PhysX_test2
         public Config(string config_file, string variables_filter)
             : base(config_file)
         {
-            scriptscope.SetVariable("false", false);
+            /*scriptscope.SetVariable("false", false);
             scriptscope.SetVariable("true", true);
             scriptscope.SetVariable("no", false);
             scriptscope.SetVariable("yes", true);
-
+            */
             ExScript(config_file);
             FillByVariables(variables_filter);
         }

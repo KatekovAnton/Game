@@ -58,7 +58,8 @@ namespace PhysX_test2
 
         static public dynamic perehod_fps(dynamic val1, dynamic val2, dynamic time)
         {
-            time = MyMath.minimax_float(time * 30 / MyMath.minimax_int((int)MyGame.UpdateTime.ElapsedGameTime.TotalMilliseconds, 5, 30),0.2f,0.999f);
+            time = MyMath.minimax_f(time * 5 / MyMath.minimax_int((int)Math.Sqrt(MyGame.UpdateTime.ElapsedGameTime.TotalMilliseconds), 1, 10), 0.2f, 0.99f);
+            MyGame.ScreenLogMessage(time.ToString(), Color.Red);
             return (val1 - val2) * time + val2; 
         }
 
@@ -84,10 +85,13 @@ namespace PhysX_test2
         {
             return val > max ? max : val < min ? min : val;
         }
-        static public float minimax_float(float val, float min, float max)
+        static public dynamic minimax(dynamic val, dynamic min, dynamic max)
         {
             return val > max ? max : val < min ? min : val;
         }
+
+        static public dynamic minimax_f(float val, float min, float max)
+        {    return val > max ? max : val < min ? min : val;    }
 
     }
 
