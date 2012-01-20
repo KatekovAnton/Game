@@ -10,6 +10,7 @@ namespace PhysX_test2.Engine.CameraControllers
     {
         protected Vector3 _delta = Vector3.Zero;
 
+        public float _camera_sence;
         public float _yAngle;
         private float _zAngle;
 
@@ -26,6 +27,7 @@ namespace PhysX_test2.Engine.CameraControllers
         {
             _offset = offset;
             _character = character;
+            _camera_sence = (float)Config.Instance["_player_camera_sence"];
         }
 
         public void RotateCameraAroundChar(float angle)
@@ -135,11 +137,13 @@ namespace PhysX_test2.Engine.CameraControllers
         public override void UpdateCamera()
         {
           //  _currentTarget = _character.transform.Translation + _delta;
-            int time = Convert.ToInt32(MyGame.UpdateTime.ElapsedGameTime.TotalMilliseconds);
-            time = MyMath.minimax_int(time, 5, 30);
-            MyMath.perehod(ref _currentTarget, _character.transform.Translation + _delta, MyMath.minimax_float( 18 / time, 0.2f, 0.99f ) );
+
+
+            _currentTarget = MyMath.perehod_fps(_currentTarget, _character.transform.Translation + _delta, _camera_sence);
+            _currendPosition = MyMath.perehod_fps(_currendPosition, _currentTarget + _offset, _camera_sence);
+
            // MyMath.perehod(ref _currendPosition, _currentTarget + _offset, 0.9f);
-            _currendPosition = _currentTarget + _offset;
+          //  _currendPosition = _currentTarget + _offset;
             base.UpdateCamera();
         }
     }

@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Xna.Framework;
+
+namespace PhysX_test2
+{
+    public static class GColors
+    {
+        public static Color CHighLightText = Color.AliceBlue;
+        public static Color CError = Color.Yellow;
+        public static Color CControl = Color.FromNonPremultiplied(100, 100, 100, 100);
+        public static Color CTextBack = Color.FromNonPremultiplied(0, 0, 0, 100); // желательно, чтоб был прозрачный
+        public static Color CText = Color.White;
+        public static Color CForeColor = Color.Black;
+    }
+}

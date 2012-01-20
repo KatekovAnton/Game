@@ -5,11 +5,6 @@ from PhysX_test2 import *
 from System import *
 from System.Math import *
 
-# объ€вление переменных, привычных по синтаксису C#
-null = MyDynamics.__null
-false = MyDynamics.__false
-true = MyDynamics.__true
-
 # импортирование dll-ок
 # sys.path.Add(GameConfiguration.AppPath)
 # clr.AddReferenceToFile("some.dll")

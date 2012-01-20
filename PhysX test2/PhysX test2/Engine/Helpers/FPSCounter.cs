@@ -23,6 +23,8 @@ namespace PhysX_test2.Engine.Helpers
             get { return _framesPerSecond; }
         }
 
+        public float FramesPerSecond_Smooth;
+
         public float FrameTime
         {
             get { return _frameTime; }
@@ -50,6 +52,8 @@ namespace PhysX_test2.Engine.Helpers
             {
                 _frameTime = 1000f / _framesPerSecond;
             }
+
+            FramesPerSecond_Smooth = MyMath.perehod(FramesPerSecond_Smooth, _framesPerSecond, 0.9f);
         }
     }
 }
