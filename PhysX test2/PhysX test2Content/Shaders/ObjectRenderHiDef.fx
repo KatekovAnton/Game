@@ -400,8 +400,8 @@ technique InstancedSMSmooth
 {
     pass Pass1
     {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShaderSM();
-        PixelShader = compile ps_2_0 SolidTextureSMSmooth();
+        VertexShader = compile vs_3_0 HardwareInstancingVertexShaderSM();
+        PixelShader = compile ps_3_0 SolidTextureSMSmooth();
     }
 }
 
@@ -409,8 +409,8 @@ technique InstancedTransparentSMSmooth
 {
     pass Pass1
     {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShaderSM();
-        PixelShader = compile ps_2_0 SolidTextureSMSmooth();
+        VertexShader = compile vs_3_0 HardwareInstancingVertexShaderSM();
+        PixelShader = compile ps_3_0 SolidTextureSMSmooth();
     }
 }
 
@@ -447,8 +447,8 @@ technique InstancedSM
 {
     pass Pass1
     {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShaderSM();
-        PixelShader = compile ps_2_0 SolidTextureSM();
+        VertexShader = compile vs_3_0 HardwareInstancingVertexShaderSM();
+        PixelShader = compile ps_3_0 SolidTextureSM();
     }
 }
 
@@ -456,8 +456,8 @@ technique InstancedTransparentSM
 {
     pass Pass1
     {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShaderSM();
-        PixelShader = compile ps_2_0 SolidTextureSM();
+        VertexShader = compile vs_3_0 HardwareInstancingVertexShaderSM();
+        PixelShader = compile ps_3_0 SolidTextureSM();
     }
 }
 
@@ -476,8 +476,8 @@ technique InstancedTransparentSelfIlmnNoSM
 {
     pass Pass1
     {
-        VertexShader = compile vs_2_0 HardwareInstancingVertexShaderNoSM();
-        PixelShader = compile ps_2_0 SolidTextureSelfIll();
+        VertexShader = compile vs_3_0 HardwareInstancingVertexShaderNoSM();
+        PixelShader = compile ps_3_0 SolidTextureSelfIll();
     }
 }
 
