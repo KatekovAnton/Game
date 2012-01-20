@@ -240,6 +240,17 @@ namespace PhysX_test2.Engine
                 AddObjectToScene(LevelObjectTestSide);
             }
 
+
+
+            ////test side
+            {
+                ParticleObject po = LoadParticleObject("EffectParticles\0", new Vector3(2));
+                po.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(2, 15, 2));
+                po.SetParticlesParameters(10, Vector3.Up, 2.0f, -0.1f, 0.2f, 1.0f, 0.2f, 10000, 20);
+                po.FirstEmition();
+                gameScene.AddObject (po);
+            }
+
             //чистим временные какахи
             //это стоит делать елси объекты больше не будут подгружаться
             //тоесть если игра по уровням скажем

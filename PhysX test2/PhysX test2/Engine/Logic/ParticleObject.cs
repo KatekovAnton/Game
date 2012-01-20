@@ -48,6 +48,10 @@ namespace PhysX_test2.Engine.Logic
 
         protected double _livetime;
 
+        public bool _isEmitter;
+        public double _emitionSpeed;
+        public double _particlesForEmit;
+
         public ParticleObject(
             BehaviourModel.ObjectBehaviourModel _behaviourmodel,
             ParticleRenderObject _renderaspect, 
@@ -62,7 +66,7 @@ namespace PhysX_test2.Engine.Logic
             _parametersSetted = _firstEmitted = false;
         }
 
-        public void SetParticlesParameters(int __particleCount, Vector3 __direction, float __dispRadius, float __gravityRelationMultiplier, float __angledisp, float __speed, float __speeddisp, double __livetime)
+        public void SetParticlesParameters(int __particleCount, Vector3 __direction, float __dispRadius, float __gravityRelationMultiplier, float __angledisp, float __speed, float __speeddisp, double __livetime, double __emitionspeed = 0.0)
         {
             _dispRadius = __dispRadius;
             _direction = __direction;
@@ -75,7 +79,10 @@ namespace PhysX_test2.Engine.Logic
 
             _livetime = __livetime;
 
+
+            _emitionSpeed = __emitionspeed;
             _parametersSetted = true;
+            _particlesForEmit = 0;
         }
 
         public void FirstEmition()
@@ -126,6 +133,8 @@ namespace PhysX_test2.Engine.Logic
             renderaspect.SetPosition(behaviourmodel.CurrentPosition);
 
             UpdateParticles();
+
+            GenerateParticles();
         }
 
         public override void AfterUpdate()
@@ -137,6 +146,26 @@ namespace PhysX_test2.Engine.Logic
                 renderaspect.SetParticleData(GetParticleData());
             }
             base.AfterUpdate();
+        }
+
+        protected void GenerateParticles()
+        {
+            if (_emitionSpeed == 0)
+                return;
+            double time = MyGame.UpdateTime.ElapsedGameTime.TotalSeconds;
+            double particles = time * _emitionSpeed;
+
+
+
+
+            _particlesForEmit += particles;
+            int particleCount = (int)_particlesForEmit;
+            for (int i = 0; i < particleCount; i++)
+                _particles.Add(CreateParticle());
+
+            if (_particleCount != 0)
+                _particlesForEmit -= particleCount;
+
         }
 
         protected void UpdateParticles()
