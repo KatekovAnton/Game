@@ -28,9 +28,9 @@ namespace PhysX_test2.Engine.Render
 
       
         public ParticleRenderObject(MyModel __model, bool __ShadowCaster,
-         bool __ShadowReceiver,
-        bool __Transparent,
-         bool __SelfIlmn)
+                                    bool __ShadowReceiver,
+                                    bool __Transparent,
+                                    bool __SelfIlmn)
         {
             _model = __model;
 
@@ -46,11 +46,11 @@ namespace PhysX_test2.Engine.Render
             switch (RenderPipeline.instancingTechnique)
             {
                 case InstancingTechnique.HardwareInstancing:
-                    DrawModelHardwareInstancing(_model, _matrices);
+                    DrawModelHardwareInstancing();
                     break;
 
                 case InstancingTechnique.NoInstancing:
-                    DrawModelNoInstancing(_model, _matrices);
+                    DrawModelNoInstancing();
                     break;
             }
 
@@ -59,24 +59,25 @@ namespace PhysX_test2.Engine.Render
         /// <summary>
         /// Efficiently draws several copies of a piece of geometry using hardware instancing.
         /// </summary>
-        void DrawModelHardwareInstancing(MyModel model, Matrix[] instances)
+        void DrawModelHardwareInstancing()
         {
-            if (instances.Length == 0)
+
+            if (_matrices.Length == 0)
                 return;
 
             // If we have more instances than room in our vertex buffer, grow it to the neccessary size.
             if ((_instanceVertexBuffer == null) ||
-                (instances.Length > _instanceVertexBuffer.VertexCount))
+                (_matrices.Length > _instanceVertexBuffer.VertexCount))
             {
                 if (_instanceVertexBuffer != null)
                     _instanceVertexBuffer.Dispose();
 
                 _instanceVertexBuffer = new DynamicVertexBuffer(MyGame.Device, instanceVertexDeclaration,
-                                                               instances.Length, BufferUsage.WriteOnly);
+                                                               _matrices.Length, BufferUsage.WriteOnly);
             }
 
             // Transfer the latest instance transform matrices into the instanceVertexBuffer.
-            _instanceVertexBuffer.SetData(instances, 0, instances.Length, SetDataOptions.Discard);
+            _instanceVertexBuffer.SetData(_matrices, 0, _matrices.Length, SetDataOptions.Discard);
             Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(Matrix.Identity);
 
             // Tell the GPU to read from both the model vertex buffer plus our instanceVertexBuffer.
@@ -93,7 +94,7 @@ namespace PhysX_test2.Engine.Render
                 pass.Apply();
                 MyGame.Device.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0,
                                                        _model.subsets[0].mesh.VertexBuffer.VertexCount, 0,
-                                                       _model.subsets[0].mesh.IndexBuffer.IndexCount / 3, instances.Length);
+                                                       _model.subsets[0].mesh.IndexBuffer.IndexCount / 3, _matrices.Length);
             }
 
         }
@@ -104,30 +105,28 @@ namespace PhysX_test2.Engine.Render
         /// special GPU instancing techniques at all. This just does a
         /// regular loop and issues several draw calls one after another.
         /// </summary>
-        void DrawModelNoInstancing(MyModel model, Matrix[] instances)
+        void DrawModelNoInstancing()
         {
-            foreach (SubSet s in _model.subsets)
+            MyGame.Device.SetVertexBuffer(_model.subsets[0].mesh.VertexBuffer);
+            MyGame.Device.Indices = _model.subsets[0].mesh.IndexBuffer;
+
+            // Set up the rendering effect.
+            // effect.CurrentTechnique = effect.Techniques["NoInstancing"];
+
+            EffectParameter transformParameter = Materials.Material.ObjectRenderEffect.Parameters["World"];
+
+            // Draw a single instance copy each time around this loop.
+            for (int i = 0; i < _matrices.Length; i++)
             {
-                MyGame.Device.SetVertexBuffer(s.mesh.VertexBuffer, 4 * (3 + 3 + 2));
-                MyGame.Device.Indices = s.mesh.IndexBuffer;
+                transformParameter.SetValue(_matrices[i]);
 
-                // Set up the rendering effect.
-                // effect.CurrentTechnique = effect.Techniques["NoInstancing"];
-
-                EffectParameter transformParameter = Materials.Material.ObjectRenderEffect.Parameters["World"];
-
-                // Draw a single instance copy each time around this loop.
-                for (int i = 0; i < instances.Length; i++)
+                foreach (var pass in PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect.CurrentTechnique.Passes)
                 {
-                    transformParameter.SetValue(instances[i]);
-
-                    foreach (var pass in PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect.CurrentTechnique.Passes)
-                    {
-                        pass.Apply();
-                        s.mesh.Render();
-                    }
+                    pass.Apply();
+                    _model.subsets[0].mesh.Render();
                 }
             }
+
         }
 
         public override void Dispose()
