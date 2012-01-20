@@ -252,7 +252,7 @@ namespace PhysX_test2.UserInterface
                if (Capture)
                 {    
                    if (_cur_vis) Program.game._spriteBatch.Draw(UIContent.Textures["`2`16"], Position + new Vector2(_cur.cur_draw_pos, 0), null, TextColor, 0, Vector2.Zero, new Vector2(InsertMode ? 3 : 0.5f, 1), SpriteEffects.None, 0);
-                   if (_sel_vis) Program.game._spriteBatch.Draw(UIContent.Textures["`2`16"], Position + new Vector2(_sel.Start.cur_draw_pos, 0), null, GColors.CHighLightText, 0, Vector2.Zero, new Vector2( (_sel.End.cur_draw_pos - _sel.Start.cur_draw_pos )/2  , 1), SpriteEffects.None, 0);
+                   if (_sel_vis) Program.game._spriteBatch.Draw(UIContent.Textures["`2`16"], Position + new Vector2(_sel.Start.cur_draw_pos, 1), null, GColors.CHighLightText, 0, Vector2.Zero, new Vector2( (_sel.End.cur_draw_pos - _sel.Start.cur_draw_pos )/2  , 0.9f), SpriteEffects.None, 0);
                 }
                base.Draw();
            }

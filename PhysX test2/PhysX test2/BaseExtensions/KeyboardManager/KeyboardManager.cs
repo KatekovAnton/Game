@@ -236,27 +236,24 @@ namespace PhysX_test2
                 foreach (HotKey _kk in _user.hotkeys)
                     foreach (HotKey kk in user.hotkeys)
                     {
-                        if (kk.Count > 0 && _kk.Count > 0)
+                        if (kk.Count == _kk.Count)
                        {
                         bool eq = true;
-                        foreach (Keys key in kk)
-                            foreach (Keys _key in _kk)
-                            {
-                                if (key != _key)
-                                {
-                                    eq = false;
-                                }
-                            }
-                       
+
+                        for (int i=0;i<kk.Count;i++)
+                            if (kk[i] != _kk[i])
+                            { eq = false; break; }
+
                         if (eq)
                         {
                             string str = "";
                             foreach (Keys key in kk) str += "'"+key.ToString() + "'  ";
-                            MyGame.ScreenLogMessage("<<<<<<<<<<<<<", GColors.CTextBack); 
+
+                            MyGame.ScreenLogMessage("----------------------------------------------------------------------------------------------", GColors.CAlarm);
                             MyGame.ScreenLogMessage("Keys are equals: " + str, GColors.CError);
                             MyGame.ScreenLogMessage(_user.GetType().ToString(), GColors.CError);
                             MyGame.ScreenLogMessage(user.GetType().ToString(), GColors.CError);
-                            MyGame.ScreenLogMessage(">>>>>>>>>>>>>", GColors.CTextBack); 
+                           // MyGame.ScreenLogMessage(">>>>>>>>>>>>>", GColors.CAlarm); 
                         }
                        }
                     }
