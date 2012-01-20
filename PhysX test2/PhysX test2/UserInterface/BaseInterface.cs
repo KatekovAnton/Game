@@ -21,7 +21,7 @@ namespace PhysX_test2.UserInterface
             debug_textbox_hotkeys.Add(new HotKey(new Keys[] { Keys.Up }, onDebugTextboxUp));
             debug_textbox_hotkeys.Add(new HotKey(new Keys[] { Keys.Down }, onDebugTextboxDown));
             string init_text ="debug console textbox";
-            debug_textbox = new Controls.TextBox(init_text, new Vector2(0, GameConfiguration.ScreenResolution.Y - Content.Fonts._font1.MeasureString("A").Y - 5), new Vector2(150, 1), debug_textbox_hotkeys, Content.Fonts._font1, Color.FromNonPremultiplied(0, 0, 0, 100));
+            debug_textbox = new Controls.TextBox(init_text, new Vector2(0, GameConfiguration.ScreenResolution.Y - Content.Fonts._font1.MeasureString("A").Y - 5), new Vector2(150, 1), debug_textbox_hotkeys, Content.Fonts._font1);
             Add(debug_textbox);
             command_buffer.Add(init_text);
             KeyboardManager.Manager.AddKeyboardUser(debug_textbox);
@@ -32,7 +32,6 @@ namespace PhysX_test2.UserInterface
             MyGame.ScreenLog.Add(new Engine.Helpers.ScreenLogMessage(debug_textbox.Text, Color.Yellow));
             command_buffer.Add(debug_textbox.Text);
             current_command = command_buffer.Count;
-            debug_textbox.cur_pos = 0;
             Scripting.SE.Instance.Execute(debug_textbox.Text);
             debug_textbox.Text = "";
         }
@@ -46,7 +45,6 @@ namespace PhysX_test2.UserInterface
         {
             if (current_command > 0)
                 debug_textbox.Text = command_buffer[--current_command];
-            debug_textbox.cur_pos = debug_textbox.Text.Length;
         }
 
         public void onDebugTextboxDown()
@@ -55,7 +53,6 @@ namespace PhysX_test2.UserInterface
                 debug_textbox.Text = command_buffer[++current_command];
             else
                 debug_textbox.Text = "";
-            debug_textbox.cur_pos = debug_textbox.Text.Length;
         }
 
        

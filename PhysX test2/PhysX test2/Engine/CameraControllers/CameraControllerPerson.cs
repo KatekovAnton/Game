@@ -135,11 +135,13 @@ namespace PhysX_test2.Engine.CameraControllers
         public override void UpdateCamera()
         {
           //  _currentTarget = _character.transform.Translation + _delta;
-            int time = Convert.ToInt32(MyGame.UpdateTime.ElapsedGameTime.TotalMilliseconds);
-            time = MyMath.minimax_int(time, 5, 30);
-            MyMath.perehod(ref _currentTarget, _character.transform.Translation + _delta, MyMath.minimax_float( 18 / time, 0.2f, 0.99f ) );
+
+          
+            _currentTarget = MyMath.perehod_fps(_currentTarget, _character.transform.Translation + _delta, 0.2f );
+            _currendPosition = MyMath.perehod_fps(_currendPosition, _currentTarget + _offset, 0.3f);
+
            // MyMath.perehod(ref _currendPosition, _currentTarget + _offset, 0.9f);
-            _currendPosition = _currentTarget + _offset;
+          //  _currendPosition = _currentTarget + _offset;
             base.UpdateCamera();
         }
     }

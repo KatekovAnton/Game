@@ -209,6 +209,7 @@
     <Compile Include="Engine\ObjectCashe.cs" />
     <Compile Include="Engine\Render\Materials\OpacityMaterial.cs" />
     <Compile Include="Engine\Render\ParticleRenderObject.cs" />
+    <Compile Include="GColors.cs" />
     <Compile Include="MyDynamics.cs" />
     <Compile Include="Scripting\SE.cs" />
     <Compile Include="TheGame\InputManagers\InputProviderAI.cs" />
