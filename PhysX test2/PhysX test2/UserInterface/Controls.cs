@@ -69,7 +69,7 @@ namespace PhysX_test2.UserInterface
        class TextBoxCursor
        {
            TextBox tb;
-           int cp;
+           public int cp;
            public int pos
            {
                set
@@ -78,11 +78,11 @@ namespace PhysX_test2.UserInterface
                        cp = value;
                    else
                    { if (value > tb.Text.Length) cp = tb.Text.Length; else cp = 0; }
-                   cur_draw_pos = tb.font.MeasureString(tb.Text.Substring(0, pos)).X + 2;
+                   cur_draw_pos = tb.font.MeasureString(tb.Text.Substring(0, cp)).X + 2;
                }
                get
                {
-                   if (cp > tb.Text.Length) cp = tb.Text.Length; else cp = 0;
+                   if (cp > tb.Text.Length) cp = tb.Text.Length; else if (cp<0) cp = 0;
                    return cp;
                }
            }
@@ -97,19 +97,25 @@ namespace PhysX_test2.UserInterface
        class TextBoxSelection
        {
            public TextBoxCursor Start, End;
-           TextBox tb;
-           public bool Active;
+           TextBox _tb;
            public TextBoxSelection(TextBox tb)
            {
-               this.tb = tb;
+               this._tb = tb;
                Start = new TextBoxCursor(tb);
                End = new TextBoxCursor(tb);
            }
+
+           public int Length { get { return Math.Abs(End.pos - Start.pos); } }
+           
        }
 
        public class TextBox : UserControl, IKeyboardUser, IAllKeys
        {
-           public string SelectedText { set; get; }
+           public string SelectedText
+           {
+               set { bool tmp = InsertMode; InsertMode = false; Text.Remove(_sel.Start.pos, _sel.Length); KeyboardManager.key_buffer = value; _sel_vis = value.Length > 0; KeyPress(); InsertMode = tmp; }
+               get { int length = _sel.Length; _sel_vis = length != 0; if (length == 0) return ""; return Text.Substring(_sel.Start.pos, _sel.Length); }
+           }
 
            public Color TextColor;
            public bool Capture = false;
@@ -117,10 +123,12 @@ namespace PhysX_test2.UserInterface
            public bool IsKeyboardCaptured { set { Capture = value; } get { return Capture; } }
            List<HotKey> _hotkeys = new List<HotKey>();
            public List<HotKey> hotkeys { get { return _hotkeys; } }
+           TextBoxSelection _sel;
+           TextBoxCursor _cur;
 
-           TextBoxCursor cur;
-           bool cur_vis = false;
-           byte i = 0;
+           bool _sel_vis = false;
+           bool _cur_vis = false;
+           byte _i = 0;
            public SpriteFont font;
 
            public TextBox(string init_text, Vector2 position, Vector2 size, List<HotKey> _hotkeys, SpriteFont Font)
@@ -138,49 +146,100 @@ namespace PhysX_test2.UserInterface
                _hotkeys.Add(new HotKey(new Keys[] { Keys.Home }, Home));
                _hotkeys.Add(new HotKey(new Keys[] { Keys.End }, End));
                _hotkeys.Add(new HotKey(new Keys[] { Keys.Insert }, Insert));
+               _hotkeys.Add(new HotKey(new Keys[] { Keys.LeftControl, Keys.C }, Copy));
+               _hotkeys.Add(new HotKey(new Keys[] { Keys.LeftControl, Keys.V }, Paste));
                
                this._hotkeys = _hotkeys;
 
-               cur = new TextBoxCursor(this);
+               _cur = new TextBoxCursor(this);
+               _sel = new TextBoxSelection(this);
            }
            bool InsertMode = false;
            public void KeyPress()
            {
+               if (KeyboardManager.Ctrl)
+               { KeyboardManager.key_buffer = ""; }
+               else
                if (KeyboardManager.key_buffer.Length > 0)
                {
-                   if (!InsertMode || cur.pos == Text.Length)
-                       Text = Text.Insert(cur.pos, KeyboardManager.key_buffer);
+              //   if (_sel_vis) SelectedText = "";
+                   if (!InsertMode || _cur.pos == Text.Length)
+                       Text = Text.Insert(_cur.pos, KeyboardManager.key_buffer);
                    else
                    {
-                       if (KeyboardManager.key_buffer.Length + cur.pos < Text.Length)
-                          Text = Text.Remove(cur.pos, KeyboardManager.key_buffer.Length).Insert(cur.pos, KeyboardManager.key_buffer);
+                       if (KeyboardManager.key_buffer.Length + _cur.pos < Text.Length)
+                          Text = Text.Remove(_cur.pos, KeyboardManager.key_buffer.Length).Insert(_cur.pos, KeyboardManager.key_buffer);
                       else
-                          Text = Text.Remove(cur.pos).Insert(cur.pos, KeyboardManager.key_buffer);
+                          Text = Text.Remove(_cur.pos).Insert(_cur.pos, KeyboardManager.key_buffer);
                    }
-                   cur.pos += KeyboardManager.key_buffer.Length;
+                   _cur.pos += KeyboardManager.key_buffer.Length;
                    KeyboardManager.key_buffer = "";
                }
            }
 
-           void Left()   {   cur.pos--;    }
+           void Left()
+           { 
+               if (KeyboardManager.Shift) 
+               {
+                   if (SelectedText == "" || _sel.Start.pos != _cur.pos)
+                   {
+                       _sel.End.pos = _cur.pos--;
+                       _sel.Start.pos = _cur.pos;
+                   }
+                   else
+                   {
+                       _sel.Start.pos = --_cur.pos;
+                   }
+               }
+               else
+                    _cur.pos--; 
+           }
 
-           void Right()  {   cur.pos++;  }
+           void Right()
+           {
+               if (KeyboardManager.Shift)
+               {
+                   if (SelectedText == "" || _sel.End.pos != _cur.pos)
+                   {
+                       _sel.Start.pos = _cur.pos++;
+                       _sel.End.pos = _cur.pos;
+                   }
+                   else
+                   {
+                       _sel.End.pos = ++_cur.pos;
+                   }
+               }
+               else
+                   _cur.pos++;
+           }
 
-           void BackSpace() {  if (cur.pos > 0)    {    Text = Text.Remove(cur.pos - 1, 1); cur.pos--;     }       }
+           void BackSpace() {  if (_cur.pos > 0)    {    Text = Text.Remove(--_cur.pos, 1);   }       }
 
-           void Home()      {  cur.pos = 0;   }
+           void Home()      {  _cur.pos = 0;   }
 
-           void End()       {  cur.pos = Text.Length;       }
+           void End()       {  _cur.pos = Text.Length;       }
 
            void Insert()    {  InsertMode = !InsertMode;     }
 
+           void Copy()
+           {
+               KeyboardManager.Clipboard = SelectedText;
+           }
+
+           void Paste() 
+           {
+               SelectedText = KeyboardManager.Clipboard;
+               _sel.Start.cp = _cur.cp;
+               _sel.End.cp = _cur.cp;
+           }
+
            void Delete()
            {
-               if (cur.pos < Text.Length)
+               if (_cur.pos < Text.Length)
                {
-                   Text = Text.Remove(cur.pos, 1);  
+                   Text = Text.Remove(_cur.pos, 1);  
                    if (InsertMode)
-                       Text = Text.Insert(cur.pos, " ");  
+                       Text = Text.Insert(_cur.pos, " ");  
                }
 
            }
@@ -191,15 +250,17 @@ namespace PhysX_test2.UserInterface
                
                Program.game._spriteBatch.DrawString(font, Text, Position + new Vector2(2,2), TextColor);
                if (Capture)
-                   if (cur_vis) Program.game._spriteBatch.Draw(UIContent.Textures["`2`16"], Position + new Vector2(cur.cur_draw_pos, 0), null, TextColor, 0, Vector2.Zero, new Vector2(InsertMode ? 3 : 0.5f, 1), SpriteEffects.None, 0);
-
+                {    
+                   if (_cur_vis) Program.game._spriteBatch.Draw(UIContent.Textures["`2`16"], Position + new Vector2(_cur.cur_draw_pos, 0), null, TextColor, 0, Vector2.Zero, new Vector2(InsertMode ? 3 : 0.5f, 1), SpriteEffects.None, 0);
+                   if (_sel_vis) Program.game._spriteBatch.Draw(UIContent.Textures["`2`16"], Position + new Vector2(_sel.Start.cur_draw_pos, 0), null, GColors.CHighLightText, 0, Vector2.Zero, new Vector2( (_sel.End.cur_draw_pos - _sel.Start.cur_draw_pos )/2  , 1), SpriteEffects.None, 0);
+                }
                base.Draw();
            }
 
            public override void Update()
            {
-               i++; if (i == 10)
-               {cur_vis = !cur_vis; i = 0;}
+               _i++; if (_i == Program.game._engine.FPSCounter.FramesPerSecond / 10 + 1)
+               {_cur_vis = !_cur_vis; _i = 0;}
                base.Draw();
            }
        }

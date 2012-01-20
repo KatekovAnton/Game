@@ -29,10 +29,15 @@ namespace PhysX_test2.UserInterface
 
         public void onDebugTextboxEnter()
         {
-            MyGame.ScreenLog.Add(new Engine.Helpers.ScreenLogMessage(debug_textbox.Text, Color.Yellow));
+        //    Color color = GColors.CForeColor;
+
             command_buffer.Add(debug_textbox.Text);
             current_command = command_buffer.Count;
             Scripting.SE.Instance.Execute(debug_textbox.Text);
+
+            if (Scripting.SE.Instance.LastException == null)
+                MyGame.ScreenLogMessage(debug_textbox.Text, GColors.CForeColor);
+
             debug_textbox.Text = "";
         }
 

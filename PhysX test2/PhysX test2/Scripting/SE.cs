@@ -60,9 +60,10 @@ namespace PhysX_test2.Scripting
                 return vars;
             }
         }
-        Exception LastException;
+        public Exception LastException;
         public void Execute(string str)
         {
+            LastException = null;
             if (str != scripts.Empty.data)
             {
                 try

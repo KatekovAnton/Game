@@ -8,7 +8,7 @@ namespace PhysX_test2
 {
     public static class GColors
     {
-        public static Color CHighLightText = Color.AliceBlue;
+        public static Color CHighLightText = Color.FromNonPremultiplied(100,100,255,120);
         public static Color CError = Color.Yellow;
         public static Color CControl = Color.FromNonPremultiplied(100, 100, 100, 100);
         public static Color CTextBack = Color.FromNonPremultiplied(0, 0, 0, 100); // желательно, чтоб был прозрачный

@@ -53,10 +53,16 @@ namespace PhysX_test2
              Keys_add(ref str_low, ref str_up, 65, 26);
              Keys_add(ref str_low, ref str_up, 186, 7);
              Keys_add(ref str_low, ref str_up, 219, 4);
-
+             Keys_add(32, " ");
+             Keys_add(9, "\t");
              
         }
-        
+        public static void Keys_add(int key, string str)
+        {
+            Keys_l.Add(key, str);
+            Keys_u.Add(key, str);
+        }
+
         public static void Keys_add(ref string str_low, ref string str_up, int offset, int count)
         {
             for (int i = 0; i < count; i++)
@@ -69,6 +75,8 @@ namespace PhysX_test2
             str_up = str_up.Remove(0,count);
         }
         
+
+
         int lastusercount;
         public void Update()
         {
@@ -115,7 +123,7 @@ namespace PhysX_test2
                     k.TryExecute();
                 }
 
-                if (keys_captured_by_user)
+                if (keys_captured_by_user) // captured_user.hotkeys может содержать CaptureRelease, поэтому нужна вторая проверка
                     if (PressedKeys.Count >= 1)
                     {
                         foreach (HotKey k in captured_user.hotkeys)
@@ -162,8 +170,14 @@ namespace PhysX_test2
             {
                 Keys_u.Add((int)Key, "");
                 Keys_l.Add((int)Key, "");
-                return "?";
+                return "";
             }
+        }
+
+        static public string Clipboard
+        {
+            set;
+            get;
         }
 
         bool keys_captured_by_user = false;
@@ -180,6 +194,7 @@ namespace PhysX_test2
             captured_user_all_keys = IKeyboardUser as IAllKeys;
             captured_user.IsKeyboardCaptured = true;
             keys_captured_by_user = true;
+
         }
 
         public void CaptureRelease()

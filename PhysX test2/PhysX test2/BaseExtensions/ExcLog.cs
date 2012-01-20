@@ -28,7 +28,7 @@ namespace PhysX_test2
 
         public static void LogException_ToScreenLog(Exception ee)
         {
-            MyGame.ScreenLogMessage(ee.Message, Microsoft.Xna.Framework.Color.Yellow);  
+            MyGame.ScreenLogMessage(ee.Message, GColors.CError);  
         }
         
     }
