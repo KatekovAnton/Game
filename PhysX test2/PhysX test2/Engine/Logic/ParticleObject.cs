@@ -130,8 +130,6 @@ namespace PhysX_test2.Engine.Logic
         {
             behaviourmodel.DoFrame(gt);
 
-            renderaspect.SetPosition(behaviourmodel.CurrentPosition);
-
             UpdateParticles();
 
             GenerateParticles();
@@ -154,11 +152,8 @@ namespace PhysX_test2.Engine.Logic
                 return;
             double time = MyGame.UpdateTime.ElapsedGameTime.TotalSeconds;
             double particles = time * _emitionSpeed;
-
-
-
-
             _particlesForEmit += particles;
+
             int particleCount = (int)_particlesForEmit;
             for (int i = 0; i < particleCount; i++)
                 _particles.Add(CreateParticle());
