@@ -58,8 +58,7 @@ namespace PhysX_test2
 
         static public dynamic perehod_fps(dynamic val1, dynamic val2, dynamic time)
         {
-            time = MyMath.minimax_f(time * 5 / MyMath.minimax_int((int)Math.Sqrt(MyGame.UpdateTime.ElapsedGameTime.TotalMilliseconds), 1, 10), 0.2f, 0.99f);
-            MyGame.ScreenLogMessage(time.ToString(), Color.Red);
+            time = MyMath.minimax_f(time * (float)Math.Sqrt(Program.game._engine.FPSCounter.FramesPerSecond_Smooth) / 10.0f, 0.2f, 0.99f);
             return (val1 - val2) * time + val2; 
         }
 
