@@ -20,8 +20,7 @@ namespace PhysX_test2.Engine.Render
     public enum InstancingTechnique
     {
         HardwareInstancing,
-        NoInstancing,
-        NoInstancingOrStateBatching
+        NoInstancing
     }
 
 
@@ -80,6 +79,8 @@ namespace PhysX_test2.Engine.Render
             int size = Config.Instance["_shadowMapSize"];
             if (size != 0)
                 shadowMapWidthHeight = size;
+
+            instancingTechnique = Config.Instance["_useHardwareInstancing"] ? InstancingTechnique.HardwareInstancing : InstancingTechnique.NoInstancing;
 
             if (EnableShadows)
             {
