@@ -176,95 +176,108 @@ namespace PhysX_test2.Engine.Render
         {
             if (AddedObject as UnAnimRenderObject != null || AddedObject as AnimRenderObject != null)
             {
-                #region fillrender
-                if (AddedObject.isTransparent)
-                {
-                    //не мб шадовкастером и не мб анимированным
-                    if (AddedObject.isshadowreceiver)
-                        if (EnableShadows)
-                            if (SmoothShadows)
-                                AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentSMSmooth;
-                            else
-                                AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentSM;
-                        else
-                            AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentNoSM;
-                    else
-                        AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentNoSM;
-                }
-                else
-                {
-                    if (AddedObject.isanimated)
-                    {
-                        if (AddedObject.isshadowcaster && EnableShadows)
-                            AddedObject.ShadowTehnique = Shader.CreateAnimShadowMap;
-
-                        if (AddedObject.isshadowreceiver)
-                            if (EnableShadows)
-                                if (SmoothShadows)
-                                    AddedObject.PictureTehnique = Shader.AnimRenderSMSmooth;
-                                else
-                                    AddedObject.PictureTehnique = Shader.AnimRenderSM;
-                            else
-                                AddedObject.PictureTehnique = Shader.AnimRenderNoSM;
-                    }
-                    else
-                    {
-                        if (AddedObject.isshadowcaster && EnableShadows)
-                            AddedObject.ShadowTehnique = Shader.CreateStaticShadowMap;
-
-
-                        if (AddedObject.isshadowreceiver)
-                            if (EnableShadows)
-                                if (SmoothShadows)
-                                    AddedObject.PictureTehnique = Shader.NotAnimRenderSMSmooth;
-                                else
-                                    AddedObject.PictureTehnique = Shader.NotAnimRenderSM;
-                            else
-                                AddedObject.PictureTehnique = Shader.NotAnimRenderNoSM;
-                        else
-                            AddedObject.PictureTehnique = Shader.NotAnimRenderNoSM;
-                    }
-                }
-                #endregion
+                ProceedFillRender(AddedObject);
             }
             else if (AddedObject as ParticleRenderObject != null)
             {
-                #region instanced render
-                if (AddedObject.isTransparent)
+                if (Config.Instance["_useHardwareInstancing"])
+                    ProceedInstRender(AddedObject);
+                else
+                    ProceedFillRender(AddedObject);
+            }
+        }
+
+        private void ProceedFillRender(RenderObject AddedObject)
+        {
+            #region fillrender
+            if (AddedObject.isTransparent)
+            {
+                //не мб шадовкастером и не мб анимированным
+                if (AddedObject.isshadowreceiver)
+                    if (EnableShadows)
+                        if (SmoothShadows)
+                            AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentSMSmooth;
+                        else
+                            AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentSM;
+                    else
+                        AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentNoSM;
+                else
+                    AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.TransparentSelfIlmnNoSM : Shader.TransparentNoSM;
+            }
+            else
+            {
+                if (AddedObject.isanimated)
                 {
-                    //не мб шадовкастером и не мб анимированным
+                    if (AddedObject.isshadowcaster && EnableShadows)
+                        AddedObject.ShadowTehnique = Shader.CreateAnimShadowMap;
+
                     if (AddedObject.isshadowreceiver)
                         if (EnableShadows)
                             if (SmoothShadows)
-                                AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.InstancedTransparentSelfIlmnNoSM : Shader.InstancedTransparentSMSmooth;
+                                AddedObject.PictureTehnique = Shader.AnimRenderSMSmooth;
                             else
-                                AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.InstancedTransparentSelfIlmnNoSM : Shader.InstancedTransparentSM;
+                                AddedObject.PictureTehnique = Shader.AnimRenderSM;
                         else
-                            AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.InstancedTransparentSelfIlmnNoSM : Shader.InstancedTransparentNoSM;
-                    else
-                        AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.InstancedTransparentSelfIlmnNoSM : Shader.InstancedTransparentNoSM;
+                            AddedObject.PictureTehnique = Shader.AnimRenderNoSM;
                 }
                 else
                 {
-                    //отключим пока возможность кастования теней
-                    //if (AddedObject.isshadowcaster && EnableShadows)
-                    //    AddedObject.ShadowTehnique = Shader.CreateStaticShadowMap;
+                    if (AddedObject.isshadowcaster && EnableShadows)
+                        AddedObject.ShadowTehnique = Shader.CreateStaticShadowMap;
 
 
                     if (AddedObject.isshadowreceiver)
                         if (EnableShadows)
                             if (SmoothShadows)
-                                AddedObject.PictureTehnique = Shader.InstancedSMSmooth;
+                                AddedObject.PictureTehnique = Shader.NotAnimRenderSMSmooth;
                             else
-                                AddedObject.PictureTehnique = Shader.InstancedSM;
+                                AddedObject.PictureTehnique = Shader.NotAnimRenderSM;
                         else
-                            AddedObject.PictureTehnique = Shader.InstancedNoSM;
+                            AddedObject.PictureTehnique = Shader.NotAnimRenderNoSM;
+                    else
+                        AddedObject.PictureTehnique = Shader.NotAnimRenderNoSM;
+                }
+            }
+            #endregion
+        }
+
+        private void ProceedInstRender(RenderObject AddedObject)
+        {
+            #region instanced render
+            if (AddedObject.isTransparent)
+            {
+                //не мб шадовкастером и не мб анимированным
+                if (AddedObject.isshadowreceiver)
+                    if (EnableShadows)
+                        if (SmoothShadows)
+                            AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.InstancedTransparentSelfIlmnNoSM : Shader.InstancedTransparentSMSmooth;
+                        else
+                            AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.InstancedTransparentSelfIlmnNoSM : Shader.InstancedTransparentSM;
+                    else
+                        AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.InstancedTransparentSelfIlmnNoSM : Shader.InstancedTransparentNoSM;
+                else
+                    AddedObject.PictureTehnique = AddedObject.isSelfIllumination ? Shader.InstancedTransparentSelfIlmnNoSM : Shader.InstancedTransparentNoSM;
+            }
+            else
+            {
+                //отключим пока возможность кастования теней
+                //if (AddedObject.isshadowcaster && EnableShadows)
+                //    AddedObject.ShadowTehnique = Shader.CreateStaticShadowMap;
+
+
+                if (AddedObject.isshadowreceiver)
+                    if (EnableShadows)
+                        if (SmoothShadows)
+                            AddedObject.PictureTehnique = Shader.InstancedSMSmooth;
+                        else
+                            AddedObject.PictureTehnique = Shader.InstancedSM;
                     else
                         AddedObject.PictureTehnique = Shader.InstancedNoSM;
+                else
+                    AddedObject.PictureTehnique = Shader.InstancedNoSM;
 
-                }
-                #endregion
             }
+            #endregion
         }
 
 
