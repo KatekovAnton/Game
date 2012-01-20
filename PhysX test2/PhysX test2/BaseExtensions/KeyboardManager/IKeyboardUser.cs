@@ -18,12 +18,11 @@ namespace PhysX_test2
         void KeyPress();
     }
 
-    public class HotKey
+    public class HotKey : List<Keys>
     {
-        public Microsoft.Xna.Framework.Input.Keys[] associatedKeys;
         public HotKey(Microsoft.Xna.Framework.Input.Keys[] keys, Action _action)
         {
-            associatedKeys = keys;
+            this.AddRange(keys);
             action = _action;
         }
         public Action action;
@@ -35,14 +34,14 @@ namespace PhysX_test2
             {
                 bool canexecute = true;
                 long timelast = 0;
-                KeyScan scanforcurrentkey = KeyboardManager.GetScanForKey(associatedKeys[0]);
+                KeyScan scanforcurrentkey = KeyboardManager.GetScanForKey(this[0]);
                 if (scanforcurrentkey.pressed)
                 {
                     timelast = scanforcurrentkey.timePressed;
 
-                    for (int i = 1; i < associatedKeys.Length; i++)
+                    for (int i = 1; i < Count;  i++)
                     {
-                        scanforcurrentkey = KeyboardManager.GetScanForKey(associatedKeys[i]);
+                        scanforcurrentkey = KeyboardManager.GetScanForKey(this[i]);
 
                         if (!scanforcurrentkey.pressed || scanforcurrentkey.timePressed < timelast)
                         {
@@ -62,7 +61,7 @@ namespace PhysX_test2
             }
             else
             {
-                KeyScan scanforcurrentkey = KeyboardManager.GetScanForKey(associatedKeys[associatedKeys.Length - 1]);
+                KeyScan scanforcurrentkey = KeyboardManager.GetScanForKey(this[Count - 1]);
                 if (!scanforcurrentkey.pressed)
                 {
                     active = false;

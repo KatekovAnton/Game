@@ -16,6 +16,7 @@ namespace PhysX_test2
         public static List<Keys> PressedKeys;
         public static List<Keys> LastPressedKeys;
         public static List<KeyScan> scaningKeys;
+
         public static KeyScan GetScanForKey(Keys key)
         {
             for (int i = 0; i < scaningKeys.Count; i++)
@@ -87,19 +88,19 @@ namespace PhysX_test2
                 {
                     foreach (HotKey k in user.hotkeys)
                     {
-                        for (int i = 0; i < k.associatedKeys.Length; i++)
+                        for (int i = 0; i < k.Count; i++)
                         {
                             bool containkey = false;
                             for (int hk = 0; hk < scaningKeys.Count; hk++)
                             {
-                                if (scaningKeys[hk].key == k.associatedKeys[i])
+                                if (scaningKeys[hk].key == k[i])
                                 {
                                     containkey = true;
                                     break;
                                 }
                             }
                             if (!containkey)
-                                scaningKeys.Add(new KeyScan(k.associatedKeys[i]));
+                                scaningKeys.Add(new KeyScan(k[i]));
                         }
                     }
                 }
@@ -127,10 +128,10 @@ namespace PhysX_test2
                     if (PressedKeys.Count >= 1)
                     {
                         foreach (HotKey k in captured_user.hotkeys)
-                            if (k.associatedKeys.Length == 1)
+                            if (k.Count == 1)
                             {
-                                PressedKeys.Remove(k.associatedKeys[0]);
-                                LastPressedKeys.Remove(k.associatedKeys[0]);
+                                PressedKeys.Remove(k[0]);
+                                LastPressedKeys.Remove(k[0]);
                             }
 
                         if (captured_user_all_keys != null)
@@ -209,6 +210,7 @@ namespace PhysX_test2
         }
 
         private List<IKeyboardUser> keyboardusers;
+
         public static bool IsMouseCaptured
         {
             get
@@ -227,9 +229,46 @@ namespace PhysX_test2
             scaningKeys = new List<KeyScan>();
         }
 
+        public void Check(IKeyboardUser user)
+        {
+            HotKey kk1;
+            foreach (IKeyboardUser _user in keyboardusers)    // я не знаю как можно это реализовать по-другому :)
+                foreach (HotKey _kk in _user.hotkeys)
+                    foreach (HotKey kk in user.hotkeys)
+                    {
+                        if (kk.Count > 0 && _kk.Count > 0)
+                       {
+                        bool eq = true;
+                        foreach (Keys key in kk)
+                            foreach (Keys _key in _kk)
+                            {
+                                if (key != _key)
+                                {
+                                    eq = false;
+                                }
+                            }
+                       
+                        if (eq)
+                        {
+                            string str = "";
+                            foreach (Keys key in kk) str += "'"+key.ToString() + "'  ";
+                            MyGame.ScreenLogMessage("<<<<<<<<<<<<<", GColors.CTextBack); 
+                            MyGame.ScreenLogMessage("Keys are equals: " + str, GColors.CError);
+                            MyGame.ScreenLogMessage(_user.GetType().ToString(), GColors.CError);
+                            MyGame.ScreenLogMessage(user.GetType().ToString(), GColors.CError);
+                            MyGame.ScreenLogMessage(">>>>>>>>>>>>>", GColors.CTextBack); 
+                        }
+                       }
+                    }
+        }
+
         public void AddKeyboardUser(IKeyboardUser newUser)
         {
+#if DEBUG
+            Check(newUser);  //проверка на совпадение горячих клавиш
+#endif
             keyboardusers.Add(newUser);
+
         }
         public void RemoveKeyboardUser(IKeyboardUser user)
         {
