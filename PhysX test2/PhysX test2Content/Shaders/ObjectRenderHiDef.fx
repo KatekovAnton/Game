@@ -207,7 +207,7 @@ float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
 	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
 	if(color.a <= 0.1)
 		discard;
-	color *=color.a;
+	//color *=color.a;
 	return color;
 }
 
@@ -467,7 +467,7 @@ technique TransparentSelfIlmnNoSM
 {
   pass Pass1
   {
-    VertexShader = compile vs_2_0 StaticVertexShaderSM();
+    VertexShader = compile vs_2_0 StaticVertexShaderNoSM();
     PixelShader = compile ps_2_0 SolidTextureSelfIll();
   }
 }

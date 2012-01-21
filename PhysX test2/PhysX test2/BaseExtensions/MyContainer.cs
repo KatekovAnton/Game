@@ -6,8 +6,6 @@ using System.Text;
 
 namespace PhysX_test2
 {
-    
-
     public class MyContainer<T> : IEnumerable<T>
        where T : class
     {
@@ -320,5 +318,16 @@ namespace PhysX_test2
                     break;
                 }
         }
+
+        public void Sort(IComparer<T> __comparer)
+        {
+            Array.Sort(array, 0, Count, __comparer);
+        }
+
+        public void Sort(IComparer<T> __comparer, int __firstIndex, int __lastIndex)
+        {
+            Array.Sort(array, __firstIndex, __lastIndex, __comparer);
+        }
+
     }
 }

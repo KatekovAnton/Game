@@ -140,7 +140,8 @@ namespace PhysX_test2.Engine.Logic
             //set particle data
             if (_isOnScreen)
             {
-                SortParticles();
+                if(renderaspect.isTransparent || renderaspect.isSelfIllumination)
+                    SortParticles();
                 renderaspect.SetParticleData(GetParticleData());
             }
             base.AfterUpdate();
@@ -203,6 +204,7 @@ namespace PhysX_test2.Engine.Logic
         { 
             //TODO
             //sort particals by camera distance
+            _particles.Sort(new ParticleCameraComparer());
         }
 
        
@@ -243,5 +245,20 @@ namespace PhysX_test2.Engine.Logic
         }
 
         
+    }
+
+    public class ParticleCameraComparer : IComparer<ParticleData>
+    {
+        public int Compare(ParticleData x, ParticleData y)
+        {
+            float l1 = (x._position - MyGame.Instance._engine.Camera._position).LengthSquared();
+            float l2 = (y._position - MyGame.Instance._engine.Camera._position).LengthSquared();
+            if (l1 == l2)
+                return 0;
+            if (l1 < l2)
+                return 1;
+            return -1; 
+            
+        }
     }
 }
