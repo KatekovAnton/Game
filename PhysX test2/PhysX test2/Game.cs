@@ -89,10 +89,14 @@ namespace PhysX_test2
             DeviceManager = new GraphicsDeviceManager(this);
             IsMouseVisible = true;
 
-           // if (!GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef))
+
+            DeviceManager.GraphicsProfile = GraphicsProfile.Reach;
+
+           if (!GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef) || Config.Instance["_ultraLowRender"])
                 DeviceManager.GraphicsProfile = GraphicsProfile.Reach;
-          /*  else
-                DeviceManager.GraphicsProfile = GraphicsProfile.HiDef;*/
+            else
+                DeviceManager.GraphicsProfile = GraphicsProfile.HiDef;
+
             Content.RootDirectory = "Content";
             
             DeviceManager.SynchronizeWithVerticalRetrace = false;
