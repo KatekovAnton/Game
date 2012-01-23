@@ -90,7 +90,7 @@ namespace PhysX_test2
             IsMouseVisible = true;
 
 
-            DeviceManager.GraphicsProfile = GraphicsProfile.Reach;
+//            DeviceManager.GraphicsProfile = GraphicsProfile.Reach;
 
            if (!GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef) || Config.Instance["_ultraLowRender"])
                 DeviceManager.GraphicsProfile = GraphicsProfile.Reach;
