@@ -23,10 +23,10 @@ namespace PhysX_test2.UserInterface
            public Vector2 Size;
            public Control Parent = null;
 
-           public abstract void Draw();
-           public abstract void Update();
-           public abstract void Dispose();
-           public abstract void UnLoad();
+           public virtual void Draw() { }
+           public virtual void Update() { }
+           public virtual void Dispose() { }
+           public virtual void UnLoad() { }
        }
 
        public interface ISomeInterface 
@@ -106,14 +106,21 @@ namespace PhysX_test2.UserInterface
            }
 
            public int Length { get { return Math.Abs(End.pos - Start.pos); } }
-           
        }
 
-       public class TextBox : UserControl, IKeyboardUser, IAllKeys
+
+       public class TextBox : Control, IKeyboardUser, IAllKeys
        {
            public string SelectedText
            {
-               set { bool tmp = InsertMode; InsertMode = false; Text.Remove(_sel.Start.pos, _sel.Length); KeyboardManager.key_buffer = value; _sel_vis = value.Length > 0; KeyPress(); InsertMode = tmp; }
+               set { 
+                   bool tmp = InsertMode;
+                   InsertMode = false; 
+                   Text.Remove(_sel.Start.pos, _sel.Length);
+                   _sel_vis = value.Length > 0;
+                   Text = Text.Insert(_cur.pos, value);
+                   InsertMode = tmp;
+               }
                get { int length = _sel.Length; _sel_vis = length != 0; if (length == 0) return ""; return Text.Substring(_sel.Start.pos, _sel.Length); }
            }
 
@@ -181,14 +188,19 @@ namespace PhysX_test2.UserInterface
            { 
                if (KeyboardManager.Shift) 
                {
-                   if (SelectedText == "" || _sel.Start.pos != _cur.pos)
+                   bool f2 = _sel.Start.pos == _cur.pos;
+                   bool f3 = _sel.End.pos == _cur.pos;
+                   bool f1 = (_sel.End.pos == _sel.Start.pos) || (!f3 && !f2);
+
+                   if (f1)
                    {
-                       _sel.End.pos = _cur.pos--;
-                       _sel.Start.pos = _cur.pos;
+                          _sel.End.pos = _cur.pos--;
+                          _sel.Start.pos = _cur.pos;
                    }
                    else
                    {
-                       _sel.Start.pos = --_cur.pos;
+                       if (f2) _sel.Start.pos = --_cur.pos;
+                       if (f3) _sel.End.pos = --_cur.pos;
                    }
                }
                else
@@ -197,16 +209,21 @@ namespace PhysX_test2.UserInterface
 
            void Right()
            {
+               bool f2 = _sel.Start.pos == _cur.pos;
+               bool f3 = _sel.End.pos == _cur.pos;
+               bool f1 = (_sel.End.pos == _sel.Start.pos) || (!f3 && !f2);
+
                if (KeyboardManager.Shift)
                {
-                   if (SelectedText == "" || _sel.End.pos != _cur.pos)
+                   if (f1)
                    {
                        _sel.Start.pos = _cur.pos++;
                        _sel.End.pos = _cur.pos;
                    }
                    else
                    {
-                       _sel.End.pos = ++_cur.pos;
+                       if (f2) _sel.Start.pos = ++_cur.pos;
+                       if (f3) _sel.End.pos = ++_cur.pos;
                    }
                }
                else
@@ -254,37 +271,82 @@ namespace PhysX_test2.UserInterface
                    if (_cur_vis) Program.game._spriteBatch.Draw(UIContent.Textures["`2`16"], Position + new Vector2(_cur.cur_draw_pos, 0), null, TextColor, 0, Vector2.Zero, new Vector2(InsertMode ? 3 : 0.5f, 1), SpriteEffects.None, 0);
                    if (_sel_vis) Program.game._spriteBatch.Draw(UIContent.Textures["`2`16"], Position + new Vector2(_sel.Start.cur_draw_pos, 1), null, GColors.CHighLightText, 0, Vector2.Zero, new Vector2( (_sel.End.cur_draw_pos - _sel.Start.cur_draw_pos )/2  , 0.9f), SpriteEffects.None, 0);
                 }
-               base.Draw();
+              // base.Draw();
            }
 
            public override void Update()
            {
+               _sel_vis = _sel.Start.pos != _sel.End.pos;
+
                _i++; if (_i == Program.game._engine.FPSCounter.FramesPerSecond / 10 + 1)
                {_cur_vis = !_cur_vis; _i = 0;}
-               base.Draw();
+              // base.Update();
+           }
+       }
+
+       public static Control CreateTextBox(string init_text, Vector2 position, Vector2 size, List<HotKey> _hotkeys, SpriteFont Font)
+       {
+           
+           TextBox tb = new TextBox(init_text, position, size, _hotkeys, Font);
+           return tb;
+
+       }
+
+
+       public static Control CreateLabel(Color color, string init_text, Vector2 position, SpriteFont Font, bool Static = true)
+       {
+
+           if (!Static)
+           {
+               Label label = new Label(color, init_text, position, Font);
+               return label;
+           }
+           else
+           {
+              Vector2 size = Font.MeasureString(init_text);
+               Image label = new Image(position, new Label(color, init_text, position, Font), new RT((int)size.X, (int)size.Y, "label"));
+               return label;
+           }
+
+       }
+
+       public class Image : Control
+       {
+           public RT rt;
+           public Image(Vector2 position, Color color, RT tr)
+           {
+               this.Position = position; this.Color = color; rt = tr;
+           }
+
+           public Image(Vector2 position, Control cc, RT tr)
+           {
+               cc.Position = Vector2.Zero;
+               this.Position = position;
+               this.Color = Color.White;
+               Program.game.GraphicsDevice.SetRenderTarget(rt);
+               Program.game._spriteBatch.Begin();
+               cc.Draw();
+               Program.game._spriteBatch.End();
+           }
+
+           public override void Draw()
+           {
+               Program.game._spriteBatch.Draw(rt, Position, Color);
            }
        }
 
        public class Label : Control
        {
            public SpriteFont Font;
-           public Label(Color color)
-           { Color = color; }
+           public Label(Color color, string init_text, Vector2 position, SpriteFont font)
+           {
+               Color = color; Text = init_text; Position = position; Font = font;
+           }
 
            public override void Draw()
            {
                Program.game._spriteBatch.DrawString(Font, Text, Position, Color);
            }
-
-           public override void Update()
-           {      }
-
-           public override void UnLoad()
-           { }
-
-           public override void Dispose()
-           { }
-           
        }
 
 

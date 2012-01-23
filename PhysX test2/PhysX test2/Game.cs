@@ -59,7 +59,7 @@ namespace PhysX_test2
         public SpriteBatch _spriteBatch;
 
 
-        private string _helpHint = "\'Escape\' to Show MainMenu\n\'O\' to swich debug render\n\'P\' to toggle physic model of box\n\'I\' to force marine to drop gun\n\'~\' to toggle event console\n\'Left Ctrl + C\' to console writing";
+        private string _helpHint = "\'Escape\' to Show MainMenu\n\'O\' to swich debug render\n\'P\' to toggle physic model of box\n\'I\' to force marine to drop gun\n\'~\' to toggle event console\n\'Left Ctrl + ~\' to console writing";
 
 
         public static ScreenLog ScreenLog;
@@ -78,7 +78,7 @@ namespace PhysX_test2
             _hotkeys = new List<HotKey>();
             _hotkeys.Add(new HotKey(new Keys[] { Keys.OemTilde }, SwitchConsoleView));
             _hotkeys.Add(new HotKey(new Keys[] { Keys.Escape }, ShowMainMenu));
-            _hotkeys.Add(new HotKey(new Keys[] { Keys.LeftControl, Keys.C }, SwitchConsoleEditMode));
+            _hotkeys.Add(new HotKey(new Keys[] { Keys.LeftControl, Keys.OemTilde }, SwitchConsoleEditMode));
 
             KeyboardManager.Manager.AddKeyboardUser(this);
 
