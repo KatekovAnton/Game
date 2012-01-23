@@ -110,7 +110,10 @@ namespace PhysX_test2.Engine.Logic
             Vector3 resultDirection = Vector3.TransformNormal(_direction, result);
             resultDirection = resultDirection * MyRandom.NextFloat(_speed - _speeddisp, _speed + _speeddisp);
             resultDirection.Y -= _gravityRelationMultiplier * 0.1f;
-            Vector3 delta = new Vector3(MyRandom.NextFloat(_dispRadius), MyRandom.NextFloat(_dispRadius), MyRandom.NextFloat(_dispRadius));
+            Vector3 delta = new Vector3(
+                MyRandom.NextFloat(-_dispRadius, _dispRadius),
+                MyRandom.NextFloat(-_dispRadius, _dispRadius),
+                MyRandom.NextFloat(-_dispRadius, _dispRadius));
 
             float mult = MyRandom.NextFloat(_gravityRelationMultiplier * (1.0f - _dispRadius), _gravityRelationMultiplier * (1.0f + _dispRadius));
             return new ParticleData(MyGame.UpdateTime.TotalGameTime.TotalMilliseconds, _livetime - MyRandom.Instance.Next((int)(_livetime / 2.0)), _position + delta, resultDirection, mult);
