@@ -115,8 +115,8 @@ namespace PhysX_test2.UserInterface
            {
                set { 
                    bool tmp = InsertMode;
-                   InsertMode = false; 
-                   Text.Remove(_sel.Start.pos, _sel.Length);
+                   InsertMode = false;
+                   Text = Text.Remove(_sel.Start.pos, _sel.Length);
                    _sel_vis = value.Length > 0;
                    Text = Text.Insert(_cur.pos, value);
                    InsertMode = tmp;
@@ -155,6 +155,7 @@ namespace PhysX_test2.UserInterface
                _hotkeys.Add(new HotKey(new Keys[] { Keys.Insert }, Insert));
                _hotkeys.Add(new HotKey(new Keys[] { Keys.LeftControl, Keys.C }, Copy));
                _hotkeys.Add(new HotKey(new Keys[] { Keys.LeftControl, Keys.V }, Paste));
+               _hotkeys.Add(new HotKey(new Keys[] { Keys.LeftControl, Keys.X }, Cut));
                
                this._hotkeys = _hotkeys;
 
@@ -232,15 +233,31 @@ namespace PhysX_test2.UserInterface
 
            void BackSpace() {  if (_cur.pos > 0)    {    Text = Text.Remove(--_cur.pos, 1);   }       }
 
-           void Home()      {  _cur.pos = 0;   }
+           void Home() { _cur.pos = 0; if (KeyboardManager.Shift) _sel.End.pos = _cur.pos; }
 
-           void End()       {  _cur.pos = Text.Length;       }
+           void End() { _cur.pos = Text.Length; if (KeyboardManager.Shift) _sel.Start.pos = _cur.pos; }
 
-           void Insert()    {  InsertMode = !InsertMode;     }
+           void Insert()    
+           {
+               if (KeyboardManager.Ctrl)
+                   Copy();
+               else
+                   if (KeyboardManager.Shift)
+                       Paste();
+                   else
+               InsertMode = !InsertMode;     
+           }
 
            void Copy()
            {
                KeyboardManager.Clipboard = SelectedText;
+           }
+
+           void Cut()
+           {
+               Copy();
+               SelectedText = "";
+               _sel.End.pos = _sel.Start.pos;
            }
 
            void Paste() 
@@ -252,6 +269,12 @@ namespace PhysX_test2.UserInterface
 
            void Delete()
            {
+               if (_sel_vis)
+               { 
+                   SelectedText = "";
+                   _sel.End.pos = _sel.Start.pos;
+               }
+               else
                if (_cur.pos < Text.Length)
                {
                    Text = Text.Remove(_cur.pos, 1);  
@@ -278,7 +301,7 @@ namespace PhysX_test2.UserInterface
            {
                _sel_vis = _sel.Start.pos != _sel.End.pos;
 
-               _i++; if (_i == Program.game._engine.FPSCounter.FramesPerSecond / 10 + 1)
+               _i++; if (_i >= Program.game._engine.FPSCounter.FramesPerSecond / 10 + 1)
                {_cur_vis = !_cur_vis; _i = 0;}
               // base.Update();
            }
