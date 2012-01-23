@@ -186,7 +186,6 @@ namespace PhysX_test2.Engine.Logic
 
             if (moved)
                 raycastaspect.boundingShape.Update(transform);
-
         }
 
         /*from editor

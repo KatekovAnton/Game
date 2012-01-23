@@ -15,7 +15,7 @@ namespace PhysX_test2.Engine.Render.DebugRender
         public static readonly short[] BBIndices = new short[] { 0, 1, 2, 3, 0, 2, 1, 3, 4, 5, 6, 7, 4, 6, 5, 7, 0, 4, 5, 1, 7, 3, 6, 2 };
         public static readonly short[] BRindices = new short[] { 0, 1, 2, 3, 0, 2, 1, 3 };
 
-        public static Color AABBColor = Color.White;
+        public static Color AABBColor = Color.Black;
         public static Color AABRColor = Color.Red;
         public static Color BBColor = Color.Yellow;
 
