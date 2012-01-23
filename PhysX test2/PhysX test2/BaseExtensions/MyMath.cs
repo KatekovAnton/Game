@@ -9,7 +9,9 @@ namespace PhysX_test2
     {
         public static bool isPOT(int __value)
         {
-            return Math.Log((double)__value, 2) == 0;
+            double ff = Math.Log((double)__value, 2);
+
+            return Math.Pow(2, ff)- __value == 0;
         }
 
         public static bool Near(this Vector3 v, Vector3 v1)

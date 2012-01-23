@@ -131,6 +131,10 @@ namespace PhysX_test2.Engine.Render
                 CreateStaticShadowMap = "CreateStaticShadowMapR";
                 CreateAnimShadowMap = "CreateAnimShadowMapR";
 
+
+                TransparentSM = "TransparentSMR";
+                TransparentSMSmooth = TransparentSM;
+
                 InstancedSM = "InstancedSMR";
                 InstancedSMSmooth = InstancedSM;
 
