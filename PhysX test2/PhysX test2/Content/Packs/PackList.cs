@@ -48,6 +48,7 @@ namespace PhysX_test2.Content
             }
             else
             {
+                pc.name = pch.name;
                 PhysX_test2.LogProvider.logMessage("Content system: Loading object:\t\t" + objectname.Substring(0, objectname.Length - 1) + "\t\t type of " + ElementType.ReturnString(pch.loadedformat));
                 System.IO.BinaryReader br = new System.IO.BinaryReader(containedpack.fi.OpenRead());
                 br.BaseStream.Seek(containedpack.headersize + pch.offset, System.IO.SeekOrigin.Begin);

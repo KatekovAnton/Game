@@ -7,6 +7,11 @@ namespace PhysX_test2
 {
     public static class MyMath
     {
+        public static bool isPOT(int __value)
+        {
+            return Math.Log((double)__value, 2) == 0;
+        }
+
         public static bool Near(this Vector3 v, Vector3 v1)
         {
             return Math.Abs(v.X - v1.X) < 0.001f && Math.Abs(v.Y - v1.Y) < 0.001f && Math.Abs(v.Z - v1.Z) < 0.001f;
