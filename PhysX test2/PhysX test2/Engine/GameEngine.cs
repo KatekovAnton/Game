@@ -66,7 +66,7 @@ namespace PhysX_test2.Engine
 
         //controllers for camera and character (objects between user and game)
         public CameraControllers.CameraControllerPerson _cameraController;
-
+        public CameraControllers.FreeCamera _cameraControllerFree;
 
         //animation
         public Engine.AnimationManager.AnimationManager animationManager;

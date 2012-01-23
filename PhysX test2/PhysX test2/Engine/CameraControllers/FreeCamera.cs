@@ -5,14 +5,14 @@ using System;
 
 namespace PhysX_test2.Engine.CameraControllers
 {
-  /*  public class FreeCamera : CameraControllerSuperClass
+    public class FreeCamera : CameraControllerSuperClass
     {
         protected Vector3 _delta = Vector3.Zero;
 
-        public FreeCamera(Vector3 pos, Vector3 dir) : base(new Camera(Program.game._engine.Camera, pos)
+        public FreeCamera(Vector3 pos, Vector3 dir) : base(Program.game._engine.Camera, pos, Vector3.Zero)
         {
             
         }
         
-    }*/
+    }
 }

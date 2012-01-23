@@ -24,5 +24,7 @@ namespace PhysX_test2.Engine.CameraControllers
             _camera.Update(_currendPosition , _currentTarget );
         }
 
+        public virtual void UpdateCamerafromUser(Vector3 _targetPoint) { }
+
     }
 }
