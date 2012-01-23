@@ -217,7 +217,7 @@ float4 SolidTextureNoSM(PS_INPUT f) : COLOR0
 	lambertfactor*=1.1;
     
     float3 color1 = color.rgb* lambertfactor;
-    return float4(color1,1);
+    return float4(color1, color.a);
 
 }
 
@@ -226,7 +226,7 @@ float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
 	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
 	if(color.a <= 0.1)
 		discard;
-	color *=color.a;
+	//color *= color.a;
 	return color;
 }
 
@@ -258,9 +258,9 @@ float4 SolidTextureSMR(PS_INPUT f) : COLOR0
 		if(lambertfactor !=shadowintens)
 			lambertfactor = shadowintens;
 	}
-	lambertfactor*=1.1;
-	float3 color1 = color.rgb* lambertfactor;
-	return float4(color1,1);
+	lambertfactor *= 1.1;
+	float3 color1 = color.rgb * lambertfactor;
+	return float4(color1, color.a);
 }
 //=================================================================================
 

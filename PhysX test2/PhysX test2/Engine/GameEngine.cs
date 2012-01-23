@@ -244,7 +244,7 @@ namespace PhysX_test2.Engine
             {
                 ParticleObject po = LoadParticleObject("Particle001RO\0", new Vector3(2));
                 po.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(2, 15, 2));
-                po.SetParticlesParameters(10, Vector3.Up, 2.0f, -0.01f, 0.2f, 1.0f, 0.2f, 8000, 15);
+                po.SetParticlesParameters(10, Vector3.Up, 1.0f, -0.01f, 0.2f, 1.0f, 0.2f, 8000, 15);
                 po.FirstEmition();
                 gameScene.AddObject (po);
             }
