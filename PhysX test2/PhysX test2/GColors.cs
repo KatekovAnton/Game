@@ -15,5 +15,6 @@ namespace PhysX_test2
         public static Color CText = Color.White;
         public static Color CForeColor = Color.Black;
         public static Color CAlarm = Color.Red;
+        public static Color CZero = Color.FromNonPremultiplied(0,0,0,0);
     }
 }

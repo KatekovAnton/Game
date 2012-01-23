@@ -53,12 +53,12 @@ namespace PhysX_test2.UserInterface
             Vector2 poss = Content.Fonts._font1.MeasureString("  Recalulcalated objects count:  ");
             l_panel = new Controls.UserControl();
             l_panel.Position = new Vector2(5, 5);
-
-            l_fps = (Controls.Label)Controls.CreateLabel(GColors.CForeColor, new Vector2(poss.X, 0), Content.Fonts._font1);
-            l_Frame_time = (Controls.Label)Controls.CreateLabel(GColors.CForeColor, new Vector2(poss.X, poss.Y), Content.Fonts._font1);
-            l_Visible_objects_count = (Controls.Label)Controls.CreateLabel(GColors.CForeColor, new Vector2(poss.X, poss.Y*2), Content.Fonts._font1);
-            l_Recalulcalated_objects_count = (Controls.Label)Controls.CreateLabel(GColors.CForeColor, new Vector2(poss.X, poss.Y * 3), Content.Fonts._font1);
-            l_Character_angle = (Controls.Label)Controls.CreateLabel(GColors.CForeColor, new Vector2(poss.X, poss.Y * 4), Content.Fonts._font1);
+            poss.Y--;
+            l_fps = (Controls.Label)Controls.CreateLabel(GColors.CText, new Vector2(poss.X, 5), Content.Fonts._font1);
+            l_Frame_time = (Controls.Label)Controls.CreateLabel(GColors.CText, new Vector2(poss.X, poss.Y+5), Content.Fonts._font1);
+            l_Visible_objects_count = (Controls.Label)Controls.CreateLabel(GColors.CText, new Vector2(poss.X,5+ poss.Y*2), Content.Fonts._font1);
+            l_Recalulcalated_objects_count = (Controls.Label)Controls.CreateLabel(GColors.CText, new Vector2(poss.X,5+ poss.Y * 3), Content.Fonts._font1);
+            l_Character_angle = (Controls.Label)Controls.CreateLabel(GColors.CText, new Vector2(poss.X,5+ poss.Y * 4), Content.Fonts._font1);
 
             l_panel.Add(l_fps);
             l_panel.Add(l_Frame_time);
@@ -66,8 +66,17 @@ namespace PhysX_test2.UserInterface
             l_panel.Add(l_Recalulcalated_objects_count);
             l_panel.Add(l_Character_angle);
 
+            Vector2 size = Content.Fonts._font1.MeasureString(out_str);
+
+            Controls.Image img = new Controls.Image(Vector2.Zero, GColors.CTextBack, new RT((int)size.X+10, (int)size.Y+10, Color.White, "sss"));
+            Controls.UserControl uc = new Controls.UserControl();
+            uc.Add(img);
+            uc.Add(Controls.CreateLabel(GColors.CText, new Vector2(5,5), Content.Fonts._font1, Config.Instance["_use_static_labels"] && !Config.Instance["_ultraLowRender"], out_str));
+            Controls.Image img2 = new Controls.Image(Vector2.Zero, uc, new RT((int)size.X + 10, (int)size.Y + 10, GColors.CZero, "sss"));
+
+            Add(img2);
             Add(l_panel);
-            Add(Controls.CreateLabel(GColors.CForeColor, Vector2.Zero, Content.Fonts._font1, Config.Instance["_use_static_labels"] && !Config.Instance["_ultraLowRender"], out_str));
+
         }
 
         public void onDebugTextboxEnter()
