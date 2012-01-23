@@ -18,7 +18,7 @@ namespace PhysX_test2.TheGame
     public class TheGame:IKeyboardUser
     {
         private List<HotKey> _hotkeys;
-     //   public bool AllKeys { get { return false; } }
+
         public bool GlobalUser { set { } get { return false; } }
 
         public const string _playerCharacterKey = "player";
@@ -93,7 +93,7 @@ namespace PhysX_test2.TheGame
             
             _characters.Add(_playerCharacterKey, me);
 
-            CameraManager.CreateCharCameraController(me._hisObject._levelObject);
+            CameraManager.__targetCharacter = me._hisObject._levelObject;
 
 
             CharacterLogicController _anotherChar = CharacterLogicController.CreateCharacter("2", _level, true);

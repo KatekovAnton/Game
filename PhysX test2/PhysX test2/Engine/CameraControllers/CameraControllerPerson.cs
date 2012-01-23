@@ -11,7 +11,6 @@ namespace PhysX_test2.Engine.CameraControllers
         protected Vector3 _delta = Vector3.Zero;
 
         public float _camera_sence;
-        public float _yAngle;
         private float _zAngle;
 
         private Vector3 _offset;
@@ -33,11 +32,10 @@ namespace PhysX_test2.Engine.CameraControllers
         public void RotateCameraAroundChar(float angle)
         {
             if (angle == 0)
-            {
                 return;
-            }
-            _yAngle += angle;
 
+            _yAngle += angle;
+            
             Matrix resMatr;
             Vector3 vect = new Vector3(0, 1, 0);
             Matrix.CreateFromAxisAngle(ref vect, angle, out resMatr);
@@ -112,11 +110,13 @@ namespace PhysX_test2.Engine.CameraControllers
             float cursorPositionY = MouseManager.Manager.state.Y;
             float deltaY = cursorPositionY - _lastMousePosY;
             MouseState mouseState = MouseManager.Manager.state;
+
             if (mouseState.RightButton == ButtonState.Pressed)
             {
                 RotateCameraAroundChar(-deltaX * Settings.rotateSpeed);
                 UpDownCamera(deltaY * Settings.rotateSpeed);
             }
+
             _lastMousePosX = cursorPositionX;
             _lastMousePosY = cursorPositionY;
 

@@ -195,7 +195,7 @@ namespace PhysX_test2
             captured_user_all_keys = IKeyboardUser as IAllKeys;
             captured_user.IsKeyboardCaptured = true;
             keys_captured_by_user = true;
-
+            MyGame.Instance._MAINGAME._characters["1"]._hisInput.Enabled = false;
         }
 
         public void CaptureRelease()
@@ -206,6 +206,7 @@ namespace PhysX_test2
                 captured_user.IsKeyboardCaptured = false;
                 captured_user_all_keys = null;
                 captured_user = null;
+                MyGame.Instance._MAINGAME._characters["1"]._hisInput.Enabled = true;
             }
         }
 

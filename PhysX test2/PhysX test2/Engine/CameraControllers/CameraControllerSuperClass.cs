@@ -7,6 +7,7 @@ namespace PhysX_test2.Engine.CameraControllers
         private Camera _camera;
         public Vector3 _currendPosition;
         public Vector3 _currentTarget;
+        public float _yAngle;
 
         public float _speedLimit = 0.0f;
 

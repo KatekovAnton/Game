@@ -10,8 +10,7 @@ namespace PhysX_test2.UserInterface
     public class GameInterface : Controls.UserControl, Controls.ISomeInterface
     {
         public Controls.TextBox debug_textbox;
-
-
+        
         public Controls.Label l_fps;
         public Controls.Label l_Frame_time;
         public Controls.Label l_Visible_objects_count;
@@ -49,6 +48,7 @@ namespace PhysX_test2.UserInterface
             out_str += "            \'I\'  - force marine to drop gun\n";
             out_str += "            \'~\'  - toggle event console\n";
             out_str += "\'Left Ctrl + ~\'  - console writing\n";
+            out_str += "           \'Tab'  - switch camera mode\n";
 
             Vector2 poss = Content.Fonts._font1.MeasureString("  Recalulcalated objects count:  ");
             l_panel = new Controls.UserControl();

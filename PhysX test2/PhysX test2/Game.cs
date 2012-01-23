@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PhysX_test2.Content;
+using PhysX_test2.Engine.CameraControllers;
 using PhysX_test2.Engine;
 using StillDesign.PhysX;
 using Ray = Microsoft.Xna.Framework.Ray;
@@ -79,6 +80,7 @@ namespace PhysX_test2
             _hotkeys.Add(new HotKey(new Keys[] { Keys.OemTilde }, SwitchConsoleView));
             _hotkeys.Add(new HotKey(new Keys[] { Keys.Escape }, ShowMainMenu));
             _hotkeys.Add(new HotKey(new Keys[] { Keys.LeftControl, Keys.OemTilde }, SwitchConsoleEditMode));
+            _hotkeys.Add(new HotKey(new Keys[] { Keys.Tab }, SwitchCameraMode));
 
             KeyboardManager.Manager.AddKeyboardUser(this);
 
@@ -247,6 +249,17 @@ namespace PhysX_test2
         {
             showConsole = true;
             KeyboardManager.Manager.Capture(((UserInterface.GameInterface)_engine.UI).debug_textbox);
+        }
+
+        public void SwitchCameraMode()
+        {
+            if (CameraManager.__targetCharacter == null)
+            {
+                CameraManager.__targetCharacter = _MAINGAME._characters["player"]._hisObject._levelObject;
+                _MAINGAME._characters["player"]._hisInput.Enabled = true;
+            }
+            else
+                CameraManager.__targetCharacter = null;
         }
 
         public bool IsKeyboardCaptured { set { } get { return false; } }

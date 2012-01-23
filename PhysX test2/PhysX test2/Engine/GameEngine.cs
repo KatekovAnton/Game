@@ -87,7 +87,7 @@ namespace PhysX_test2.Engine
             _hotkeys = new List<HotKey>();
             _hotkeys.Add(new HotKey(new Keys[] { Keys.O }, SwichDebugRender));
             _hotkeys.Add(new HotKey(new Keys[] { Keys.P }, SwichBehaviourModel));
-
+            
             KeyboardManager.Manager.AddKeyboardUser(this);
 
             game._engine = this;

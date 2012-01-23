@@ -14,26 +14,14 @@ namespace PhysX_test2.Engine.CameraControllers
         
         public static Camera Camera;
         //controllers for camera and character (objects between user and game)
-        public static  CameraControllers.CameraControllerPerson _cameraController;
-        public static  CameraControllers.FreeCamera _cameraControllerFree;
+        public static  CameraControllers.CameraControllerSuperClass _cameraController;
+        //public static  CameraControllers.FreeCamera _cameraControllerFree;
 
 
         static public void Update()
         {
-            switch (cam_mode)
-            {
-                case CameraControllers.CameraMode.Character:
-                    _cameraController.UpdateCamerafromUser(MyGame.Instance._mousepoint);
-                    _cameraController.UpdateCamera();
-                    break;
-                case CameraControllers.CameraMode.Free: 
-                    _cameraControllerFree.UpdateCamerafromUser(MyGame.Instance._mousepoint);
-                    _cameraControllerFree.UpdateCamera();
-                    break;
-                default: break;
-            }
-            
-            
+            _cameraController.UpdateCamerafromUser(MyGame.Instance._mousepoint);
+            _cameraController.UpdateCamera();
         }
 
         public static void Init()
@@ -41,10 +29,20 @@ namespace PhysX_test2.Engine.CameraControllers
             Camera = new Camera(MyGame.Instance._engine);
         }
 
-        public static void CreateCharCameraController(LevelObject __targetCharacter)
+   
+        private static LevelObject _targetCharacter;
+        public static  LevelObject __targetCharacter
         {
-            _cameraController = new CameraControllerPerson(Camera, __targetCharacter, new Vector3(-10, 10, 0));
-            CameraMode = CameraControllers.CameraMode.Character;
+            set
+            {
+                _targetCharacter = value;
+                if (value == null)
+                    CameraMode = CameraControllers.CameraMode.Free;
+                else 
+                CameraMode = CameraControllers.CameraMode.Character;
+            }
+
+            get { return _targetCharacter; }
         }
 
         static private CameraMode cam_mode = CameraControllers.CameraMode.Character;
@@ -54,9 +52,13 @@ namespace PhysX_test2.Engine.CameraControllers
             {
                 switch (value)
                 {
-                    case CameraControllers.CameraMode.Character: break;
+                    case CameraControllers.CameraMode.Character:
+                            _cameraController = new CameraControllerPerson(Camera, _targetCharacter, new Vector3(-10,10,0));
+                        break;
                     case CameraControllers.CameraMode.Free:
-                        if (_cameraControllerFree == null) _cameraControllerFree = new FreeCamera(Camera, _cameraController._currendPosition, Camera._direction);
+                        _targetCharacter = null;
+                        MyGame.Instance._MAINGAME._characters["player"]._hisInput.Enabled = false;
+                        _cameraController = new FreeCamera(Camera, Camera._position, Camera._direction);
                         break;
                     default: break;
                 }
