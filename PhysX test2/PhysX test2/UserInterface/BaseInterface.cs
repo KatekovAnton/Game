@@ -67,9 +67,7 @@ namespace PhysX_test2.UserInterface
             l_panel.Add(l_Character_angle);
 
             Add(l_panel);
-            Add(Controls.CreateLabel(GColors.CForeColor,  Vector2.Zero, Content.Fonts._font1, Config.Instance["_use_static_labels"],out_str));
-
-           // Add(Controls.CreateLabel(GColors.CForeColor, out_str, new Vector2(5, 5), Content.Fonts._font1, false));
+            Add(Controls.CreateLabel(GColors.CForeColor, Vector2.Zero, Content.Fonts._font1, Config.Instance["_use_static_labels"] && !Config.Instance["_ultraLowRender"], out_str));
         }
 
         public void onDebugTextboxEnter()
