@@ -59,7 +59,7 @@ namespace PhysX_test2
         public SpriteBatch _spriteBatch;
 
 
-        private string _helpHint = "\'Escape\' to Show MainMenu\n\'O\' to swich debug render\n\'P\' to toggle physic model of box\n\'I\' to force marine to drop gun\n\'~\' to toggle event console\n\'Left Ctrl + ~\' to console writing";
+       // private string _helpHint = "\'Escape\' to Show MainMenu\n\'O\' to swich debug render\n\'P\' to toggle physic model of box\n\'I\' to force marine to drop gun\n\'~\' to toggle event console\n\'Left Ctrl + ~\' to console writing";
 
 
         public static ScreenLog ScreenLog;
@@ -200,13 +200,15 @@ namespace PhysX_test2
             if (_engine.BoxScreenPosition.Z < 1.0)
                 _spriteBatch.DrawString(PhysX_test2.Content.Fonts._font1, "Box position = " + _engine.LevelObjectBox.behaviourmodel.GetGlobalPose().Translation.ToString(), new Vector2(_engine.BoxScreenPosition.X, _engine.BoxScreenPosition.Y), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);
 
-
+           
+    /*
             _spriteBatch.DrawString(Fonts._font1, string.Format("FPS: {0} Frame time: {1}", _engine.FPSCounter.FramesPerSecond, _engine.FPSCounter.FrameTime), Vector2.Zero, Color.Black);
             _spriteBatch.DrawString(Fonts._font1, "Visible objects count: " + _engine.visibleobjectscount.ToString(), new Vector2(0, 15), Color.Black);
             _spriteBatch.DrawString(Fonts._font1, "Recalulcalated objects count: " + _engine.gameScene._sceneGraph.recalulcalated().ToString(), new Vector2(0, 30), Color.Black);
             _spriteBatch.DrawString(Fonts._font1, "Character angle: " + _engine.playerState.ToString(), new Vector2(0, 45), Color.Black);
             _spriteBatch.DrawString(Fonts._font1, _helpHint, new Vector2(0, 60), Color.Black);
-
+    */          
+            
 
             if (showConsole)
             {

@@ -284,7 +284,7 @@ namespace PhysX_test2.UserInterface
            }
        }
 
-       public static Control CreateTextBox(string init_text, Vector2 position, Vector2 size, List<HotKey> _hotkeys, SpriteFont Font)
+       public static TextBox CreateTextBox(string init_text, Vector2 position, Vector2 size, List<HotKey> _hotkeys, SpriteFont Font)
        {
            
            TextBox tb = new TextBox(init_text, position, size, _hotkeys, Font);
@@ -293,9 +293,8 @@ namespace PhysX_test2.UserInterface
        }
 
 
-       public static Control CreateLabel(Color color, string init_text, Vector2 position, SpriteFont Font, bool Static = true)
+       public static Control CreateLabel(Color color, Vector2 position, SpriteFont Font, bool Static = false, string init_text = "")
        {
-
            if (!Static)
            {
                Label label = new Label(color, init_text, position, Font);
@@ -304,7 +303,7 @@ namespace PhysX_test2.UserInterface
            else
            {
               Vector2 size = Font.MeasureString(init_text);
-               Image label = new Image(position, new Label(color, init_text, position, Font), new RT((int)size.X, (int)size.Y, "label"));
+               Image label = new Image(position, new Label(color, init_text, position, Font), new RT((int)size.X, (int)size.Y, Color.FromNonPremultiplied(0,0,0,0), "label"));
                return label;
            }
 
@@ -320,6 +319,7 @@ namespace PhysX_test2.UserInterface
 
            public Image(Vector2 position, Control cc, RT tr)
            {
+               rt = tr;
                cc.Position = Vector2.Zero;
                this.Position = position;
                this.Color = Color.White;

@@ -130,14 +130,14 @@ namespace PhysX_test2.UserInterface
         public string name;
 
         public RT(int width, int heigth, string name)
-            : base(Program.game.GraphicsDevice, width, heigth, false, SurfaceFormat.Alpha8, DepthFormat.Depth16, 0, RenderTargetUsage.DiscardContents)
+            : base(Program.game.GraphicsDevice, width, heigth, false, SurfaceFormat.Alpha8, DepthFormat.Depth16, 0, RenderTargetUsage.PlatformContents)
         {
             Origin = new Vector2(width / 2, heigth / 2); Resource_count++;
             this.name = name;
         }
 
         public RT(int width, int heigth, Color color, string name)
-            : base(Program.game.GraphicsDevice, width, heigth, false, SurfaceFormat.Alpha8, DepthFormat.Depth16, 0, RenderTargetUsage.DiscardContents)
+            : base(Program.game.GraphicsDevice, width, heigth, false, SurfaceFormat.Alpha8, DepthFormat.Depth16, 0, RenderTargetUsage.PlatformContents)
         {
             if (Config.Instance["_ultraLowRender"])
             { 
