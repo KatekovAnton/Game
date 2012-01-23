@@ -56,7 +56,9 @@ namespace PhysX_test2.Engine.CameraControllers
             _zAngle += angle;
 
             Matrix resMatr;
+
             Vector3 vectX = Extensions.VectorForCharacterMoving(Extensions.Route.Left, _yAngle);
+
             vectX.Normalize();
             Matrix.CreateFromAxisAngle(ref vectX, angle, out resMatr);
 
@@ -86,7 +88,7 @@ namespace PhysX_test2.Engine.CameraControllers
 
 
         public Vector3 _lastTargetPoint;
-        public void UpdateCamerafromUser(Vector3 _targetPoint)
+        public override void UpdateCamerafromUser(Vector3 _targetPoint)
         {
 
             Vector3 delta = _lastTargetPoint - _targetPoint;
