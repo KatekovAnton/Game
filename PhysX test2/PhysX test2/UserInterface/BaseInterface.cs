@@ -67,10 +67,9 @@ namespace PhysX_test2.UserInterface
             l_panel.Add(l_Character_angle);
 
             Vector2 size = Content.Fonts._font1.MeasureString(out_str);
-                       
 
-            if (!Config.Instance["_ultraLowRender"])
-            {
+            if (Config.Instance["_ultraLowRender"]) size = new Vector2(502, 246); 
+            
                 Controls.Image img = new Controls.Image(Vector2.Zero, GColors.CTextBack, new RT((int)size.X + 10, (int)size.Y + 10, Color.White, "sss"));
                 Controls.UserControl uc = new Controls.UserControl();
                 uc.Add(img);
@@ -78,12 +77,7 @@ namespace PhysX_test2.UserInterface
                 Controls.Image img2 = new Controls.Image(Vector2.Zero, uc, new RT((int)size.X + 10, (int)size.Y + 10, GColors.CZero, "sss"));
 
                 Add(img2);
-            }
-            else
-            {
-                Add(Controls.CreateLabel(GColors.CText, new Vector2(5, 5), Content.Fonts._font1, Config.Instance["_use_static_labels"], out_str));
-            }
-
+            
             Add(l_panel);
 
         }

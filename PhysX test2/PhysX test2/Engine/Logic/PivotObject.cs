@@ -178,9 +178,9 @@ namespace PhysX_test2.Engine.Logic
         public void Update()
         {
             if (_isBillboard)
-                transform = Matrix.CreateBillboard(behaviourmodel.globalpose.Translation, MyGame.Instance._engine.Camera._position, Vector3.Up, MyGame.Instance._engine.Camera._direction);
+                transform = Matrix.CreateBillboard(behaviourmodel.globalpose.Translation, CameraControllers.CameraManager.Camera._position, Vector3.Up, CameraControllers.CameraManager.Camera._direction);
             else if (_isBillboardCostrained)
-                transform = Matrix.CreateConstrainedBillboard(behaviourmodel.globalpose.Translation, MyGame.Instance._engine.Camera._position, _objectConstrAxis, MyGame.Instance._engine.Camera._direction, _objectConstrForward);
+                transform = Matrix.CreateConstrainedBillboard(behaviourmodel.globalpose.Translation, CameraControllers.CameraManager.Camera._position, _objectConstrAxis, CameraControllers.CameraManager.Camera._direction, _objectConstrForward);
             else
                 transform = behaviourmodel.globalpose;
 

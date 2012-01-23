@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using PhysX_test2.Engine.CameraControllers;
 using PhysX_test2.Engine;
 
 using PhysX_test2.TheGame.Objects;
@@ -92,7 +92,8 @@ namespace PhysX_test2.TheGame
             me.SetGun(myGun);
             
             _characters.Add(_playerCharacterKey, me);
-            _engine.CreateCharCameraController(me._hisObject._levelObject);
+
+            CameraManager.CreateCharCameraController(me._hisObject._levelObject);
 
 
             CharacterLogicController _anotherChar = CharacterLogicController.CreateCharacter("2", _level, true);
