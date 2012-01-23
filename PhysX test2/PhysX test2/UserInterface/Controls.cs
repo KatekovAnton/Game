@@ -354,7 +354,7 @@ namespace PhysX_test2.UserInterface
 
            public override void Draw()
            {
-               Program.game._spriteBatch.Draw(rt, Position, Color);
+               Program.game._spriteBatch.Draw(rt, Position, null, Color, 0,Vector2.Zero, 1,SpriteEffects.None, 0 );
            }
        }
 

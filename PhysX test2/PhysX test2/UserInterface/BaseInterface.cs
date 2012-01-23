@@ -68,13 +68,23 @@ namespace PhysX_test2.UserInterface
 
             Vector2 size = Content.Fonts._font1.MeasureString(out_str);
 
-            Controls.Image img = new Controls.Image(Vector2.Zero, GColors.CTextBack, new RT((int)size.X+10, (int)size.Y+10, Color.White, "sss"));
-            Controls.UserControl uc = new Controls.UserControl();
-            uc.Add(img);
-            uc.Add(Controls.CreateLabel(GColors.CText, new Vector2(5,5), Content.Fonts._font1, Config.Instance["_use_static_labels"] && !Config.Instance["_ultraLowRender"], out_str));
-            Controls.Image img2 = new Controls.Image(Vector2.Zero, uc, new RT((int)size.X + 10, (int)size.Y + 10, GColors.CZero, "sss"));
+            
 
-            Add(img2);
+            if (!Config.Instance["_ultraLowRender"])
+            {
+                Controls.Image img = new Controls.Image(Vector2.Zero, GColors.CTextBack, new RT((int)size.X + 10, (int)size.Y + 10, Color.White, "sss"));
+                Controls.UserControl uc = new Controls.UserControl();
+                uc.Add(img);
+                uc.Add(Controls.CreateLabel(GColors.CText, new Vector2(5, 5), Content.Fonts._font1, Config.Instance["_use_static_labels"] && !Config.Instance["_ultraLowRender"], out_str));
+                Controls.Image img2 = new Controls.Image(Vector2.Zero, uc, new RT((int)size.X + 10, (int)size.Y + 10, GColors.CZero, "sss"));
+
+                Add(img2);
+            }
+            else
+            {
+                Add(Controls.CreateLabel(GColors.CText, new Vector2(5, 5), Content.Fonts._font1, Config.Instance["_use_static_labels"] && !Config.Instance["_ultraLowRender"], out_str));
+            }
+
             Add(l_panel);
 
         }
