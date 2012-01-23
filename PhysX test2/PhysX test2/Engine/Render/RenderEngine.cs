@@ -381,8 +381,8 @@ namespace PhysX_test2.Engine.Render
             Render.Materials.Material.ObjectRenderEffect.Parameters["LightDirection"].SetValue(lightDir);
             Render.Materials.Material.ObjectRenderEffect.Parameters["LightViewProj"].SetValue(lightViewProjection);
 
-            RenderArrayWithTehnique(Shader.CreateStaticShadowMap, 2);
-            RenderArrayWithTehnique(Shader.CreateAnimShadowMap, 2);
+            RenderShadowArrayWithTehnique(Shader.CreateStaticShadowMap);
+            RenderShadowArrayWithTehnique(Shader.CreateAnimShadowMap);
             _device.SetRenderTarget(null);
         }
         
@@ -396,7 +396,9 @@ namespace PhysX_test2.Engine.Render
             
             _device.SamplerStates[0] = SamplerState.LinearWrap;
             if (_device.GraphicsProfile == GraphicsProfile.Reach)
+            {
                 _device.SamplerStates[1] = SamplerState.PointClamp;
+            }
             else
                 _device.SamplerStates[1] = SamplerState.PointWrap;
             if (EnableShadows)
@@ -490,6 +492,20 @@ namespace PhysX_test2.Engine.Render
                 {
                     Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.renderMatrix);
                     wo.HaveRenderAspect().SelfRender(lodnumber, wo.HaveMaterial());
+                }
+            }
+        }
+
+        public void RenderShadowArrayWithTehnique(string name, int lodnumber = 2)
+        {
+            MyContainer<PivotObject> Objects = ArraysPerTehnique[name].Objects;
+            if (!Objects.IsEmpty)
+            {
+                Materials.Material.ObjectRenderEffect.CurrentTechnique = Materials.Material.ObjectRenderEffect.Techniques[name];
+                foreach (PivotObject wo in Objects)
+                {
+                    Render.Materials.Material.ObjectRenderEffect.Parameters["World"].SetValue(wo.renderMatrix);
+                    wo.HaveRenderAspect().SelfRender(lodnumber);
                 }
             }
         }

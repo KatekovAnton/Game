@@ -305,7 +305,10 @@
     <Compile Include="TheGame\StaticObjects.cs" />
     <Compile Include="TheGame\TheGame.cs" />
     <Compile Include="UserInterface\BaseInterface.cs" />
+    <Compile Include="UserInterface\Textures\CashedTexture2D.cs" />
     <Compile Include="UserInterface\Controls.cs" />
+    <Compile Include="UserInterface\Textures\ExternalTexture.cs" />
+    <Compile Include="UserInterface\Textures\PackTexture.cs" />
     <Compile Include="UserInterface\UIContent.cs" />
   </ItemGroup>
   <ItemGroup>
