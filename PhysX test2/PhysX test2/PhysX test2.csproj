@@ -200,6 +200,7 @@
     <Compile Include="Engine\Animation\Skeleton.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerPerson.cs" />
     <Compile Include="Engine\CameraControllers\CameraControllerSuperClass.cs" />
+    <Compile Include="Engine\CameraControllers\CameraManager.cs" />
     <Compile Include="Engine\CameraControllers\FreeCamera.cs" />
     <Compile Include="Engine\ContentLoader\ContentLoader.cs" />
     <Compile Include="Engine\ContentLoader\NewContentLoader.cs" />

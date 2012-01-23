@@ -196,7 +196,7 @@ namespace PhysX_test2.Engine.Logic
             Matrix[] data = new Matrix[_particles.Count];
             if (_isBillboards)
                 for (int i = 0; i < _particles.Count; i++)
-                    data[i] = Matrix.CreateBillboard(_particles[i]._position, MyGame.Instance._engine.Camera._position, Vector3.Up, MyGame.Instance._engine.Camera._direction);
+                    data[i] = Matrix.CreateBillboard(_particles[i]._position, CameraControllers.CameraManager.Camera._position, Vector3.Up, CameraControllers.CameraManager.Camera._direction);
             else
                 for (int i = 0; i < _particles.Count; i++)
                     data[i] = Matrix.CreateTranslation(_particles[i]._position);
@@ -254,8 +254,8 @@ namespace PhysX_test2.Engine.Logic
     {
         public int Compare(ParticleData x, ParticleData y)
         {
-            float l1 = (x._position - MyGame.Instance._engine.Camera._position).LengthSquared();
-            float l2 = (y._position - MyGame.Instance._engine.Camera._position).LengthSquared();
+            float l1 = (x._position - CameraControllers.CameraManager.Camera._position).LengthSquared();
+            float l2 = (y._position - CameraControllers.CameraManager.Camera._position).LengthSquared();
             if (l1 == l2)
                 return 0;
             if (l1 < l2)

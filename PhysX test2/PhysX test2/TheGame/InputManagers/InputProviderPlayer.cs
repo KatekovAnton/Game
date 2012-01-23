@@ -5,6 +5,9 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+
+using PhysX_test2.Engine.CameraControllers;
+
 namespace PhysX_test2.TheGame.InputManagers
 {
     public class InputProviderPlayer : InputProviderSuperClass, IAllKeys, IKeyboardUser
@@ -53,7 +56,7 @@ namespace PhysX_test2.TheGame.InputManagers
             {
                 _target = MyGame.Instance._mousepoint;
                 _angle = CreateAngleForCharacter(_target, __position);
-                float yaang = MyGame.Instance._engine._cameraController._yAngle;
+                float yaang = CameraManager._cameraController._yAngle;
                 _moveVector = Vector3.Zero;
                 _viewVector = __position - _target;
 
@@ -92,7 +95,7 @@ namespace PhysX_test2.TheGame.InputManagers
                 _oldInputState = _newInputState;
                 if (_moveVector != Vector3.Zero)
                 {
-                    MyGame.Instance._engine.cameraneedsupdate = true;
+                  //  MyGame.Instance._engine.cameraneedsupdate = true;
                     _newInputState = calculateCurrentState(_moveVector, _viewVector);
                 }
                 else

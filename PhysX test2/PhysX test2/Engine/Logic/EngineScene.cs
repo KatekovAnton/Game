@@ -188,7 +188,7 @@ namespace PhysX_test2.Engine.Logic
 
         public void CalculateVisibleObjects()
         {
-            _sceneGraph.calculateVisibleObjects(GameEngine.Instance.Camera.cameraFrustum, _visibleObjects);
+            _sceneGraph.calculateVisibleObjects(CameraControllers.CameraManager.Camera.cameraFrustum, _visibleObjects);
             _sceneGraph.calculateShadowVisibleObjects(GameEngine.Instance.GraphicPipeleine.frustumForShadow, _shadowObjects);
         }
         private MyContainer<PivotObject> _intersectedObjects = new MyContainer<PivotObject>();

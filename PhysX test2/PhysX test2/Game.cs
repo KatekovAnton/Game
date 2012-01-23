@@ -168,7 +168,7 @@ namespace PhysX_test2
 
         private void HandleKeyboard(KeyboardState keyboardState)
         {
-            ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), _engine.Camera.View, _engine.Camera.Projection);
+            ray = Extensions.FromScreenPoint(GraphicsDevice.Viewport, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), PhysX_test2.Engine.CameraControllers.CameraManager.Camera.View, PhysX_test2.Engine.CameraControllers.CameraManager.Camera.Projection);
         }
         
         protected override void Update(GameTime gameTime)
@@ -199,7 +199,7 @@ namespace PhysX_test2
 
         public void drawstring()
         {
-            _outputstring = _engine.Camera.View.Translation.ToString() + '\n' + _engine.Camera.View.Up.ToString();
+            _outputstring = PhysX_test2.Engine.CameraControllers.CameraManager.Camera.View.Translation.ToString() + '\n' + PhysX_test2.Engine.CameraControllers.CameraManager.Camera.View.Up.ToString();
             _spriteBatch.Begin();
             if (_engine.BoxScreenPosition.Z < 1.0)
                 _spriteBatch.DrawString(PhysX_test2.Content.Fonts._font1, "Box position = " + _engine.LevelObjectBox.behaviourmodel.GetGlobalPose().Translation.ToString(), new Vector2(_engine.BoxScreenPosition.X, _engine.BoxScreenPosition.Y), Color.Black, 0, new Vector2(), 1.0f, SpriteEffects.None, 0.5f);

@@ -27,8 +27,7 @@ namespace PhysX_test2.Engine
       //  public bool AllKeys { get { return false; } }
 
 
-        //engine camera and engine render
-        public Camera Camera;
+        //engine render
         public RenderPipeline GraphicPipeleine;
 
         
@@ -64,9 +63,7 @@ namespace PhysX_test2.Engine
         public Actor groundplane;
 
 
-        //controllers for camera and character (objects between user and game)
-        public CameraControllers.CameraControllerPerson _cameraController;
-        public CameraControllers.FreeCamera _cameraControllerFree;
+      
 
         //animation
         public Engine.AnimationManager.AnimationManager animationManager;
@@ -79,7 +76,7 @@ namespace PhysX_test2.Engine
 
 
         private List<HotKey> _hotkeys;
-        public bool cameraneedsupdate = true;
+       // public bool cameraneedsupdate = true;
         public bool GlobalUser { set { } get { return true; } }
 
         public UserInterface.Controls.ISomeInterface UI;  //UI is the part of engine, but it most created first by GAME class
@@ -128,7 +125,7 @@ namespace PhysX_test2.Engine
         public void Initalize() 
         {
             FPSCounter = new FpsCounter();
-            Camera = new Camera(this);
+            
             spriteBatch = new SpriteBatch(MyGame.DeviceManager.GraphicsDevice);
             
             //аниматор
@@ -142,18 +139,19 @@ namespace PhysX_test2.Engine
             */
             PhysX_test2.Engine.Render.Materials.Material.ObjectRenderEffect = Shader.Load(MyGame.Instance.Content);
 
+            //камера
+            CameraManager.Init();
+
             //рендерщик
-            GraphicPipeleine = new RenderPipeline(MyGame.DeviceManager.GraphicsDevice, Camera);
+            GraphicPipeleine = new RenderPipeline(MyGame.DeviceManager.GraphicsDevice, CameraManager.Camera);
 
-
+            
         }
 
         public void AfterLoading()
         {
             // обработка камеры
-            _cameraController.UpdateCamerafromUser(MyGame.Instance._mousepoint);
-            _cameraController.UpdateCamera();
-
+            CameraManager.Update();
 
             UI.Init();
         }
@@ -293,11 +291,7 @@ namespace PhysX_test2.Engine
             gameScene.RemoveObject(__object);
         }
 
-        public void CreateCharCameraController(LevelObject __targetCharacter)
-        {
-            _cameraController = new CameraControllerPerson(Camera, __targetCharacter, new Vector3(-10, 10, 0));
-            cameraneedsupdate = true;
-        }
+        
 
         public void SwichBehaviourModel()
         {
@@ -344,10 +338,9 @@ namespace PhysX_test2.Engine
             SearchClickedObject();
           //  if (MouseManager.Manager.moved || cameraneedsupdate || MouseManager.Manager.scrollWheelDelta != 0)
            // {
-                cameraneedsupdate = false;
+              //  cameraneedsupdate = false;
                 // обработка камеры
-                _cameraController.UpdateCamerafromUser(MyGame.Instance._mousepoint);
-                _cameraController.UpdateCamera();
+                CameraManager.Update();
            // }
 
                 UI.Update();
@@ -360,7 +353,7 @@ namespace PhysX_test2.Engine
             Vector3 newpoint = MyGame.Instance._mousepoint;
             float distance = 10000;
 
-            Vector3 camerapos = MyGame.Instance. ray.Position;
+            Vector3 camerapos = MyGame.Instance.ray.Position;
             foreach (Engine.Logic.PivotObject lo in this.gameScene._visibleObjects)
             {
                 if (!lo._needMouseCast)
@@ -391,7 +384,7 @@ namespace PhysX_test2.Engine
             gameScene.CalculateVisibleObjects();
             gameScene.AfterUpdate();
 
-            Vector3 v1 = MyGame.DeviceManager.GraphicsDevice.Viewport.Project(LevelObjectBox.transform.Translation, Camera.Projection, Camera.View, Matrix.Identity);
+            Vector3 v1 = MyGame.DeviceManager.GraphicsDevice.Viewport.Project(LevelObjectBox.transform.Translation, CameraManager.Camera.Projection, CameraManager.Camera.View, Matrix.Identity);
             BoxScreenPosition = new Vector3(Convert.ToSingle(Convert.ToInt32(v1.X)), Convert.ToSingle(Convert.ToInt32(v1.Y)), v1.Z);
 
             //добавляем все нобходимые объекты на отрисовку
@@ -407,7 +400,7 @@ namespace PhysX_test2.Engine
 
         public void Draw() {
             //основной рендер. будет потом в колор рендертаргет. Внутри- дефферед шэйдинг и вся хрень
-            GraphicPipeleine.RenderToPicture(Camera, lightDir);
+            GraphicPipeleine.RenderToPicture(CameraManager.Camera, lightDir);
 
 
            // Program.game._spriteBatch.Begin(SpriteSortMode.Texture,BlendState.NonPremultiplied,SamplerState.AnisotropicClamp,DepthStencilState.None,RasterizerState.CullNone);
