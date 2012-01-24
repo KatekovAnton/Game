@@ -86,7 +86,7 @@ namespace PhysX_test2.TheGame.Level
             if (loNew.renderaspect.isanimated)
             {
                 Engine.Render.AnimRenderObject ro = loNew.renderaspect as Engine.Render.AnimRenderObject;
-                Engine.AnimationManager.AnimationManager.Manager.AddAnimationUser(ro.Update, ro.character);
+                Engine.AnimationManager.AnimationManager.Manager.AddAnimationUser(ro);
             }
 
             _scene.AddObject(loNew);

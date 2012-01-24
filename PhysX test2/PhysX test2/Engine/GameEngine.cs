@@ -264,7 +264,7 @@ namespace PhysX_test2.Engine
             if (loNew.renderaspect.isanimated)
             {
                 Render.AnimRenderObject ro = loNew.renderaspect as Render.AnimRenderObject;
-                AnimationManager.AnimationManager.Manager.AddAnimationUserEnd(ro.Update, ro.character);
+                AnimationManager.AnimationManager.Manager.AddAnimationUserEnd(ro);
             }
 
             gameScene.AddObject(__object);
@@ -285,13 +285,11 @@ namespace PhysX_test2.Engine
             if (loNew.renderaspect.isanimated)
             {
                 Render.AnimRenderObject ro = loNew.renderaspect as Render.AnimRenderObject;
-                AnimationManager.AnimationManager.Manager.RemoveUser(ro.character);
+                AnimationManager.AnimationManager.Manager.RemoveUser(ro);
             }
 
             gameScene.RemoveObject(__object);
         }
-
-        
 
         public void SwichBehaviourModel()
         {

@@ -44,6 +44,5 @@ namespace PhysX_test2.Engine.Render.Materials
         {
             return false;
         }
-
     }
 }
