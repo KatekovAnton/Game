@@ -18,13 +18,6 @@ namespace PhysX_test2.Engine.CameraControllers
             _cameraPitch = cam.CameraPitch;
         }
 
-        public FreeCamera(Camera cam, Vector3 pos,  Vector3 dir) :
-            base(cam, pos, dir)
-        {
-            _cameraYaw = cam.CameraYaw;
-            _cameraPitch = cam.CameraPitch;
-        }
-
         public override void UpdateCamera()
         {
             base.UpdateCamera();
