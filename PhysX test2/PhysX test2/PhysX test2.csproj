@@ -208,7 +208,6 @@
     <Compile Include="Engine\Helpers\ScreenLog.cs" />
     <Compile Include="Engine\Logic\ParticleObject.cs" />
     <Compile Include="Engine\ObjectCashe.cs" />
-    <Compile Include="Engine\Render\Materials\OpacityMaterial.cs" />
     <Compile Include="Engine\Render\ParticleRenderObject.cs" />
     <Compile Include="GColors.cs" />
     <Compile Include="Scripting\SE.cs" />

@@ -29,7 +29,6 @@ namespace PhysX_test2.Engine.Render.Materials
         public DiffuseMaterial(Lod[] _lodmats)
         {
             lodmats = _lodmats;
-            type = MaterialType.Diffuse;
         }
 
         public override void Apply(int lod, int subset)
