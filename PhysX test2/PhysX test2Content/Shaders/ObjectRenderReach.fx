@@ -12,8 +12,6 @@ uniform extern float4x4 Frame[28];
 const float4 mask = float4(1.0/255.0,1.0/255.0,1.0/255.0,0.0);
 const float4 decode_mask = float4(1.0f, 1.0/255.0, 1.0/65025.0, 1.0/16581375.0);
 
-
-
 inline float4 FloatToFloat4( float v )
 {
     float4 enc = float4(1.0, 255.0, 65025.0, 16581375.0) * v;
