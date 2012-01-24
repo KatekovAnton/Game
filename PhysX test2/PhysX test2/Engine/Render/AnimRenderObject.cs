@@ -9,7 +9,7 @@ using PhysX_test2.Engine.Render.Materials;
 
 namespace PhysX_test2.Engine.Render
 {
-    public class AnimRenderObject : RenderObject
+    public class AnimRenderObject : RenderObject,AnimationManager.AnimationUser
     {
         public CharacterController character;
 

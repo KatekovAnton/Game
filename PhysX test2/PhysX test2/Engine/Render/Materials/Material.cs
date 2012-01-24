@@ -7,16 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PhysX_test2.Engine.Render.Materials
 {
-    public enum MaterialType
-    {
-        Diffuse,
-        OpacityDiffuse
-    }
 
     public abstract class Material:ContentNew.IPackEngineObject
     {
-        public MaterialType type;
-
         public string TehniqueName
         {
             get;
@@ -51,6 +44,5 @@ namespace PhysX_test2.Engine.Render.Materials
         {
             return false;
         }
-
     }
 }
