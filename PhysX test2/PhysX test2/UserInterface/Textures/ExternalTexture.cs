@@ -13,12 +13,14 @@ namespace PhysX_test2.UserInterface
         public ExternalTexture(string __name)
             : base(__name, MyGame.Instance.Content.Load<Texture2D>(__name))
         {
-            _isReleased = false;
+            IsReleased = false;
         }
 
         public override void Release()
         {
-            _isReleased = true;
+            if (IsReleased)
+                return;
+            IsReleased = true;
             _texture.Dispose();
         }
     }

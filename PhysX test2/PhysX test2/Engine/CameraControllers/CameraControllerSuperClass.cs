@@ -4,7 +4,7 @@ namespace PhysX_test2.Engine.CameraControllers
 {
     abstract public class CameraControllerSuperClass
     {
-        private Camera _camera;
+        protected Camera _camera;
         public Vector3 _currendPosition;
         public Vector3 _currentTarget;
         public float _yAngle;
@@ -18,6 +18,14 @@ namespace PhysX_test2.Engine.CameraControllers
             _currendPosition = currentPos;
             _currentTarget = targetPosition;
             _camera.Update(_currendPosition , _currentTarget );
+        }
+
+        protected CameraControllerSuperClass(Camera cam)
+        {
+            _speedLimit = 50.0f;
+            _camera = cam;
+            _currendPosition = _camera._position;
+            _currentTarget = _camera._position + _camera._direction;
         }
 
         public virtual void UpdateCamera()

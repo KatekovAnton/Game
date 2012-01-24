@@ -13,13 +13,13 @@ namespace PhysX_test2.UserInterface
             :base(__texture.name, __texture.texture)
         {
             _packTexture = __texture;
-            _isReleased = false;
+            IsReleased = false;
         }
 
         public override void Release()
         {
             Engine.ContentLoader.ContentLoader.UnloadTexture(_packTexture);
-            _isReleased = true;
+            IsReleased = true;
         }
     }
 }

@@ -9,9 +9,17 @@ namespace PhysX_test2.Engine
     {
         public Matrix Projection;
         public Matrix View;
-   
-        private float _cameraPitch;
-        private float _cameraYaw;
+
+        public float CameraPitch
+        {
+            get;
+            private set;
+        }
+        public float CameraYaw
+        {
+            get;
+            private set;
+        }
         private GameEngine _engine;
 
         public BoundingFrustum cameraFrustum = new BoundingFrustum(Matrix.Identity);
@@ -34,11 +42,11 @@ namespace PhysX_test2.Engine
             
             float katet = -(cameratarget.Value.Y - cameraposition.Value.Y);
             float gipotenuza = (cameraposition.Value - cameratarget.Value).Length();
-            _cameraPitch = -MathHelper.PiOver2 + Convert.ToSingle(Math.Acos(Convert.ToDouble(katet / gipotenuza)));
+            CameraPitch = -MathHelper.PiOver2 + Convert.ToSingle(Math.Acos(Convert.ToDouble(katet / gipotenuza)));
             float determ = (cameratarget.Value.Z - cameraposition.Value.Z);
             if (determ == 0)
                 determ = 0.001f;
-            _cameraYaw = Convert.ToSingle(Math.Atan(Convert.ToSingle((cameratarget.Value.X - cameraposition.Value.X) / determ)));
+            CameraYaw = Convert.ToSingle(Math.Atan(Convert.ToSingle((cameratarget.Value.X - cameraposition.Value.X) / determ)));
             View = Matrix.CreateLookAt(cameraposition.Value, cameratarget.Value, new Vector3(0, 1, 0));
             Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, MyGame.Device.Viewport.AspectRatio, 1, 100);
             cameraFrustum.Matrix = View * Projection;
@@ -67,11 +75,11 @@ namespace PhysX_test2.Engine
             
             float katet = -(cameratarget.Y - cameraposition.Y);
             float gipotenuza = (cameraposition - cameratarget).Length();
-            this._cameraPitch = -MathHelper.PiOver2 + Convert.ToSingle(Math.Acos(Convert.ToDouble(katet / gipotenuza)));
+            this.CameraPitch = -MathHelper.PiOver2 + Convert.ToSingle(Math.Acos(Convert.ToDouble(katet / gipotenuza)));
             float determ = (cameratarget.Z - cameraposition.Z);
             if (determ == 0)
                 determ = 0.001f;
-            this._cameraYaw = Convert.ToSingle(Math.Atan(Convert.ToSingle((cameratarget.X - cameraposition.X) / determ)));
+            this.CameraYaw = Convert.ToSingle(Math.Atan(Convert.ToSingle((cameratarget.X - cameraposition.X) / determ)));
             this.View = Matrix.CreateLookAt(cameraposition, cameratarget, new Vector3(0, 1, 0));
             this.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, MyGame.Device.Viewport.AspectRatio, 1, 150);
             cameraFrustum.Matrix = View * Projection;
@@ -84,12 +92,6 @@ namespace PhysX_test2.Engine
             float distance = speed * elapsed;
             GameWindow window = MyGame.Instance.Window;
             cameraFrustum.Matrix = View * Projection;
-        }
-
-
-        public float CameraYaw()
-        {
-            return _cameraYaw;
         }
     }
 }

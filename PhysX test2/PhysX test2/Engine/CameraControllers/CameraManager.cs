@@ -58,7 +58,7 @@ namespace PhysX_test2.Engine.CameraControllers
                     case CameraControllers.CameraMode.Free:
                         _targetCharacter = null;
                         MyGame.Instance._MAINGAME._characters["player"]._hisInput.Enabled = false;
-                        _cameraController = new FreeCamera(Camera, Camera._position, Camera._direction);
+                        _cameraController = new FreeCamera(Camera);
                         break;
                     default: break;
                 }

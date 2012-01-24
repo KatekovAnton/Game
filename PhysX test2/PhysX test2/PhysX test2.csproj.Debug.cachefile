@@ -1,6 +1,4 @@
 Content\Courier New.xnb
-Content\Shaders\ObjectRenderReach.xnb
-Content\Shaders\ObjectRenderUltraLow.xnb
 Content\Scripts\EngineInit.py
 Content\ObjectRender.xnb
 Content\ObjectRenderHiDef.xnb

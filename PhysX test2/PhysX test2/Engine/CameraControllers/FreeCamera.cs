@@ -7,63 +7,80 @@ namespace PhysX_test2.Engine.CameraControllers
 {
     public class FreeCamera : CameraControllerSuperClass
     {
-        protected float cam_speed = 0.01f;
-        
+        private Vector2 lastmousepos;
+        private float _cameraYaw, _cameraPitch;
+
+
+        public FreeCamera(Camera cam) :
+            base(cam)
+        {
+            _cameraYaw = cam.CameraYaw;
+            _cameraPitch = cam.CameraPitch;
+        }
 
         public FreeCamera(Camera cam, Vector3 pos,  Vector3 dir) :
             base(cam, pos, dir)
         {
-            _currentTarget = pos + dir;
-            _tar = pos + dir;
-            _pos = pos;
-            cur_pos = new Point((int)MouseManager.Manager.state.X, (int)MouseManager.Manager.state.Y);
+            _cameraYaw = cam.CameraYaw;
+            _cameraPitch = cam.CameraPitch;
         }
-        Point cur_pos;
-        bool pass = false;
+
         public override void UpdateCamera()
         {
             base.UpdateCamera();
         }
-        Vector3 an;
-        public void Update(bool w, bool a, bool s, bool d)
+
+        public void Update(bool w, bool a, bool s, bool d, bool shift)
         {
-            if (!pass)
+            const float speed = 40.0f;
+            float distance = speed * (float)MyGame.UpdateTime.ElapsedGameTime.TotalSeconds;
+
+
+            var cursorPosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
+            Vector2 delta = cursorPosition - lastmousepos;
+            Vector3 forward = Matrix.Invert(_camera.View).Forward;
+            Vector3 position = Matrix.Invert(_camera.View).Translation;
+
+            Matrix cameraRotation = Matrix.CreateFromYawPitchRoll(_cameraYaw, _cameraPitch, 0.0f);
+
+            Vector3 newForward = Vector3.TransformNormal(Vector3.Forward, cameraRotation);
+
+            if (shift)
             {
-                float _ax = an.X - MouseManager.Manager.d_mouse.X / 100;
-                float _ay = an.Y - MouseManager.Manager.d_mouse.Y / 100;
+                Vector2 deltaDampened = delta * 0.0015f;
 
-                //if (_ay < 0 && _ay > -MathHelper.Pi) 
-                an.Y = _ay;
-                an.X = _ax;
+                _cameraYaw -= deltaDampened.X;
+                _cameraPitch -= deltaDampened.Y;
 
-                float cax = (float)(Math.Cos(an.X));
-                float sax = (float)(Math.Sin(an.X));
-                float cay = (float)(Math.Cos(an.Y));
-                float say = (float)(Math.Sin(an.Y));
-
-                Vector3 move = cam_speed *
-                    new Vector3(
-                        (w ? sax : s ? -sax : 0) + (a ? cax : 0) + (d ? -cax : 0),
-                        (w ? an.Y : s ? -an.Y : 0),
-                        (w ? cax : s ? -cax : 0) + (a ? -sax : 0) + (d ? sax : 0)
-                        );
-                if (move != Vector3.Zero)
-                {
-                    move.Normalize();
-                    ((UserInterface.GameInterface)MyGame.Instance._engine.UI).debug_textbox.Text = move.ToString();
-                    _pos += move;
-                }
-
-                _tar = _pos + new Vector3(sax, an.Y, cax);
-                Microsoft.Xna.Framework.Input.Mouse.SetPosition(cur_pos.X, cur_pos.Y);
+                cameraRotation = Matrix.CreateFromYawPitchRoll(_cameraYaw, _cameraPitch, 0.0f);
+                newForward = Vector3.TransformNormal(Vector3.Forward, cameraRotation);
             }
 
-           _currendPosition = MyMath.perehod_fps(_currendPosition, _pos, 0.9f);
-            _currentTarget = MyMath.perehod_fps(_currentTarget, _tar, 0.9f);
-            pass = !pass;
-        }
+            Vector3 translateDirection = Vector3.Zero;
 
-        Vector3 _pos, _tar;
+            if (w) // Forwards
+                translateDirection += Vector3.TransformNormal(Vector3.Forward, cameraRotation);
+
+            if (s) // Backwards
+                translateDirection += Vector3.TransformNormal(Vector3.Backward, cameraRotation);
+
+            if (a) // Left
+                translateDirection += Vector3.TransformNormal(Vector3.Left, cameraRotation);
+
+            if (d) // Right
+                translateDirection += Vector3.TransformNormal(Vector3.Right, cameraRotation);
+
+
+            Vector3 newPosition = position;
+            if (translateDirection.LengthSquared() > 0)
+                newPosition += Vector3.Normalize(translateDirection) * distance;
+
+            lastmousepos = cursorPosition;
+
+
+            _currentTarget = newPosition + newForward;
+            _currendPosition = newPosition;
+        }
 
         public override void UpdateCamerafromUser(Vector3 _targetPoint)
         {
@@ -71,7 +88,8 @@ namespace PhysX_test2.Engine.CameraControllers
             Update( KeyboardManager.currentState.IsKeyDown(Keys.W),
                     KeyboardManager.currentState.IsKeyDown(Keys.A), 
                     KeyboardManager.currentState.IsKeyDown(Keys.S),
-                    KeyboardManager.currentState.IsKeyDown(Keys.D));
+                    KeyboardManager.currentState.IsKeyDown(Keys.D),
+                    KeyboardManager.Shift);
 
             base.UpdateCamerafromUser(_targetPoint);
         }

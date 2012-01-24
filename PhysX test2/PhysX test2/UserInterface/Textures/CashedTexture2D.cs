@@ -13,7 +13,11 @@ namespace PhysX_test2.UserInterface
         public string _name;
         public Texture2D _texture;
 
-        public bool _isReleased;
+        public bool IsReleased
+        {
+            get;
+            protected set;
+        }
 
         public abstract void Release();
 
@@ -25,7 +29,7 @@ namespace PhysX_test2.UserInterface
 
         ~CashedTexture2D()
         {
-            if (!_isReleased)
+            if (!IsReleased)
                 Release();
         }
     }
