@@ -16,6 +16,7 @@ namespace PhysX_test2.UserInterface
         public Controls.Label l_Visible_objects_count;
         public Controls.Label l_Recalulcalated_objects_count;
         public Controls.Label l_Character_angle;
+        public Controls.Label l_Character_name;
 
         public Controls.UserControl l_panel;
 
@@ -65,6 +66,9 @@ namespace PhysX_test2.UserInterface
             l_panel.Add(l_Visible_objects_count);
             l_panel.Add(l_Recalulcalated_objects_count);
             l_panel.Add(l_Character_angle);
+
+            l_Character_name = (Controls.Label)Controls.CreateLabel(Microsoft.Xna.Framework.Color.Black, new Vector2(), Content.Fonts._font1);
+            l_panel.Add(l_Character_name);
 
             Vector2 size = Content.Fonts._font1.MeasureString(out_str);
 

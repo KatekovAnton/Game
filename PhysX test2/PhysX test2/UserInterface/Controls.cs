@@ -22,6 +22,7 @@ namespace PhysX_test2.UserInterface
            public Vector2 Position;
            public Vector2 Size;
            public Control Parent = null;
+           public bool visible = true;
 
            public virtual void Draw() { }
            public virtual void Update() { }
@@ -368,7 +369,8 @@ namespace PhysX_test2.UserInterface
 
            public override void Draw()
            {
-               Program.game._spriteBatch.DrawString(Font, Text, Position, Color);
+               if(visible)
+                    Program.game._spriteBatch.DrawString(Font, Text, Position, Color);
            }
        }
 
