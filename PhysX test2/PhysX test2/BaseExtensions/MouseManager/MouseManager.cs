@@ -22,6 +22,9 @@ namespace PhysX_test2
         public ButtonState lmbState;
         public ButtonState lmblastState;
 
+        public ButtonState rmbState;
+        public ButtonState rmblastState;
+
         public bool isJustPressed;
         public bool isJustReleased;
 
@@ -64,8 +67,7 @@ namespace PhysX_test2
 
            
             lmbState = state.LeftButton;
-            
-            
+            rmbState = state.RightButton;
             isJustPressed = isJustReleased = false;
             if (lmblastState == ButtonState.Pressed && lmbState == ButtonState.Released)
                 isJustReleased = true;
@@ -74,7 +76,6 @@ namespace PhysX_test2
 
 
             lastState = state;
-            
         }
     }
 }

@@ -136,7 +136,7 @@ namespace PhysX_test2.TheGame
             SQliteResultSet result = Database.executeSelect("select textKey, textValue from lang_text where langKey = " + __targetLanguage.ToString(), null);
             foreach(object[] arr in result.result)
             {
-                _localizations.Add(arr[0].ToString(), arr[1].ToString());
+                _localizations.Add(arr[0].ToString() + "\0", arr[1].ToString());
             }
         }
 
