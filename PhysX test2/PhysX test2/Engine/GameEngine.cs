@@ -62,7 +62,8 @@ namespace PhysX_test2.Engine
         public LevelObject LevelObjectTestSide;
         public Actor groundplane;
 
-
+        //
+        public static PivotObject _belowMouseObject;
       
 
         //animation
@@ -79,7 +80,9 @@ namespace PhysX_test2.Engine
        // public bool cameraneedsupdate = true;
         public bool GlobalUser { set { } get { return true; } }
 
-        public UserInterface.Controls.ISomeInterface UI;  //UI is the part of engine, but it most created first by GAME class
+        public UserInterface.GameInterface UI;  //UI is the part of engine, but it most created first by GAME class
+        
+
 
         public GameEngine(MyGame game)
         {
@@ -154,6 +157,7 @@ namespace PhysX_test2.Engine
             CameraManager.Update();
 
             UI.Init();
+
         }
 
         public void CasheObject(string __name,
@@ -352,6 +356,7 @@ namespace PhysX_test2.Engine
             float distance = 10000;
 
             Vector3 camerapos = MyGame.Instance.ray.Position;
+            _belowMouseObject = null;
             foreach (Engine.Logic.PivotObject lo in this.gameScene._visibleObjects)
             {
                 if (!lo._needMouseCast)
@@ -368,6 +373,7 @@ namespace PhysX_test2.Engine
                         distance = range;
                         newpoint = point.Value;
                         newpoint += (direction * 0.3f);
+                        _belowMouseObject = lo;
                     }
                 }
             }

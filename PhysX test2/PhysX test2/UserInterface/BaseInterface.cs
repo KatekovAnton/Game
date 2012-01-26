@@ -16,15 +16,18 @@ namespace PhysX_test2.UserInterface
         public Controls.Label l_Visible_objects_count;
         public Controls.Label l_Recalulcalated_objects_count;
         public Controls.Label l_Character_angle;
+        public Controls.Label l_Character_name;
 
         public Controls.UserControl l_panel;
 
+        public CashedTexture2D _texture;
 
         public List<string> command_buffer = new List<string>();
         public int current_command = 0;
         public void Init() 
         {
-            UIContent.Init();
+            _texture = new PackTexture("texture16x16\0");
+            _texture.Retain();
             List<HotKey> debug_textbox_hotkeys = new List<HotKey>();
             debug_textbox_hotkeys.Add(new HotKey(new Keys[] { Keys.Enter },onDebugTextboxEnter));
             debug_textbox_hotkeys.Add(new HotKey(new Keys[] { Keys.Escape }, onDebugTextboxEscape));
@@ -66,15 +69,18 @@ namespace PhysX_test2.UserInterface
             l_panel.Add(l_Recalulcalated_objects_count);
             l_panel.Add(l_Character_angle);
 
+            l_Character_name = (Controls.Label)Controls.CreateLabel(Microsoft.Xna.Framework.Color.Black, new Vector2(), Content.Fonts._font1);
+            l_panel.Add(l_Character_name);
+
             Vector2 size = Content.Fonts._font1.MeasureString(out_str);
 
             if (Config.Instance["_ultraLowRender"]) size = new Vector2(502, 246); 
             
-                Controls.Image img = new Controls.Image(Vector2.Zero, GColors.CTextBack, new RT((int)size.X + 10, (int)size.Y + 10, Color.White, "sss"));
+                Controls.Image img = new Controls.Image(Vector2.Zero, GColors.CTextBack, _texture);
                 Controls.UserControl uc = new Controls.UserControl();
                 uc.Add(img);
-                uc.Add(Controls.CreateLabel(GColors.CText, new Vector2(5, 5), Content.Fonts._font1, Config.Instance["_use_static_labels"], out_str));
-                Controls.Image img2 = new Controls.Image(Vector2.Zero, uc, new RT((int)size.X + 10, (int)size.Y + 10, GColors.CZero, "sss"));
+                uc.Add(Controls.CreateLabel(GColors.CText, new Vector2(5, 5), Content.Fonts._font1, out_str));
+                Controls.Image img2 = new Controls.Image(Vector2.Zero, Color, _texture);
 
                 Add(img2);
             

@@ -106,6 +106,28 @@ namespace PhysX_test2.TheGame
         public void Update(GameTime __gameTime)
         {
             _level.Update(__gameTime);
+
+            if (GameEngine._belowMouseObject != null)
+                OutMouseObject(GameEngine._belowMouseObject._gameObject);
+            
+        }
+
+        public void OutMouseObject(object blc)
+        {
+            if (blc == null)
+            {
+                GameEngine.Instance.UI.l_Character_name.visible = false;
+                return;
+            }
+            CharacterLogicController clc = blc as CharacterLogicController;
+            if (clc == null)
+            {
+                GameEngine.Instance.UI.l_Character_name.visible = false;
+                return;
+            }
+            GameEngine.Instance.UI.l_Character_name.visible = true;
+            GameEngine.Instance.UI.l_Character_name.Text = StaticObjects.localization(clc._baseParameters._name);
+            GameEngine.Instance.UI.l_Character_name.Position = MouseManager.Manager.mousePos;
         }
 
     }

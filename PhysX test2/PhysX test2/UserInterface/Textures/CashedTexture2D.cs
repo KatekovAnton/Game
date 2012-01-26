@@ -20,12 +20,14 @@ namespace PhysX_test2.UserInterface
         }
 
         public abstract void Release();
+        public abstract void Retain();
 
         public CashedTexture2D(string __name, Texture2D __texture)
         {
             _name = __name;
             _texture = __texture;
         }
+
 
         ~CashedTexture2D()
         {

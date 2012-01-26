@@ -53,7 +53,7 @@ namespace PhysX_test2.TheGame
             private set;
         }
 
-        private Dictionary<string, string> _localizations;
+        private static Dictionary<string, string> _localizations;
 
         //load from database
         private static Dictionary<string, BulletParameters> _bulletParameters;
@@ -383,7 +383,7 @@ namespace PhysX_test2.TheGame
             }
         }
 
-        public string localization(string __key)
+        public static string localization(string __key)
         {
             if (_localizations.Keys.Contains(__key))
                 return _localizations[__key];
