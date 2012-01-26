@@ -78,7 +78,7 @@ namespace PhysX_test2
 
             _hotkeys = new List<HotKey>();
             _hotkeys.Add(new HotKey(new Keys[] { Keys.OemTilde }, SwitchConsoleView));
-            _hotkeys.Add(new HotKey(new Keys[] { Keys.Escape }, ShowMainMenu));
+         //   _hotkeys.Add(new HotKey(new Keys[] { Keys.Escape }, ShowMainMenu));
             _hotkeys.Add(new HotKey(new Keys[] { Keys.LeftControl, Keys.OemTilde }, SwitchConsoleEditMode));
             _hotkeys.Add(new HotKey(new Keys[] { Keys.Tab }, SwitchCameraMode));
 

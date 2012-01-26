@@ -366,7 +366,6 @@ namespace PhysX_test2.UserInterface
                    _cur_vis = !_cur_vis; 
                    _i = 0; 
                }
-               // base.Update();
            }
 
            ~TextBox()
