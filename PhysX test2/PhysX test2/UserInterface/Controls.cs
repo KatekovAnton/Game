@@ -49,7 +49,11 @@ namespace PhysX_test2.UserInterface
                    Control.Draw();
            }
 
-           public void Add(Control item) { ChildControls.Add(item); item.Parent = this; }
+           public void Add(Control item)
+           {
+               ChildControls.Add(item); 
+               item.Parent = this;
+           }
 
            public override void Update()
            {
@@ -387,6 +391,7 @@ namespace PhysX_test2.UserInterface
        public class Image : Control
        {
            public CashedTexture2D _texture;
+           public Vector2 Size;
            public Image(Vector2 position, Color color, CashedTexture2D tr)
            {
                tr.Retain();
@@ -397,7 +402,14 @@ namespace PhysX_test2.UserInterface
 
            public override void Draw()
            {
-               Program.game._spriteBatch.Draw(_texture._texture, Position, null,Microsoft.Xna.Framework.Color.White, 0,Vector2.Zero, 1,SpriteEffects.None, 0 );
+               Program.game._spriteBatch.Draw(_texture._texture,
+                   new Rectangle((int)base.Position.X, (int)base.Position.Y, (int)(base.Position.X + Size.X), (int)(base.Position.Y + Size.Y)),
+                   null,
+                   Microsoft.Xna.Framework.Color.White,
+                   0,
+                   Vector2.Zero,
+                   SpriteEffects.None,
+                   0);
            }
 
            ~Image()

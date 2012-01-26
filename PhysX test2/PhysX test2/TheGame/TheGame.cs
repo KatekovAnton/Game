@@ -109,7 +109,6 @@ namespace PhysX_test2.TheGame
 
             if (GameEngine._belowMouseObject != null)
                 OutMouseObject(GameEngine._belowMouseObject._gameObject);
-            
         }
 
         public void OutMouseObject(object blc)
@@ -127,8 +126,7 @@ namespace PhysX_test2.TheGame
             }
             GameEngine.Instance.UI.l_Character_name.visible = true;
             GameEngine.Instance.UI.l_Character_name.Text = StaticObjects.localization(clc._baseParameters._name);
-            GameEngine.Instance.UI.l_Character_name.Position = MouseManager.Manager.mousePos;
+            GameEngine.Instance.UI.l_Character_name.Position = MouseManager.Manager.mousePos + new Vector2(10, 0);
         }
-
     }
 }
