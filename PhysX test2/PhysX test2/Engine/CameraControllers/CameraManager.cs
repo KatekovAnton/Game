@@ -39,7 +39,7 @@ namespace PhysX_test2.Engine.CameraControllers
                 if (value == null)
                     CameraMode = CameraControllers.CameraMode.Free;
                 else 
-                CameraMode = CameraControllers.CameraMode.Character;
+                    CameraMode = CameraControllers.CameraMode.Character;
             }
 
             get { return _targetCharacter; }
