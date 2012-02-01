@@ -141,7 +141,6 @@ namespace PhysX_test2.TheGame.InputManagers
                 else
                     return CharacterMoveState.WalkRight;
             }
-            return CharacterMoveState.WalkForward;
         }
 
         public List<HotKey> _hotkeys;
