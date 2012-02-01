@@ -14,6 +14,9 @@ namespace PhysX_test2.TheGame.LogicControllers.Parameters
         {
             _dbID = __dbID;
             _name = __displayName;
+
+            if (!_name.EndsWith("\0"))
+                _name += "\0";
         }
     }
 

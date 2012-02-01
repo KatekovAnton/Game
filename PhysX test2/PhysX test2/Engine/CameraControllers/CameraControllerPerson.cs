@@ -111,7 +111,7 @@ namespace PhysX_test2.Engine.CameraControllers
             float deltaY = cursorPositionY - _lastMousePosY;
             MouseState mouseState = MouseManager.Manager.state;
 
-            if (mouseState.RightButton == ButtonState.Pressed)
+            if (MouseManager.Manager.rmbState == ButtonState.Pressed)
             {
                 RotateCameraAroundChar(-deltaX * Settings.rotateSpeed);
                 UpDownCamera(deltaY * Settings.rotateSpeed);

@@ -78,9 +78,9 @@ namespace PhysX_test2
 
             _hotkeys = new List<HotKey>();
             _hotkeys.Add(new HotKey(new Keys[] { Keys.OemTilde }, SwitchConsoleView));
-            _hotkeys.Add(new HotKey(new Keys[] { Keys.Escape }, ShowMainMenu));
+         //   _hotkeys.Add(new HotKey(new Keys[] { Keys.Escape }, ShowMainMenu));
             _hotkeys.Add(new HotKey(new Keys[] { Keys.LeftControl, Keys.OemTilde }, SwitchConsoleEditMode));
-            _hotkeys.Add(new HotKey(new Keys[] { Keys.Tab }, SwitchCameraMode));
+            //_hotkeys.Add(new HotKey(new Keys[] { Keys.Tab }, SwitchCameraMode));
 
             KeyboardManager.Manager.AddKeyboardUser(this);
 
@@ -94,7 +94,7 @@ namespace PhysX_test2
 
 //            DeviceManager.GraphicsProfile = GraphicsProfile.Reach;
 
-           if (!GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef) || Config.Instance["_ultraLowRender"])
+           if (!GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef))
                 DeviceManager.GraphicsProfile = GraphicsProfile.Reach;
             else
                 DeviceManager.GraphicsProfile = GraphicsProfile.HiDef;

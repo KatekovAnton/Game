@@ -69,23 +69,21 @@ namespace PhysX_test2.UserInterface
             l_panel.Add(l_Recalulcalated_objects_count);
             l_panel.Add(l_Character_angle);
 
-            l_Character_name = (Controls.Label)Controls.CreateLabel(Microsoft.Xna.Framework.Color.Black, new Vector2(), Content.Fonts._font1);
+            l_Character_name = (Controls.Label)Controls.CreateLabel(Microsoft.Xna.Framework.Color.Red, new Vector2(), Content.Fonts._font1);
             l_panel.Add(l_Character_name);
 
             Vector2 size = Content.Fonts._font1.MeasureString(out_str);
 
-            if (Config.Instance["_ultraLowRender"]) size = new Vector2(502, 246); 
+            if (Config.Instance["_ultraLowRender"])
+                size = new Vector2(502, 246); 
             
-                Controls.Image img = new Controls.Image(Vector2.Zero, GColors.CTextBack, _texture);
-                Controls.UserControl uc = new Controls.UserControl();
-                uc.Add(img);
-                uc.Add(Controls.CreateLabel(GColors.CText, new Vector2(5, 5), Content.Fonts._font1, out_str));
-                Controls.Image img2 = new Controls.Image(Vector2.Zero, Color, _texture);
-
-                Add(img2);
-            
+                
+           
+            Controls.Image img2 = new Controls.Image(Vector2.Zero, Color, _texture);
+            img2.Size = new Vector2(480, 190);
+            Add(img2);
             Add(l_panel);
-
+            Add(Controls.CreateLabel(GColors.CText, new Vector2(5, 5), Content.Fonts._font1, out_str));
         }
 
         public void onDebugTextboxEnter()
