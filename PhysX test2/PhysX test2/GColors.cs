@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 
 namespace PhysX_test2
 {
+    /// <summary>
+    /// Специальный класс для настройки цветов интерфейса. При создании контролов использовать этот класс!!! 
+    /// </summary>
     public static class GColors
     {
         public static Color CHighLightText = Color.FromNonPremultiplied(100,100,255,120);

@@ -18,25 +18,25 @@ namespace PhysX_test2.UserInterface
         public Controls.Label l_Character_angle;
         public Controls.Label l_Character_name;
 
-        public Controls.UserControl l_panel;
-
-        public CashedTexture2D _texture;
+        public Controls.UserControl debug_panel;
 
         public List<string> command_buffer = new List<string>();
         public int current_command = 0;
+
+        // лучше не использовать конструкторы для контролов, а юзать вложенные методы Controls.CreateControl()
+
         public void Init() 
         {
-            _texture = new PackTexture("texture16x16\0");
-            _texture.Retain();
+            
             List<HotKey> debug_textbox_hotkeys = new List<HotKey>();
             debug_textbox_hotkeys.Add(new HotKey(new Keys[] { Keys.Enter },onDebugTextboxEnter));
             debug_textbox_hotkeys.Add(new HotKey(new Keys[] { Keys.Escape }, onDebugTextboxEscape));
             debug_textbox_hotkeys.Add(new HotKey(new Keys[] { Keys.Up }, onDebugTextboxUp));
             debug_textbox_hotkeys.Add(new HotKey(new Keys[] { Keys.Down }, onDebugTextboxDown));
-            string init_text ="debug console textbox";
-            debug_textbox = Controls.CreateTextBox(init_text, new Vector2(0, GameConfiguration.ScreenResolution.Y - Content.Fonts._font1.MeasureString("A").Y - 5), new Vector2(150, 1), debug_textbox_hotkeys, Content.Fonts._font1);
-            Add(debug_textbox);
-            command_buffer.Add(init_text);
+           // string init_text ="debug console textbox";
+            debug_textbox = Controls.CreateTextBox(new Vector2(0, GameConfiguration.ScreenResolution.Y - Content.Fonts._font1.MeasureString("A").Y - 5), new Vector2(1000, 1), debug_textbox_hotkeys);
+           // command_buffer.Add(init_text);
+
             KeyboardManager.Manager.AddKeyboardUser(debug_textbox);
 
             string out_str = "";
@@ -54,36 +54,32 @@ namespace PhysX_test2.UserInterface
             out_str += "           \'Tab'  - switch camera mode\n";
 
             Vector2 poss = Content.Fonts._font1.MeasureString("  Recalulcalated objects count:  ");
-            l_panel = new Controls.UserControl();
-            l_panel.Position = new Vector2(5, 5);
             poss.Y--;
-            l_fps = (Controls.Label)Controls.CreateLabel(GColors.CText, new Vector2(poss.X, 5), Content.Fonts._font1);
-            l_Frame_time = (Controls.Label)Controls.CreateLabel(GColors.CText, new Vector2(poss.X, poss.Y+5), Content.Fonts._font1);
-            l_Visible_objects_count = (Controls.Label)Controls.CreateLabel(GColors.CText, new Vector2(poss.X,5+ poss.Y*2), Content.Fonts._font1);
-            l_Recalulcalated_objects_count = (Controls.Label)Controls.CreateLabel(GColors.CText, new Vector2(poss.X,5+ poss.Y * 3), Content.Fonts._font1);
-            l_Character_angle = (Controls.Label)Controls.CreateLabel(GColors.CText, new Vector2(poss.X,5+ poss.Y * 4), Content.Fonts._font1);
+            Controls.Label l_up_label;
+            l_fps =                                 Controls.CreateLabel(GColors.CText,     new Vector2(poss.X, 5),                 Content.Fonts._font1);
+            l_Frame_time =                          Controls.CreateLabel(GColors.CText,     new Vector2(poss.X, poss.Y + 5),        Content.Fonts._font1);
+            l_Visible_objects_count =               Controls.CreateLabel(GColors.CText,     new Vector2(poss.X, 5 + poss.Y * 2),    Content.Fonts._font1);
+            l_Recalulcalated_objects_count =        Controls.CreateLabel(GColors.CText,     new Vector2(poss.X, 5 + poss.Y * 3),    Content.Fonts._font1);
+            l_Character_angle =                     Controls.CreateLabel(GColors.CText,     new Vector2(poss.X, 5 + poss.Y * 4),    Content.Fonts._font1);
+            l_Character_name =                      Controls.CreateLabel(GColors.CAlarm,    new Vector2(),                          Content.Fonts._font1);
+            l_up_label =                            Controls.CreateLabel(GColors.CText,     new Vector2(5, 5),                      Content.Fonts._font1, out_str);
 
-            l_panel.Add(l_fps);
-            l_panel.Add(l_Frame_time);
-            l_panel.Add(l_Visible_objects_count);
-            l_panel.Add(l_Recalulcalated_objects_count);
-            l_panel.Add(l_Character_angle);
-
-            l_Character_name = (Controls.Label)Controls.CreateLabel(Microsoft.Xna.Framework.Color.Red, new Vector2(), Content.Fonts._font1);
-            l_panel.Add(l_Character_name);
-
-            Vector2 size = Content.Fonts._font1.MeasureString(out_str);
-
-            if (Config.Instance["_ultraLowRender"])
-                size = new Vector2(502, 246); 
+            Controls.Image img2 = Controls.CreateImage(Vector2.Zero, new PackTexture("tex_w2x2\0",true), GColors.CTextBack, Content.Fonts._font1.MeasureString(out_str));
+            debug_panel = new Controls.UserControl();
+            debug_panel.Position = new Vector2(5, 5);
             
-                
-           
-            Controls.Image img2 = new Controls.Image(Vector2.Zero, Color, _texture);
-            img2.Size = new Vector2(480, 190);
-            Add(img2);
-            Add(l_panel);
-            Add(Controls.CreateLabel(GColors.CText, new Vector2(5, 5), Content.Fonts._font1, out_str));
+            debug_panel.Add(img2);
+            debug_panel.Add(l_fps);
+            debug_panel.Add(l_Frame_time);
+            debug_panel.Add(l_Visible_objects_count);
+            debug_panel.Add(l_Recalulcalated_objects_count);
+            debug_panel.Add(l_Character_angle);
+            debug_panel.Add(l_Character_name);
+            debug_panel.Add(l_up_label);
+            debug_panel.Add(debug_textbox);
+            Add(debug_panel);
+
+            
         }
 
         public void onDebugTextboxEnter()

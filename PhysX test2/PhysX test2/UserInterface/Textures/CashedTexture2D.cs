@@ -20,12 +20,17 @@ namespace PhysX_test2.UserInterface
         }
 
         public abstract void Release();
+
+        /// <summary>
+        /// выполняет загрузку текстуры из пака
+        /// </summary>
         public abstract void Retain();
 
-        public CashedTexture2D(string __name, Texture2D __texture)
+        public CashedTexture2D(string __name, Texture2D __texture, bool Retain_now = false)
         {
             _name = __name;
             _texture = __texture;
+            if (Retain_now) Retain();
         }
 
 
