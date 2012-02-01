@@ -114,7 +114,7 @@ namespace PhysX_test2.Engine.CameraControllers
             if (MouseManager.Manager.rmbState == ButtonState.Pressed)
             {
                 RotateCameraAroundChar(-deltaX * Settings.rotateSpeed);
-                UpDownCamera(deltaY * Settings.rotateSpeed);
+              //  UpDownCamera(deltaY * Settings.rotateSpeed);
             }
 
             _lastMousePosX = cursorPositionX;
@@ -122,11 +122,12 @@ namespace PhysX_test2.Engine.CameraControllers
 
 
             // обработка зума
+            /*
             if (mouseState.ScrollWheelValue > _mouseWheelOld)
                 ZoomCameraFromCha(1 / Settings.zoomSpeed);
             else if (mouseState.ScrollWheelValue < _mouseWheelOld)
                 ZoomCameraFromCha(Settings.zoomSpeed);
-
+            */
             _mouseWheelOld = mouseState.ScrollWheelValue;
 
             _delta = newtarget - _currentTarget;
