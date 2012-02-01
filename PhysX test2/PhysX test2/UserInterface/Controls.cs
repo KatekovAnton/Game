@@ -144,6 +144,7 @@ namespace PhysX_test2.UserInterface
                    _sel_vis = value.Length > 0;
                    Text = Text.Insert(_cur.pos, value);
                    _cur.pos += value.Length;
+                   _sel.End.pos = _sel.Start.pos = _cur.pos;
                    _insertMode = tmp;
                }
                get
@@ -240,14 +241,14 @@ namespace PhysX_test2.UserInterface
                    }
                    else
                    {
-                       if (f2) 
+                       if (f2)
                            _sel.Start.pos = --_cur.pos;
-                       if (f3) 
+                       if (f3)
                            _sel.End.pos = --_cur.pos;
                    }
                }
                else
-                   _cur.pos--;
+                   _sel.End.pos = _sel.Start.pos = --_cur.pos;
            }
 
            void Right()
@@ -272,11 +273,16 @@ namespace PhysX_test2.UserInterface
                    }
                }
                else
-                   _cur.pos++;
+                   _sel.End.pos = _sel.Start.pos = ++_cur.pos;
            }
 
            void BackSpace()
            {
+               if (_sel.End.pos != _sel.Start.pos)
+               {
+                   SelectedText = "";
+               }
+               else
                if (_cur.pos > 0)
                    Text = Text.Remove(--_cur.pos, 1);
            }
@@ -315,14 +321,11 @@ namespace PhysX_test2.UserInterface
            {
                Copy();
                SelectedText = "";
-               _sel.End.pos = _sel.Start.pos;
            }
 
            void Paste()
            {
                SelectedText = KeyboardManager.Clipboard;
-               _sel.Start.cp = _cur.cp;
-               _sel.End.cp = _cur.cp;
            }
 
            void Delete()
@@ -330,7 +333,6 @@ namespace PhysX_test2.UserInterface
                if (_sel_vis)
                {
                    SelectedText = "";
-                   _sel.End.pos = _sel.Start.pos;
                }
                else
                    if (_cur.pos < Text.Length)
