@@ -267,6 +267,7 @@
     <Compile Include="BaseExtensions\Graph\GraphEdge.cs" />
     <Compile Include="BaseExtensions\Graph\GraphNode.cs" />
     <Compile Include="TheGame\Level\GameLevel.cs" />
+    <Compile Include="TheGame\Level\GameLevelDescription.cs" />
     <Compile Include="TheGame\LogicControllers\BulletLogicController.cs" />
     <Compile Include="TheGame\LogicControllers\CameraController.cs" />
     <Compile Include="TheGame\LogicControllers\ControlActions\ControlAction.cs" />

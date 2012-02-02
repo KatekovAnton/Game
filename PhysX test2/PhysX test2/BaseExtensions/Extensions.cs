@@ -63,6 +63,11 @@ namespace PhysX_test2
             return new string(self.ReadChars(length + 1));
         }
 
+        public static void WritePackString(this System.IO.BinaryWriter self, string @string)//стринг с нулём, но длина без нуля
+        {
+            self.Write(@string.Length - 1);
+            self.Write(@string.ToCharArray());
+        }
 
         public static Matrix ReadMatrix(this BinaryReader self)
         {
@@ -73,6 +78,25 @@ namespace PhysX_test2
                 self.ReadSingle(), self.ReadSingle(), self.ReadSingle(), 1.0f
             );
         }
+
+        public static void WriteMatrixFull(this BinaryWriter self, Matrix m)
+        {
+            self.Write(m.M11); self.Write(m.M12); self.Write(m.M13);
+            self.Write(m.M21); self.Write(m.M22); self.Write(m.M23);
+            self.Write(m.M31); self.Write(m.M32); self.Write(m.M33);
+            self.Write(m.M41); self.Write(m.M42); self.Write(m.M43); self.Write(m.M44);
+        }
+
+        public static Matrix ReadMatrixFull(this BinaryReader self)
+        {
+            return new Matrix(
+                self.ReadSingle(), self.ReadSingle(), self.ReadSingle(), 0.0f,
+                self.ReadSingle(), self.ReadSingle(), self.ReadSingle(), 0.0f,
+                self.ReadSingle(), self.ReadSingle(), self.ReadSingle(), 0.0f,
+                self.ReadSingle(), self.ReadSingle(), self.ReadSingle(), self.ReadSingle()
+            );
+        }
+
         public static Vector3 ReadVector3(this BinaryReader self)
         {
             return new Vector3(self.ReadSingle(), self.ReadSingle(), self.ReadSingle());
