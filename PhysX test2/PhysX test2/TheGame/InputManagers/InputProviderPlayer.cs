@@ -12,7 +12,8 @@ namespace PhysX_test2.TheGame.InputManagers
 {
     public class InputProviderPlayer : InputProviderSuperClass, IAllKeys, IKeyboardUser
     {
-        public float cospi18 = (float)Math.Cos(Math.PI * 1.0 / 8.0);
+        public float cospi8 = (float)Math.Cos(Math.PI / 8.0);
+        public float cospi4 = (float)Math.Cos(Math.PI / 4.0);
         public float _oldRotation = -MathHelper.PiOver2;
        
         private float CreateAngleForCharacter(Microsoft.Xna.Framework.Vector3 __target, Vector3 __position)
@@ -70,13 +71,13 @@ namespace PhysX_test2.TheGame.InputManagers
 
 
             _moveVector = Vector3.Zero;
-            _viewVector = __position - _target;
+            _viewVector = _target - __position;
 
             float ydiff = _viewVector.Y;
             Vector3 middlePoint = new Vector3(_target.X, __position.Y, _target.Z);
             float sin = (middlePoint - __position).Length() / _viewVector.Length();
             _bodyRotation = Convert.ToSingle(Math.Acos((double)sin));
-            if (ydiff < 0)
+            if (ydiff > 0)
                 _bodyRotation *= -1;
             _bodyRotation += 0.05f;
 
@@ -128,12 +129,18 @@ namespace PhysX_test2.TheGame.InputManagers
 
             float value = Vector2.Dot(move, view);
 
-            if (1 - value > cospi18)
+            if (value > cospi4)
                 return CharacterMoveState.WalkForward;
-            if (-1 + value < cospi18)
+            else if (value < -cospi4)
                 return CharacterMoveState.WalkBackward;
-
-            return CharacterMoveState.WalkForward;
+            else
+            {
+                Vector3 v = Vector3.Cross(_move, _view);
+                if (v.Y < 0)
+                    return CharacterMoveState.WalkLeft;
+                else
+                    return CharacterMoveState.WalkRight;
+            }
         }
 
         public List<HotKey> _hotkeys;
