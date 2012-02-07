@@ -9,6 +9,8 @@ uniform extern float3x3 WorldRotation;
 
 uniform extern float4x4 Frame[28];
 
+
+const float alphaClamp = 0.6;
 const float4 mask = float4(1.0/255.0,1.0/255.0,1.0/255.0,0.0);
 const float4 decode_mask = float4(1.0f, 1.0/255.0, 1.0/65025.0, 1.0/16581375.0);
 
@@ -201,7 +203,7 @@ PS_INPUT HardwareInstancingVertexShaderSM(Vertex vertex,  float4x4 instanceTrans
 float4 SolidTextureNoSM(PS_INPUT f) : COLOR0
 {
 	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
-	if(color.a<0.02)
+	if(color.a < alphaClamp)
 		discard;
 
 	float shadowintens = 0.4f;
@@ -222,7 +224,7 @@ float4 SolidTextureNoSM(PS_INPUT f) : COLOR0
 float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
 {
 	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
-	if(color.a <= 0.1)
+	if(color.a < alphaClamp)
 		discard;
 	//color *= color.a;
 	return color;
@@ -231,7 +233,7 @@ float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
 float4 SolidTextureSMR(PS_INPUT f) : COLOR0
 {
 	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
-	if(color.a<0.02)
+	if(color.a < alphaClamp)
 		discard;
 
 	float4 lightingPosition = mul(f.WorldPos, LightViewProj);

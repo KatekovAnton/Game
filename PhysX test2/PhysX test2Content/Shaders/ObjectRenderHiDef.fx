@@ -9,7 +9,7 @@ uniform extern float3x3 WorldRotation;
 
 uniform extern float4x4 Frame[28];
 
-
+const float alphaClamp = 0.6;
 
 //ремх
 float4x4 LightViewProj;
@@ -184,7 +184,7 @@ PS_INPUT HardwareInstancingVertexShaderNoSM(Vertex vertex, float4x4 instanceTran
 float4 SolidTextureNoSM(PS_INPUT f) : COLOR0
 {
 	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
-	if(color.a<0.02)
+	if(color.a < alphaClamp)
 		discard;
 
 	float shadowintens = 0.4f;
@@ -205,7 +205,7 @@ float4 SolidTextureNoSM(PS_INPUT f) : COLOR0
 float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
 {
 	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
-	if(color.a <= 0.02)
+	if(color.a < alphaClamp)
 		discard;
 	//color *=color.a;
 	return color;
@@ -214,7 +214,7 @@ float4 SolidTextureSelfIll(PS_INPUT f) : COLOR0
 float4 SolidTextureSM(PS_INPUT f) : COLOR0
 {
 	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
-	if(color.a<0.02)
+	if(color.a < alphaClamp)
 		discard;
 
 	float4 lightingPosition = mul(f.WorldPos, LightViewProj);
@@ -247,7 +247,7 @@ float4 SolidTextureSM(PS_INPUT f) : COLOR0
 float4 SolidTextureSMSmooth(PS_INPUT f) : COLOR0
 {
 	float4 color = tex2D(TextureSampler, f.TextureCoordinate);
-	if(color.a<0.02)
+	if(color.a < alphaClamp)
 		discard;
 	float4 lightingPosition = mul(f.WorldPos, LightViewProj);
 	float2 ShadowTexCoord = 0.5 * lightingPosition.xy / lightingPosition.w + float2( 0.5, 0.5 );
