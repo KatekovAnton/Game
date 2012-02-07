@@ -170,6 +170,10 @@ namespace PhysX_test2.TheGame.LogicControllers
                     return "beginWalkBack\0";
                 case CharacterMoveState.WalkForward:
                     return "beginWalk\0";
+                case CharacterMoveState.WalkLeft:
+                    return "beginWalkLeft\0";
+                case CharacterMoveState.WalkRight:
+                    return "beginWalkRight\0";
                 default: return "stopMove\0";
             }
         }
