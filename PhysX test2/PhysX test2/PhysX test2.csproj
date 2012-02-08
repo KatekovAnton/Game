@@ -412,6 +412,9 @@
     <None Include="Data\Interface.pack">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Data\Level.pack">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Data\Particles.pack">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

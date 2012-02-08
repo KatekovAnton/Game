@@ -242,9 +242,21 @@ namespace PhysX_test2.Engine
                 AddObjectToScene(LevelObjectTestSide);
             }
 
+            ////grass1
+            {
+                LevelObject lo = LoadObject("lo_PalmBush1\0", null, false, false) as LevelObject;
+                lo.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(-5, 16, 2));
+                AddObjectToScene(lo);
+            }
 
+            ////grass2
+            {
+                LevelObject lo = LoadObject("lo_PalmBush2\0", null, false, false) as LevelObject;
+                lo.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(-5, 16, 0));
+                AddObjectToScene(lo);
+            }
 
-            ////test side
+            ////particles
             {
                 ParticleObject po = LoadParticleObject("Particle001RO\0", new Vector3(2));
                 po.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(2, 15, 2));

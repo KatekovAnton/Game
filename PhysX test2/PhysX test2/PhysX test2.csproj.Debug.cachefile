@@ -21,5 +21,6 @@ PhysXLoader.dll
 config.cfg
 Data\Data.pack
 Data\Interface.pack
+Data\Level.pack
 Data\Particles.pack
 Data\Data.sqlite

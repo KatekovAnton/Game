@@ -148,6 +148,7 @@ namespace PhysX_test2.TheGame.LogicControllers
             _hisInput.Update(_hisObject._levelObject.behaviourmodel.CurrentPosition.Translation);
             
             _hisObject.Rotate(_hisInput._angle);
+            _hisInput._angle = 0;
             _hisObject._levelObject.Move(_hisInput._moveVector);
             Engine.Render.AnimRenderObject ro = _hisObject._levelObject.renderaspect as Engine.Render.AnimRenderObject;
             ro.character.SetTopAngle(_hisInput._bodyRotation);
