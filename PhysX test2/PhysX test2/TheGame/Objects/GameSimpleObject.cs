@@ -38,7 +38,7 @@ namespace PhysX_test2.TheGame.Objects
                 return;
             }
 
-            if (_object._isBillboardCostrained)
+            if (_object._needCalcAcxis)
             {
                 Vector3 axis = Vector3.UnitY;
                 if(__parent != null)
@@ -55,8 +55,7 @@ namespace PhysX_test2.TheGame.Objects
             {
                 _onLevel = true;
                 _hisLevel.AddEngineObject(_object, __parentObject);
-                _object._isBillboard = false;
-                _object._isBillboardCostrained = false;
+                _object.CreateRenderSimple();
 
                 _locatedAtLastFrame = true;
             }
@@ -68,8 +67,7 @@ namespace PhysX_test2.TheGame.Objects
             {
                 _onLevel = true;
                 _hisLevel.AddEngineObject(_object, __parentObject);
-                _object._isBillboard = true;
-                _object._isBillboardCostrained = false;
+                _object.CreateRenderBillboard();
 
                 _locatedAtLastFrame = true;
             }
@@ -80,8 +78,7 @@ namespace PhysX_test2.TheGame.Objects
             if (!_onLevel)
             {
                 _onLevel = true;
-                _object._isBillboard = false;
-                _object._isBillboardCostrained = true;
+                _object.CreateRenderConstrBillboard();
                 CalcParameters(__parentObject);
                 _hisLevel.AddEngineObject(_object, Matrix.CreateTranslation(__delta), __parentObject);
 

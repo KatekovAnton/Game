@@ -36,8 +36,7 @@ namespace PhysX_test2.TheGame.Objects
             {
                 _onLevel = true;
                 _hisLevel.AddEngineObject(_object, __parentObject);
-                _object._isBillboard = false;
-                _object._isBillboardCostrained = false;
+                _object.CreateRenderSimple();
                 _object.FirstEmition();
             }
         }

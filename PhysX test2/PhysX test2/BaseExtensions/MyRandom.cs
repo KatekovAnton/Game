@@ -32,5 +32,17 @@ namespace PhysX_test2
             return value + min;
         }
 
+        public static double NextDouble(double max)
+        {
+            return Instance.NextDouble() * max;
+        }
+
+        public static double NextDouble(double min, double max)
+        {
+            double range = max - min;
+            double value = NextDouble(range);
+            return value + min;
+        }
+
     }
 }

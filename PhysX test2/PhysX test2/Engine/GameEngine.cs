@@ -242,20 +242,29 @@ namespace PhysX_test2.Engine
                 AddObjectToScene(LevelObjectTestSide);
             }
 
-            ////grass1
+            ////palmbush1
             {
                 LevelObject lo = LoadObject("lo_PalmBush1\0", null, false, false) as LevelObject;
-                lo.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(-5, 16, 2));
+                lo.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(-5, 15.0f, 2));
+                lo.CreateRenderSkew(0.03f);
                 AddObjectToScene(lo);
             }
 
-            ////grass2
+            ////palmbush2
             {
                 LevelObject lo = LoadObject("lo_PalmBush2\0", null, false, false) as LevelObject;
-                lo.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(-5, 16, 0));
+                lo.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(-5, 15.0f, 0));
+                lo.CreateRenderSkew(0.03f);
                 AddObjectToScene(lo);
             }
-
+            ////grass1
+            {
+                
+                LevelObject lo = LoadObject("lo_GrassBush1\0", null, false, false) as LevelObject;
+                lo.SetGlobalPose(Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), -MathHelper.PiOver2) * Matrix.CreateTranslation(-6, 15.0f, -1));
+                lo.CreateRenderSkew(0.1f);
+                AddObjectToScene(lo);
+            }
             ////particles
             {
                 ParticleObject po = LoadParticleObject("Particle001RO\0", new Vector3(2));

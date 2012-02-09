@@ -83,8 +83,8 @@ namespace PhysX_test2.Engine.Logic
         public bool _needMouseCast;
         public bool _needBulletCast;
 
-        public bool _isBillboardCostrained;
-        public bool _isBillboard;
+        private PivotObjectRenderMatrixController _matrixController = null;
+        public bool _needCalcAcxis;
         public Vector3 _objectConstrAxis = Vector3.UnitX;
         public Vector3 _objectConstrForward = -Vector3.UnitY;
 
@@ -98,10 +98,8 @@ namespace PhysX_test2.Engine.Logic
 
         public PivotObject()
         {
-            _isBillboard = false;
-            _isBillboardCostrained = false;
+            
         }
-
 
         public abstract RenderObject HaveRenderAspect();
         public abstract Render.Materials.Material HaveMaterial();
@@ -144,6 +142,30 @@ namespace PhysX_test2.Engine.Logic
             }
         }
 
+        public void CreateRenderBillboard()
+        {
+            _matrixController = new BillboardMatrixController();
+            _needCalcAcxis = false;
+        }
+
+        public void CreateRenderConstrBillboard()
+        {
+            _matrixController = new ConstrainedBillboardMatrixController(this);
+            _needCalcAcxis = true;
+        }
+
+        public void CreateRenderSkew(float __scale)
+        {
+            _matrixController = new SkewMatrixController(__scale);
+            _needCalcAcxis = false;
+        }
+
+        public void CreateRenderSimple()
+        {
+            _matrixController = null;
+            _needCalcAcxis = false;
+        }
+
         public void SetGlobalPose(Microsoft.Xna.Framework.Matrix newPose, bool afterupdate = false, PivotObject __parent = null)
         {
             behaviourmodel.SetGlobalPose(newPose, null, __parent);
@@ -160,9 +182,8 @@ namespace PhysX_test2.Engine.Logic
         {
             if (_isOnScreen)
             {
-                renderMatrix = transform;
-                if (useDeltaMatrix)
-                    renderMatrix = deltaMatrix * transform;
+                if(_matrixController!=null)
+                    renderMatrix =  _matrixController.GetRenderMatrix(transform);
                 else
                     renderMatrix = transform;
             }
@@ -177,20 +198,10 @@ namespace PhysX_test2.Engine.Logic
 
         public void Update()
         {
-            if (_isBillboard)
-                transform = Matrix.CreateBillboard(behaviourmodel.globalpose.Translation, CameraControllers.CameraManager.Camera._position, Vector3.Up, CameraControllers.CameraManager.Camera._direction);
-            else if (_isBillboardCostrained)
-                transform = Matrix.CreateConstrainedBillboard(behaviourmodel.globalpose.Translation, CameraControllers.CameraManager.Camera._position, _objectConstrAxis, CameraControllers.CameraManager.Camera._direction, _objectConstrForward);
-            else
-                transform = behaviourmodel.globalpose;
+            transform = behaviourmodel.globalpose;
 
             if (moved)
                 raycastaspect.boundingShape.Update(transform);
         }
-
-        /*from editor
-         public abstract void SetActive(bool active);
-         */
-
     }
 }

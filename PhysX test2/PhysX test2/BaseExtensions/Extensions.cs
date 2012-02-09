@@ -97,6 +97,16 @@ namespace PhysX_test2
             );
         }
 
+        public static Matrix CreateSkew(float x, float y)
+        {
+            Matrix m = Matrix.Identity;
+
+            m.M31 = x;
+            m.M32 = y;
+
+            return m;
+        }
+
         public static Vector3 ReadVector3(this BinaryReader self)
         {
             return new Vector3(self.ReadSingle(), self.ReadSingle(), self.ReadSingle());

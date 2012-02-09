@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseExtensions\Config.cs" />
+    <Compile Include="BaseExtensions\Curve.cs" />
     <Compile Include="BaseExtensions\ExcLog.cs" />
     <Compile Include="BaseExtensions\GameConfiguration.cs" />
     <Compile Include="BaseExtensions\Graph\GraphController.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Engine\Helpers\FPSCounter.cs" />
     <Compile Include="Engine\Helpers\ScreenLog.cs" />
     <Compile Include="Engine\Logic\ParticleObject.cs" />
+    <Compile Include="Engine\Logic\PivotObjectRenderMatrixController.cs" />
     <Compile Include="Engine\ObjectCashe.cs" />
     <Compile Include="Engine\Render\Materials\AnimatedMaterial.cs" />
     <Compile Include="Engine\Render\Materials\MaterialAnimation.cs" />
