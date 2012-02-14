@@ -31,7 +31,26 @@ namespace PhysX_test2.Engine.Logic
 
         public Matrix GetRenderMatrix(Matrix __baseTransformMatrix)
         {
-            return Matrix.CreateConstrainedBillboard(__baseTransformMatrix.Translation, CameraControllers.CameraManager.Camera._position, _baseObject._objectConstrAxis, CameraControllers.CameraManager.Camera._direction, _baseObject._objectConstrForward);
+            Vector3 translation = __baseTransformMatrix.Translation;
+            Matrix result = Matrix.Identity;
+            result.Translation = translation;
+            result.Up = Vector3.TransformNormal(new Vector3(0,1,0), __baseTransformMatrix); 
+            
+            
+            Vector3 v0 = CameraControllers.CameraManager.Camera._position - __baseTransformMatrix.Translation;
+            v0.Normalize();
+            result.M31 = v0.X;
+            result.M32 = v0.Y;
+            result.M33 = v0.Z;
+            
+            Vector3 v1 = -Vector3.Cross(result.Up, v0);
+            v1.Normalize();
+            result.M11 = v1.X;
+            result.M12 = v1.Y;
+            result.M13 = v1.Z;
+
+            return result;
+
         }
     }
 
